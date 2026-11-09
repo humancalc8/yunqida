@@ -1,0 +1,133 @@
+{% load static %}
+<style>/* Product cards. Uses the variables defined in base.html.
+   Delete any older .product-card / .product-media / .product-body / .specs rules first. */
+
+/* optional wrapper for the loop: <div class="product-grid"> ... </div> */
+.product-grid {
+    --cols: 2;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: 12px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--c-line);
+    transition: border-color .2s;
+}
+.product-card:hover { border-color: var(--c-sun); }
+
+.product-card .tag {
+    margin-bottom: 4px;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+.product-card h3 {
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--c-line);
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    line-height: 1.3;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+.product-card h3 a { text-decoration: none; }
+
+.product-tagline {
+    margin: 8px 0 0;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--c-muted);
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    margin-top: 10px;
+    overflow: hidden;
+    background: transparent;
+}
+.product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: multiply;   /* lets white photo backgrounds disappear */
+    transition: transform .5s ease;
+}
+.product-card:hover .product-media img { transform: scale(1.04); }
+
+.specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 10px 0 0;
+    padding: 0;
+}
+.specs div { display: flex; flex-direction: column-reverse; gap: 1px; }
+.specs dt { font-size: 10px; color: var(--c-muted); }
+.specs dd { margin: 0; font-size: 12.5px; font-weight: 700; }
+
+.product-more {
+    align-self: flex-start;
+    margin-top: 12px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--c-sun);
+    font-size: 11.5px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.product-more span { display: inline-block; transition: transform .2s; }
+.product-more:hover span { transform: translateX(4px); }
+
+@media (min-width: 768px) {
+    .product-grid { --cols: 3; gap: 20px; }
+    .product-card { padding: 18px; }
+    .product-card .tag { font-size: 11px; margin-bottom: 6px; }
+    .product-card h3 { font-size: 16px; padding-bottom: 12px; }
+    .product-tagline { font-size: 13px; margin-top: 12px; }
+    .product-media { margin-top: 16px; }
+    .specs { gap: 10px 22px; margin-top: 14px; }
+    .specs dt { font-size: 11.5px; }
+    .specs dd { font-size: 14.5px; }
+    .product-more { font-size: 13.5px; margin-top: 16px; }
+}
+@media (min-width: 1100px) {
+    .product-grid { --cols: 4; }
+}</style>
+<article class="product-card">
+  <span class="tag">{{ p.get_category_display }}</span>
+  <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+
+  {% if p.tagline %}<p class="product-tagline">{{ p.tagline }}</p>{% endif %}
+
+  <a href="{{ p.get_absolute_url }}" class="product-media" aria-label="View {{ p.name }}">
+    {% if p.image %}<img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">{% else %}<img src="{% static p.fallback_image %}" alt="{{ p.name }}" loading="lazy">{% endif %}
+  </a>
+
+  {% if p.capacity or p.power or p.warranty %}
+  <dl class="specs">
+    {% if p.capacity %}<div><dt>Capacity</dt><dd>{{ p.capacity }}</dd></div>{% endif %}
+    {% if p.power %}<div><dt>Power</dt><dd>{{ p.power }}</dd></div>{% endif %}
+    {% if p.warranty %}<div><dt>Warranty</dt><dd>{{ p.warranty }}</dd></div>{% endif %}
+  </dl>
+  {% endif %}
+
+  <a href="{{ p.get_absolute_url }}" class="product-more">View product <span aria-hidden="true">&rarr;</span></a>
+</article>

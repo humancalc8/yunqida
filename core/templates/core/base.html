@@ -1,0 +1,423 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% block title %}Yunqida Energy Technology Kenya | Solar, Lithium Batteries & Hybrid Inverters{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Lithium battery storage, solar power systems and hybrid inverters for homes, businesses and industry in Kenya.{% endblock %}">
+    <meta name="theme-color" content="#0F1318">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+    :root {
+        --c-forest: #0F1318;
+        --c-emerald: #14A090;
+        --c-sun: #F28C0F;
+        --c-sun-hover: #FFA43A;
+        --c-mist: #F2F3F5;
+        --c-ink: #0F1318;
+        --c-muted: #5C6670;
+        --c-line: #DFE3E7;
+        --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+        --font-body: 'Instrument Sans', system-ui, sans-serif;
+        --ease: cubic-bezier(.22, .8, .2, 1);
+        --header-h: 76px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+    body { margin: 0; font-family: var(--font-body); color: var(--c-ink); background: #fff; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body.nav-open { overflow: hidden; }
+    img, video { max-width: 100%; }
+    a { color: inherit; }
+    .container { width: min(1200px, calc(100% - 48px)); margin-inline: auto; }
+    .skip-link { position: absolute; left: -999px; top: 8px; z-index: 200; padding: 10px 16px; background: var(--c-sun); color: var(--c-forest); border-radius: 8px; font-weight: 600; }
+    .skip-link:focus { left: 8px; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--c-sun); outline-offset: 3px; }
+
+    /* icons come from the sprite at the top of <body> */
+    .ico { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* header */
+    .site-header { position: sticky; top: 0; z-index: 100; height: var(--header-h); background: rgba(255,255,255,.96); backdrop-filter: blur(14px); border-bottom: 1px solid var(--c-line); transition: background-color .3s, border-color .3s, box-shadow .3s; }
+    .page-home .site-header, .page-dark .site-header { position: fixed; inset: 0 0 auto 0; background: transparent; border-color: transparent; backdrop-filter: none; }
+    .page-home .site-header.is-scrolled { background: rgba(255,255,255,.96); backdrop-filter: blur(14px); border-color: var(--c-line); box-shadow: 0 8px 30px -18px rgba(15,19,24,.35); }
+    .page-dark .site-header.is-scrolled { background: rgba(15,19,24,.94); backdrop-filter: blur(12px); border-color: rgba(255,255,255,.1); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 24px; }
+
+    .brand { display: inline-flex; align-items: center; text-decoration: none; }
+    .brand img { display: block; height: 38px; width: auto; }
+    .logo-light { display: none !important; }
+    .page-dark .site-header .logo-color { display: none; }
+    .page-dark .site-header .logo-light { display: block !important; }
+
+    /* desktop nav */
+    .nav { display: flex; align-items: center; gap: 2px; }
+    .nav a:not(.btn-nav) { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 10px 12px; text-decoration: none; font-size: .92rem; font-weight: 500; color: var(--c-ink); transition: color .2s; }
+    .nav a:not(.btn-nav) .ico { display: none; }
+    .nav a:not(.btn-nav)::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 3px; height: 2px; background: var(--c-sun); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+    .nav a:not(.btn-nav):hover::after, .nav a.is-active::after { transform: scaleX(1); }
+    .page-home .site-header:not(.is-scrolled) .nav a:not(.btn-nav),
+    .page-dark .nav a:not(.btn-nav) { color: #fff; }
+
+    .btn-nav { display: inline-flex; align-items: center; gap: 10px; margin-left: 10px; padding: 11px 22px; border-radius: 999px; text-decoration: none; font-family: var(--font-display); font-size: .88rem; font-weight: 600; background: var(--c-sun); color: var(--c-forest); transition: background-color .2s; }
+    .btn-nav:hover { background: var(--c-sun-hover); }
+    .btn-nav .ico { display: none; }
+
+    .nav-head { display: none; }
+    .nav-toggle { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; cursor: pointer; color: var(--c-forest); }
+    .nav-toggle .ico { width: 26px; height: 26px; }
+    .page-home .site-header:not(.is-scrolled) .nav-toggle, .page-dark .nav-toggle { color: #fff; }
+
+    .nav-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(15,19,24,.5); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+    .nav-backdrop.is-visible { opacity: 1; visibility: visible; }
+
+    /* messages */
+    .messages { position: fixed; top: calc(var(--header-h) + 12px); right: 24px; z-index: 150; display: grid; gap: 10px; }
+    .message { padding: 14px 20px; border-radius: 12px; background: var(--c-forest); color: #fff; font-size: .93rem; box-shadow: 0 16px 40px -16px rgba(0,0,0,.4); }
+    .message.error { background: #B3261E; }
+    .message.success { background: #0F7A55; }
+
+    /* footer */
+    .site-footer { background: var(--c-forest); color: rgba(255,255,255,.72); padding: 80px 0 0; }
+    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 48px; padding-bottom: 56px; }
+    .footer-logo { display: inline-block; padding: 12px 18px; background: #fff; border-radius: 12px; margin-bottom: 18px; }
+    .footer-logo img { display: block; height: 34px; }
+    .footer-about { max-width: 340px; margin: 0; font-size: .94rem; line-height: 1.8; }
+    .site-footer h4 { margin: 0 0 16px; font-family: var(--font-display); font-size: .98rem; font-weight: 600; color: #fff; }
+    .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .site-footer li a { text-decoration: none; font-size: .93rem; transition: color .2s; }
+    .site-footer li a:hover { color: var(--c-sun); }
+    .footer-cta { display: inline-block; margin-top: 18px; padding: 12px 24px; border-radius: 999px; background: var(--c-sun); color: var(--c-forest); font-family: var(--font-display); font-weight: 600; font-size: .9rem; text-decoration: none; transition: background-color .2s; }
+    .footer-cta:hover { background: var(--c-sun-hover); }
+    .footer-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 22px 0; border-top: 1px solid rgba(255,255,255,.12); font-size: .85rem; color: rgba(255,255,255,.55); }
+
+    /* what we manufacture */
+    .yd-manufacture {
+        --yd-cols-mobile: 2;
+        --yd-cols-tablet: 3;
+        --yd-cols-desktop: 4;
+        --yd-gap: 12px;
+        --yd-pad: 12px;
+        padding: 56px 0;
+    }
+    .yd-manufacture__container { width: min(1240px, 100% - 32px); margin-inline: auto; }
+    .yd-manufacture__heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; margin-bottom: 32px; }
+    .yd-manufacture__intro { max-width: 620px; }
+    .yd-manufacture__eyebrow { display: block; margin-bottom: 12px; font-size: 12px; font-weight: 600; letter-spacing: .14em; color: var(--c-emerald); }
+    .yd-manufacture__intro h2 { margin: 0 0 12px; font-family: var(--font-display); font-size: 32px; line-height: 1.12; font-weight: 700; letter-spacing: -.01em; }
+    .yd-manufacture__intro h2 span { color: var(--c-sun); }
+    .yd-manufacture__intro p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--c-muted); }
+    .yd-manufacture__view-all { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border: 1px solid var(--c-ink); color: var(--c-ink); font-size: 14px; font-weight: 600; text-decoration: none; transition: background .2s, color .2s; }
+    .yd-manufacture__view-all:hover { background: var(--c-ink); color: #fff; }
+
+    .yd-manufacture__grid { display: grid; grid-template-columns: repeat(var(--yd-cols-mobile), minmax(0, 1fr)); gap: var(--yd-gap); }
+    .yd-manufacture__card { display: flex; flex-direction: column; min-width: 0; padding: var(--yd-pad); border: 1px solid var(--c-line); transition: border-color .2s; }
+    .yd-manufacture__card:hover { border-color: var(--c-sun); }
+    .yd-manufacture__content { display: contents; }
+
+    .yd-manufacture__category { order: 0; margin-bottom: 4px; font-size: 9.5px; font-weight: 600; letter-spacing: .06em; line-height: 1.3; color: var(--c-muted); text-transform: uppercase; }
+    .yd-manufacture__content h3 { order: 0; margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--c-line); font-family: var(--font-display); font-size: 13.5px; line-height: 1.3; font-weight: 700; overflow-wrap: anywhere; }
+    .yd-manufacture__content h3 a { text-decoration: none; }
+    .yd-manufacture__tagline { order: 1; margin: 8px 0 0; font-size: 12px; font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
+    .yd-manufacture__description { order: 1; margin: 3px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--c-muted); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    .yd-manufacture__image { order: 2; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; margin-top: 10px; overflow: hidden; }
+    .yd-manufacture__image img { width: 100%; height: 100%; max-width: none; object-fit: contain; mix-blend-mode: multiply; transition: transform .5s ease; }
+    .yd-manufacture__card:hover .yd-manufacture__image img { transform: scale(1.04); }
+    .yd-manufacture__image-index { display: none; }
+
+    .yd-manufacture__specs { order: 3; display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; }
+    .yd-manufacture__spec { display: flex; flex-direction: column; gap: 1px; }
+    .yd-manufacture__spec span { font-size: 10px; color: var(--c-muted); }
+    .yd-manufacture__spec strong { font-size: 12.5px; font-weight: 700; }
+
+    .yd-manufacture__link { order: 4; align-self: flex-start; margin-top: 12px; padding-bottom: 2px; border-bottom: 1px solid var(--c-sun); font-size: 11.5px; font-weight: 600; text-decoration: none; }
+    .yd-manufacture__link span { display: inline-block; transition: transform .2s; }
+    .yd-manufacture__link:hover span { transform: translateX(4px); }
+
+    .yd-manufacture__empty { padding: 40px 24px; text-align: center; border: 1px solid var(--c-line); color: var(--c-muted); }
+    .yd-manufacture__empty a { font-weight: 600; }
+
+    @media (min-width: 768px) {
+        .yd-manufacture { --yd-gap: 20px; --yd-pad: 18px; padding: 88px 0; }
+        .yd-manufacture__container { width: min(1240px, 100% - 48px); }
+        .yd-manufacture__heading { margin-bottom: 44px; }
+        .yd-manufacture__intro h2 { font-size: 40px; }
+        .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-tablet), minmax(0, 1fr)); }
+        .yd-manufacture__category { font-size: 11px; margin-bottom: 6px; }
+        .yd-manufacture__content h3 { font-size: 16px; padding-bottom: 12px; }
+        .yd-manufacture__tagline { font-size: 13.5px; margin-top: 12px; }
+        .yd-manufacture__description { font-size: 13px; }
+        .yd-manufacture__image { margin-top: 16px; }
+        .yd-manufacture__specs { gap: 10px 22px; margin-top: 14px; }
+        .yd-manufacture__spec span { font-size: 11.5px; }
+        .yd-manufacture__spec strong { font-size: 14.5px; }
+        .yd-manufacture__link { font-size: 13.5px; margin-top: 16px; }
+    }
+    @media (min-width: 1100px) {
+        .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-desktop), minmax(0, 1fr)); }
+    }
+
+    /* mobile: nav becomes a drawer sliding in from the right */
+    @media (max-width: 1080px) {
+        /* backdrop-filter would trap the fixed drawer inside the header */
+        .site-header, .page-home .site-header.is-scrolled, .page-dark .site-header.is-scrolled { backdrop-filter: none; }
+        .page-home .site-header.is-scrolled { background: #fff; }
+
+        .nav-toggle { display: inline-flex; }
+        .nav {
+            position: fixed; top: 0; right: 0; bottom: 0; z-index: 110;
+            width: min(86vw, 340px); height: 100vh; height: 100dvh;
+            flex-direction: column; align-items: stretch; gap: 0;
+            padding: 0 24px 28px; overflow-y: auto;
+            background: #fff; box-shadow: -24px 0 48px -24px rgba(15,19,24,.35);
+            transform: translateX(100%); visibility: hidden;
+            transition: transform .4s var(--ease), visibility 0s linear .4s;
+        }
+        .nav-open .nav { transform: none; visibility: visible; transition: transform .4s var(--ease); }
+
+        .nav-head { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: var(--header-h); margin-bottom: 8px; border-bottom: 1px solid var(--c-line); }
+        .nav-head img { display: block; height: 32px; width: auto; }
+        .nav-close { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right: -8px; padding: 0; border: 0; background: none; color: var(--c-ink); cursor: pointer; }
+
+        .nav a:not(.btn-nav), .page-home .site-header:not(.is-scrolled) .nav a:not(.btn-nav), .page-dark .nav a:not(.btn-nav) {
+            padding: 14px 0; font-size: 1rem; color: var(--c-ink); border-bottom: 1px solid var(--c-line);
+        }
+        .nav a:not(.btn-nav) .ico { display: block; color: var(--c-muted); transition: color .2s; }
+        .nav a:not(.btn-nav)::after { display: none; }
+        .nav a:not(.btn-nav):hover .ico, .nav a.is-active .ico { color: var(--c-sun); }
+        .nav a.is-active { font-weight: 600; }
+
+        .btn-nav { justify-content: center; margin: 24px 0 0; padding: 14px 22px; }
+        .btn-nav .ico { display: block; width: 18px; height: 18px; }
+
+        .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    @media (max-width: 560px) {
+        .container { width: calc(100% - 32px); }
+        .footer-grid { grid-template-columns: 1fr; }
+        .site-footer { padding-top: 56px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition-duration: .01ms !important; }
+    }
+
+    /* page loader: the Yunqida Q turns for 3s, then the next page loads */
+    .loader {
+        position: fixed; inset: 0; z-index: 1000;
+        display: flex; align-items: center; justify-content: center;
+        background: var(--c-forest);
+        opacity: 0; visibility: hidden;
+        transition: opacity .45s ease, visibility 0s linear .45s;
+    }
+    .loader.is-active { opacity: 1; visibility: visible; transition: opacity .25s ease; }
+    .loader-stage { perspective: 800px; }
+    .loader-q { display: block; width: 104px; height: 104px; }
+    .loader.is-spinning .loader-q { animation: q-flip var(--ms, 3000ms) cubic-bezier(.37, 0, .63, 1) both; }
+    /* 3 full turns; change 1080deg to turn more or less */
+    @keyframes q-flip { from { transform: rotateY(0); } to { transform: rotateY(1080deg); } }
+    @media (prefers-reduced-motion: reduce) {
+        .loader.is-spinning .loader-q { animation: none; }
+    }
+    </style>
+    {% block extra_head %}{% endblock %}
+    <noscript><style>.loader { display: none !important; }</style></noscript>
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+    <div class="loader is-active is-spinning" id="pageLoader" data-ms="3000" role="status" aria-label="Loading">
+        <div class="loader-stage">
+            <svg class="loader-q" viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                    <radialGradient id="qSphere" cx="35%" cy="25%" r="85%">
+                        <stop offset="0" stop-color="#FFE36B"/>
+                        <stop offset=".45" stop-color="#F7B31B"/>
+                        <stop offset="1" stop-color="#E8820F"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="50" cy="50" r="48" fill="url(#qSphere)" stroke="#D9591F" stroke-width="2"/>
+                <ellipse cx="38" cy="26" rx="22" ry="11" fill="#fff" opacity=".22" transform="rotate(-20 38 26)"/>
+                <path fill="#fff" fill-rule="evenodd" d="M31 21H69a12 12 0 0 1 12 12V64a12 12 0 0 1-12 12H31a12 12 0 0 1-12-12V33a12 12 0 0 1 12-12ZM42 36H81V49H66V55a8 8 0 0 1-8 8H42a8 8 0 0 1-8-8V44a8 8 0 0 1 8-8Z"/>
+            </svg>
+        </div>
+    </div>
+
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+        <symbol id="i-about" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+        <symbol id="i-products" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2M14 11v2"/></symbol>
+        <symbol id="i-solutions" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+        <symbol id="i-services" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></symbol>
+        <symbol id="i-works" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+        <symbol id="i-news" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></symbol>
+        <symbol id="i-faq" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></symbol>
+        <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    </svg>
+
+    {# If a URL with these names exists in urls.py it is used, otherwise the fallback path is. #}
+    {% url 'services' as services_url %}
+    {% url 'works' as works_url %}
+    {% url 'news' as news_url %}
+    {% url 'faq' as faq_url %}
+
+    <header class="site-header" id="siteHeader">
+        <div class="container header-inner">
+            <a href="{% url 'home' %}" class="brand" aria-label="Yunqida Energy Kenya home"><img class="logo-color" src="{% static 'img/logo.png' %}" alt="Yunqida Energy" width="184" height="36"><img class="logo-light" src="{% static 'img/logo-light.png' %}" alt="" width="184" height="36" aria-hidden="true"></a>
+
+            <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+                <svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg>
+            </button>
+
+            <nav class="nav" id="siteNav" aria-label="Main">
+                <div class="nav-head">
+                    <img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" width="184" height="36">
+                    <button type="button" class="nav-close" id="navClose" aria-label="Close menu"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+                </div>
+
+                {% with current=request.resolver_match.url_name %}
+                <a href="{% url 'home' %}" class="{% if current == 'home' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+                <a href="{% url 'about' %}" class="{% if current == 'about' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-about"/></svg>About Us</a>
+                <a href="{% url 'products' %}" class="{% if current == 'products' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-products"/></svg>Products</a>
+                <a href="{% url 'solutions' %}" class="{% if current == 'solutions' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-solutions"/></svg>Solutions</a>
+                <a href="{% firstof services_url '/services/' %}" class="{% if current == 'services' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-services"/></svg>Services</a>
+                <a href="{% firstof works_url '/works-done/' %}" class="{% if current == 'works' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-works"/></svg>Works Done</a>
+                <a href="{% firstof news_url '/news/' %}" class="{% if current == 'news' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-news"/></svg>News</a>
+                <a href="{% firstof faq_url '/faq/' %}" class="{% if current == 'faq' %}is-active{% endif %}"><svg class="ico" aria-hidden="true"><use href="#i-faq"/></svg>FAQ</a>
+                {% endwith %}
+
+                <a href="{% url 'contact' %}" class="btn-nav"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>Contact us</a>
+            </nav>
+        </div>
+    </header>
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+
+    {% if messages %}
+    <div class="messages" role="status">
+        {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+    </div>
+    {% endif %}
+
+    <main id="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <a href="{% url 'home' %}" class="footer-logo" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo-light.png' %}" alt="Yunqida Energy" width="160" height="31"></a>
+                <p class="footer-about">Yunqida Energy Technology Kenya brings lithium battery storage, solar power and hybrid inverters to homes, businesses and industry.</p>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'about' %}">About Us</a></li>
+                    <li><a href="{% firstof news_url '/news/' %}">News</a></li>
+                    <li><a href="{% firstof faq_url '/faq/' %}">FAQ</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>What we do</h4>
+                <ul>
+                    <li><a href="{% url 'products' %}">Products</a></li>
+                    <li><a href="{% url 'solutions' %}">Solutions</a></li>
+                    <li><a href="{% firstof services_url '/services/' %}">Services</a></li>
+                    <li><a href="{% firstof works_url '/works-done/' %}">Works Done</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Talk to our team</h4>
+                <p class="footer-about">Tell us about your power needs and we will help you find the right system.</p>
+                <a href="{% url 'contact' %}" class="footer-cta">Contact Yunqida Kenya</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <span>&copy; {% now "Y" %} Yunqida Energy Technology Kenya. All rights reserved.</span>
+            <span>Nairobi, Kenya</span>
+        </div>
+    </footer>
+
+    <script>
+    (function () {
+        var header = document.getElementById('siteHeader');
+        var toggle = document.getElementById('navToggle');
+        var closeBtn = document.getElementById('navClose');
+        var backdrop = document.getElementById('navBackdrop');
+
+        function isOpen() { return header.classList.contains('nav-open'); }
+        function syncHeader() { header.classList.toggle('is-scrolled', window.scrollY > 40 || isOpen()); }
+        function setOpen(open) {
+            header.classList.toggle('nav-open', open);
+            document.body.classList.toggle('nav-open', open);
+            backdrop.classList.toggle('is-visible', open);
+            toggle.setAttribute('aria-expanded', open);
+            syncHeader();
+        }
+
+        syncHeader();
+        window.addEventListener('scroll', syncHeader, { passive: true });
+        toggle.addEventListener('click', function () { setOpen(true); });
+        closeBtn.addEventListener('click', function () { setOpen(false); toggle.focus(); });
+        backdrop.addEventListener('click', function () { setOpen(false); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) setOpen(false); });
+        window.addEventListener('resize', function () { if (window.innerWidth > 1080 && isOpen()) setOpen(false); });
+        document.querySelectorAll('#siteNav a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+        document.querySelectorAll('.message').forEach(function (m) { setTimeout(function () { m.style.display = 'none'; }, 6000); });
+    })();
+    </script>
+    <script>
+    // Page loader: on an internal link click the Q turns for data-ms, then we go to the page.
+    (function () {
+        var loader = document.getElementById('pageLoader');
+        if (!loader) return;
+        var ms = parseInt(loader.dataset.ms, 10) || 3000;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) ms = 500;
+        loader.style.setProperty('--ms', ms + 'ms');
+        var leaving = false;
+
+        function hide(force) {
+            if (leaving && !force) return;
+            leaving = false;
+            loader.classList.remove('is-active');
+            setTimeout(function () { if (!leaving) loader.classList.remove('is-spinning'); }, 500);
+        }
+
+        if (document.readyState === 'complete') hide(); else window.addEventListener('load', function () { hide(); });
+        setTimeout(hide, 8000);                                   // safety net
+        window.addEventListener('pageshow', function (e) { if (e.persisted) hide(true); });   // back button
+
+        document.addEventListener('click', function (e) {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            var a = e.target.closest('a[href]');
+            if (!a || a.hasAttribute('download') || a.hasAttribute('data-no-loader')) return;
+            if (a.target && a.target !== '_self') return;
+            var url;
+            try { url = new URL(a.href, location.href); } catch (err) { return; }
+            if (url.origin !== location.origin) return;
+            if (url.pathname === location.pathname && url.search === location.search) return;   // same page / #anchor
+            e.preventDefault();
+            if (leaving) return;
+            leaving = true;
+            loader.classList.remove('is-spinning');
+            void loader.offsetWidth;                                // restart the animation
+            loader.classList.add('is-active', 'is-spinning');
+            var went = false;
+            function go() { if (went) return; went = true; location.href = url.href; }
+            loader.querySelector('.loader-q').addEventListener('animationend', go, { once: true });
+            setTimeout(go, ms + 150);                               // fallback (also covers reduced motion)
+        });
+    })();
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

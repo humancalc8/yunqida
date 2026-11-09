@@ -1,0 +1,249 @@
+{% extends 'core/base.html' %}{% load static %}
+
+{% block title %}About Us | Yunqida Energy Kenya{% endblock %}
+{% block meta_description %}Yunqida Energy Kenya is the Kenyan branch of Guangdong Yunqida New Energy Technology, a manufacturer of solar power systems, lithium batteries and all-in-one energy storage since 2013.{% endblock %}
+{% block body_class %}page-dark{% endblock %}
+
+{% block extra_head %}
+<script>document.documentElement.classList.add('js');</script>
+<style>
+    /* About page. Colours and fonts come from base.html. */
+    .ab-eyebrow { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 20px; font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--c-sun); }
+    .ab-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+    .ab-h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.1; font-weight: 600; letter-spacing: -.02em; }
+    .ab-section { padding: clamp(72px, 9vw, 128px) 0; }
+    .ab-section--mist { background: var(--c-mist); }
+
+    /* hero */
+    .ab-hero { position: relative; padding: calc(var(--header-h) + clamp(72px, 10vw, 140px)) 0 clamp(64px, 8vw, 110px); background: var(--c-forest); color: #fff; overflow: hidden; }
+    .ab-hero::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 120px); mask-image: linear-gradient(to bottom, #000, transparent 85%); -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); }
+    .ab-hero .container { position: relative; }
+    .ab-hero h1 { max-width: 15ch; margin: 0; font-family: var(--font-display); font-size: clamp(2.6rem, 6.4vw, 5.2rem); line-height: 1.02; font-weight: 600; letter-spacing: -.03em; }
+    .ab-hero h1 em { font-style: normal; color: var(--c-sun); }
+    .ab-hero .lead { max-width: 560px; margin: 28px 0 0; font-size: 1.1rem; line-height: 1.75; color: rgba(255,255,255,.7); }
+
+    /* facts strip */
+    .ab-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid rgba(255,255,255,.14); }
+    .ab-fact { padding: 28px 24px 0 0; }
+    .ab-fact + .ab-fact { padding-left: 24px; border-left: 1px solid rgba(255,255,255,.14); }
+    .ab-fact strong { display: block; font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+    .ab-fact span { display: block; margin-top: 8px; font-size: .88rem; color: rgba(255,255,255,.58); }
+
+    /* who we are */
+    .ab-split { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(40px, 7vw, 104px); align-items: center; }
+    .ab-split p { margin: 0 0 18px; font-size: 1.05rem; line-height: 1.8; color: var(--c-muted); }
+    .ab-split .ab-h2 { margin-bottom: 28px; }
+    .ab-figure { margin: 0; }
+    .ab-figure-frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--c-forest-2, #171D25); }
+    .ab-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .ab-figure figcaption { margin-top: 14px; font-size: .82rem; color: var(--c-muted); }
+    .ab-link { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--c-sun); font-weight: 600; font-size: .95rem; text-decoration: none; }
+    .ab-link span { transition: transform .25s var(--ease); }
+    .ab-link:hover span { transform: translateX(5px); }
+
+    /* what we make */
+    .ab-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(40px, 5vw, 72px); }
+    .ab-head p { margin: 0; font-size: 1.02rem; line-height: 1.75; color: var(--c-muted); }
+    .ab-range { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--c-ink); }
+    .ab-range article { padding: 32px 32px 8px 0; }
+    .ab-range article + article { padding-left: 32px; border-left: 1px solid var(--c-line); }
+    .ab-num { font-family: var(--font-display); font-size: .9rem; font-weight: 600; color: var(--c-sun); letter-spacing: .08em; }
+    .ab-range h3, .ab-values h3, .ab-steps h3 { margin: 14px 0 10px; font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
+    .ab-range p, .ab-values p, .ab-steps p { margin: 0; font-size: .97rem; line-height: 1.75; color: var(--c-muted); }
+    .ab-oem { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--c-line); font-size: .97rem; color: var(--c-muted); }
+    .ab-oem strong { color: var(--c-ink); }
+
+    /* values */
+    .ab-values-wrap { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 7vw, 112px); align-items: start; }
+    .ab-values-intro { position: sticky; top: calc(var(--header-h) + 40px); }
+    .ab-values-intro p { margin: 24px 0 0; max-width: 380px; font-size: 1.02rem; line-height: 1.75; color: var(--c-muted); }
+    .ab-values { border-top: 1px solid var(--c-line); }
+    .ab-values > div { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 32px 0; border-bottom: 1px solid var(--c-line); }
+    .ab-values h3 { margin-top: 0; }
+
+    /* how we work */
+    .ab-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: step; }
+    .ab-steps > div { position: relative; padding: 36px 28px 0 0; border-top: 1px solid var(--c-line); }
+    .ab-steps > div::before { content: ""; position: absolute; top: -1px; left: 0; width: 48px; height: 2px; background: var(--c-sun); }
+    .ab-steps h3 { margin-top: 12px; }
+
+    /* closing band */
+    .ab-cta { padding: clamp(72px, 9vw, 120px) 0; background: var(--c-forest); color: #fff; }
+    .ab-cta .container { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
+    .ab-cta h2 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 4.4vw, 3.6rem); line-height: 1.05; font-weight: 600; letter-spacing: -.025em; }
+    .ab-cta p { margin: 22px 0 0; max-width: 480px; font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,.68); }
+    .ab-cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; }
+    .ab-btn { display: inline-flex; align-items: center; padding: 15px 30px; border-radius: 999px; font-family: var(--font-display); font-weight: 600; font-size: .95rem; text-decoration: none; transition: background-color .2s, color .2s, border-color .2s; }
+    .ab-btn--sun { background: var(--c-sun); color: var(--c-forest); }
+    .ab-btn--sun:hover { background: var(--c-sun-hover); }
+    .ab-btn--line { border: 1px solid rgba(255,255,255,.35); color: #fff; }
+    .ab-btn--line:hover { border-color: #fff; }
+
+    /* scroll reveal (only when JS is on, so the page still works without it) */
+    .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
+    .js [data-reveal].is-in { opacity: 1; transform: none; }
+    .js [data-reveal="image"] { opacity: 1; transform: none; }
+    .js [data-reveal="image"] .ab-figure-frame { clip-path: inset(0 0 100% 0); transition: clip-path 1.3s var(--ease); }
+    .js [data-reveal="image"] img { transform: scale(1.22); transition: transform 1.9s var(--ease); }
+    .js [data-reveal="image"] figcaption { opacity: 0; transition: opacity .8s ease .9s; }
+    .js [data-reveal="image"].is-in .ab-figure-frame { clip-path: inset(0); }
+    .js [data-reveal="image"].is-in img { transform: scale(1); }
+    .js [data-reveal="image"].is-in figcaption { opacity: 1; }
+
+    @media (max-width: 900px) {
+        .ab-facts { grid-template-columns: 1fr 1fr; }
+        .ab-fact:nth-child(3) { padding-left: 0; border-left: 0; }
+        .ab-fact:nth-child(n+3) { margin-top: 28px; border-top: 1px solid rgba(255,255,255,.14); }
+        .ab-split, .ab-head, .ab-values-wrap, .ab-cta .container { grid-template-columns: 1fr; }
+        .ab-head { gap: 20px; }
+        .ab-figure-frame { aspect-ratio: 4 / 3; }
+        .ab-range { grid-template-columns: 1fr; }
+        .ab-range article, .ab-range article + article { padding: 28px 0; border-left: 0; }
+        .ab-range article + article { border-top: 1px solid var(--c-line); }
+        .ab-values-intro { position: static; }
+        .ab-steps { grid-template-columns: 1fr 1fr; row-gap: 36px; }
+        .ab-cta-actions { justify-content: flex-start; }
+    }
+    @media (max-width: 560px) {
+        .ab-steps { grid-template-columns: 1fr; }
+        .ab-values > div { grid-template-columns: 44px 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .js [data-reveal], .js [data-reveal="image"] .ab-figure-frame, .js [data-reveal="image"] img, .js [data-reveal="image"] figcaption { opacity: 1; transform: none; clip-path: none; transition: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<section class="ab-hero">
+    <div class="container">
+        <p class="ab-eyebrow" data-reveal>About us</p>
+        <h1 data-reveal style="--d:.08s">Energy storage, built to <em>last</em>.</h1>
+        <p class="lead" data-reveal style="--d:.16s">Yunqida Energy Kenya brings solar and lithium storage from a manufacturer that has focused on this work since 2013 to homes, businesses and institutions across Kenya.</p>
+
+        <div class="ab-facts" data-reveal style="--d:.24s">
+            <div class="ab-fact"><strong>2013</strong><span>Focused on energy storage since</span></div>
+            <div class="ab-fact"><strong>Guangzhou</strong><span>Manufacturer headquarters, China</span></div>
+            <div class="ab-fact"><strong>5.12 – 241 kWh</strong><span>From home systems to C&amp;I cabinets</span></div>
+            <div class="ab-fact"><strong>OEM &amp; ODM</strong><span>Custom manufacturing available</span></div>
+        </div>
+    </div>
+</section>
+
+<section class="ab-section">
+    <div class="container ab-split">
+        <div>
+            <p class="ab-eyebrow" data-reveal>Who we are</p>
+            <h2 class="ab-h2" data-reveal style="--d:.06s">A manufacturer, with a team on the ground in Kenya.</h2>
+            <p data-reveal style="--d:.12s">Yunqida is a brand of Guangdong Yunqida New Energy Technology Co., Ltd., a high-tech company in Guangzhou, China. It designs household and industrial energy storage, with a focus on solar power systems, lithium batteries and all-in-one energy storage systems.</p>
+            <p data-reveal style="--d:.18s">Our Kenyan branch brings that range to the country, with local advice, quotations and after-sales support.</p>
+            <a class="ab-link" href="{% url 'products' %}" data-reveal style="--d:.24s">View our products <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <figure class="ab-figure" data-reveal="image">
+            <div class="ab-figure-frame"><img src="{% static 'img/video-poster.jpg' %}" alt="Yunqida factory floor with finished energy storage cabinets" loading="lazy"></div>
+            <figcaption>Finished energy storage cabinets on the factory floor.</figcaption>
+        </figure>
+    </div>
+</section>
+
+<section class="ab-section ab-section--mist">
+    <div class="container">
+        <div class="ab-head">
+            <div>
+                <p class="ab-eyebrow" data-reveal>What we make</p>
+                <h2 class="ab-h2" data-reveal style="--d:.06s">One range, from the roof to the battery room.</h2>
+            </div>
+            <p data-reveal style="--d:.12s">Solar generation, lithium storage and the inverters that tie them together, designed as a system rather than a pile of parts.</p>
+        </div>
+
+        <div class="ab-range">
+            <article data-reveal>
+                <span class="ab-num">01</span>
+                <h3>Solar power systems</h3>
+                <p>Hybrid inverters and solar systems sized for households, shops, farms and factories.</p>
+            </article>
+            <article data-reveal style="--d:.1s">
+                <span class="ab-num">02</span>
+                <h3>Lithium batteries</h3>
+                <p>LiFePO4 storage with a battery management system, built for long cycle life and daily use.</p>
+            </article>
+            <article data-reveal style="--d:.2s">
+                <span class="ab-num">03</span>
+                <h3>All-in-one storage</h3>
+                <p>Stackable home units and commercial cabinets that arrive as a complete, tidy system.</p>
+            </article>
+        </div>
+        <p class="ab-oem" data-reveal><strong>OEM and ODM.</strong> We also manufacture to order for partners who need their own specification or branding.</p>
+    </div>
+</section>
+
+<section class="ab-section">
+    <div class="container ab-values-wrap">
+        <div class="ab-values-intro">
+            <p class="ab-eyebrow" data-reveal>What we stand for</p>
+            <h2 class="ab-h2" data-reveal style="--d:.06s">The way we work is simple.</h2>
+            <p data-reveal style="--d:.12s">Four commitments we hold ourselves to on every quotation and every installation.</p>
+        </div>
+        <div class="ab-values">
+            <div data-reveal><span class="ab-num">01</span><div><h3>Reliable power</h3><p>Products designed for long cycle life and daily use, not just for the spec sheet.</p></div></div>
+            <div data-reveal><span class="ab-num">02</span><div><h3>Safety first</h3><p>LiFePO4 chemistry with battery management that guards against over-charge, deep discharge and heat.</p></div></div>
+            <div data-reveal><span class="ab-num">03</span><div><h3>Honest sizing</h3><p>We size systems to your real load, so you do not pay for capacity you will never use.</p></div></div>
+            <div data-reveal><span class="ab-num">04</span><div><h3>Local support</h3><p>A Kenyan team you can phone, WhatsApp or visit.</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="ab-section ab-section--mist">
+    <div class="container">
+        <div class="ab-head">
+            <div>
+                <p class="ab-eyebrow" data-reveal>How we work</p>
+                <h2 class="ab-h2" data-reveal style="--d:.06s">From first call to dependable power.</h2>
+            </div>
+            <p data-reveal style="--d:.12s">Homes, businesses and institutions all follow the same straightforward path.</p>
+        </div>
+        <div class="ab-steps">
+            <div data-reveal><span class="ab-num">Step 1</span><h3>Tell us your needs</h3><p>Share your appliances, bills and goals with our team by phone, WhatsApp or in person.</p></div>
+            <div data-reveal style="--d:.08s"><span class="ab-num">Step 2</span><h3>We size the system</h3><p>We work from your real load, not a generic package.</p></div>
+            <div data-reveal style="--d:.16s"><span class="ab-num">Step 3</span><h3>Clear quotation</h3><p>A written quotation that shows exactly what you get.</p></div>
+            <div data-reveal style="--d:.24s"><span class="ab-num">Step 4</span><h3>After-sales support</h3><p>A local team to help once the system is running.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="ab-cta">
+    <div class="container">
+        <div>
+            <h2 data-reveal>Want to work with us?</h2>
+            <p data-reveal style="--d:.08s">Installers, distributors and developers are welcome to get in touch, as are homes and businesses that want a straight answer on what they need.</p>
+        </div>
+        <div class="ab-cta-actions" data-reveal style="--d:.16s">
+            <a class="ab-btn ab-btn--sun" href="{% url 'contact' %}">Contact us</a>
+            <a class="ab-btn ab-btn--line" href="{% url 'products' %}">Browse products</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+    var items = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+        items.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+{% endblock %}

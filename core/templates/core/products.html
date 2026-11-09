@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% block title %}Products | Yunqida Energy Kenya{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="wrap"><h1>Products</h1><p class="lead">Energy storage, lithium batteries and solar systems.</p></div></section>
+<section class="section"><div class="wrap">
+  <div class="filters" role="group" aria-label="Filter products by category">
+    <a href="{% url 'products' %}" class="chip {% if not active_category %}active{% endif %}">All</a>
+    {% for value, label in categories %}
+      <a href="?category={{ value }}" class="chip {% if active_category == value %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+  {% if products %}
+    <div class="product-grid">{% for p in products %}{% include 'core/_product_card.html' %}{% endfor %}</div>
+  {% else %}
+    <p class="empty">No products in this category yet. <a href="{% url 'contact' %}">Ask us what is available.</a></p>
+  {% endif %}
+</div></section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}{% load static %}
+{% block title %}{{ product.name }} | Yunqida Energy Kenya{% endblock %}
+{% block description %}{{ product.tagline }}{% endblock %}
+{% block content %}
+<section class="section product-detail"><div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="{% url 'products' %}">Products</a> / <span>{{ product.name }}</span></nav>
+  <div class="split">
+    <figure class="split-media product-hero-img">
+      {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<img src="{% static product.fallback_image %}" alt="{{ product.name }}">{% endif %}
+    </figure>
+    <div class="split-text">
+      <span class="tag">{{ product.get_category_display }}</span>
+      <h1>{{ product.name }}</h1>
+      <p class="lead dark">{{ product.tagline }}</p>
+      {{ product.description|linebreaks }}
+      <dl class="spec-table">
+        {% if product.capacity %}<div><dt>Capacity</dt><dd>{{ product.capacity }}</dd></div>{% endif %}
+        {% if product.power %}<div><dt>Power</dt><dd>{{ product.power }}</dd></div>{% endif %}
+        {% if product.warranty %}<div><dt>Warranty</dt><dd>{{ product.warranty }}</dd></div>{% endif %}
+      </dl>
+      <p class="note">Specifications are indicative. We confirm exact models and warranty terms in your quotation.</p>
+      <a class="btn btn-accent" href="{% url 'contact' %}?product={{ product.slug }}">Request a quote</a>
+    </div>
+  </div>
+</div></section>
+{% if related %}
+<section class="section section-mist"><div class="wrap">
+  <div class="section-head"><h2>Related products</h2></div>
+  <div class="product-grid">{% for p in related %}{% include 'core/_product_card.html' %}{% endfor %}</div>
+</div></section>
+{% endif %}
+{% endblock %}

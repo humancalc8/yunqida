@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% block title %}Contact | Yunqida Energy Kenya{% endblock %}
+{% block content %}
+<section class="page-hero"><div class="wrap"><h1>Get a quote</h1><p class="lead">Tell us what you want to power. We reply within one working day.</p></div></section>
+<section class="section"><div class="wrap contact-grid">
+  <form method="post" class="form" novalidate>
+    {% csrf_token %}
+    {% if product %}<p class="form-note">Enquiring about: <strong>{{ product.name }}</strong></p>{% endif %}
+    {{ form.website }}
+    {% for field in form.visible_fields %}{% if field.name != 'website' %}
+      <div class="field {% if field.errors %}has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for e in field.errors %}<p class="error">{{ e }}</p>{% endfor %}
+      </div>
+    {% endif %}{% endfor %}
+    <button class="btn btn-accent" type="submit">Send enquiry</button>
+  </form>
+  <aside class="contact-card">
+    <h2>Talk to us directly</h2>
+    <dl>
+      <div><dt>Phone</dt><dd><a href="tel:{{ SITE.phone|cut:' ' }}">{{ SITE.phone }}</a></dd></div>
+      <div><dt>WhatsApp</dt><dd><a href="https://wa.me/{{ SITE.whatsapp }}" target="_blank" rel="noopener">Start a chat</a></dd></div>
+      <div><dt>Email</dt><dd><a href="mailto:{{ SITE.email }}">{{ SITE.email }}</a></dd></div>
+      <div><dt>Office</dt><dd>{{ SITE.address }}</dd></div>
+      <div><dt>Hours</dt><dd>{{ SITE.hours }}</dd></div>
+    </dl>
+    <p class="note">Tip: a photo of your Kenya Power bill helps us size your system faster.</p>
+  </aside>
+</div></section>
+{% endblock %}

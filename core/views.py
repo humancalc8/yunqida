@@ -125,3 +125,48 @@ def contact(request):
         'form': form,
         'product': product,
     })
+
+# ---------- views.py ----------
+from django.shortcuts import render
+
+# Replace these with Yunqida's real services.
+# Later you can swap this list for a Service model: Service.objects.all()
+SERVICES = [
+    {
+        "slug": "consulting",
+        "title": "Consulting",
+        "summary": "We look at how your business runs today and show you where time and money are leaking.",
+        "points": ["Process review", "Cost analysis", "Written action plan"],
+    },
+    {
+        "slug": "sourcing",
+        "title": "Sourcing and procurement",
+        "summary": "We find reliable suppliers, check them, and handle negotiation so you buy at fair prices.",
+        "points": ["Supplier vetting", "Price negotiation", "Quality checks before shipping"],
+    },
+    {
+        "slug": "logistics",
+        "title": "Logistics and delivery",
+        "summary": "From pickup to your door, we plan the route, handle paperwork, and keep you updated.",
+        "points": ["Freight booking", "Customs paperwork", "Shipment tracking"],
+    },
+    {
+        "slug": "support",
+        "title": "After-sales support",
+        "summary": "When something goes wrong, you talk to one person who owns the problem until it is fixed.",
+        "points": ["Single point of contact", "Replacement handling", "Monthly check-ins"],
+    },
+]
+
+
+def services(request):
+    return render(request, "core/services.html", {"services": SERVICES})
+
+# ---------- views.py ----------
+from django.shortcuts import render
+
+
+def works_done(request):
+    return render(request, "works_done.html")
+
+  

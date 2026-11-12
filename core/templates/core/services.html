@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* Scoped to .yq-services so it won't affect the rest of your site.
+     Fonts are inherited from your base template so the page matches the rest of the site. */
+  .yq-services {
+    --ink: #12161d;
+    --muted: #5b6370;
+    --line: #d9dce1;
+    --soft: #f4f4f5;
+    --orange: #f28c0f;
+    --white: #ffffff;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .yq-services *, .yq-services *::before, .yq-services *::after { box-sizing: border-box; }
+  .yq-services :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .yq-services .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  .yq-services .hero { background: var(--soft); padding: 80px 0 64px; }
+  .yq-services .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+    margin: 0 0 16px;
+  }
+  .yq-services .hero p { font-size: 1.1rem; color: var(--muted); max-width: 52ch; margin: 0; }
+
+  .yq-services .list { background: var(--white); }
+  .yq-services .service {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .yq-services .service:last-child { border-bottom: 0; }
+  .yq-services .service h2 { font-size: 1.5rem; line-height: 1.2; margin: 0; }
+  .yq-services .service p { margin: 0 0 16px; max-width: 60ch; color: var(--muted); }
+  .yq-services .service ul { margin: 0; padding: 0; list-style: none; }
+  .yq-services .service li { padding-left: 22px; position: relative; margin-bottom: 6px; }
+  .yq-services .service li::before {
+    content: "";
+    position: absolute; left: 0; top: .7em;
+    width: 10px; height: 3px; background: var(--orange);
+  }
+
+  .yq-services .cta { background: var(--orange); color: var(--ink); padding: 72px 0; }
+  .yq-services .cta h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.15; margin: 0 0 12px; max-width: 20ch; }
+  .yq-services .cta p { margin: 0 0 24px; max-width: 48ch; }
+  .yq-services .cta-actions { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .yq-services .btn {
+    display: inline-block; background: var(--ink); color: var(--white);
+    padding: 14px 26px; font-weight: 600; text-decoration: none;
+  }
+  .yq-services .btn:hover { background: #000; }
+  .yq-services .link { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+
+  @media (max-width: 720px) {
+    .yq-services .service { grid-template-columns: 1fr; gap: 12px; padding: 32px 0; }
+    .yq-services .hero { padding: 52px 0 40px; }
+  }
+</style>
+
+<div class="yq-services">
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>Our services.</h1>
+      <p>Energy storage for homes, businesses and industry, with local support from our Kenyan team.</p>
+    </div>
+  </section>
+
+  <section class="list">
+    <div class="wrap">
+      {% for service in services %}
+        <article class="service" id="{{ service.slug }}">
+          <h2>{{ service.title }}</h2>
+          <div>
+            <p>{{ service.summary }}</p>
+            <ul>
+              {% for point in service.points %}
+                <li>{{ point }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </article>
+      {% empty %}
+        <p>Our services are being updated. Please contact our team directly.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Let's find the right energy solution for your needs.</h2>
+      <p>Tell us about your energy requirements and our Kenyan team will help you find the right system.</p>
+      <div class="cta-actions">
+        {# Replace '#' with your URLs, e.g. {% url 'contact' %} and {% url 'products' %} #}
+        <a class="btn" href="#">Contact Yunqida Kenya</a>
+        <a class="link" href="#">Browse products</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

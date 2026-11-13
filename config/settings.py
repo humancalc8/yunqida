@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-local-development-only-change-before-deployment"
 )
 
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -47,9 +47,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    "cloudinary_storage",
-    "cloudinary",
 
     "core",
 ]
@@ -163,30 +160,24 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STORAGES = {
-    "default": {
-        "BACKEND": (
-            "cloudinary_storage.storage.MediaCloudinaryStorage"
-            if os.environ.get("CLOUDINARY_URL")
-            else "django.core.files.storage.FileSystemStorage"
-        ),
-    },
-    "staticfiles": {
-        "BACKEND": (
-            "whitenoise.storage.CompressedManifestStaticFilesStorage"
-        ),
-    },
-}
-
-WHITENOISE_KEEP_ONLY_HASHED_FILES = True
-
 # =====================================================
-# MEDIA FILES - CLOUDINARY
+# MEDIA FILES - RENDER LOCAL STORAGE
 # =====================================================
 
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = BASE_DIR / "media"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 
 # =====================================================
 # EMAIL

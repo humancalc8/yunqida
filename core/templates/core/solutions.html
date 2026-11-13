@@ -1,224 +1,1030 @@
-{% extends 'core/base.html' %}{% load static %}
 
-{% block title %}Solutions | Yunqida Energy Kenya{% endblock %}
-{% block meta_description %}Solar and lithium battery storage sized for Kenyan homes, shops, clinics, schools, offices, factories and farms.{% endblock %}
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Solar & Battery Storage Solutions in Kenya | Yunqida Energy{% endblock %}
+
+{% block meta_description %}Discover solar and lithium battery storage solutions in Kenya for homes, shops, clinics, schools, offices, factories and farms. Explore residential, commercial and industrial energy systems with Yunqida Energy Kenya.{% endblock %}
+
+{% block meta_keywords %}solar solutions Kenya, solar energy systems Kenya, home solar power Kenya, commercial solar systems Kenya, industrial energy storage Kenya, lithium battery storage Kenya, LiFePO4 batteries Kenya, hybrid inverter Kenya, solar backup systems Nairobi, Yunqida Energy Kenya{% endblock %}
+
+{% block og_title %}Solar & Energy Storage Solutions in Kenya | Yunqida Energy{% endblock %}
+
+{% block og_description %}Explore residential, commercial and industrial solar and battery storage solutions from Yunqida Energy Kenya.{% endblock %}
+
 {% block body_class %}page-dark{% endblock %}
 
 {% block extra_head %}
-<script>document.documentElement.classList.add('js');</script>
+<script>
+  document.documentElement.classList.add('js');
+</script>
+
 <style>
-    /* Solutions page. Colours and fonts come from base.html. */
-    .so-eyebrow { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 20px; font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--c-sun); }
-    .so-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-    .so-h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.1; font-weight: 600; letter-spacing: -.02em; }
-    .so-section { padding: clamp(72px, 9vw, 120px) 0; }
-    .so-section--mist { background: var(--c-mist); }
+  .yq-solutions {
+    --so-forest: var(--c-forest, #0F1318);
+    --so-emerald: var(--c-emerald, #14A090);
+    --so-orange: var(--c-sun, #F28C0F);
+    --so-orange-hover: var(--c-sun-hover, #FFA43A);
+    --so-ink: var(--c-ink, #0F1318);
+    --so-muted: var(--c-muted, #5C6670);
+    --so-line: var(--c-line, #E3E6EA);
+    --so-mist: var(--c-mist, #F4F5F7);
 
-    /* hero */
-    .so-hero { position: relative; padding: calc(var(--header-h) + clamp(72px, 10vw, 140px)) 0 clamp(56px, 7vw, 96px); background: var(--c-forest); color: #fff; overflow: hidden; }
-    .so-hero::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 120px); -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); mask-image: linear-gradient(to bottom, #000, transparent 85%); }
-    .so-hero .container { position: relative; }
-    .so-hero h1 { max-width: 14ch; margin: 0; font-family: var(--font-display); font-size: clamp(2.6rem, 6.4vw, 5.2rem); line-height: 1.02; font-weight: 600; letter-spacing: -.03em; }
-    .so-hero h1 em { font-style: normal; color: var(--c-sun); }
-    .so-hero .lead { max-width: 560px; margin: 28px 0 0; font-size: 1.1rem; line-height: 1.75; color: rgba(255,255,255,.7); }
+    background: #fff;
+    color: var(--so-ink);
+    font-family: var(--font-body, sans-serif);
+    line-height: 1.7;
+    overflow: hidden;
+  }
 
-    .so-jump { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(48px, 6vw, 88px); border-top: 1px solid rgba(255,255,255,.14); }
-    .so-jump a { display: flex; flex-direction: column; gap: 6px; padding: 24px 24px 0 0; text-decoration: none; transition: color .2s; }
-    .so-jump a + a { padding-left: 24px; border-left: 1px solid rgba(255,255,255,.14); }
-    .so-jump small { font-size: .78rem; letter-spacing: .1em; color: var(--c-sun); font-weight: 600; }
-    .so-jump strong { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; letter-spacing: -.01em; }
-    .so-jump span { font-size: .88rem; color: rgba(255,255,255,.58); }
-    .so-jump a:hover strong { color: var(--c-sun); }
+  .yq-solutions *,
+  .yq-solutions *::before,
+  .yq-solutions *::after {
+    box-sizing: border-box;
+  }
 
-    /* solution blocks */
-    .so-block { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(40px, 7vw, 104px); align-items: center; }
-    .so-block--reverse .so-media { order: 2; }
-    .so-media { margin: 0; }
-    .so-frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: #171D25; }
-    .so-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .so-num { display: block; margin-bottom: 18px; font-family: var(--font-display); font-size: .9rem; font-weight: 600; letter-spacing: .1em; color: var(--c-sun); }
-    .so-text .so-h2 { margin-bottom: 24px; }
-    .so-text p { margin: 0 0 28px; font-size: 1.05rem; line-height: 1.8; color: var(--c-muted); }
-    .so-list { list-style: none; margin: 0 0 32px; padding: 0; border-top: 1px solid var(--c-line); }
-    .so-list li { position: relative; padding: 14px 0 14px 28px; border-bottom: 1px solid var(--c-line); font-size: .98rem; }
-    .so-list li::before { content: ""; position: absolute; left: 2px; top: 50%; width: 10px; height: 5px; margin-top: -4px; border-left: 2px solid var(--c-sun); border-bottom: 2px solid var(--c-sun); transform: rotate(-45deg); }
-    .so-link { display: inline-flex; align-items: center; gap: 10px; padding-bottom: 4px; border-bottom: 1px solid var(--c-sun); font-weight: 600; font-size: .95rem; text-decoration: none; }
-    .so-link span { transition: transform .25s var(--ease); }
-    .so-link:hover span { transform: translateX(5px); }
+  .yq-solutions a:focus-visible {
+    outline: 3px solid var(--so-orange);
+    outline-offset: 5px;
+  }
 
-    /* at a glance */
-    .so-head { max-width: 640px; margin-bottom: clamp(36px, 5vw, 60px); }
-    .so-table-wrap { overflow-x: auto; }
-    .so-table { width: 100%; min-width: 640px; border-collapse: collapse; }
-    .so-table th, .so-table td { padding: 22px 24px 22px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--c-line); font-size: .97rem; line-height: 1.6; }
-    .so-table thead th { padding-bottom: 16px; border-bottom: 1px solid var(--c-ink); font-family: var(--font-display); font-size: .82rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--c-muted); }
-    .so-table tbody th { width: 24%; font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; }
-    .so-table td { color: var(--c-muted); }
-    .so-table a { color: var(--c-ink); font-weight: 600; text-decoration-color: var(--c-sun); text-underline-offset: 4px; }
+  .yq-solutions .so-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    margin: 0 0 20px;
+    color: var(--so-emerald);
+    font-size: .73rem;
+    font-weight: 700;
+    letter-spacing: .16em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
 
-    /* closing band */
-    .so-cta { padding: clamp(72px, 9vw, 120px) 0; background: var(--c-forest); color: #fff; }
-    .so-cta .container { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
-    .so-cta h2 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 4.4vw, 3.6rem); line-height: 1.05; font-weight: 600; letter-spacing: -.025em; }
-    .so-cta p { margin: 22px 0 0; max-width: 480px; font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,.68); }
-    .so-cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; }
-    .so-btn { display: inline-flex; align-items: center; padding: 15px 30px; border-radius: 999px; font-family: var(--font-display); font-weight: 600; font-size: .95rem; text-decoration: none; transition: background-color .2s, border-color .2s; }
-    .so-btn--sun { background: var(--c-sun); color: var(--c-forest); }
-    .so-btn--sun:hover { background: var(--c-sun-hover); }
-    .so-btn--line { border: 1px solid rgba(255,255,255,.35); color: #fff; }
-    .so-btn--line:hover { border-color: #fff; }
+  .yq-solutions .so-eyebrow::before {
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    content: "";
+  }
 
-    /* scroll reveal */
-    .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
-    .js [data-reveal].is-in { opacity: 1; transform: none; }
-    .js [data-reveal="image"] { opacity: 1; transform: none; }
-    .js [data-reveal="image"] .so-frame { clip-path: inset(0 0 100% 0); transition: clip-path 1.3s var(--ease); }
-    .js [data-reveal="image"] img { transform: scale(1.22); transition: transform 1.9s var(--ease); }
-    .js [data-reveal="image"].is-in .so-frame { clip-path: inset(0); }
-    .js [data-reveal="image"].is-in img { transform: scale(1); }
+  .yq-solutions .so-h2 {
+    margin: 0;
+    font-family: var(--font-display, sans-serif);
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    font-weight: 600;
+    letter-spacing: -.045em;
+    line-height: 1.12;
+  }
 
-    @media (max-width: 900px) {
-        .so-jump { grid-template-columns: 1fr; }
-        .so-jump a, .so-jump a + a { padding: 18px 0; border-left: 0; }
-        .so-jump a + a { border-top: 1px solid rgba(255,255,255,.14); }
-        .so-block, .so-cta .container { grid-template-columns: 1fr; }
-        .so-block--reverse .so-media { order: 0; }
-        .so-frame { aspect-ratio: 4 / 3; }
-        .so-cta-actions { justify-content: flex-start; }
+  .yq-solutions .so-section {
+    padding: clamp(75px, 9vw, 115px) 0;
+  }
+
+  .yq-solutions .so-section--mist {
+    background: var(--so-mist);
+  }
+
+  /* HERO */
+
+  .yq-solutions .so-hero {
+    position: relative;
+    isolation: isolate;
+    padding: calc(var(--header-h, 80px) + clamp(70px, 9vw, 115px)) 0 75px;
+    overflow: hidden;
+    background: var(--so-forest);
+    color: #fff;
+  }
+
+  .yq-solutions .so-hero::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    content: "";
+    opacity: .15;
+    background-image:
+      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to right, #000, transparent 90%);
+  }
+
+  .yq-solutions .so-hero::after {
+    position: absolute;
+    z-index: -1;
+    top: -220px;
+    right: -140px;
+    width: 470px;
+    height: 470px;
+    border: 1px solid rgba(20,160,144,.25);
+    border-radius: 50%;
+    content: "";
+    box-shadow:
+      0 0 0 55px rgba(20,160,144,.035),
+      0 0 0 110px rgba(20,160,144,.025);
+  }
+
+  .yq-solutions .so-hero .container {
+    position: relative;
+  }
+
+  .yq-solutions .so-hero .so-eyebrow {
+    color: #70CFC1;
+  }
+
+  .yq-solutions .so-hero h1 {
+    max-width: 800px;
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-display, sans-serif);
+    font-size: clamp(2.8rem, 6.5vw, 5.2rem);
+    font-weight: 600;
+    letter-spacing: -.055em;
+    line-height: 1.03;
+  }
+
+  .yq-solutions .so-hero h1 em {
+    color: var(--so-orange);
+    font-style: normal;
+  }
+
+  .yq-solutions .so-hero .lead {
+    max-width: 610px;
+    margin: 26px 0 0;
+    color: rgba(255,255,255,.7);
+    font-size: clamp(1rem, 1.7vw, 1.12rem);
+    line-height: 1.85;
+  }
+
+  .yq-solutions .so-hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 32px;
+  }
+
+  /* BUTTONS */
+
+  .yq-solutions .so-btn {
+    display: inline-flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    padding: 13px 23px;
+    border: 1px solid transparent;
+    font-size: .89rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      background .2s ease,
+      border-color .2s ease,
+      color .2s ease,
+      transform .2s ease;
+  }
+
+  .yq-solutions .so-btn--sun {
+    border-color: var(--so-orange);
+    background: var(--so-orange);
+    color: var(--so-forest);
+  }
+
+  .yq-solutions .so-btn--sun:hover {
+    border-color: var(--so-orange-hover);
+    background: var(--so-orange-hover);
+    transform: translateY(-2px);
+  }
+
+  .yq-solutions .so-btn--line {
+    border-color: rgba(255,255,255,.35);
+    color: #fff;
+  }
+
+  .yq-solutions .so-btn--line:hover {
+    border-color: #fff;
+    background: rgba(255,255,255,.06);
+  }
+
+  .yq-solutions .so-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: inherit;
+    font-size: .91rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+
+  .yq-solutions .so-text-link span {
+    transition: transform .2s ease;
+  }
+
+  .yq-solutions .so-text-link:hover span {
+    transform: translateX(4px);
+  }
+
+  .yq-solutions .so-hero .so-text-link {
+    color: rgba(255,255,255,.85);
+  }
+
+  /* HERO NAVIGATION */
+
+  .yq-solutions .so-jump {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: clamp(55px, 7vw, 88px);
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+
+  .yq-solutions .so-jump a {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+    padding: 23px 25px 0 0;
+    color: #fff;
+    text-decoration: none;
+    transition: color .2s ease;
+  }
+
+  .yq-solutions .so-jump a + a {
+    padding-left: 25px;
+    border-left: 1px solid rgba(255,255,255,.15);
+  }
+
+  .yq-solutions .so-jump small {
+    color: var(--so-orange);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+  }
+
+  .yq-solutions .so-jump strong {
+    font-family: var(--font-display, sans-serif);
+    font-size: 1.22rem;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.3;
+  }
+
+  .yq-solutions .so-jump span {
+    color: rgba(255,255,255,.58);
+    font-size: .87rem;
+  }
+
+  .yq-solutions .so-jump a:hover strong {
+    color: var(--so-orange);
+  }
+
+  /* SOLUTION BLOCKS */
+
+  .yq-solutions .so-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(42px, 7vw, 95px);
+    align-items: center;
+  }
+
+  .yq-solutions .so-block--reverse .so-media {
+    order: 2;
+  }
+
+  .yq-solutions .so-media {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .yq-solutions .so-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 4.7;
+    background: #e8ebed;
+    isolation: isolate;
+  }
+
+  .yq-solutions .so-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 1.2s cubic-bezier(.2,.65,.25,1);
+  }
+
+  .yq-solutions .so-num {
+    display: block;
+    margin-bottom: 18px;
+    color: var(--so-emerald);
+    font-family: var(--font-display, sans-serif);
+    font-size: .86rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+  }
+
+  .yq-solutions .so-text .so-h2 {
+    margin-bottom: 22px;
+  }
+
+  .yq-solutions .so-text > p {
+    margin: 0 0 25px;
+    color: var(--so-muted);
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .yq-solutions .so-list {
+    margin: 0 0 28px;
+    padding: 0;
+    border-top: 1px solid var(--so-line);
+    list-style: none;
+  }
+
+  .yq-solutions .so-list li {
+    position: relative;
+    padding: 13px 0 13px 27px;
+    border-bottom: 1px solid var(--so-line);
+    font-size: .94rem;
+    line-height: 1.55;
+  }
+
+  .yq-solutions .so-list li::before {
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    width: 9px;
+    height: 5px;
+    margin-top: -4px;
+    border-bottom: 2px solid var(--so-emerald);
+    border-left: 2px solid var(--so-emerald);
+    content: "";
+    transform: rotate(-45deg);
+  }
+
+  .yq-solutions .so-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--so-orange);
+    color: var(--so-ink);
+    font-size: .93rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .yq-solutions .so-link span {
+    transition: transform .2s ease;
+  }
+
+  .yq-solutions .so-link:hover span {
+    transform: translateX(5px);
+  }
+
+  /* COMPARISON SECTION */
+
+  .yq-solutions .so-head {
+    max-width: 650px;
+    margin-bottom: 38px;
+  }
+
+  .yq-solutions .so-head .so-h2 {
+    margin-top: 0;
+  }
+
+  .yq-solutions .so-head > p:last-child {
+    max-width: 550px;
+    margin: 16px 0 0;
+    color: var(--so-muted);
+  }
+
+  .yq-solutions .so-table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid var(--so-line);
+  }
+
+  .yq-solutions .so-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+  }
+
+  .yq-solutions .so-table th,
+  .yq-solutions .so-table td {
+    padding: 21px 22px 21px 0;
+    border-bottom: 1px solid var(--so-line);
+    text-align: left;
+    vertical-align: top;
+    font-size: .94rem;
+    line-height: 1.65;
+  }
+
+  .yq-solutions .so-table thead th {
+    padding-top: 18px;
+    padding-bottom: 16px;
+    color: var(--so-muted);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .yq-solutions .so-table tbody th {
+    width: 19%;
+    font-family: var(--font-display, sans-serif);
+    font-size: 1.08rem;
+    font-weight: 600;
+  }
+
+  .yq-solutions .so-table td {
+    color: var(--so-muted);
+  }
+
+  .yq-solutions .so-table a {
+    color: var(--so-ink);
+    font-weight: 700;
+    text-decoration-color: var(--so-orange);
+    text-underline-offset: 4px;
+  }
+
+  /* CTA */
+
+  .yq-solutions .so-cta {
+    padding: clamp(75px, 9vw, 115px) 0;
+    background: var(--so-forest);
+    color: #fff;
+  }
+
+  .yq-solutions .so-cta .container {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 45px;
+    align-items: end;
+  }
+
+  .yq-solutions .so-cta .so-eyebrow {
+    color: #70CFC1;
+  }
+
+  .yq-solutions .so-cta h2 {
+    max-width: 680px;
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-display, sans-serif);
+    font-size: clamp(2.1rem, 4.5vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -.05em;
+    line-height: 1.08;
+  }
+
+  .yq-solutions .so-cta p {
+    max-width: 510px;
+    margin: 19px 0 0;
+    color: rgba(255,255,255,.68);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .yq-solutions .so-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 13px;
+  }
+
+  /* SCROLL REVEAL */
+
+  .js .yq-solutions [data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity .75s ease,
+      transform .75s cubic-bezier(.2,.7,.2,1);
+    transition-delay: var(--d, 0s);
+  }
+
+  .js .yq-solutions [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Image reveals independently from text. */
+  .js .yq-solutions [data-reveal="image"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .yq-solutions [data-reveal="image"] .so-frame {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.15s cubic-bezier(.22,.68,0,1);
+  }
+
+  .js .yq-solutions [data-reveal="image"] img {
+    transform: scale(1.14);
+    transition: transform 1.55s cubic-bezier(.2,.65,.25,1);
+  }
+
+  .js .yq-solutions [data-reveal="image"].is-in .so-frame {
+    clip-path: inset(0);
+  }
+
+  .js .yq-solutions [data-reveal="image"].is-in img {
+    transform: scale(1);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .yq-solutions .so-media:hover img {
+      transform: scale(1.045);
     }
-    @media (prefers-reduced-motion: reduce) {
-        .js [data-reveal], .js [data-reveal="image"] .so-frame, .js [data-reveal="image"] img { opacity: 1; transform: none; clip-path: none; transition: none; }
+  }
+
+  /* TABLET */
+
+  @media (max-width: 900px) {
+    .yq-solutions .so-jump {
+      grid-template-columns: 1fr;
     }
+
+    .yq-solutions .so-jump a,
+    .yq-solutions .so-jump a + a {
+      padding: 17px 0;
+      border-left: 0;
+    }
+
+    .yq-solutions .so-jump a + a {
+      border-top: 1px solid rgba(255,255,255,.14);
+    }
+
+    .yq-solutions .so-block,
+    .yq-solutions .so-cta .container {
+      grid-template-columns: 1fr;
+    }
+
+    .yq-solutions .so-block--reverse .so-media {
+      order: 0;
+    }
+
+    .yq-solutions .so-frame {
+      aspect-ratio: 16 / 10;
+    }
+
+    .yq-solutions .so-cta-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  /* MOBILE */
+
+  @media (max-width: 600px) {
+    .yq-solutions .so-hero {
+      padding-top: calc(var(--header-h, 70px) + 65px);
+      padding-bottom: 65px;
+    }
+
+    .yq-solutions .so-hero h1 {
+      font-size: clamp(2.65rem, 12vw, 4rem);
+    }
+
+    .yq-solutions .so-hero .lead {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .yq-solutions .so-hero-actions {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 19px;
+    }
+
+    .yq-solutions .so-section {
+      padding: 68px 0;
+    }
+
+    .yq-solutions .so-block {
+      gap: 30px;
+    }
+
+    .yq-solutions .so-frame {
+      aspect-ratio: 4 / 3;
+    }
+
+    .yq-solutions .so-text .so-h2 {
+      margin-bottom: 17px;
+    }
+
+    .yq-solutions .so-text > p {
+      font-size: .96rem;
+    }
+
+    .yq-solutions .so-table th,
+    .yq-solutions .so-table td {
+      padding-right: 16px;
+    }
+
+    .yq-solutions .so-cta .container {
+      gap: 30px;
+    }
+
+    .yq-solutions .so-cta-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  /* ACCESSIBILITY */
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .yq-solutions [data-reveal],
+    .js .yq-solutions [data-reveal="image"] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .js .yq-solutions [data-reveal="image"] .so-frame {
+      clip-path: none;
+      transition: none;
+    }
+
+    .js .yq-solutions [data-reveal="image"] img {
+      transform: none;
+      transition: none;
+    }
+
+    .yq-solutions .so-btn,
+    .yq-solutions .so-link span,
+    .yq-solutions .so-text-link span {
+      transition: none;
+    }
+  }
 </style>
 {% endblock %}
 
 {% block content %}
+<main class="yq-solutions">
 
-<section class="so-hero">
+  <!-- HERO -->
+  <section class="so-hero">
     <div class="container">
-        <p class="so-eyebrow" data-reveal>Solutions</p>
-        <h1 data-reveal style="--d:.08s">Power sized for <em>your</em> site.</h1>
-        <p class="lead" data-reveal style="--d:.16s">Whether you are keeping a family home running or a production line moving, there is a Yunqida system sized for it.</p>
 
-        <nav class="so-jump" aria-label="Solution types" data-reveal style="--d:.24s">
-            <a href="#home"><small>01</small><strong>Homes</strong><span>Backup and solar for the household</span></a>
-            <a href="#business"><small>02</small><strong>Shops, clinics &amp; schools</strong><span>Keep essentials running</span></a>
-            <a href="#industrial"><small>03</small><strong>Factories &amp; farms</strong><span>Large-scale storage</span></a>
-        </nav>
+      <p class="so-eyebrow" data-reveal>
+        Yunqida Energy Kenya · Our Solutions
+      </p>
+
+      <h1 data-reveal style="--d:.08s">
+        Energy designed around
+        <em>your needs.</em>
+      </h1>
+
+      <p class="lead" data-reveal style="--d:.16s">
+        Explore solar power and lithium battery storage solutions
+        for homes, businesses and larger energy applications.
+        From everyday backup needs to higher-capacity storage,
+        the right system starts with understanding your requirements.
+      </p>
+
+      <div class="so-hero-actions" data-reveal style="--d:.22s">
+        <a class="so-btn so-btn--sun" href="{% url 'contact' %}">
+          Discuss your requirements
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <a class="so-text-link" href="#home">
+          Explore our solutions
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <nav class="so-jump" aria-label="Explore solutions" data-reveal style="--d:.28s">
+
+        <a href="#home">
+          <small>01</small>
+          <strong>Residential</strong>
+          <span>Solar and backup for homes</span>
+        </a>
+
+        <a href="#business">
+          <small>02</small>
+          <strong>Commercial</strong>
+          <span>Energy storage for businesses and institutions</span>
+        </a>
+
+        <a href="#industrial">
+          <small>03</small>
+          <strong>Industrial</strong>
+          <span>Higher-capacity storage applications</span>
+        </a>
+
+      </nav>
     </div>
-</section>
+  </section>
 
-{# Photos: put real images at static/img/solution-home.jpg, solution-business.jpg and solution-industrial.jpg.
-   Until they exist, the old SVG is shown instead (the onerror fallback). #}
-
-<section class="so-section" id="home">
+  <!-- RESIDENTIAL SOLUTIONS -->
+  <section class="so-section" id="home">
     <div class="container so-block">
-        <figure class="so-media" data-reveal="image">
-            <div class="so-frame"><img src="{% static 'img/solution-home.jpg' %}" onerror="this.onerror=null;this.src='{% static 'img/solution-home.svg' %}'" alt="Home with solar panels and battery storage" loading="lazy"></div>
-        </figure>
-        <div class="so-text">
-            <span class="so-num" data-reveal>01 &mdash; Homes</span>
-            <h2 class="so-h2" data-reveal style="--d:.06s">Keep the house running through every outage.</h2>
-            <p data-reveal style="--d:.12s">Keep the fridge cold, the lights on and the children’s homework going. Pair a battery with rooftop solar and use your own power after sunset.</p>
-            <ul class="so-list" data-reveal style="--d:.18s">
-                <li>All-in-one units for a tidy install</li>
-                <li>Quiet, indoor-safe lithium batteries</li>
-                <li>Expandable as your family’s needs grow</li>
-            </ul>
-            <a class="so-link" href="{% url 'products' %}?category=residential" data-reveal style="--d:.24s">Home products <span aria-hidden="true">&rarr;</span></a>
-        </div>
-    </div>
-</section>
 
-<section class="so-section so-section--mist" id="business">
+      <figure class="so-media" data-reveal="image">
+        <div class="so-frame">
+          <img
+            src="{% static 'img/solution-home.jpg' %}"
+            onerror="this.onerror=null;this.src='{% static 'img/solution-home.svg' %}'"
+            alt="Residential solar power and battery energy storage solution"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      </figure>
+
+      <div class="so-text">
+
+        <span class="so-num" data-reveal>01 — RESIDENTIAL</span>
+
+        <h2 class="so-h2" data-reveal style="--d:.06s">
+          More control over the power your home uses.
+        </h2>
+
+        <p data-reveal style="--d:.12s">
+          A home energy system can combine solar panels, a hybrid
+          inverter and battery storage to help meet household
+          electricity needs. The right configuration depends on
+          your appliances, daily consumption and backup expectations.
+        </p>
+
+        <ul class="so-list" data-reveal style="--d:.18s">
+          <li>Solar power system options for residential properties</li>
+          <li>LiFePO4 lithium battery storage</li>
+          <li>Hybrid inverter configurations</li>
+          <li>Battery capacity options for different household loads</li>
+        </ul>
+
+        <a
+          class="so-link"
+          href="{% url 'products' %}?category=residential"
+          data-reveal
+          style="--d:.24s"
+        >
+          Explore residential products
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMERCIAL SOLUTIONS -->
+  <section class="so-section so-section--mist" id="business">
     <div class="container so-block so-block--reverse">
-        <figure class="so-media" data-reveal="image">
-            <div class="so-frame"><img src="{% static 'img/solution-business.jpg' %}" onerror="this.onerror=null;this.src='{% static 'img/solution-business.svg' %}'" alt="Shop front with solar panels on the roof" loading="lazy"></div>
-        </figure>
-        <div class="so-text">
-            <span class="so-num" data-reveal>02 &mdash; Shops, clinics, schools &amp; offices</span>
-            <h2 class="so-h2" data-reveal style="--d:.06s">Stay open when the grid is not.</h2>
-            <p data-reveal style="--d:.12s">Power cuts cost sales, spoil vaccines and stop lessons. Commercial storage keeps essentials on and reduces what you buy from the grid at peak rates.</p>
-            <ul class="so-list" data-reveal style="--d:.18s">
-                <li>Backup for tills, cold rooms, pumps and IT</li>
-                <li>Cabinet systems from 30 kWh</li>
-                <li>Fits alongside an existing solar array</li>
-            </ul>
-            <a class="so-link" href="{% url 'products' %}?category=commercial" data-reveal style="--d:.24s">Commercial products <span aria-hidden="true">&rarr;</span></a>
-        </div>
-    </div>
-</section>
 
-<section class="so-section" id="industrial">
+      <figure class="so-media" data-reveal="image">
+        <div class="so-frame">
+          <img
+            src="{% static 'img/solution-business.jpg' %}"
+            onerror="this.onerror=null;this.src='{% static 'img/solution-business.svg' %}'"
+            alt="Commercial property with solar power and battery storage"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      </figure>
+
+      <div class="so-text">
+
+        <span class="so-num" data-reveal>02 — COMMERCIAL</span>
+
+        <h2 class="so-h2" data-reveal style="--d:.06s">
+          Energy storage for businesses that need dependable power.
+        </h2>
+
+        <p data-reveal style="--d:.12s">
+          Shops, clinics, schools and offices rely on electricity
+          for their daily operations. Solar and battery storage
+          solutions can be configured around essential equipment,
+          operating hours and the level of backup required.
+        </p>
+
+        <ul class="so-list" data-reveal style="--d:.18s">
+          <li>Backup power options for essential business equipment</li>
+          <li>Energy storage for offices and commercial premises</li>
+          <li>Battery cabinet and higher-capacity system options</li>
+          <li>Configurations for new or existing solar systems</li>
+        </ul>
+
+        <a
+          class="so-link"
+          href="{% url 'products' %}?category=commercial"
+          data-reveal
+          style="--d:.24s"
+        >
+          Explore commercial products
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INDUSTRIAL SOLUTIONS -->
+  <section class="so-section" id="industrial">
     <div class="container so-block">
-        <figure class="so-media" data-reveal="image">
-            <div class="so-frame"><img src="{% static 'img/solution-industrial.jpg' %}" onerror="this.onerror=null;this.src='{% static 'img/solution-industrial.svg' %}'" alt="Factory with a large solar array and energy storage cabinets" loading="lazy"></div>
-        </figure>
-        <div class="so-text">
-            <span class="so-num" data-reveal>03 &mdash; Factories, farms &amp; large sites</span>
-            <h2 class="so-h2" data-reveal style="--d:.06s">Cut diesel and smooth out peak demand.</h2>
-            <p data-reveal style="--d:.12s">Replace diesel generators for part of your load, smooth out peak demand and protect sensitive machinery from voltage dips. We can scale cabinet systems to site needs.</p>
-            <ul class="so-list" data-reveal style="--d:.18s">
-                <li>Scalable cabinet and rack systems</li>
-                <li>Peak shaving and solar self-consumption</li>
-                <li>Project support from design to commissioning</li>
-            </ul>
-            <a class="so-link" href="{% url 'contact' %}" data-reveal style="--d:.24s">Discuss a project <span aria-hidden="true">&rarr;</span></a>
-        </div>
-    </div>
-</section>
 
-<section class="so-section so-section--mist">
+      <figure class="so-media" data-reveal="image">
+        <div class="so-frame">
+          <img
+            src="{% static 'img/solution-industrial.jpg' %}"
+            onerror="this.onerror=null;this.src='{% static 'img/solution-industrial.svg' %}'"
+            alt="Industrial energy storage and solar power system for a large facility"
+            loading="lazy"
+            decoding="async"
+          >
+        </div>
+      </figure>
+
+      <div class="so-text">
+
+        <span class="so-num" data-reveal>03 — INDUSTRIAL</span>
+
+        <h2 class="so-h2" data-reveal style="--d:.06s">
+          Higher-capacity storage for demanding applications.
+        </h2>
+
+        <p data-reveal style="--d:.12s">
+          Factories, farms and larger facilities can have substantial
+          and varying electricity requirements. Energy storage
+          configurations can be explored around operating loads,
+          backup priorities and the role of solar generation.
+        </p>
+
+        <ul class="so-list" data-reveal style="--d:.18s">
+          <li>Scalable battery cabinet and rack system options</li>
+          <li>Energy storage for larger electrical loads</li>
+          <li>Solar self-consumption and peak-demand applications</li>
+          <li>Product selection discussions based on site requirements</li>
+        </ul>
+
+        <a
+          class="so-link"
+          href="{% url 'contact' %}"
+          data-reveal
+          style="--d:.24s"
+        >
+          Discuss an industrial requirement
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION COMPARISON -->
+  <section class="so-section so-section--mist">
     <div class="container">
-        <div class="so-head">
-            <p class="so-eyebrow" data-reveal>At a glance</p>
-            <h2 class="so-h2" data-reveal style="--d:.06s">Which one is right for you?</h2>
-        </div>
-        <div class="so-table-wrap" data-reveal style="--d:.12s">
-            <table class="so-table">
-                <thead><tr><th></th><th>Typical sites</th><th>What you get</th><th>Start here</th></tr></thead>
-                <tbody>
-                    <tr><th>Homes</th><td>Houses and apartments</td><td>All-in-one battery units with solar and backup</td><td><a href="{% url 'products' %}?category=residential">Home products</a></td></tr>
-                    <tr><th>Business</th><td>Shops, clinics, schools, offices</td><td>Cabinet systems from 30 kWh for essential loads</td><td><a href="{% url 'products' %}?category=commercial">Commercial products</a></td></tr>
-                    <tr><th>Industrial</th><td>Factories, farms, large sites</td><td>Scalable cabinet and rack systems with peak shaving</td><td><a href="{% url 'contact' %}">Discuss a project</a></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
 
-<section class="so-cta">
+      <div class="so-head">
+        <p class="so-eyebrow" data-reveal>Choosing a solution</p>
+
+        <h2 class="so-h2" data-reveal style="--d:.06s">
+          Find the right starting point.
+        </h2>
+
+        <p data-reveal style="--d:.12s">
+          Different properties have different energy requirements.
+          Use this overview to identify the type of solution worth
+          exploring for your application.
+        </p>
+      </div>
+
+      <div class="so-table-wrap" data-reveal style="--d:.16s">
+        <table class="so-table">
+
+          <thead>
+            <tr>
+              <th scope="col">Application</th>
+              <th scope="col">Typical sites</th>
+              <th scope="col">Solutions to explore</th>
+              <th scope="col">Next step</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <th scope="row">Residential</th>
+              <td>Houses and apartments</td>
+              <td>Home solar, hybrid inverters and lithium battery backup</td>
+              <td>
+                <a href="{% url 'products' %}?category=residential">
+                  Home products
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">Commercial</th>
+              <td>Shops, clinics, schools and offices</td>
+              <td>Commercial battery storage and backup configurations</td>
+              <td>
+                <a href="{% url 'products' %}?category=commercial">
+                  Commercial products
+                </a>
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">Industrial</th>
+              <td>Factories, farms and larger facilities</td>
+              <td>Higher-capacity cabinet and rack storage systems</td>
+              <td>
+                <a href="{% url 'contact' %}">
+                  Discuss a project
+                </a>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="so-cta">
     <div class="container">
-        <div>
-            <h2 data-reveal>Not sure what size you need?</h2>
-            <p data-reveal style="--d:.08s">Tell us what you want to keep running and we will size the system to your real load.</p>
-        </div>
-        <div class="so-cta-actions" data-reveal style="--d:.16s">
-            <a class="so-btn so-btn--sun" href="{% url 'contact' %}">Contact us</a>
-            <a class="so-btn so-btn--line" href="{% url 'products' %}">Browse products</a>
-        </div>
-    </div>
-</section>
 
+      <div>
+        <p class="so-eyebrow" data-reveal>
+          Start with your energy requirements
+        </p>
+
+        <h2 data-reveal style="--d:.06s">
+          Not sure which system is right for your site?
+        </h2>
+
+        <p data-reveal style="--d:.12s">
+          Tell us what you need to power, how much backup you require
+          and the type of property you have. Our Kenyan team can help
+          you explore suitable energy storage products and configurations.
+        </p>
+      </div>
+
+      <div class="so-cta-actions" data-reveal style="--d:.18s">
+        <a class="so-btn so-btn--sun" href="{% url 'contact' %}">
+          Talk to our team
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <a class="so-btn so-btn--line" href="{% url 'products' %}">
+          Browse products
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
 {% endblock %}
 
 {% block extra_js %}
 <script>
 (function () {
-    var items = document.querySelectorAll('[data-reveal]');
-    if (!('IntersectionObserver' in window)) {
-        items.forEach(function (el) { el.classList.add('is-in'); });
-        return;
+  const page = document.querySelector('.yq-solutions');
+
+  if (!page) return;
+
+  const items = page.querySelectorAll('[data-reveal]');
+
+  const reducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  if (
+    reducedMotion ||
+    !('IntersectionObserver' in window)
+  ) {
+    items.forEach(function (item) {
+      item.classList.add('is-in');
+    });
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    function (entries, currentObserver) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add('is-in');
+        currentObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: '0px 0px -45px 0px'
     }
-    var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-    items.forEach(function (el) { io.observe(el); });
+  );
+
+  items.forEach(function (item) {
+    observer.observe(item);
+  });
 })();
 </script>
 {% endblock %}

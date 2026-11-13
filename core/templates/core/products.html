@@ -1,18 +1,630 @@
+
 {% extends 'core/base.html' %}
-{% block title %}Products | Yunqida Energy Kenya{% endblock %}
+
+{% block title %}Solar Batteries, Inverters & Energy Products in Kenya | Yunqida{% endblock %}
+
+{% block meta_description %}Explore Yunqida Energy Kenya's range of lithium batteries, energy storage systems, hybrid inverters and solar power products. Compare specifications and enquire about the right solution for your needs.{% endblock %}
+
+{% block meta_keywords %}solar products Kenya, lithium batteries Kenya, LiFePO4 batteries Kenya, solar inverters Kenya, hybrid inverters, energy storage systems Kenya, solar battery storage, Yunqida Energy products{% endblock %}
+
+{% block og_title %}Solar Batteries & Energy Products in Kenya | Yunqida{% endblock %}
+
+{% block og_description %}Explore lithium batteries, hybrid inverters and energy storage products from Yunqida Energy Kenya. View product specifications and enquire.{% endblock %}
+
+{% block extra_head %}
+<script>
+  document.documentElement.classList.add('js');
+</script>
+
+<style>
+/* =========================================================
+   YUNQIDA PRODUCTS PAGE
+   Uses the global theme variables from base.html.
+========================================================= */
+
+.yq-products {
+    background: var(--c-mist);
+    color: var(--c-ink);
+    overflow: hidden;
+}
+
+.yq-products * {
+    box-sizing: border-box;
+}
+
+.yq-products .products-container {
+    width: min(1200px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+/* INTRO */
+
+.yq-products .products-intro {
+    padding: clamp(76px, 10vw, 130px) 0 54px;
+    background: var(--c-forest);
+    color: #fff;
+}
+
+.yq-products .intro-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    color: var(--c-sun);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+
+.yq-products .intro-label::before {
+    content: "";
+    width: 30px;
+    height: 1px;
+    background: var(--c-sun);
+}
+
+.yq-products .intro-heading {
+    max-width: 760px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(42px, 6.5vw, 76px);
+    font-weight: 700;
+    line-height: .99;
+    letter-spacing: -.055em;
+}
+
+.yq-products .intro-heading span {
+    color: var(--c-sun);
+}
+
+.yq-products .intro-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 34px;
+}
+
+.yq-products .intro-description {
+    max-width: 490px;
+    margin: 0;
+    color: rgba(255,255,255,.7);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.yq-products .intro-note {
+    flex-shrink: 0;
+    color: rgba(255,255,255,.5);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* CATEGORY FILTERS */
+
+.yq-products .catalogue {
+    padding: 34px 0 100px;
+}
+
+.yq-products .catalogue-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.yq-products .catalogue-heading {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -.025em;
+}
+
+.yq-products .catalogue-caption {
+    margin: 5px 0 0;
+    color: var(--c-muted);
+    font-size: 12px;
+}
+
+.yq-products .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 26px 0 42px;
+}
+
+.yq-products .filter-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 17px;
+    border: 1px solid var(--c-line);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--c-muted);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s ease, background .2s ease,
+                border-color .2s ease;
+}
+
+.yq-products .filter-link:hover {
+    color: var(--c-ink);
+    border-color: var(--c-ink);
+}
+
+.yq-products .filter-link.active {
+    color: #fff;
+    background: var(--c-forest);
+    border-color: var(--c-forest);
+}
+
+/* PRODUCT GRID */
+
+.yq-products .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 34px;
+    row-gap: 64px;
+}
+
+/* PRODUCT CARD */
+
+.yq-products .product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 0 0 24px;
+    border-bottom: 1px solid var(--c-line);
+    background: transparent;
+    transition: border-color .25s ease;
+}
+
+.yq-products .product-card:hover {
+    border-color: var(--c-sun);
+}
+
+.yq-products .product-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 25px;
+}
+
+.yq-products .product-card .tag {
+    color: var(--c-emerald);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.yq-products .product-number {
+    color: #9AA1A8;
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.yq-products .product-card h3 {
+    margin: 12px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(19px, 2vw, 25px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.035em;
+    overflow-wrap: anywhere;
+}
+
+.yq-products .product-card h3 a {
+    color: var(--c-ink);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.yq-products .product-card h3 a:hover {
+    color: var(--c-emerald);
+}
+
+.yq-products .product-tagline {
+    min-height: 42px;
+    margin: 9px 0 0;
+    color: var(--c-muted);
+    font-size: 13px;
+    line-height: 1.65;
+}
+
+/* OPEN PRODUCT IMAGE
+   No background, border, frame or image container.
+   Transparent PNG/WebP backgrounds remain transparent.
+*/
+
+.yq-products .product-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: clamp(190px, 23vw, 270px);
+    margin: 18px 0 22px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.yq-products .product-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    background: transparent;
+    mix-blend-mode: normal;
+    transition: transform .55s cubic-bezier(.2,.7,.2,1);
+}
+
+.yq-products .product-card:hover .product-media img {
+    transform: scale(1.045);
+}
+
+/* SPECIFICATIONS */
+
+.yq-products .specification-heading {
+    margin: 0 0 12px;
+    color: var(--c-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.yq-products .specs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.yq-products .specs div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    padding: 11px 0;
+    border-top: 1px solid var(--c-line);
+}
+
+.yq-products .specs dt {
+    color: var(--c-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.yq-products .specs dd {
+    margin: 0;
+    color: var(--c-ink);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+/* PRODUCT LINK */
+
+.yq-products .product-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    align-self: flex-start;
+    width: 100%;
+    margin-top: auto;
+    padding: 20px 0 0;
+    color: var(--c-ink);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.yq-products .product-more span {
+    display: inline-block;
+    color: var(--c-sun);
+    font-size: 19px;
+    line-height: 1;
+    transition: transform .2s ease;
+}
+
+.yq-products .product-more:hover span {
+    transform: translateX(5px);
+}
+
+/* EMPTY STATE */
+
+.yq-products .empty {
+    padding: 60px 20px;
+    border-top: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
+    color: var(--c-muted);
+    font-size: 14px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.yq-products .empty a {
+    color: var(--c-ink);
+    font-weight: 700;
+    text-decoration-color: var(--c-sun);
+    text-underline-offset: 4px;
+}
+
+/* SCROLL REVEAL */
+
+.js .yq-products [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.2,.7,.2,1);
+}
+
+.js .yq-products [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.js .yq-products [data-reveal="product-image"] {
+    opacity: 1;
+    transform: none;
+}
+
+.js .yq-products [data-reveal="product-image"] img {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
+    transition:
+        clip-path .85s cubic-bezier(.2,.7,.2,1),
+        transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.js .yq-products [data-reveal="product-image"].is-in img {
+    clip-path: inset(0);
+    transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js .yq-products [data-reveal],
+    .js .yq-products [data-reveal="product-image"] img {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        transition: none;
+    }
+
+    .yq-products .product-media img,
+    .yq-products .product-more span {
+        transition: none;
+    }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+    .yq-products .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 28px;
+        row-gap: 52px;
+    }
+
+    .yq-products .product-media {
+        height: 240px;
+    }
+}
+
+@media (max-width: 600px) {
+    .yq-products .products-container {
+        width: min(100% - 36px, 480px);
+    }
+
+    .yq-products .products-intro {
+        padding: 76px 0 42px;
+    }
+
+    .yq-products .intro-heading {
+        font-size: clamp(42px, 12vw, 58px);
+    }
+
+    .yq-products .intro-bottom {
+        display: block;
+        margin-top: 24px;
+    }
+
+    .yq-products .intro-description {
+        font-size: 14px;
+    }
+
+    .yq-products .intro-note {
+        display: block;
+        margin-top: 22px;
+    }
+
+    .yq-products .catalogue {
+        padding: 28px 0 70px;
+    }
+
+    .yq-products .catalogue-top {
+        align-items: flex-start;
+    }
+
+    .yq-products .catalogue-heading {
+        font-size: 19px;
+    }
+
+    .yq-products .filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        margin: 22px 0 32px;
+        scrollbar-width: thin;
+    }
+
+    .yq-products .filter-link {
+        flex-shrink: 0;
+        min-height: 36px;
+        padding-inline: 14px;
+        font-size: 11px;
+    }
+
+    .yq-products .product-grid {
+        grid-template-columns: 1fr;
+        row-gap: 44px;
+    }
+
+    .yq-products .product-card {
+        padding-bottom: 22px;
+    }
+
+    .yq-products .product-card h3 {
+        font-size: 23px;
+    }
+
+    .yq-products .product-tagline {
+        min-height: 0;
+        font-size: 13px;
+    }
+
+    .yq-products .product-media {
+        height: 260px;
+        margin: 12px 0 18px;
+    }
+
+    .yq-products .specs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .yq-products .specs dd {
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
-<section class="page-hero"><div class="wrap"><h1>Products</h1><p class="lead">Energy storage, lithium batteries and solar systems.</p></div></section>
-<section class="section"><div class="wrap">
-  <div class="filters" role="group" aria-label="Filter products by category">
-    <a href="{% url 'products' %}" class="chip {% if not active_category %}active{% endif %}">All</a>
-    {% for value, label in categories %}
-      <a href="?category={{ value }}" class="chip {% if active_category == value %}active{% endif %}">{{ label }}</a>
-    {% endfor %}
-  </div>
-  {% if products %}
-    <div class="product-grid">{% for p in products %}{% include 'core/_product_card.html' %}{% endfor %}</div>
-  {% else %}
-    <p class="empty">No products in this category yet. <a href="{% url 'contact' %}">Ask us what is available.</a></p>
-  {% endif %}
-</div></section>
+<main class="yq-products">
+
+    <!-- INTRO -->
+    <section class="products-intro">
+        <div class="products-container">
+            <div class="intro-label" data-reveal>
+                Yunqida Energy Kenya · Product Catalogue
+            </div>
+
+            <h1 class="intro-heading" data-reveal>
+                Energy products.<br>
+                <span>Built around your needs.</span>
+            </h1>
+
+            <div class="intro-bottom">
+                <p class="intro-description" data-reveal>
+                    Explore our range of energy storage and solar power products.
+                    Compare key specifications and find equipment suited to
+                    your home, business or project.
+                </p>
+
+                <span class="intro-note" data-reveal>
+                    Explore the collection
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCT CATALOGUE -->
+    <section class="catalogue">
+        <div class="products-container">
+
+            <div class="catalogue-top" data-reveal>
+                <div>
+                    <h2 class="catalogue-heading">Our products</h2>
+                    <p class="catalogue-caption">
+                        Product details and specifications
+                    </p>
+                </div>
+            </div>
+
+            <!-- CATEGORY FILTERS -->
+            <nav class="filters"
+                 aria-label="Filter products by category"
+                 data-reveal>
+
+                <a href="{% url 'products' %}"
+                   class="filter-link {% if not active_category %}active{% endif %}"
+                   {% if not active_category %}aria-current="page"{% endif %}>
+                    All products
+                </a>
+
+                {% for value, label in categories %}
+                    <a href="?category={{ value|urlencode }}"
+                       class="filter-link {% if active_category == value %}active{% endif %}"
+                       {% if active_category == value %}aria-current="page"{% endif %}>
+                        {{ label }}
+                    </a>
+                {% endfor %}
+            </nav>
+
+            {% if products %}
+                <div class="product-grid">
+                    {% for p in products %}
+                        {% include 'core/_product_card.html' %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty" data-reveal>
+                    <p>No products are currently listed in this category.</p>
+                    <a href="{% url 'contact' %}">
+                        Contact us about product availability
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const page = document.querySelector('.yq-products');
+    if (!page) return;
+
+    const items = page.querySelectorAll('[data-reveal]');
+
+    if (!('IntersectionObserver' in window)) {
+        items.forEach(item => item.classList.add('is-in'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, observerInstance) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                observerInstance.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -35px 0px'
+    });
+
+    items.forEach(item => observer.observe(item));
+});
+</script>
 {% endblock %}

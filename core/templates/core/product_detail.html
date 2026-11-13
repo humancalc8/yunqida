@@ -1,32 +1,846 @@
-{% extends 'core/base.html' %}{% load static %}
+
+{% extends 'core/base.html' %}
+{% load static %}
+
 {% block title %}{{ product.name }} | Yunqida Energy Kenya{% endblock %}
-{% block description %}{{ product.tagline }}{% endblock %}
+
+{% block meta_description %}{{ product.tagline|default:product.name }}. Explore product details and specifications from Yunqida Energy Kenya. Contact our team for availability and a quotation.{% endblock %}
+
+{% block meta_keywords %}{{ product.name }}, {{ product.get_category_display }}, solar products Kenya, energy storage Kenya, Yunqida Energy Kenya{% endblock %}
+
+{% block og_title %}{{ product.name }} | Yunqida Energy Kenya{% endblock %}
+
+{% block og_description %}{{ product.tagline|default:product.name }}. View product information and request a quotation from Yunqida Energy Kenya.{% endblock %}
+
+{% block extra_head %}
+<script>
+    document.documentElement.classList.add('js');
+</script>
+
+<style>
+/* =========================================================
+   YUNQIDA PRODUCT DETAIL
+========================================================= */
+
+.yq-product-detail {
+    --detail-space: clamp(30px, 5vw, 68px);
+    background: var(--c-mist);
+    color: var(--c-ink);
+    overflow: hidden;
+}
+
+.yq-product-detail * {
+    box-sizing: border-box;
+}
+
+.yq-product-detail .detail-container {
+    width: min(1200px, calc(100% - 40px));
+    margin-inline: auto;
+}
+
+/* BREADCRUMB */
+
+.yq-product-detail .detail-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 26px 0;
+    color: var(--c-muted);
+    font-size: 11px;
+}
+
+.yq-product-detail .detail-breadcrumbs a {
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.yq-product-detail .detail-breadcrumbs a:hover {
+    color: var(--c-emerald);
+}
+
+.yq-product-detail .breadcrumb-separator {
+    color: #A8AFB5;
+}
+
+.yq-product-detail .breadcrumb-current {
+    color: var(--c-ink);
+    font-weight: 600;
+}
+
+/* PRODUCT INTRO */
+
+.yq-product-detail .detail-main {
+    padding-bottom: 90px;
+}
+
+.yq-product-detail .detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+    gap: clamp(38px, 7vw, 100px);
+    align-items: start;
+}
+
+/* OPEN PRODUCT IMAGE */
+
+.yq-product-detail .detail-image-column {
+    min-width: 0;
+    position: sticky;
+    top: calc(var(--header-h, 80px) + 24px);
+}
+
+.yq-product-detail .detail-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 440px;
+    margin: 0;
+    padding: 20px;
+    background: transparent;
+}
+
+.yq-product-detail .detail-image img {
+    display: block;
+    width: 100%;
+    max-height: 570px;
+    object-fit: contain;
+    object-position: center;
+    background: transparent;
+    mix-blend-mode: normal;
+}
+
+/* SMALL IMAGE CAPTION */
+
+.yq-product-detail .image-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 18px 0;
+    border-top: 1px solid var(--c-line);
+    color: var(--c-muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+/* PRODUCT INFORMATION */
+
+.yq-product-detail .detail-information {
+    min-width: 0;
+    padding-top: 22px;
+}
+
+.yq-product-detail .detail-category {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--c-emerald);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .detail-category::before {
+    content: "";
+    width: 25px;
+    height: 1px;
+    background: var(--c-emerald);
+}
+
+.yq-product-detail .detail-title {
+    margin: 22px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -.055em;
+    overflow-wrap: anywhere;
+}
+
+.yq-product-detail .detail-tagline {
+    max-width: 540px;
+    margin: 22px 0 0;
+    color: var(--c-muted);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+.yq-product-detail .detail-description {
+    margin-top: 26px;
+    color: var(--c-ink);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.yq-product-detail .detail-description p {
+    margin: 0 0 15px;
+}
+
+.yq-product-detail .detail-description ul,
+.yq-product-detail .detail-description ol {
+    padding-left: 22px;
+    margin: 14px 0;
+}
+
+.yq-product-detail .detail-description li {
+    padding-left: 4px;
+    margin-bottom: 8px;
+}
+
+/* SPECIFICATIONS */
+
+.yq-product-detail .specification-section {
+    margin-top: 38px;
+}
+
+.yq-product-detail .specification-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 15px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.025em;
+}
+
+.yq-product-detail .specification-caption {
+    color: var(--c-muted);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .spec-table {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--c-line);
+}
+
+.yq-product-detail .spec-table div {
+    display: grid;
+    grid-template-columns: minmax(110px, .8fr) minmax(0, 1.2fr);
+    gap: 20px;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.yq-product-detail .spec-table dt {
+    color: var(--c-muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.yq-product-detail .spec-table dd {
+    margin: 0;
+    color: var(--c-ink);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* QUOTATION NOTE */
+
+.yq-product-detail .detail-note {
+    margin: 20px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--c-sun);
+    color: var(--c-muted);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+/* ACTIONS */
+
+.yq-product-detail .detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.yq-product-detail .detail-quote {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    min-height: 52px;
+    padding: 0 22px;
+    background: var(--c-sun);
+    color: var(--c-forest);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.yq-product-detail .detail-quote:hover {
+    background: var(--c-sun-hover);
+    transform: translateY(-2px);
+}
+
+.yq-product-detail .detail-quote span {
+    font-size: 18px;
+}
+
+.yq-product-detail .detail-back {
+    color: var(--c-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.yq-product-detail .detail-back:hover {
+    color: var(--c-ink);
+}
+
+/* RELATED PRODUCTS */
+
+.yq-product-detail .related-section {
+    padding: 76px 0 100px;
+    background: #fff;
+}
+
+.yq-product-detail .related-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 38px;
+}
+
+.yq-product-detail .related-eyebrow {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--c-emerald);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .related-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -.045em;
+}
+
+.yq-product-detail .related-link {
+    color: var(--c-ink);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration-color: var(--c-sun);
+    text-underline-offset: 5px;
+}
+
+/* Related product cards */
+
+.yq-product-detail .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.yq-product-detail .related-grid .product-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--c-line);
+}
+
+.yq-product-detail .related-grid .product-card .tag {
+    color: var(--c-emerald);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .related-grid .product-card h3 {
+    margin: 12px 0 0;
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1.25;
+}
+
+.yq-product-detail .related-grid .product-card h3 a {
+    color: var(--c-ink);
+    text-decoration: none;
+}
+
+.yq-product-detail .related-grid .product-tagline {
+    color: var(--c-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.yq-product-detail .related-grid .product-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 210px;
+    margin: 14px 0;
+    background: transparent;
+}
+
+.yq-product-detail .related-grid .product-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: transparent;
+    mix-blend-mode: normal;
+    transition: transform .4s ease;
+}
+
+.yq-product-detail .related-grid .product-card:hover .product-media img {
+    transform: scale(1.04);
+}
+
+.yq-product-detail .related-grid .specification-heading {
+    margin: 5px 0 10px;
+    color: var(--c-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .related-grid .specs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 14px;
+    margin: 0;
+}
+
+.yq-product-detail .related-grid .specs div {
+    padding: 10px 0;
+    border-top: 1px solid var(--c-line);
+}
+
+.yq-product-detail .related-grid .specs dt {
+    color: var(--c-muted);
+    font-size: 10px;
+}
+
+.yq-product-detail .related-grid .specs dd {
+    margin: 4px 0 0;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.yq-product-detail .related-grid .product-more {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 18px;
+    color: var(--c-ink);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.yq-product-detail .related-grid .product-more span:last-child {
+    color: var(--c-sun);
+    font-size: 17px;
+}
+
+/* SCROLL REVEAL */
+
+.js .yq-product-detail [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.2,.7,.2,1);
+}
+
+.js .yq-product-detail [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.js .yq-product-detail [data-reveal="main-image"] {
+    opacity: 1;
+    transform: none;
+}
+
+.js .yq-product-detail [data-reveal="main-image"] img {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.08);
+    transition:
+        clip-path .9s cubic-bezier(.2,.7,.2,1),
+        transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.js .yq-product-detail [data-reveal="main-image"].is-in img {
+    clip-path: inset(0);
+    transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js .yq-product-detail [data-reveal],
+    .js .yq-product-detail [data-reveal="main-image"] img {
+        opacity: 1;
+        transform: none;
+        clip-path: none;
+        transition: none;
+    }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+    .yq-product-detail .detail-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 35px;
+    }
+
+    .yq-product-detail .detail-image {
+        min-height: 340px;
+    }
+
+    .yq-product-detail .detail-title {
+        font-size: 42px;
+    }
+
+    .yq-product-detail .related-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .yq-product-detail .detail-container {
+        width: min(100% - 36px, 480px);
+    }
+
+    .yq-product-detail .detail-main {
+        padding-bottom: 65px;
+    }
+
+    .yq-product-detail .detail-breadcrumbs {
+        padding: 20px 0;
+    }
+
+    .yq-product-detail .detail-layout {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .yq-product-detail .detail-image-column {
+        position: static;
+    }
+
+    .yq-product-detail .detail-image {
+        min-height: 290px;
+        max-height: 360px;
+        padding: 8px;
+    }
+
+    .yq-product-detail .detail-image img {
+        max-height: 340px;
+    }
+
+    .yq-product-detail .image-caption {
+        padding: 13px 0;
+    }
+
+    .yq-product-detail .detail-information {
+        padding-top: 20px;
+    }
+
+    .yq-product-detail .detail-title {
+        margin-top: 16px;
+        font-size: clamp(37px, 10vw, 48px);
+    }
+
+    .yq-product-detail .detail-tagline {
+        margin-top: 16px;
+        font-size: 15px;
+    }
+
+    .yq-product-detail .detail-description {
+        margin-top: 20px;
+        font-size: 13px;
+    }
+
+    .yq-product-detail .specification-section {
+        margin-top: 30px;
+    }
+
+    .yq-product-detail .spec-table div {
+        grid-template-columns: minmax(100px, .8fr) minmax(0, 1.2fr);
+        gap: 12px;
+        padding: 15px 0;
+    }
+
+    .yq-product-detail .spec-table dt {
+        font-size: 12px;
+    }
+
+    .yq-product-detail .spec-table dd {
+        font-size: 13px;
+    }
+
+    .yq-product-detail .detail-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .yq-product-detail .detail-quote {
+        width: 100%;
+    }
+
+    .yq-product-detail .detail-back {
+        padding: 8px 0;
+    }
+
+    .yq-product-detail .related-section {
+        padding: 60px 0 70px;
+    }
+
+    .yq-product-detail .related-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 28px;
+    }
+
+    .yq-product-detail .related-grid {
+        grid-template-columns: 1fr;
+        gap: 38px;
+    }
+
+    .yq-product-detail .related-grid .product-media {
+        height: 250px;
+    }
+}
+</style>
+{% endblock %}
+
+
 {% block content %}
-<section class="section product-detail"><div class="wrap">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="{% url 'products' %}">Products</a> / <span>{{ product.name }}</span></nav>
-  <div class="split">
-    <figure class="split-media product-hero-img">
-      {% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<img src="{% static product.fallback_image %}" alt="{{ product.name }}">{% endif %}
-    </figure>
-    <div class="split-text">
-      <span class="tag">{{ product.get_category_display }}</span>
-      <h1>{{ product.name }}</h1>
-      <p class="lead dark">{{ product.tagline }}</p>
-      {{ product.description|linebreaks }}
-      <dl class="spec-table">
-        {% if product.capacity %}<div><dt>Capacity</dt><dd>{{ product.capacity }}</dd></div>{% endif %}
-        {% if product.power %}<div><dt>Power</dt><dd>{{ product.power }}</dd></div>{% endif %}
-        {% if product.warranty %}<div><dt>Warranty</dt><dd>{{ product.warranty }}</dd></div>{% endif %}
-      </dl>
-      <p class="note">Specifications are indicative. We confirm exact models and warranty terms in your quotation.</p>
-      <a class="btn btn-accent" href="{% url 'contact' %}?product={{ product.slug }}">Request a quote</a>
-    </div>
-  </div>
-</div></section>
-{% if related %}
-<section class="section section-mist"><div class="wrap">
-  <div class="section-head"><h2>Related products</h2></div>
-  <div class="product-grid">{% for p in related %}{% include 'core/_product_card.html' %}{% endfor %}</div>
-</div></section>
-{% endif %}
+<main class="yq-product-detail">
+
+    <section class="detail-main">
+        <div class="detail-container">
+
+            <!-- BREADCRUMB -->
+            <nav class="detail-breadcrumbs"
+                 aria-label="Breadcrumb"
+                 data-reveal>
+
+                <a href="{% url 'products' %}">Products</a>
+
+                <span class="breadcrumb-separator" aria-hidden="true">/</span>
+
+                <span class="breadcrumb-current">
+                    {{ product.name }}
+                </span>
+
+            </nav>
+
+            <!-- PRODUCT CONTENT -->
+            <div class="detail-layout">
+
+                <!-- PRODUCT IMAGE -->
+                <div class="detail-image-column"
+                     data-reveal="main-image">
+
+                    <figure class="detail-image">
+
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}"
+                                 alt="{{ product.name }}"
+                                 fetchpriority="high"
+                                 decoding="async">
+                        {% elif product.fallback_image %}
+                            <img src="{% static product.fallback_image %}"
+                                 alt="{{ product.name }}"
+                                 fetchpriority="high"
+                                 decoding="async">
+                        {% endif %}
+
+                    </figure>
+
+                    <div class="image-caption">
+                        <span>{{ product.get_category_display }}</span>
+                        <span>Yunqida Energy Kenya</span>
+                    </div>
+
+                </div>
+
+                <!-- PRODUCT INFORMATION -->
+                <div class="detail-information">
+
+                    <div class="detail-category" data-reveal>
+                        {{ product.get_category_display }}
+                    </div>
+
+                    <h1 class="detail-title" data-reveal>
+                        {{ product.name }}
+                    </h1>
+
+                    {% if product.tagline %}
+                        <p class="detail-tagline" data-reveal>
+                            {{ product.tagline }}
+                        </p>
+                    {% endif %}
+
+                    {% if product.description %}
+                        <div class="detail-description" data-reveal>
+                            {{ product.description|linebreaks }}
+                        </div>
+                    {% endif %}
+
+                    <!-- TECHNICAL SPECIFICATIONS -->
+                    {% if product.capacity or product.power or product.warranty %}
+                        <section class="specification-section"
+                                 aria-labelledby="specification-title"
+                                 data-reveal>
+
+                            <h2 class="specification-title"
+                                id="specification-title">
+
+                                Specifications
+
+                                <span class="specification-caption">
+                                    Product information
+                                </span>
+
+                            </h2>
+
+                            <dl class="spec-table">
+
+                                {% if product.capacity %}
+                                    <div>
+                                        <dt>Capacity</dt>
+                                        <dd>{{ product.capacity }}</dd>
+                                    </div>
+                                {% endif %}
+
+                                {% if product.power %}
+                                    <div>
+                                        <dt>Power</dt>
+                                        <dd>{{ product.power }}</dd>
+                                    </div>
+                                {% endif %}
+
+                                {% if product.warranty %}
+                                    <div>
+                                        <dt>Warranty</dt>
+                                        <dd>{{ product.warranty }}</dd>
+                                    </div>
+                                {% endif %}
+
+                            </dl>
+
+                        </section>
+                    {% endif %}
+
+                    <p class="detail-note" data-reveal>
+                        Specifications are indicative. Exact model details,
+                        availability and warranty terms should be confirmed
+                        in your quotation.
+                    </p>
+
+                    <!-- ACTIONS -->
+                    <div class="detail-actions" data-reveal>
+
+                        <a class="detail-quote"
+                           href="{% url 'contact' %}?product={{ product.slug|urlencode }}">
+
+                            Request a quotation
+
+                            <span aria-hidden="true">→</span>
+
+                        </a>
+
+                        <a class="detail-back"
+                           href="{% url 'products' %}">
+                            Back to all products
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- RELATED PRODUCTS -->
+    {% if related %}
+        <section class="related-section">
+            <div class="detail-container">
+
+                <header class="related-header" data-reveal>
+
+                    <div>
+                        <span class="related-eyebrow">
+                            Continue exploring
+                        </span>
+
+                        <h2 class="related-title">
+                            Related products
+                        </h2>
+                    </div>
+
+                    <a href="{% url 'products' %}" class="related-link">
+                        View all products →
+                    </a>
+
+                </header>
+
+                <div class="related-grid">
+                    {% for p in related %}
+                        {% include 'core/_product_card.html' %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section>
+    {% endif %}
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const page = document.querySelector('.yq-product-detail');
+    if (!page) return;
+
+    const elements = page.querySelectorAll('[data-reveal]');
+
+    if (!('IntersectionObserver' in window)) {
+        elements.forEach(element => element.classList.add('is-in'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, observerInstance) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                observerInstance.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -30px 0px'
+    });
+
+    elements.forEach(element => observer.observe(element));
+});
+</script>
 {% endblock %}

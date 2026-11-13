@@ -1,249 +1,1268 @@
-{% extends 'core/base.html' %}{% load static %}
 
-{% block title %}About Us | Yunqida Energy Kenya{% endblock %}
-{% block meta_description %}Yunqida Energy Kenya is the Kenyan branch of Guangdong Yunqida New Energy Technology, a manufacturer of solar power systems, lithium batteries and all-in-one energy storage since 2013.{% endblock %}
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}About Yunqida Energy Kenya | Solar & Lithium Battery Manufacturer{% endblock %}
+
+{% block meta_description %}Learn about Yunqida Energy Kenya, bringing solar power systems, LiFePO4 lithium batteries, hybrid inverters and commercial energy storage solutions to homes and businesses across Kenya.{% endblock %}
+
+{% block meta_keywords %}about Yunqida Energy Kenya, solar energy company Kenya, lithium battery supplier Nairobi, LiFePO4 batteries Kenya, solar inverter supplier Kenya, hybrid solar systems Nairobi, commercial energy storage Kenya, solar battery manufacturer, Guangdong Yunqida New Energy Technology{% endblock %}
+
+{% block og_title %}About Yunqida Energy Kenya | Solar & Energy Storage{% endblock %}
+{% block og_description %}Discover Yunqida Energy Kenya's solar, lithium battery and energy storage solutions for homes, businesses and industry.{% endblock %}
+{% block og_image %}{% static 'img/about/factory-floor.jpg' %}{% endblock %}
+
 {% block body_class %}page-dark{% endblock %}
 
+{% block schema_page %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Yunqida Energy Kenya",
+  "description": "Learn about Yunqida Energy Kenya and its solar power, lithium battery and energy storage solutions.",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}",
+  "mainEntity": {
+    "@type": "Organization",
+    "name": "Yunqida Energy Technology Kenya",
+    "url": "{{ request.scheme }}://{{ request.get_host }}/",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Guangdong Yunqida New Energy Technology Co., Ltd."
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Nairobi",
+      "addressCountry": "KE"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "Kenya"
+    }
+  }
+}
+</script>
+{% endblock %}
+
 {% block extra_head %}
-<script>document.documentElement.classList.add('js');</script>
 <style>
-    /* About page. Colours and fonts come from base.html. */
-    .ab-eyebrow { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 20px; font-size: .78rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--c-sun); }
-    .ab-eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-    .ab-h2 { margin: 0; font-family: var(--font-display); font-size: clamp(1.9rem, 3.6vw, 2.9rem); line-height: 1.1; font-weight: 600; letter-spacing: -.02em; }
-    .ab-section { padding: clamp(72px, 9vw, 128px) 0; }
-    .ab-section--mist { background: var(--c-mist); }
+/* =========================================================
+   YUNQIDA ABOUT PAGE
+   Uses the design tokens defined in base.html
+========================================================= */
 
-    /* hero */
-    .ab-hero { position: relative; padding: calc(var(--header-h) + clamp(72px, 10vw, 140px)) 0 clamp(64px, 8vw, 110px); background: var(--c-forest); color: #fff; overflow: hidden; }
-    .ab-hero::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 1px, transparent 1px 120px); mask-image: linear-gradient(to bottom, #000, transparent 85%); -webkit-mask-image: linear-gradient(to bottom, #000, transparent 85%); }
-    .ab-hero .container { position: relative; }
-    .ab-hero h1 { max-width: 15ch; margin: 0; font-family: var(--font-display); font-size: clamp(2.6rem, 6.4vw, 5.2rem); line-height: 1.02; font-weight: 600; letter-spacing: -.03em; }
-    .ab-hero h1 em { font-style: normal; color: var(--c-sun); }
-    .ab-hero .lead { max-width: 560px; margin: 28px 0 0; font-size: 1.1rem; line-height: 1.75; color: rgba(255,255,255,.7); }
+.ab-page {
+    overflow: hidden;
+    background: #fff;
+}
 
-    /* facts strip */
-    .ab-facts { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(56px, 7vw, 96px); border-top: 1px solid rgba(255,255,255,.14); }
-    .ab-fact { padding: 28px 24px 0 0; }
-    .ab-fact + .ab-fact { padding-left: 24px; border-left: 1px solid rgba(255,255,255,.14); }
-    .ab-fact strong { display: block; font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
-    .ab-fact span { display: block; margin-top: 8px; font-size: .88rem; color: rgba(255,255,255,.58); }
+.ab-container {
+    width: min(1200px, calc(100% - 48px));
+    margin-inline: auto;
+}
 
-    /* who we are */
-    .ab-split { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(40px, 7vw, 104px); align-items: center; }
-    .ab-split p { margin: 0 0 18px; font-size: 1.05rem; line-height: 1.8; color: var(--c-muted); }
-    .ab-split .ab-h2 { margin-bottom: 28px; }
-    .ab-figure { margin: 0; }
-    .ab-figure-frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--c-forest-2, #171D25); }
-    .ab-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .ab-figure figcaption { margin-top: 14px; font-size: .82rem; color: var(--c-muted); }
-    .ab-link { display: inline-flex; align-items: center; gap: 10px; margin-top: 12px; padding-bottom: 4px; border-bottom: 1px solid var(--c-sun); font-weight: 600; font-size: .95rem; text-decoration: none; }
-    .ab-link span { transition: transform .25s var(--ease); }
-    .ab-link:hover span { transform: translateX(5px); }
+.ab-section {
+    padding: clamp(76px, 9vw, 120px) 0;
+}
 
-    /* what we make */
-    .ab-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: clamp(40px, 5vw, 72px); }
-    .ab-head p { margin: 0; font-size: 1.02rem; line-height: 1.75; color: var(--c-muted); }
-    .ab-range { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--c-ink); }
-    .ab-range article { padding: 32px 32px 8px 0; }
-    .ab-range article + article { padding-left: 32px; border-left: 1px solid var(--c-line); }
-    .ab-num { font-family: var(--font-display); font-size: .9rem; font-weight: 600; color: var(--c-sun); letter-spacing: .08em; }
-    .ab-range h3, .ab-values h3, .ab-steps h3 { margin: 14px 0 10px; font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.25; }
-    .ab-range p, .ab-values p, .ab-steps p { margin: 0; font-size: .97rem; line-height: 1.75; color: var(--c-muted); }
-    .ab-oem { margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--c-line); font-size: .97rem; color: var(--c-muted); }
-    .ab-oem strong { color: var(--c-ink); }
+.ab-section--mist {
+    background: var(--c-mist);
+}
 
-    /* values */
-    .ab-values-wrap { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(40px, 7vw, 112px); align-items: start; }
-    .ab-values-intro { position: sticky; top: calc(var(--header-h) + 40px); }
-    .ab-values-intro p { margin: 24px 0 0; max-width: 380px; font-size: 1.02rem; line-height: 1.75; color: var(--c-muted); }
-    .ab-values { border-top: 1px solid var(--c-line); }
-    .ab-values > div { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 32px 0; border-bottom: 1px solid var(--c-line); }
-    .ab-values h3 { margin-top: 0; }
+.ab-section--dark {
+    background: var(--c-forest);
+    color: #fff;
+}
 
-    /* how we work */
-    .ab-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: step; }
-    .ab-steps > div { position: relative; padding: 36px 28px 0 0; border-top: 1px solid var(--c-line); }
-    .ab-steps > div::before { content: ""; position: absolute; top: -1px; left: 0; width: 48px; height: 2px; background: var(--c-sun); }
-    .ab-steps h3 { margin-top: 12px; }
+.ab-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    color: var(--c-emerald);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
 
-    /* closing band */
-    .ab-cta { padding: clamp(72px, 9vw, 120px) 0; background: var(--c-forest); color: #fff; }
-    .ab-cta .container { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: end; }
-    .ab-cta h2 { margin: 0; font-family: var(--font-display); font-size: clamp(2rem, 4.4vw, 3.6rem); line-height: 1.05; font-weight: 600; letter-spacing: -.025em; }
-    .ab-cta p { margin: 22px 0 0; max-width: 480px; font-size: 1.05rem; line-height: 1.75; color: rgba(255,255,255,.68); }
-    .ab-cta-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; }
-    .ab-btn { display: inline-flex; align-items: center; padding: 15px 30px; border-radius: 999px; font-family: var(--font-display); font-weight: 600; font-size: .95rem; text-decoration: none; transition: background-color .2s, color .2s, border-color .2s; }
-    .ab-btn--sun { background: var(--c-sun); color: var(--c-forest); }
-    .ab-btn--sun:hover { background: var(--c-sun-hover); }
-    .ab-btn--line { border: 1px solid rgba(255,255,255,.35); color: #fff; }
-    .ab-btn--line:hover { border-color: #fff; }
+.ab-eyebrow::before {
+    content: "";
+    width: 25px;
+    height: 2px;
+    background: var(--c-sun);
+}
 
-    /* scroll reveal (only when JS is on, so the page still works without it) */
-    .js [data-reveal] { opacity: 0; transform: translateY(26px); transition: opacity .9s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0s); }
-    .js [data-reveal].is-in { opacity: 1; transform: none; }
-    .js [data-reveal="image"] { opacity: 1; transform: none; }
-    .js [data-reveal="image"] .ab-figure-frame { clip-path: inset(0 0 100% 0); transition: clip-path 1.3s var(--ease); }
-    .js [data-reveal="image"] img { transform: scale(1.22); transition: transform 1.9s var(--ease); }
-    .js [data-reveal="image"] figcaption { opacity: 0; transition: opacity .8s ease .9s; }
-    .js [data-reveal="image"].is-in .ab-figure-frame { clip-path: inset(0); }
-    .js [data-reveal="image"].is-in img { transform: scale(1); }
-    .js [data-reveal="image"].is-in figcaption { opacity: 1; }
+.ab-heading {
+    max-width: 760px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.08;
+    font-weight: 700;
+    letter-spacing: -.035em;
+}
 
-    @media (max-width: 900px) {
-        .ab-facts { grid-template-columns: 1fr 1fr; }
-        .ab-fact:nth-child(3) { padding-left: 0; border-left: 0; }
-        .ab-fact:nth-child(n+3) { margin-top: 28px; border-top: 1px solid rgba(255,255,255,.14); }
-        .ab-split, .ab-head, .ab-values-wrap, .ab-cta .container { grid-template-columns: 1fr; }
-        .ab-head { gap: 20px; }
-        .ab-figure-frame { aspect-ratio: 4 / 3; }
-        .ab-range { grid-template-columns: 1fr; }
-        .ab-range article, .ab-range article + article { padding: 28px 0; border-left: 0; }
-        .ab-range article + article { border-top: 1px solid var(--c-line); }
-        .ab-values-intro { position: static; }
-        .ab-steps { grid-template-columns: 1fr 1fr; row-gap: 36px; }
-        .ab-cta-actions { justify-content: flex-start; }
+.ab-heading em {
+    color: var(--c-sun);
+    font-style: normal;
+}
+
+.ab-lead {
+    max-width: 620px;
+    margin: 22px 0 0;
+    color: var(--c-muted);
+    font-size: 1.04rem;
+    line-height: 1.85;
+}
+
+.ab-section--dark .ab-lead {
+    color: rgba(255,255,255,.66);
+}
+
+.ab-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 28px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--c-sun);
+    color: var(--c-ink);
+    font-size: .94rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color .25s;
+}
+
+.ab-link span {
+    display: inline-block;
+    transition: transform .25s var(--ease);
+}
+
+.ab-link:hover {
+    color: var(--c-emerald);
+}
+
+.ab-link:hover span {
+    transform: translateX(5px);
+}
+
+.ab-section--dark .ab-link {
+    color: #fff;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.ab-hero {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--header-h) + 90px) 0 100px;
+    overflow: hidden;
+    background: var(--c-forest);
+    color: #fff;
+}
+
+.ab-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(15,19,24,.98) 0%, rgba(15,19,24,.91) 52%, rgba(15,19,24,.52) 100%),
+        url("{% static 'img/about/factory-floor.jpg' %}") center 48% / cover no-repeat;
+    opacity: .9;
+}
+
+.ab-hero::after {
+    content: "";
+    position: absolute;
+    right: -220px;
+    bottom: -340px;
+    width: 650px;
+    height: 650px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20,160,144,.19), transparent 68%);
+    pointer-events: none;
+}
+
+.ab-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+}
+
+.ab-hero .ab-eyebrow {
+    color: #fff;
+}
+
+.ab-hero h1 {
+    max-width: 850px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 700;
+    line-height: .99;
+    letter-spacing: -.055em;
+}
+
+.ab-hero h1 em {
+    color: var(--c-sun);
+    font-style: normal;
+}
+
+.ab-hero-description {
+    max-width: 620px;
+    margin: 28px 0 0;
+    color: rgba(255,255,255,.72);
+    font-size: clamp(1rem, 1.5vw, 1.14rem);
+    line-height: 1.85;
+}
+
+.ab-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+    margin-top: 36px;
+}
+
+.ab-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 50px;
+    padding: 0 25px;
+    border-radius: 999px;
+    background: var(--c-sun);
+    color: var(--c-forest);
+    font-family: var(--font-display);
+    font-size: .94rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .25s, transform .25s var(--ease);
+}
+
+.ab-button:hover {
+    background: var(--c-sun-hover);
+    transform: translateY(-2px);
+}
+
+.ab-button--outline {
+    border: 1px solid rgba(255,255,255,.35);
+    background: transparent;
+    color: #fff;
+}
+
+.ab-button--outline:hover {
+    border-color: var(--c-sun);
+    background: rgba(255,255,255,.06);
+    color: #fff;
+}
+
+.ab-hero-note {
+    margin-top: 55px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,.16);
+    color: rgba(255,255,255,.55);
+    font-size: .86rem;
+}
+
+/* =========================================================
+   COMPANY INTRODUCTION
+========================================================= */
+
+.ab-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(45px, 8vw, 110px);
+}
+
+.ab-intro-copy .ab-heading {
+    max-width: 600px;
+}
+
+.ab-copy {
+    margin-top: 22px;
+    color: var(--c-muted);
+    font-size: .98rem;
+    line-height: 1.9;
+}
+
+.ab-copy + .ab-copy {
+    margin-top: 14px;
+}
+
+.ab-image-wrap {
+    position: relative;
+    min-width: 0;
+}
+
+.ab-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 4.5;
+    border-radius: 4px;
+    background: #e8eceb;
+}
+
+.ab-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .9s var(--ease);
+}
+
+.ab-image-wrap:hover .ab-image img {
+    transform: scale(1.045);
+}
+
+.ab-image-caption {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: 16px;
+    padding-top: 15px;
+    border-top: 1px solid var(--c-line);
+    color: var(--c-muted);
+    font-size: .84rem;
+}
+
+.ab-image-caption strong {
+    color: var(--c-ink);
+    font-weight: 600;
+}
+
+/* =========================================================
+   COMPANY FACTS
+========================================================= */
+
+.ab-facts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 70px;
+    border-top: 1px solid var(--c-line);
+    border-bottom: 1px solid var(--c-line);
+}
+
+.ab-fact {
+    padding: 27px 22px 27px 0;
+}
+
+.ab-fact + .ab-fact {
+    padding-left: 22px;
+    border-left: 1px solid var(--c-line);
+}
+
+.ab-fact strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -.03em;
+}
+
+.ab-fact span {
+    display: block;
+    margin-top: 8px;
+    color: var(--c-muted);
+    font-size: .84rem;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   PRODUCT CAPABILITIES WITH PHOTOGRAPHY
+========================================================= */
+
+.ab-products-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 48px;
+}
+
+.ab-products-heading .ab-lead {
+    max-width: 440px;
+    margin: 0;
+}
+
+.ab-product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.ab-product-card {
+    min-width: 0;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.ab-product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.ab-product-photo {
+    overflow: hidden;
+    aspect-ratio: 5 / 4;
+    background: #e9edeb;
+}
+
+.ab-product-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .8s var(--ease);
+}
+
+.ab-product-card:hover .ab-product-photo img {
+    transform: scale(1.055);
+}
+
+.ab-product-content {
+    padding: 25px 25px 28px;
+}
+
+.ab-product-label {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--c-emerald);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+}
+
+.ab-product-content h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -.02em;
+}
+
+.ab-product-content p {
+    margin: 13px 0 0;
+    color: var(--c-muted);
+    font-size: .91rem;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   SOLUTIONS
+========================================================= */
+
+.ab-solutions-grid {
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    align-items: center;
+    gap: clamp(45px, 8vw, 100px);
+}
+
+.ab-solution-list {
+    display: grid;
+    gap: 0;
+    margin-top: 30px;
+    border-top: 1px solid rgba(255,255,255,.14);
+}
+
+.ab-solution-item {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 17px;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.ab-solution-number {
+    color: var(--c-sun);
+    font-family: var(--font-display);
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.ab-solution-item h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.08rem;
+    font-weight: 600;
+}
+
+.ab-solution-item p {
+    margin: 6px 0 0;
+    color: rgba(255,255,255,.58);
+    font-size: .9rem;
+    line-height: 1.7;
+}
+
+.ab-solutions-photo {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 5 / 4;
+    background: #202a2c;
+}
+
+.ab-solutions-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .9s var(--ease);
+}
+
+.ab-solutions-photo:hover img {
+    transform: scale(1.04);
+}
+
+/* =========================================================
+   HOW WE WORK
+========================================================= */
+
+.ab-process-heading {
+    margin-bottom: 55px;
+}
+
+.ab-process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+.ab-process-card {
+    position: relative;
+    padding-top: 25px;
+    border-top: 1px solid var(--c-line);
+}
+
+.ab-process-card::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 45px;
+    height: 2px;
+    background: var(--c-sun);
+}
+
+.ab-process-number {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--c-emerald);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.ab-process-card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.17rem;
+}
+
+.ab-process-card p {
+    margin: 11px 0 0;
+    color: var(--c-muted);
+    font-size: .9rem;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   OEM / ODM STRIP
+========================================================= */
+
+.ab-oem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    margin-top: 65px;
+    padding: 35px 38px;
+    border: 1px solid var(--c-line);
+    background: #fff;
+}
+
+.ab-oem h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+}
+
+.ab-oem p {
+    max-width: 620px;
+    margin: 9px 0 0;
+    color: var(--c-muted);
+    font-size: .92rem;
+    line-height: 1.75;
+}
+
+/* =========================================================
+   FINAL CTA
+========================================================= */
+
+.ab-cta {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(65px, 8vw, 100px) 0;
+    background: var(--c-forest);
+    color: #fff;
+}
+
+.ab-cta::after {
+    content: "";
+    position: absolute;
+    top: -240px;
+    right: -150px;
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(20,160,144,.2), transparent 68%);
+    pointer-events: none;
+}
+
+.ab-cta-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+}
+
+.ab-cta h2 {
+    max-width: 680px;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -.035em;
+}
+
+.ab-cta p {
+    max-width: 590px;
+    margin: 17px 0 0;
+    color: rgba(255,255,255,.65);
+    line-height: 1.8;
+}
+
+/* =========================================================
+   SCROLL REVEALS
+========================================================= */
+
+.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(25px);
+    transition:
+        opacity .8s var(--ease),
+        transform .8s var(--ease);
+    transition-delay: var(--d, 0s);
+}
+
+.js [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.js [data-reveal="image"] {
+    transform: translateY(30px) scale(.985);
+}
+
+.js [data-reveal="image"].is-in {
+    transform: translateY(0) scale(1);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 960px) {
+    .ab-intro-grid,
+    .ab-solutions-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
     }
-    @media (max-width: 560px) {
-        .ab-steps { grid-template-columns: 1fr; }
-        .ab-values > div { grid-template-columns: 44px 1fr; }
+
+    .ab-intro-grid .ab-image-wrap {
+        max-width: 700px;
     }
-    @media (prefers-reduced-motion: reduce) {
-        .js [data-reveal], .js [data-reveal="image"] .ab-figure-frame, .js [data-reveal="image"] img, .js [data-reveal="image"] figcaption { opacity: 1; transform: none; clip-path: none; transition: none; }
+
+    .ab-products-heading {
+        display: block;
     }
+
+    .ab-products-heading .ab-lead {
+        margin-top: 18px;
+    }
+
+    .ab-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ab-process-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+    }
+
+    .ab-cta-inner {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .ab-container {
+        width: calc(100% - 32px);
+    }
+
+    .ab-section {
+        padding: 68px 0;
+    }
+
+    .ab-hero {
+        min-height: 590px;
+        padding-top: calc(var(--header-h) + 75px);
+    }
+
+    .ab-hero::before {
+        background:
+            linear-gradient(90deg, rgba(15,19,24,.96), rgba(15,19,24,.72)),
+            url("{% static 'img/about/factory-floor.jpg' %}") center / cover no-repeat;
+    }
+
+    .ab-hero h1 {
+        font-size: clamp(2.8rem, 13vw, 4.4rem);
+    }
+
+    .ab-hero-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ab-button {
+        width: 100%;
+    }
+
+    .ab-hero-note {
+        margin-top: 40px;
+    }
+
+    .ab-facts {
+        grid-template-columns: 1fr 1fr;
+        margin-top: 45px;
+    }
+
+    .ab-fact {
+        padding: 22px 12px 22px 0;
+    }
+
+    .ab-fact + .ab-fact {
+        padding-left: 14px;
+    }
+
+    .ab-fact:nth-child(3) {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .ab-fact:nth-child(n+3) {
+        border-top: 1px solid var(--c-line);
+    }
+
+    .ab-product-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .ab-product-photo {
+        aspect-ratio: 5 / 3.5;
+    }
+
+    .ab-process-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .ab-oem {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 26px 22px;
+    }
+
+    .ab-image {
+        aspect-ratio: 4 / 3.5;
+    }
+
+    .ab-image-caption {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .js [data-reveal],
+    .js [data-reveal="image"] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
 </style>
 {% endblock %}
 
 {% block content %}
 
-<section class="ab-hero">
-    <div class="container">
-        <p class="ab-eyebrow" data-reveal>About us</p>
-        <h1 data-reveal style="--d:.08s">Energy storage, built to <em>last</em>.</h1>
-        <p class="lead" data-reveal style="--d:.16s">Yunqida Energy Kenya brings solar and lithium storage from a manufacturer that has focused on this work since 2013 to homes, businesses and institutions across Kenya.</p>
+<div class="ab-page">
 
-        <div class="ab-facts" data-reveal style="--d:.24s">
-            <div class="ab-fact"><strong>2013</strong><span>Focused on energy storage since</span></div>
-            <div class="ab-fact"><strong>Guangzhou</strong><span>Manufacturer headquarters, China</span></div>
-            <div class="ab-fact"><strong>5.12 – 241 kWh</strong><span>From home systems to C&amp;I cabinets</span></div>
-            <div class="ab-fact"><strong>OEM &amp; ODM</strong><span>Custom manufacturing available</span></div>
-        </div>
-    </div>
-</section>
+    <!-- HERO -->
+    <section class="ab-hero">
+        <div class="ab-container">
+            <div class="ab-hero-content">
+                <span class="ab-eyebrow" data-reveal>About Yunqida Energy</span>
 
-<section class="ab-section">
-    <div class="container ab-split">
-        <div>
-            <p class="ab-eyebrow" data-reveal>Who we are</p>
-            <h2 class="ab-h2" data-reveal style="--d:.06s">A manufacturer, with a team on the ground in Kenya.</h2>
-            <p data-reveal style="--d:.12s">Yunqida is a brand of Guangdong Yunqida New Energy Technology Co., Ltd., a high-tech company in Guangzhou, China. It designs household and industrial energy storage, with a focus on solar power systems, lithium batteries and all-in-one energy storage systems.</p>
-            <p data-reveal style="--d:.18s">Our Kenyan branch brings that range to the country, with local advice, quotations and after-sales support.</p>
-            <a class="ab-link" href="{% url 'products' %}" data-reveal style="--d:.24s">View our products <span aria-hidden="true">&rarr;</span></a>
-        </div>
-        <figure class="ab-figure" data-reveal="image">
-            <div class="ab-figure-frame"><img src="{% static 'img/video-poster.jpg' %}" alt="Yunqida factory floor with finished energy storage cabinets" loading="lazy"></div>
-            <figcaption>Finished energy storage cabinets on the factory floor.</figcaption>
-        </figure>
-    </div>
-</section>
+                <h1 data-reveal style="--d:.08s">
+                    Powering a more
+                    <em>energy-secure</em>
+                    future.
+                </h1>
 
-<section class="ab-section ab-section--mist">
-    <div class="container">
-        <div class="ab-head">
-            <div>
-                <p class="ab-eyebrow" data-reveal>What we make</p>
-                <h2 class="ab-h2" data-reveal style="--d:.06s">One range, from the roof to the battery room.</h2>
+                <p class="ab-hero-description" data-reveal style="--d:.16s">
+                    Yunqida Energy Technology Kenya brings solar power systems,
+                    lithium battery storage and hybrid inverter solutions to
+                    homes, businesses and industries across Kenya.
+                </p>
+
+                <div class="ab-hero-actions" data-reveal style="--d:.22s">
+                    <a href="{% url 'products' %}" class="ab-button">
+                        Explore our products <span aria-hidden="true">&rarr;</span>
+                    </a>
+                    <a href="{% url 'contact' %}" class="ab-button ab-button--outline">
+                        Speak to our team
+                    </a>
+                </div>
+
+                <div class="ab-hero-note" data-reveal style="--d:.28s">
+                    Manufacturer-backed energy storage · Local support in Kenya · OEM &amp; ODM capabilities
+                </div>
             </div>
-            <p data-reveal style="--d:.12s">Solar generation, lithium storage and the inverters that tie them together, designed as a system rather than a pile of parts.</p>
         </div>
+    </section>
 
-        <div class="ab-range">
-            <article data-reveal>
-                <span class="ab-num">01</span>
-                <h3>Solar power systems</h3>
-                <p>Hybrid inverters and solar systems sized for households, shops, farms and factories.</p>
-            </article>
-            <article data-reveal style="--d:.1s">
-                <span class="ab-num">02</span>
-                <h3>Lithium batteries</h3>
-                <p>LiFePO4 storage with a battery management system, built for long cycle life and daily use.</p>
-            </article>
-            <article data-reveal style="--d:.2s">
-                <span class="ab-num">03</span>
-                <h3>All-in-one storage</h3>
-                <p>Stackable home units and commercial cabinets that arrive as a complete, tidy system.</p>
-            </article>
-        </div>
-        <p class="ab-oem" data-reveal><strong>OEM and ODM.</strong> We also manufacture to order for partners who need their own specification or branding.</p>
-    </div>
-</section>
+    <!-- COMPANY INTRODUCTION -->
+    <section class="ab-section">
+        <div class="ab-container">
 
-<section class="ab-section">
-    <div class="container ab-values-wrap">
-        <div class="ab-values-intro">
-            <p class="ab-eyebrow" data-reveal>What we stand for</p>
-            <h2 class="ab-h2" data-reveal style="--d:.06s">The way we work is simple.</h2>
-            <p data-reveal style="--d:.12s">Four commitments we hold ourselves to on every quotation and every installation.</p>
-        </div>
-        <div class="ab-values">
-            <div data-reveal><span class="ab-num">01</span><div><h3>Reliable power</h3><p>Products designed for long cycle life and daily use, not just for the spec sheet.</p></div></div>
-            <div data-reveal><span class="ab-num">02</span><div><h3>Safety first</h3><p>LiFePO4 chemistry with battery management that guards against over-charge, deep discharge and heat.</p></div></div>
-            <div data-reveal><span class="ab-num">03</span><div><h3>Honest sizing</h3><p>We size systems to your real load, so you do not pay for capacity you will never use.</p></div></div>
-            <div data-reveal><span class="ab-num">04</span><div><h3>Local support</h3><p>A Kenyan team you can phone, WhatsApp or visit.</p></div></div>
-        </div>
-    </div>
-</section>
+            <div class="ab-intro-grid">
+                <div class="ab-intro-copy">
+                    <span class="ab-eyebrow" data-reveal>Who we are</span>
 
-<section class="ab-section ab-section--mist">
-    <div class="container">
-        <div class="ab-head">
-            <div>
-                <p class="ab-eyebrow" data-reveal>How we work</p>
-                <h2 class="ab-h2" data-reveal style="--d:.06s">From first call to dependable power.</h2>
+                    <h2 class="ab-heading" data-reveal style="--d:.06s">
+                        Global energy technology.
+                        <em>Local understanding.</em>
+                    </h2>
+
+                    <p class="ab-copy" data-reveal style="--d:.12s">
+                        Yunqida is associated with Guangdong Yunqida New Energy
+                        Technology Co., Ltd., a company focused on new energy
+                        technology and energy storage solutions.
+                    </p>
+
+                    <p class="ab-copy" data-reveal style="--d:.18s">
+                        Through Yunqida Energy Technology Kenya, we make a range
+                        of solar energy products and battery storage solutions
+                        available to Kenyan households, businesses and
+                        institutions.
+                    </p>
+
+                    <p class="ab-copy" data-reveal style="--d:.24s">
+                        Our focus is to help customers understand their energy
+                        requirements, identify suitable equipment and access
+                        product guidance and support throughout their projects.
+                    </p>
+
+                    <a href="{% url 'contact' %}" class="ab-link" data-reveal style="--d:.3s">
+                        Get in touch with our team <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+
+                <figure class="ab-image-wrap" data-reveal="image" style="--d:.12s">
+                    <div class="ab-image">
+                        <img
+                            src="{% static 'img/about/factory-floor.jpg' %}"
+                            alt="Yunqida energy storage manufacturing facility and finished battery storage equipment"
+                            loading="lazy"
+                            decoding="async"
+                            width="900"
+                            height="1050">
+                    </div>
+                    <figcaption class="ab-image-caption">
+                        <strong>Energy storage and manufacturing</strong>
+                        <span>Yunqida technology</span>
+                    </figcaption>
+                </figure>
             </div>
-            <p data-reveal style="--d:.12s">Homes, businesses and institutions all follow the same straightforward path.</p>
-        </div>
-        <div class="ab-steps">
-            <div data-reveal><span class="ab-num">Step 1</span><h3>Tell us your needs</h3><p>Share your appliances, bills and goals with our team by phone, WhatsApp or in person.</p></div>
-            <div data-reveal style="--d:.08s"><span class="ab-num">Step 2</span><h3>We size the system</h3><p>We work from your real load, not a generic package.</p></div>
-            <div data-reveal style="--d:.16s"><span class="ab-num">Step 3</span><h3>Clear quotation</h3><p>A written quotation that shows exactly what you get.</p></div>
-            <div data-reveal style="--d:.24s"><span class="ab-num">Step 4</span><h3>After-sales support</h3><p>A local team to help once the system is running.</p></div>
-        </div>
-    </div>
-</section>
 
-<section class="ab-cta">
-    <div class="container">
-        <div>
-            <h2 data-reveal>Want to work with us?</h2>
-            <p data-reveal style="--d:.08s">Installers, distributors and developers are welcome to get in touch, as are homes and businesses that want a straight answer on what they need.</p>
+            <div class="ab-facts">
+                <div class="ab-fact" data-reveal>
+                    <strong>2013</strong>
+                    <span>Company history, as stated in the supplied company information</span>
+                </div>
+
+                <div class="ab-fact" data-reveal style="--d:.06s">
+                    <strong>Kenya</strong>
+                    <span>Local market and customer support focus</span>
+                </div>
+
+                <div class="ab-fact" data-reveal style="--d:.12s">
+                    <strong>LiFePO4</strong>
+                    <span>Lithium iron phosphate battery technology</span>
+                </div>
+
+                <div class="ab-fact" data-reveal style="--d:.18s">
+                    <strong>OEM / ODM</strong>
+                    <span>Manufacturing and customisation capabilities</span>
+                </div>
+            </div>
+
         </div>
-        <div class="ab-cta-actions" data-reveal style="--d:.16s">
-            <a class="ab-btn ab-btn--sun" href="{% url 'contact' %}">Contact us</a>
-            <a class="ab-btn ab-btn--line" href="{% url 'products' %}">Browse products</a>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="ab-section ab-section--mist">
+        <div class="ab-container">
+
+            <div class="ab-products-heading">
+                <div>
+                    <span class="ab-eyebrow" data-reveal>Our capabilities</span>
+                    <h2 class="ab-heading" data-reveal style="--d:.06s">
+                        Energy solutions for
+                        <em>different needs.</em>
+                    </h2>
+                </div>
+
+                <p class="ab-lead" data-reveal style="--d:.12s">
+                    From household backup power to larger energy storage
+                    installations, our product range covers key components
+                    used in modern solar energy systems.
+                </p>
+            </div>
+
+            <div class="ab-product-grid">
+
+                <article class="ab-product-card" data-reveal>
+                    <div class="ab-product-photo">
+                        <img
+                            src="{% static 'img/about/lithium-battery.jpg' %}"
+                            alt="Yunqida LiFePO4 lithium battery energy storage product"
+                            loading="lazy"
+                            decoding="async"
+                            width="800"
+                            height="640">
+                    </div>
+
+                    <div class="ab-product-content">
+                        <span class="ab-product-label">Energy storage</span>
+                        <h3>LiFePO4 lithium batteries</h3>
+                        <p>
+                            Lithium iron phosphate battery solutions for
+                            residential and commercial energy storage,
+                            designed for dependable everyday power applications.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="ab-product-card" data-reveal style="--d:.1s">
+                    <div class="ab-product-photo">
+                        <img
+                            src="{% static 'img/about/hybrid-inverter.jpg' %}"
+                            alt="Hybrid solar inverter equipment for solar power and battery storage"
+                            loading="lazy"
+                            decoding="async"
+                            width="800"
+                            height="640">
+                    </div>
+
+                    <div class="ab-product-content">
+                        <span class="ab-product-label">Power conversion</span>
+                        <h3>Hybrid solar inverters</h3>
+                        <p>
+                            Inverter technology that connects solar generation,
+                            battery storage and compatible electrical loads
+                            within an integrated energy system.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="ab-product-card" data-reveal style="--d:.2s">
+                    <div class="ab-product-photo">
+                        <img
+                            src="{% static 'img/about/solar-installation.jpg' %}"
+                            alt="Solar panel installation for a building with a solar energy system"
+                            loading="lazy"
+                            decoding="async"
+                            width="800"
+                            height="640">
+                    </div>
+
+                    <div class="ab-product-content">
+                        <span class="ab-product-label">Solar solutions</span>
+                        <h3>Solar power systems</h3>
+                        <p>
+                            Solar energy solutions for homes, commercial
+                            buildings and institutions, with system selection
+                            based on actual energy requirements.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+
+            <div style="margin-top:38px" data-reveal>
+                <a href="{% url 'products' %}" class="ab-link">
+                    Discover our product range <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="ab-section ab-section--dark">
+        <div class="ab-container">
+
+            <div class="ab-solutions-grid">
+
+                <div>
+                    <span class="ab-eyebrow" data-reveal>Where our solutions fit</span>
+
+                    <h2 class="ab-heading" data-reveal style="--d:.06s">
+                        Designed around
+                        <em>how you use energy.</em>
+                    </h2>
+
+                    <p class="ab-lead" data-reveal style="--d:.12s">
+                        Different customers have different power requirements.
+                        We help identify equipment and configurations suited
+                        to the intended application.
+                    </p>
+
+                    <div class="ab-solution-list">
+
+                        <div class="ab-solution-item" data-reveal>
+                            <span class="ab-solution-number">01</span>
+                            <div>
+                                <h3>Residential energy storage</h3>
+                                <p>
+                                    Battery backup and solar power solutions
+                                    for homes and residential properties.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="ab-solution-item" data-reveal style="--d:.08s">
+                            <span class="ab-solution-number">02</span>
+                            <div>
+                                <h3>Commercial power systems</h3>
+                                <p>
+                                    Solar and storage solutions for shops,
+                                    offices, hotels and other businesses.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="ab-solution-item" data-reveal style="--d:.16s">
+                            <span class="ab-solution-number">03</span>
+                            <div>
+                                <h3>Industrial energy storage</h3>
+                                <p>
+                                    Larger energy storage applications for
+                                    facilities with more demanding power needs.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="ab-solution-item" data-reveal style="--d:.24s">
+                            <span class="ab-solution-number">04</span>
+                            <div>
+                                <h3>Solar project partners</h3>
+                                <p>
+                                    Product supply and manufacturing options
+                                    for installers, distributors and project
+                                    developers.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <a href="{% url 'solutions' %}" class="ab-link" data-reveal>
+                        Explore our solutions <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+
+                <div class="ab-solutions-photo" data-reveal="image" style="--d:.12s">
+                    <img
+                        src="{% static 'img/about/solar-installation.jpg' %}"
+                        alt="Solar energy installation illustrating renewable energy solutions"
+                        loading="lazy"
+                        decoding="async"
+                        width="1000"
+                        height="800">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW WE WORK -->
+    <section class="ab-section">
+        <div class="ab-container">
+
+            <div class="ab-process-heading">
+                <span class="ab-eyebrow" data-reveal>Working with us</span>
+                <h2 class="ab-heading" data-reveal style="--d:.06s">
+                    A practical approach to
+                    <em>better energy decisions.</em>
+                </h2>
+                <p class="ab-lead" data-reveal style="--d:.12s">
+                    We start by understanding what you need, then help you
+                    explore suitable products and system configurations.
+                </p>
+            </div>
+
+            <div class="ab-process-grid">
+
+                <article class="ab-process-card" data-reveal>
+                    <span class="ab-process-number">01</span>
+                    <h3>Understand your needs</h3>
+                    <p>
+                        Tell us about your property, appliances, energy
+                        consumption and the problem you want to solve.
+                    </p>
+                </article>
+
+                <article class="ab-process-card" data-reveal style="--d:.08s">
+                    <span class="ab-process-number">02</span>
+                    <h3>Explore suitable products</h3>
+                    <p>
+                        Review the battery, inverter and solar equipment
+                        options relevant to your requirements.
+                    </p>
+                </article>
+
+                <article class="ab-process-card" data-reveal style="--d:.16s">
+                    <span class="ab-process-number">03</span>
+                    <h3>Receive a quotation</h3>
+                    <p>
+                        Discuss product specifications, quantities and
+                        project requirements before making a decision.
+                    </p>
+                </article>
+
+                <article class="ab-process-card" data-reveal style="--d:.24s">
+                    <span class="ab-process-number">04</span>
+                    <h3>Stay connected</h3>
+                    <p>
+                        Contact our team for product enquiries, guidance
+                        and support relating to your purchase.
+                    </p>
+                </article>
+
+            </div>
+
+            <!-- OEM / ODM -->
+            <div class="ab-oem" data-reveal>
+                <div>
+                    <h3>OEM and ODM manufacturing</h3>
+                    <p>
+                        For distributors, business partners and project
+                        developers, OEM and ODM arrangements can provide
+                        options for product specifications, branding and
+                        manufacturing requirements.
+                    </p>
+                </div>
+
+                <a href="{% url 'contact' %}" class="ab-button">
+                    Discuss a partnership <span aria-hidden="true">&rarr;</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="ab-cta">
+        <div class="ab-container">
+            <div class="ab-cta-inner">
+
+                <div>
+                    <span class="ab-eyebrow" data-reveal>Let's talk energy</span>
+
+                    <h2 data-reveal style="--d:.08s">
+                        Looking for the right solar or battery storage solution?
+                    </h2>
+
+                    <p data-reveal style="--d:.16s">
+                        Speak to Yunqida Energy Kenya about your project,
+                        product requirements or partnership enquiries.
+                    </p>
+                </div>
+
+                <div data-reveal style="--d:.2s">
+                    <a href="{% url 'contact' %}" class="ab-button">
+                        Contact Yunqida Kenya <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
 (function () {
-    var items = document.querySelectorAll('[data-reveal]');
-    if (!('IntersectionObserver' in window)) {
-        items.forEach(function (el) { el.classList.add('is-in'); });
+    var elements = document.querySelectorAll('[data-reveal]');
+
+    if (!elements.length) return;
+
+    if (
+        !('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+        elements.forEach(function (element) {
+            element.classList.add('is-in');
+        });
         return;
     }
-    var io = new IntersectionObserver(function (entries) {
+
+    var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-in');
-                io.unobserve(entry.target);
-            }
+            if (!entry.isIntersecting) return;
+
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
-    items.forEach(function (el) { io.observe(el); });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -55px 0px'
+    });
+
+    elements.forEach(function (element) {
+        observer.observe(element);
+    });
 })();
 </script>
 {% endblock %}
+ 

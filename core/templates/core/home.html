@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block title %}Yunqida Energy Technology Kenya | Solar, Lithium Batteries & Hybrid Inverters{% endblock %}
+
 {% block body_class %}page-dark{% endblock %}
 
 {% block content %}
@@ -18,7 +19,7 @@ document.documentElement.classList.add('yd-js');
 
 <!-- HERO -->
 <section class="yd-hero" aria-label="Introduction">
-    <video class="yd-hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <video class="yd-hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="{% static 'img/video-poster.jpg' %}" disablepictureinpicture aria-hidden="true">
         <source src="{% static 'video/yunqida.mp4' %}" type="video/mp4">
     </video>
     <div class="yd-hero-shade"></div>
@@ -56,7 +57,7 @@ document.documentElement.classList.add('yd-js');
     </div>
 </section>
 
-<!-- WHO WE ARE (image block removed) -->
+<!-- WHO WE ARE -->
 <section class="yd-section yd-light" id="who-we-are">
     <div class="container">
         <div class="yd-who">
@@ -76,62 +77,113 @@ document.documentElement.classList.add('yd-js');
     </div>
 </section>
 
-{% include 'core/_manufacture.html' %}
-<!-- FEATURED PRODUCTS -->
-{% if featured %}
-<section class="yd-section yd-grey">
-    <div class="container">
-        <header class="yd-heading">
-            <h2>Technology behind reliable power.</h2>
-            <a href="{% url 'products' %}" class="yd-textlink">View the full catalogue</a>
-        </header>
-        <div class="yd-products">
-            {% for p in featured %}
-                {% include 'core/_product_card.html' %}
-            {% endfor %}
+<!-- GALLERY: text on the left, a column of images on the right.
+     Same two-column layout on mobile and desktop. Images: static/img/1.png ... 5.png -->
+<section class="yd-section yd-grey yd-gal" id="gallery" aria-label="Our work">
+    <div class="container yd-gal-grid">
+        <div class="yd-gal-copy">
+            <h2>Energy, in the field.</h2>
+            <p>Solar, storage and hybrid power systems for Kenyan homes, businesses and industry.</p>
+            <a href="{% url 'products' %}" class="yd-textlink">Explore products</a>
+        </div>
+
+        <div class="yd-gal-col">
+            <figure class="yd-media yd-gal-img r1" data-reveal>
+                <img src="{% static 'img/1.png' %}" alt="Yunqida energy system 1" loading="lazy" decoding="async">
+            </figure>
+            <figure class="yd-media yd-gal-img r2" data-reveal style="--d:.1s">
+                <img src="{% static 'img/2.png' %}" alt="Yunqida energy system 2" loading="lazy" decoding="async">
+            </figure>
+            <figure class="yd-media yd-gal-img r1" data-reveal>
+                <img src="{% static 'img/3.png' %}" alt="Yunqida energy system 3" loading="lazy" decoding="async">
+            </figure>
+            <figure class="yd-media yd-gal-img r2" data-reveal style="--d:.1s">
+                <img src="{% static 'img/4.png' %}" alt="Yunqida energy system 4" loading="lazy" decoding="async">
+            </figure>
+            <figure class="yd-media yd-gal-img r1" data-reveal>
+                <img src="{% static 'img/5.png' %}" alt="Yunqida energy system 5" loading="lazy" decoding="async">
+            </figure>
         </div>
     </div>
 </section>
-{% endif %}
 
-<!-- WHY CHOOSE US -->
-<section class="yd-section yd-ink" id="why-choose-us">
+{% include 'core/_manufacture.html' %}
+
+<!-- WHY CHOOSE US: artwork from core/_why_art.html + reasons -->
+<section class="yd-section yd-ink yd-why-sec" id="why-choose-us" aria-labelledby="why-title">
+    <div class="yd-why-glow" aria-hidden="true"></div>
     <div class="container yd-why">
-        <div class="yd-why-intro">
-            <h2>Why choose Yunqida.</h2>
-            <p>Energy systems should be chosen around real power requirements, operating conditions and the people who use them.</p>
-        </div>
-        <div class="yd-why-grid">
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
-                <h3>Purpose-built solutions</h3>
-                <p>Different applications need different capacities and configurations.</p>
-            </article>
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg>
-                <h3>Technology-led products</h3>
-                <p>Battery storage, power conversion and integrated energy technologies.</p>
-            </article>
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
-                <h3>One integrated range</h3>
-                <p>Solar, storage and inverters from a single technology provider.</p>
-            </article>
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                <h3>Local engagement</h3>
-                <p>Talk to the Kenyan team about products, requirements and enquiries.</p>
-            </article>
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4v-5H4zM10 20h4v-9h-4zM16 20h4V6h-4z"/></svg>
-                <h3>Scalable applications</h3>
-                <p>Solutions for residential, commercial and industrial requirements.</p>
-            </article>
-            <article>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
-                <h3>A simple place to start</h3>
-                <p>Share your energy requirements and we will help you explore suitable products.</p>
-            </article>
+
+        <figure class="yd-why-art" data-reveal>
+            <div class="yd-why-frame">
+                
+            </div>
+            <figcaption>
+                <span>Yunqida</span>
+                <span>Energy Technology Kenya</span>
+            </figcaption>
+        </figure>
+
+        <div class="yd-why-main">
+            <span class="yd-eyebrow">Why Yunqida</span>
+            <h2 id="why-title">Why choose Yunqida.</h2>
+            <p class="yd-why-lead">Energy systems should be chosen around real power requirements, operating conditions and the people who use them.</p>
+
+            <div class="yd-why-grid">
+                <article>
+                    <span class="yd-num">01</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+                    <h3>Purpose-built solutions</h3>
+                    <p>Different applications need different capacities and configurations.</p>
+                </article>
+                <article>
+                    <span class="yd-num">02</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg>
+                    <h3>Technology-led products</h3>
+                    <p>Battery storage, power conversion and integrated energy technologies.</p>
+                </article>
+                <article>
+                    <span class="yd-num">03</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+                    <h3>One integrated range</h3>
+                    <p>Solar, storage and inverters from a single technology provider.</p>
+                </article>
+                <article>
+                    <span class="yd-num">04</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    <h3>Local engagement</h3>
+                    <p>Talk to the Kenyan team about products, requirements and enquiries.</p>
+                </article>
+                <article>
+                    <span class="yd-num">05</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4v-5H4zM10 20h4v-9h-4zM16 20h4V6h-4z"/></svg>
+                    <h3>Scalable applications</h3>
+                    <p>Solutions for residential, commercial and industrial requirements.</p>
+                </article>
+                <article>
+                    <span class="yd-num">06</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
+                    <h3>A simple place to start</h3>
+                    <p>Share your energy requirements and we will help you explore suitable products.</p>
+                </article>
+                <article>
+                    <span class="yd-num">07</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+                    <h3>Built for Kenyan conditions</h3>
+                    <p>Storage and hybrid power designed to keep essential loads running through outages and unstable supply.</p>
+                </article>
+                <article>
+                    <span class="yd-num">08</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+                    <h3>Guidance before you buy</h3>
+                    <p>Clear, honest advice on sizing and configuration, so you invest in the system you need.</p>
+                </article>
+            </div>
+
+            <div class="yd-why-cta">
+                <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Talk to our team</a>
+                <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
+            </div>
         </div>
     </div>
 </section>
@@ -243,14 +295,15 @@ document.documentElement.classList.add('yd-js');
 .page-dark ::selection { background: var(--c-sun); color: var(--c-forest); }
 .page-dark h1, .page-dark h2, .page-dark h3 { font-family: var(--font-display); margin: 0; font-weight: 600; letter-spacing: -.03em; text-wrap: balance; }
 .page-dark p { text-wrap: pretty; }
-.yd-who > *, .yd-why > *, .yd-where > *, .yd-heading > * { min-width: 0; }
+.yd-who > *, .yd-why > *, .yd-where > *, .yd-gal-grid > * { min-width: 0; }
 .page-dark h1, .page-dark h2, .page-dark h3, .page-dark p { overflow-wrap: break-word; }
 .yd-section { padding: 136px 0; }
 .yd-light { background: #fff; }
 .yd-light h2, .yd-light h3, .yd-grey h2, .yd-grey h3 { color: var(--c-forest); }
 .yd-grey { background: var(--c-mist); }
 .yd-dark { background: var(--c-forest); color: #fff; }
-.yd-ink { background: var(--c-forest-2); color: #fff; }
+/* --c-forest-2 is not defined in base.html, so give it a fallback. */
+.yd-ink { background: var(--c-forest-2, #171D24); color: #fff; }
 :focus-visible { outline: 3px solid var(--c-sun); outline-offset: 3px; }
 
 /* Buttons + links */
@@ -267,8 +320,8 @@ document.documentElement.classList.add('yd-js');
 
 /* Hero */
 .yd-hero { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 680px; height: min(940px, 100svh); isolation: isolate; overflow: hidden; background: var(--c-forest); color: #fff; }
-.yd-hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; filter: brightness(1.12) saturate(1.08); }
-.yd-hero-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(15,19,24,.55) 0%, rgba(15,19,24,.12) 42%, rgba(15,19,24,0) 70%), linear-gradient(180deg, rgba(15,19,24,.40) 0%, rgba(15,19,24,0) 20%); }
+.yd-hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: auto; backface-visibility: hidden; transform: translateZ(0); }
+.yd-hero-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(15,19,24,.5) 0%, rgba(15,19,24,.1) 42%, rgba(15,19,24,0) 70%), linear-gradient(180deg, rgba(15,19,24,.36) 0%, rgba(15,19,24,0) 20%); }
 .yd-hero-content { padding-bottom: 72px; }
 .yd-hero h1 { max-width: 900px; font-size: clamp(3rem, 7.4vw, 6.6rem); line-height: .98; letter-spacing: -.045em; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.28); animation: yd-in 1.1s var(--ease) both; }
 .yd-hero-content p { max-width: 500px; margin: 28px 0 38px; font-size: 1.12rem; line-height: 1.7; text-shadow: 0 1px 16px rgba(0,0,0,.35); animation: yd-in 1.1s .12s var(--ease) both; }
@@ -308,6 +361,18 @@ document.documentElement.classList.add('yd-js');
 .yd-js .yd-media img, .yd-js .yd-media svg { clip-path: inset(100% 0 0 0); transform: scale(1.14); will-change: clip-path, transform; transition: clip-path 1.5s var(--ease), transform 2.2s var(--ease); transition-delay: var(--d, 0s); }
 .yd-js .yd-media.is-in img, .yd-js .yd-media.is-in svg { clip-path: inset(0 0 0 0); transform: scale(1); }
 
+/* Gallery: copy left, images right. Two columns at EVERY screen size (mobile = desktop layout). */
+.yd-gal { padding: 96px 0; }
+.yd-gal-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; align-items: start; }
+.yd-gal-copy { position: sticky; top: 110px; }
+.yd-gal-copy h2 { font-size: clamp(1.7rem, 5vw, 3rem); line-height: 1.08; }
+.yd-gal-copy p { margin: 18px 0 26px; color: var(--c-muted); line-height: 1.7; font-size: clamp(.9rem, 2.4vw, 1.05rem); }
+.yd-gal-col { display: flex; flex-direction: column; gap: 20px; }
+.yd-gal-img { width: 100%; background: #E3E6E9; }
+.yd-gal-img.r1 { aspect-ratio: 4 / 5; }
+.yd-gal-img.r2 { aspect-ratio: 1 / 1; }
+.yd-gal-img img { width: 100%; height: 100%; object-fit: cover; }
+
 /* Lenis smooth-scroll support */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
@@ -317,22 +382,40 @@ html.lenis, html.lenis body { height: auto; }
 .yd-build-empty { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; padding: 34px 0; border-top: 1px solid #D7DDD8; border-bottom: 1px solid #D7DDD8; }
 .yd-build-empty p { max-width: 560px; margin: 0; color: var(--c-muted); font-family: var(--font-display); font-size: 1.3rem; line-height: 1.5; }
 
-/* Products + headings */
-.yd-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: 60px; }
-.yd-heading h2 { max-width: 560px; font-size: clamp(1.9rem, 3.2vw, 2.8rem); line-height: 1.15; }
-.yd-products { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px; }
+/* ---------- Why choose us (premium) ---------- */
+.yd-why-sec { position: relative; overflow: hidden; isolation: isolate; }
+.yd-why-glow { position: absolute; z-index: -1; left: -12%; top: 8%; width: 680px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.07), transparent 70%); pointer-events: none; }
+.yd-why { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: 112px; align-items: start; }
 
-/* Why choose us */
-.yd-why { display: grid; grid-template-columns: 1fr 1.9fr; gap: 96px; align-items: start; }
-.yd-why-intro { position: sticky; top: 120px; }
-.yd-why-intro h2 { font-size: clamp(1.9rem, 3.2vw, 2.8rem); line-height: 1.15; color: #fff; }
-.yd-why-intro p { max-width: 360px; margin: 24px 0 0; color: rgba(255,255,255,.7); line-height: 1.8; }
-.yd-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px; }
-.yd-why-grid article { padding: 32px 0 44px; border-top: 1px solid rgba(255,255,255,.16); transition: border-color .3s; }
-.yd-why-grid article:hover { border-top-color: var(--c-sun); }
-.yd-why-grid svg { display: block; width: 30px; height: 30px; margin-bottom: 22px; fill: none; stroke: var(--c-sun); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.yd-why-grid h3 { margin-bottom: 10px; font-size: 1.18rem; color: #fff; letter-spacing: -.02em; }
-.yd-why-grid p { margin: 0; max-width: 320px; font-size: .95rem; line-height: 1.75; color: rgba(255,255,255,.68); }
+/* Artwork: framed, sticky, with a quiet caption */
+.yd-why-art { position: sticky; top: 110px; margin: 0; }
+.yd-why-frame { position: relative; overflow: hidden; background: #0B1115; border: 1px solid rgba(255,255,255,.12); border-radius: 4px; box-shadow: 0 50px 90px -40px rgba(0,0,0,.75), 0 0 0 10px rgba(255,255,255,.025); }
+.yd-why-frame::before { content: ""; position: absolute; z-index: 2; left: 0; top: 0; width: 100%; height: 3px; background: var(--c-sun); }
+.yd-why-frame::after { content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; box-shadow: inset 0 0 70px rgba(0,0,0,.35); }
+/* Force the included SVG to scale fluidly whatever its own width/height attributes say */
+.yd-why-frame svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.yd-why-art figcaption { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.yd-why-art figcaption span:first-child { color: var(--c-sun); }
+.yd-js .yd-why-art .yd-why-frame { opacity: 0; transform: translateY(32px); transition: opacity 1.2s var(--ease), transform 1.6s var(--ease); }
+.yd-js .yd-why-art figcaption { opacity: 0; transition: opacity 1.2s .5s var(--ease); }
+.yd-js .yd-why-art.is-in .yd-why-frame { opacity: 1; transform: none; }
+.yd-js .yd-why-art.is-in figcaption { opacity: 1; }
+
+/* Copy */
+.yd-eyebrow { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--c-sun); }
+.yd-eyebrow::before { content: ""; width: 32px; height: 2px; background: var(--c-sun); }
+.yd-why-main h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -.04em; color: #fff; }
+.yd-why-lead { max-width: 520px; margin: 24px 0 56px; font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,.72); }
+
+.yd-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; counter-reset: none; }
+.yd-why-grid article { position: relative; padding: 28px 0 40px; border-top: 1px solid rgba(255,255,255,.14); transition: border-color .3s; }
+.yd-why-grid article::before { content: ""; position: absolute; left: 0; top: -1px; width: 0; height: 2px; background: var(--c-sun); transition: width .5s var(--ease); }
+.yd-why-grid article:hover::before { width: 100%; }
+.yd-num { position: absolute; right: 0; top: 28px; font-family: var(--font-display); font-size: .8rem; font-weight: 500; letter-spacing: .08em; color: rgba(255,255,255,.32); font-variant-numeric: tabular-nums; }
+.yd-why-grid svg { display: block; width: 30px; height: 30px; margin-bottom: 20px; fill: none; stroke: var(--c-sun); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.yd-why-grid h3 { margin-bottom: 10px; font-size: 1.15rem; color: #fff; letter-spacing: -.02em; }
+.yd-why-grid p { margin: 0; max-width: 320px; font-size: .95rem; line-height: 1.75; color: rgba(255,255,255,.66); }
+.yd-why-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; margin-top: 20px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.14); }
 
 /* Google reviews */
 .yd-rv-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: 56px; }
@@ -350,7 +433,7 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes yd-rv { to { transform: translateX(calc(-50% - 10px)); } }
 .yd-rv-card { display: flex; flex-direction: column; flex: none; width: 380px; margin: 0; padding: 32px 32px 28px; background: #fff; border: 1px solid var(--c-line); border-radius: 2px; transition: box-shadow .35s var(--ease), border-color .35s; }
 .yd-rv-card:hover { border-color: transparent; box-shadow: 0 22px 50px -26px rgba(15,19,24,.35); }
-.yd-rv-card blockquote { flex: 1; margin: 18px 0 26px; font-size: 1rem; line-height: 1.75; color: var(--c-forest); display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.yd-rv-card blockquote { flex: 1; margin: 18px 0 26px; font-size: 1rem; line-height: 1.75; color: var(--c-forest); display: -webkit-box; -webkit-line-clamp: 6; line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
 .yd-rv-card figcaption { display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid var(--c-line); }
 .yd-rv-card figcaption img, .yd-rv-card figcaption i { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
 .yd-rv-card figcaption i { display: grid; place-items: center; font-style: normal; font-family: var(--font-display); font-weight: 600; color: var(--c-forest); background: #E7EAED; }
@@ -392,8 +475,12 @@ html.lenis, html.lenis body { height: auto; }
 .yd-cta .yd-btn-dark:hover { background: #fff; color: var(--c-forest); }
 
 /* Responsive */
+@media (max-width: 1100px) {
+    .yd-why { gap: 64px; }
+}
 @media (max-width: 960px) {
     .yd-section { padding: 88px 0; }
+    .yd-gal { padding: 72px 0; }
     .yd-hero { height: auto; min-height: max(620px, 100svh); }
     .yd-hero-content { padding-top: calc(var(--header-h) + 96px); padding-bottom: 44px; }
     .yd-hero h1 { font-size: clamp(2.6rem, 9vw, 4.4rem); }
@@ -406,8 +493,8 @@ html.lenis, html.lenis body { height: auto; }
     .yd-who { grid-template-columns: 1fr; gap: 28px; margin-bottom: 52px; }
     .yd-trio { grid-template-columns: 1fr; gap: 32px; }
     .yd-why, .yd-where { grid-template-columns: 1fr; gap: 48px; }
-    .yd-why-intro { position: static; }
-    .yd-heading { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 40px; }
+    .yd-why-art { position: static; width: min(420px, 100%); }
+    .yd-why-lead { margin-bottom: 40px; }
     .yd-cta { padding: 88px 0; }
     .yd-cta h2, .yd-cta p, .yd-cta .yd-actions { margin-left: 0; }
     .yd-ring { left: auto; right: -300px; top: auto; bottom: -300px; margin-top: 0; opacity: .6; }
@@ -419,6 +506,10 @@ html.lenis, html.lenis body { height: auto; }
 }
 @media (max-width: 560px) {
     .yd-section { padding: 72px 0; }
+    .yd-gal { padding: 56px 0; }
+    .yd-gal-grid { gap: 16px; }
+    .yd-gal-copy { top: calc(var(--header-h, 70px) + 16px); }
+    .yd-gal-col { gap: 12px; }
     .yd-hero-content { padding-top: calc(var(--header-h) + 88px); }
     .yd-hero-content p { margin: 22px 0 30px; font-size: 1.02rem; }
     .yd-bar-grid span { display: none; }
@@ -427,8 +518,12 @@ html.lenis, html.lenis body { height: auto; }
     .yd-actions { gap: 18px; }
     .yd-btn { width: 100%; justify-content: center; }
     .yd-who h2 { font-size: 2.2rem; }
+    .yd-why-art { width: 100%; }
     .yd-why-grid { grid-template-columns: 1fr; }
-    .yd-why-grid article { padding: 26px 0 32px; }
+    .yd-why-grid article { padding: 24px 0 30px; }
+    .yd-num { top: 24px; }
+    .yd-why-cta { flex-direction: column; align-items: stretch; }
+    .yd-why-cta .yd-textlink { align-self: flex-start; }
     .yd-build-empty { align-items: flex-start; flex-direction: column; }
     .yd-facts > div { grid-template-columns: 1fr; gap: 4px; }
     .yd-map { aspect-ratio: 1 / 1; }
@@ -440,6 +535,8 @@ html.lenis, html.lenis body { height: auto; }
     .yd-js .yd-media img, .yd-js .yd-media svg { clip-path: none; transform: none; transition: none; }
     .yd-rv-track { animation: none; }
     .yd-rv-marquee { overflow-x: auto; }
+    .yd-js .yd-why-art .yd-why-frame, .yd-js .yd-why-art figcaption { opacity: 1; transform: none; transition: none; }
+    .yd-why-grid article::before { transition: none; }
 }
 </style>
 
@@ -503,7 +600,7 @@ html.lenis, html.lenis body { height: auto; }
         rvTrack.style.setProperty('--dur', Math.max(40, half.length * 9) + 's');
     }
 
-    /* Scroll reveal for product rows, photographs and the map */
+    /* Scroll reveal for product rows, photographs (incl. the gallery), the artwork and the map */
     var cards = document.querySelectorAll('[data-reveal-card]');
     if (!reduce && 'IntersectionObserver' in window) {
         var cardObserver = new IntersectionObserver(function (entries) {

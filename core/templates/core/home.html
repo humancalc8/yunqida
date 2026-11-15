@@ -6,6 +6,10 @@
 {% block body_class %}page-dark{% endblock %}
 
 {% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&display=swap" rel="stylesheet">
+
 <script>
 document.documentElement.classList.add('yd-js');
 /* Phones open at 75% zoom by default. Pinch-zoom still works. */
@@ -77,31 +81,54 @@ document.documentElement.classList.add('yd-js');
     </div>
 </section>
 
-<!-- GALLERY: text on the left, a column of images on the right.
-     Same two-column layout on mobile and desktop. Images: static/img/1.png ... 5.png -->
-<section class="yd-section yd-grey yd-gal" id="gallery" aria-label="Our work">
+<!-- GALLERY: copy + index on the left, large uncropped images on the right.
+     Two columns on mobile and desktop. Images: static/img/1.png ... 5.png
+     Tip: export these at 1600px wide or more so they stay crisp on large screens.
+     Edit the captions below to match what each photo really shows. -->
+<section class="yd-section yd-grey yd-gal" id="gallery" aria-labelledby="gal-title">
     <div class="container yd-gal-grid">
         <div class="yd-gal-copy">
-            <h2>Energy, in the field.</h2>
-            <p>Solar, storage and hybrid power systems for Kenyan homes, businesses and industry.</p>
+            <h2 id="gal-title">Power that keeps working, wherever you are.</h2>
+            <p class="yd-gal-intro">From a single home in Nairobi to a busy factory floor, Yunqida systems pair solar generation with lithium storage and hybrid inverters, so essential loads stay on through outages and unstable supply.</p>
+
+            <dl class="yd-gal-facts">
+                <div><dt>Homes</dt><dd>Solar and battery storage that carries lights, fridges and Wi-Fi through the evening and the blackout.</dd></div>
+                <div><dt>Businesses</dt><dd>Hybrid inverters that keep tills, servers and cold rooms running without a generator.</dd></div>
+                <div><dt>Industry</dt><dd>Scalable battery systems sized to the load on site, and expanded as you grow.</dd></div>
+            </dl>
+
+            <ol class="yd-gal-index" aria-label="Jump to a project">
+                <li><a href="#gal-1" data-gal-link="0"><span>1</span>Home solar and storage</a></li>
+                <li><a href="#gal-2" data-gal-link="1"><span>2</span>Commercial backup power</a></li>
+                <li><a href="#gal-3" data-gal-link="2"><span>3</span>Industrial energy systems</a></li>
+                <li><a href="#gal-4" data-gal-link="3"><span>4</span>Lithium battery storage</a></li>
+                <li><a href="#gal-5" data-gal-link="4"><span>5</span>Hybrid inverter installs</a></li>
+            </ol>
+
+            <p class="yd-gal-count" aria-hidden="true"><b id="galNow">1</b> of 5</p>
             <a href="{% url 'products' %}" class="yd-textlink">Explore products</a>
         </div>
 
         <div class="yd-gal-col">
-            <figure class="yd-media yd-gal-img r1" data-reveal>
-                <img src="{% static 'img/1.png' %}" alt="Yunqida energy system 1" loading="lazy" decoding="async">
+            <figure class="yd-gal-img" id="gal-1" data-reveal data-gal-item>
+                <div class="yd-gal-frame"><img src="{% static 'img/1.png' %}" alt="Home solar panels with battery storage installed by Yunqida" decoding="async"></div>
+                <figcaption><strong>Home solar and storage</strong><span>Daytime generation saved for the evening.</span></figcaption>
             </figure>
-            <figure class="yd-media yd-gal-img r2" data-reveal style="--d:.1s">
-                <img src="{% static 'img/2.png' %}" alt="Yunqida energy system 2" loading="lazy" decoding="async">
+            <figure class="yd-gal-img" id="gal-2" data-reveal data-gal-item>
+                <div class="yd-gal-frame"><img src="{% static 'img/2.png' %}" alt="Commercial backup power system by Yunqida" decoding="async"></div>
+                <figcaption><strong>Commercial backup power</strong><span>Shops and offices that stay open through outages.</span></figcaption>
             </figure>
-            <figure class="yd-media yd-gal-img r1" data-reveal>
-                <img src="{% static 'img/3.png' %}" alt="Yunqida energy system 3" loading="lazy" decoding="async">
+            <figure class="yd-gal-img" id="gal-3" data-reveal data-gal-item>
+                <div class="yd-gal-frame"><img src="{% static 'img/3.png' %}" alt="Industrial energy storage system by Yunqida" loading="lazy" decoding="async"></div>
+                <figcaption><strong>Industrial energy systems</strong><span>Capacity built around heavy, continuous loads.</span></figcaption>
             </figure>
-            <figure class="yd-media yd-gal-img r2" data-reveal style="--d:.1s">
-                <img src="{% static 'img/4.png' %}" alt="Yunqida energy system 4" loading="lazy" decoding="async">
+            <figure class="yd-gal-img" id="gal-4" data-reveal data-gal-item>
+                <div class="yd-gal-frame"><img src="{% static 'img/4.png' %}" alt="Yunqida lithium battery storage unit" loading="lazy" decoding="async"></div>
+                <figcaption><strong>Lithium battery storage</strong><span>Compact, long-life storage for every scale.</span></figcaption>
             </figure>
-            <figure class="yd-media yd-gal-img r1" data-reveal>
-                <img src="{% static 'img/5.png' %}" alt="Yunqida energy system 5" loading="lazy" decoding="async">
+            <figure class="yd-gal-img" id="gal-5" data-reveal data-gal-item>
+                <div class="yd-gal-frame"><img src="{% static 'img/5.png' %}" alt="Yunqida hybrid inverter installation" loading="lazy" decoding="async"></div>
+                <figcaption><strong>Hybrid inverter installs</strong><span>Solar, battery and grid managed as one system.</span></figcaption>
             </figure>
         </div>
     </div>
@@ -109,81 +136,50 @@ document.documentElement.classList.add('yd-js');
 
 {% include 'core/_manufacture.html' %}
 
-<!-- WHY CHOOSE US: artwork from core/_why_art.html + reasons -->
+<!-- WHY CHOOSE US: compact, flat, no gradients -->
 <section class="yd-section yd-ink yd-why-sec" id="why-choose-us" aria-labelledby="why-title">
-    <div class="yd-why-glow" aria-hidden="true"></div>
     <div class="container yd-why">
 
-        <figure class="yd-why-art" data-reveal>
-            <div class="yd-why-frame">
-                
-            </div>
-            <figcaption>
-                <span>Yunqida</span>
-                <span>Energy Technology Kenya</span>
-            </figcaption>
-        </figure>
-
         <div class="yd-why-main">
-            <span class="yd-eyebrow">Why Yunqida</span>
             <h2 id="why-title">Why choose Yunqida.</h2>
             <p class="yd-why-lead">Energy systems should be chosen around real power requirements, operating conditions and the people who use them.</p>
-
-            <div class="yd-why-grid">
-                <article>
-                    <span class="yd-num">01</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
-                    <h3>Purpose-built solutions</h3>
-                    <p>Different applications need different capacities and configurations.</p>
-                </article>
-                <article>
-                    <span class="yd-num">02</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg>
-                    <h3>Technology-led products</h3>
-                    <p>Battery storage, power conversion and integrated energy technologies.</p>
-                </article>
-                <article>
-                    <span class="yd-num">03</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>
-                    <h3>One integrated range</h3>
-                    <p>Solar, storage and inverters from a single technology provider.</p>
-                </article>
-                <article>
-                    <span class="yd-num">04</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                    <h3>Local engagement</h3>
-                    <p>Talk to the Kenyan team about products, requirements and enquiries.</p>
-                </article>
-                <article>
-                    <span class="yd-num">05</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4v-5H4zM10 20h4v-9h-4zM16 20h4V6h-4z"/></svg>
-                    <h3>Scalable applications</h3>
-                    <p>Solutions for residential, commercial and industrial requirements.</p>
-                </article>
-                <article>
-                    <span class="yd-num">06</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>
-                    <h3>A simple place to start</h3>
-                    <p>Share your energy requirements and we will help you explore suitable products.</p>
-                </article>
-                <article>
-                    <span class="yd-num">07</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-                    <h3>Built for Kenyan conditions</h3>
-                    <p>Storage and hybrid power designed to keep essential loads running through outages and unstable supply.</p>
-                </article>
-                <article>
-                    <span class="yd-num">08</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
-                    <h3>Guidance before you buy</h3>
-                    <p>Clear, honest advice on sizing and configuration, so you invest in the system you need.</p>
-                </article>
-            </div>
-
             <div class="yd-why-cta">
                 <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Talk to our team</a>
                 <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
             </div>
+        </div>
+
+        <div class="yd-why-grid">
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span>
+                <h3>Purpose-built and scalable</h3>
+                <p>Capacities and configurations matched to homes, businesses and industry.</p>
+            </article>
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
+                <h3>Technology-led products</h3>
+                <p>Battery storage, power conversion and integrated energy technologies.</p>
+            </article>
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></svg></span>
+                <h3>One integrated range</h3>
+                <p>Solar, storage and inverters from a single technology provider.</p>
+            </article>
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                <h3>Local Kenyan team</h3>
+                <p>Talk to people in Kenya about products, requirements and enquiries.</p>
+            </article>
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
+                <h3>Built for Kenyan conditions</h3>
+                <p>Keeps essential loads running through outages and unstable supply.</p>
+            </article>
+            <article>
+                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L3 21l1.9-6.4A8 8 0 1121 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg></span>
+                <h3>Guidance before you buy</h3>
+                <p>Honest advice on sizing and configuration, so you invest in what you need.</p>
+            </article>
         </div>
     </div>
 </section>
@@ -354,68 +350,70 @@ document.documentElement.classList.add('yd-js');
 .yd-trio h3 { margin-bottom: 8px; font-size: 1.18rem; letter-spacing: -.02em; }
 .yd-trio p { margin: 0; color: var(--c-muted); line-height: 1.7; }
 
-/* Image reveal: the frame stays put; the photo (or map) wipes up inside it */
+/* Image reveal used by the map: the frame stays put; the map wipes up inside it */
 .yd-media { margin: 0; overflow: hidden; background: #2A323C; border-radius: 2px; }
 .yd-light .yd-media { background: #E3E6E9; }
 .yd-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .yd-js .yd-media img, .yd-js .yd-media svg { clip-path: inset(100% 0 0 0); transform: scale(1.14); will-change: clip-path, transform; transition: clip-path 1.5s var(--ease), transform 2.2s var(--ease); transition-delay: var(--d, 0s); }
 .yd-js .yd-media.is-in img, .yd-js .yd-media.is-in svg { clip-path: inset(0 0 0 0); transform: scale(1); }
 
-/* Gallery: copy left, images right. Two columns at EVERY screen size (mobile = desktop layout). */
-.yd-gal { padding: 96px 0; }
-.yd-gal-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px; align-items: start; }
+/* ---------- Gallery: editorial serif + clean sans, copy left, large images right ----------
+   Two columns at EVERY screen size (mobile = desktop layout).
+   Images keep their natural proportions (no cropping, no up-scaling blur). */
+.yd-gal { --gal-serif: 'Fraunces', Georgia, 'Times New Roman', serif; --gal-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; padding: 112px 0; font-family: var(--gal-sans); }
+.yd-gal-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: clamp(16px, 4vw, 80px); align-items: start; }
 .yd-gal-copy { position: sticky; top: 110px; }
-.yd-gal-copy h2 { font-size: clamp(1.7rem, 5vw, 3rem); line-height: 1.08; }
-.yd-gal-copy p { margin: 18px 0 26px; color: var(--c-muted); line-height: 1.7; font-size: clamp(.9rem, 2.4vw, 1.05rem); }
-.yd-gal-col { display: flex; flex-direction: column; gap: 20px; }
-.yd-gal-img { width: 100%; background: #E3E6E9; }
-.yd-gal-img.r1 { aspect-ratio: 4 / 5; }
-.yd-gal-img.r2 { aspect-ratio: 1 / 1; }
-.yd-gal-img img { width: 100%; height: 100%; object-fit: cover; }
+.yd-gal .yd-gal-copy h2 { font-family: var(--gal-serif); font-weight: 400; font-variation-settings: "opsz" 144; font-size: clamp(1.45rem, 3.9vw, 3.1rem); line-height: 1.08; letter-spacing: -.025em; }
+.yd-gal-intro { margin: 22px 0 30px; max-width: 440px; font-size: clamp(.82rem, 1.9vw, 1.05rem); line-height: 1.75; color: var(--c-muted); }
+.yd-gal-facts { margin: 0 0 30px; max-width: 440px; border-top: 1px solid var(--c-line); }
+.yd-gal-facts > div { display: grid; grid-template-columns: 96px 1fr; gap: 18px; padding: 15px 0; border-bottom: 1px solid var(--c-line); }
+.yd-gal-facts dt { font-family: var(--gal-serif); font-style: italic; font-weight: 400; font-size: 1.12rem; color: var(--c-forest); }
+.yd-gal-facts dd { margin: 0; font-size: .9rem; line-height: 1.6; color: var(--c-muted); }
+
+/* Index: shows which image is in view and jumps to it */
+.yd-gal-index { display: flex; flex-direction: column; gap: 2px; margin: 0 0 26px; padding: 0; list-style: none; }
+.yd-gal-index a { display: flex; align-items: baseline; gap: 14px; padding: 7px 0 7px 16px; border-left: 2px solid var(--c-line); font-size: .92rem; color: var(--c-muted); text-decoration: none; transition: color .3s, border-color .3s, padding-left .4s var(--ease); }
+.yd-gal-index a span { min-width: 12px; font-family: var(--gal-serif); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.yd-gal-index a:hover { color: var(--c-forest); }
+.yd-gal-index a.is-active { padding-left: 22px; border-left-color: var(--c-sun); color: var(--c-forest); font-weight: 600; }
+.yd-gal-count { display: none; margin: 0 0 18px; font-family: var(--gal-serif); font-size: .95rem; color: var(--c-muted); }
+.yd-gal-count b { font-weight: 500; color: var(--c-forest); font-variant-numeric: tabular-nums; }
+
+/* Images */
+.yd-gal-col { display: flex; flex-direction: column; gap: clamp(28px, 5vw, 72px); }
+.yd-gal-img { margin: 0; }
+.yd-gal-frame { position: relative; overflow: hidden; background: #E3E6E9; border-radius: 4px; box-shadow: 0 34px 60px -38px rgba(15,19,24,.5); }
+.yd-gal-frame img { display: block; width: 100%; height: auto; image-rendering: auto; }
+.yd-gal-img figcaption { display: flex; flex-direction: column; gap: 3px; margin-top: 14px; padding-left: 12px; border-left: 2px solid var(--c-sun); }
+.yd-gal-img figcaption strong { font-family: var(--gal-serif); font-weight: 400; font-size: clamp(.9rem, 1.8vw, 1.3rem); letter-spacing: -.01em; color: var(--c-forest); }
+.yd-gal-img figcaption span { font-size: clamp(.72rem, 1.4vw, .9rem); line-height: 1.5; color: var(--c-muted); }
+
+/* Reveal on scroll: the card fades and glides up, the photo settles from a slight zoom to exactly 1:1.
+   No clip-path and no lingering will-change, so the final image is pin-sharp. */
+.yd-js .yd-gal-img { opacity: 0; transform: translate3d(0, 72px, 0); transition: opacity 1.3s var(--ease), transform 1.7s var(--ease); }
+.yd-js .yd-gal-img .yd-gal-frame img { transform: scale(1.1); transition: transform 2.6s var(--ease); }
+.yd-js .yd-gal-img figcaption { opacity: 0; transform: translateY(14px); transition: opacity 1s .45s var(--ease), transform 1.2s .45s var(--ease); }
+.yd-js .yd-gal-img.is-in { opacity: 1; transform: none; }
+.yd-js .yd-gal-img.is-in .yd-gal-frame img { transform: none; }
+.yd-js .yd-gal-img.is-in figcaption { opacity: 1; transform: none; }
 
 /* Lenis smooth-scroll support */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* Empty state (used by What we produce) */
-.yd-build-empty { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; padding: 34px 0; border-top: 1px solid #D7DDD8; border-bottom: 1px solid #D7DDD8; }
-.yd-build-empty p { max-width: 560px; margin: 0; color: var(--c-muted); font-family: var(--font-display); font-size: 1.3rem; line-height: 1.5; }
-
-/* ---------- Why choose us (premium) ---------- */
-.yd-why-sec { position: relative; overflow: hidden; isolation: isolate; }
-.yd-why-glow { position: absolute; z-index: -1; left: -12%; top: 8%; width: 680px; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,.07), transparent 70%); pointer-events: none; }
-.yd-why { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); gap: 112px; align-items: start; }
-
-/* Artwork: framed, sticky, with a quiet caption */
-.yd-why-art { position: sticky; top: 110px; margin: 0; }
-.yd-why-frame { position: relative; overflow: hidden; background: #0B1115; border: 1px solid rgba(255,255,255,.12); border-radius: 4px; box-shadow: 0 50px 90px -40px rgba(0,0,0,.75), 0 0 0 10px rgba(255,255,255,.025); }
-.yd-why-frame::before { content: ""; position: absolute; z-index: 2; left: 0; top: 0; width: 100%; height: 3px; background: var(--c-sun); }
-.yd-why-frame::after { content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; box-shadow: inset 0 0 70px rgba(0,0,0,.35); }
-/* Force the included SVG to scale fluidly whatever its own width/height attributes say */
-.yd-why-frame svg { display: block; width: 100%; height: auto; max-width: 100%; }
-.yd-why-art figcaption { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; font-size: .78rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.5); }
-.yd-why-art figcaption span:first-child { color: var(--c-sun); }
-.yd-js .yd-why-art .yd-why-frame { opacity: 0; transform: translateY(32px); transition: opacity 1.2s var(--ease), transform 1.6s var(--ease); }
-.yd-js .yd-why-art figcaption { opacity: 0; transition: opacity 1.2s .5s var(--ease); }
-.yd-js .yd-why-art.is-in .yd-why-frame { opacity: 1; transform: none; }
-.yd-js .yd-why-art.is-in figcaption { opacity: 1; }
-
-/* Copy */
-.yd-eyebrow { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 22px; font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--c-sun); }
-.yd-eyebrow::before { content: ""; width: 32px; height: 2px; background: var(--c-sun); }
-.yd-why-main h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -.04em; color: #fff; }
-.yd-why-lead { max-width: 520px; margin: 24px 0 56px; font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,.72); }
-
-.yd-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; counter-reset: none; }
-.yd-why-grid article { position: relative; padding: 28px 0 40px; border-top: 1px solid rgba(255,255,255,.14); transition: border-color .3s; }
-.yd-why-grid article::before { content: ""; position: absolute; left: 0; top: -1px; width: 0; height: 2px; background: var(--c-sun); transition: width .5s var(--ease); }
-.yd-why-grid article:hover::before { width: 100%; }
-.yd-num { position: absolute; right: 0; top: 28px; font-family: var(--font-display); font-size: .8rem; font-weight: 500; letter-spacing: .08em; color: rgba(255,255,255,.32); font-variant-numeric: tabular-nums; }
-.yd-why-grid svg { display: block; width: 30px; height: 30px; margin-bottom: 20px; fill: none; stroke: var(--c-sun); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-.yd-why-grid h3 { margin-bottom: 10px; font-size: 1.15rem; color: #fff; letter-spacing: -.02em; }
-.yd-why-grid p { margin: 0; max-width: 320px; font-size: .95rem; line-height: 1.75; color: rgba(255,255,255,.66); }
-.yd-why-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 32px; margin-top: 20px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.14); }
+/* ---------- Why choose us: compact, flat ---------- */
+.yd-why-sec { padding: 96px 0; }
+.yd-why { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 80px; align-items: start; }
+.yd-why-main h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); line-height: 1.08; letter-spacing: -.04em; color: #fff; }
+.yd-why-lead { max-width: 380px; margin: 20px 0 32px; font-size: 1.02rem; line-height: 1.75; color: rgba(255,255,255,.72); }
+.yd-why-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+.yd-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 32px; }
+.yd-why-grid article { padding-top: 22px; border-top: 1px solid rgba(255,255,255,.16); }
+.yd-why-ico { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; }
+.yd-why-ico svg { width: 22px; height: 22px; fill: none; stroke: var(--c-sun); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.yd-why-grid h3 { margin-bottom: 8px; font-size: 1.05rem; color: #fff; letter-spacing: -.015em; }
+.yd-why-grid p { margin: 0; font-size: .9rem; line-height: 1.65; color: rgba(255,255,255,.66); }
 
 /* Google reviews */
 .yd-rv-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: 56px; }
@@ -476,11 +474,13 @@ html.lenis, html.lenis body { height: auto; }
 
 /* Responsive */
 @media (max-width: 1100px) {
-    .yd-why { gap: 64px; }
+    .yd-why { gap: 56px; }
+    .yd-why-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 960px) {
     .yd-section { padding: 88px 0; }
     .yd-gal { padding: 72px 0; }
+    .yd-why-sec { padding: 72px 0; }
     .yd-hero { height: auto; min-height: max(620px, 100svh); }
     .yd-hero-content { padding-top: calc(var(--header-h) + 96px); padding-bottom: 44px; }
     .yd-hero h1 { font-size: clamp(2.6rem, 9vw, 4.4rem); }
@@ -492,12 +492,14 @@ html.lenis, html.lenis body { height: auto; }
 
     .yd-who { grid-template-columns: 1fr; gap: 28px; margin-bottom: 52px; }
     .yd-trio { grid-template-columns: 1fr; gap: 32px; }
-    .yd-why, .yd-where { grid-template-columns: 1fr; gap: 48px; }
-    .yd-why-art { position: static; width: min(420px, 100%); }
-    .yd-why-lead { margin-bottom: 40px; }
+    .yd-why, .yd-where { grid-template-columns: 1fr; gap: 44px; }
+    .yd-why-lead { margin-bottom: 28px; }
     .yd-cta { padding: 88px 0; }
     .yd-cta h2, .yd-cta p, .yd-cta .yd-actions { margin-left: 0; }
     .yd-ring { left: auto; right: -300px; top: auto; bottom: -300px; margin-top: 0; opacity: .6; }
+
+    .yd-gal-facts, .yd-gal-index { display: none; }
+    .yd-gal-count { display: block; }
 
     .yd-rv-head { flex-direction: column; align-items: flex-start; gap: 28px; margin-bottom: 36px; }
     .yd-rv-score { padding-left: 0; border-left: 0; }
@@ -507,9 +509,12 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 560px) {
     .yd-section { padding: 72px 0; }
     .yd-gal { padding: 56px 0; }
-    .yd-gal-grid { gap: 16px; }
+    .yd-gal-grid { grid-template-columns: minmax(0, .72fr) minmax(0, 1.4fr); gap: 14px; }
     .yd-gal-copy { top: calc(var(--header-h, 70px) + 16px); }
-    .yd-gal-col { gap: 12px; }
+    .yd-gal-intro { margin: 14px 0 18px; line-height: 1.6; }
+    .yd-gal-col { gap: 24px; }
+    .yd-gal-frame { border-radius: 3px; }
+    .yd-gal-img figcaption { margin-top: 10px; padding-left: 8px; }
     .yd-hero-content { padding-top: calc(var(--header-h) + 88px); }
     .yd-hero-content p { margin: 22px 0 30px; font-size: 1.02rem; }
     .yd-bar-grid span { display: none; }
@@ -518,13 +523,9 @@ html.lenis, html.lenis body { height: auto; }
     .yd-actions { gap: 18px; }
     .yd-btn { width: 100%; justify-content: center; }
     .yd-who h2 { font-size: 2.2rem; }
-    .yd-why-art { width: 100%; }
-    .yd-why-grid { grid-template-columns: 1fr; }
-    .yd-why-grid article { padding: 24px 0 30px; }
-    .yd-num { top: 24px; }
+    .yd-why-grid { grid-template-columns: 1fr; gap: 28px; }
     .yd-why-cta { flex-direction: column; align-items: stretch; }
     .yd-why-cta .yd-textlink { align-self: flex-start; }
-    .yd-build-empty { align-items: flex-start; flex-direction: column; }
     .yd-facts > div { grid-template-columns: 1fr; gap: 4px; }
     .yd-map { aspect-ratio: 1 / 1; }
     .yd-map-label { font-size: .8rem; padding: 8px 12px; }
@@ -533,10 +534,10 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
     .yd-hero h1, .yd-hero-content p, .yd-hero .yd-actions, .yd-pin i { animation: none; }
     .yd-js .yd-media img, .yd-js .yd-media svg { clip-path: none; transform: none; transition: none; }
+    .yd-js .yd-gal-img, .yd-js .yd-gal-img .yd-gal-frame img, .yd-js .yd-gal-img figcaption { opacity: 1; transform: none; transition: none; }
+    .yd-gal-index a { transition: none; }
     .yd-rv-track { animation: none; }
     .yd-rv-marquee { overflow-x: auto; }
-    .yd-js .yd-why-art .yd-why-frame, .yd-js .yd-why-art figcaption { opacity: 1; transform: none; transition: none; }
-    .yd-why-grid article::before { transition: none; }
 }
 </style>
 
@@ -600,7 +601,25 @@ html.lenis, html.lenis body { height: auto; }
         rvTrack.style.setProperty('--dur', Math.max(40, half.length * 9) + 's');
     }
 
-    /* Scroll reveal for product rows, photographs (incl. the gallery), the artwork and the map */
+    /* Gallery index: highlight the image nearest the middle of the screen */
+    var galItems = document.querySelectorAll('[data-gal-item]');
+    var galLinks = document.querySelectorAll('[data-gal-link]');
+    var galNow = document.getElementById('galNow');
+    if (galItems.length && 'IntersectionObserver' in window) {
+        var setActive = function (i) {
+            galLinks.forEach(function (l) { l.classList.toggle('is-active', +l.getAttribute('data-gal-link') === i); });
+            if (galNow) galNow.textContent = i + 1;
+        };
+        setActive(0);
+        var galIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) setActive(Array.prototype.indexOf.call(galItems, e.target));
+            });
+        }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+        galItems.forEach(function (el) { galIO.observe(el); });
+    }
+
+    /* Scroll reveal for product rows (if present) */
     var cards = document.querySelectorAll('[data-reveal-card]');
     if (!reduce && 'IntersectionObserver' in window) {
         var cardObserver = new IntersectionObserver(function (entries) {
@@ -616,11 +635,13 @@ html.lenis, html.lenis body { height: auto; }
         cards.forEach(function (card) { card.classList.add('is-visible'); });
     }
 
+    /* Scroll reveal for the gallery and the map.
+       Low threshold so tall gallery images begin revealing as soon as they enter view. */
     var items = document.querySelectorAll('[data-reveal]');
     if (reduce || !('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
     var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
     items.forEach(function (el) { io.observe(el); });
 })();
 </script>

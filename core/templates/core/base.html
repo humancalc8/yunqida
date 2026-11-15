@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}{% url 'services' as services_url %}{% url 'works' as works_url %}{% url 'news' as news_url %}{% url 'faq' as faq_url %}{% url 'search' as search_url %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,7 +9,7 @@
     <meta name="keywords" content="{% block meta_keywords %}solar power systems Kenya, lithium batteries Kenya, hybrid inverter Kenya, LiFePO4 battery, solar energy storage Nairobi, home battery backup, commercial solar storage, off-grid solar, Yunqida Energy Kenya{% endblock %}">
     <meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1{% endblock %}">
     <meta name="author" content="Yunqida Energy Technology Kenya">
-    <meta name="theme-color" content="#0F1318">
+    <meta name="theme-color" content="#23262B">
     <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
     <link rel="alternate" hreflang="en-ke" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
     <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
@@ -46,9 +46,12 @@
                 "address": { "@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE" },
                 "areaServed": { "@type": "Country", "name": "Kenya" },
                 "knowsAbout": ["Solar power systems", "Lithium batteries", "LiFePO4 batteries", "Hybrid inverters", "Home battery backup", "Commercial and industrial energy storage", "Off-grid solar"]
-                {# Add these once you have them, each preceded by a comma:
-                   "telephone": "+254...", "email": "info@...", "sameAs": ["https://www.facebook.com/...", "https://www.linkedin.com/company/..."]
-                   and a street address inside "address" ("streetAddress", "postalCode"). #}
+                {% comment %}
+                Add these once you have them, each preceded by a comma:
+                "telephone": "+254...", "email": "info@...",
+                "sameAs": ["https://www.facebook.com/yunqidaenergyke", "https://www.instagram.com/yunqidaenergyke", "https://www.tiktok.com/@yunqidaenergyke"]
+                and a street address inside "address" ("streetAddress", "postalCode").
+                {% endcomment %}
             },
             {
                 "@type": "WebSite",
@@ -56,7 +59,12 @@
                 "url": "{{ request.scheme }}://{{ request.get_host }}/",
                 "name": "Yunqida Energy Technology Kenya",
                 "inLanguage": "en-KE",
-                "publisher": { "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization" }
+                "publisher": { "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization" },
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "{{ request.scheme }}://{{ request.get_host }}{% firstof search_url '/search/' %}?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
             }
         ]
     }
@@ -66,6 +74,7 @@
     <style>
     :root {
         --c-forest: #0F1318;
+        --c-header: #23262B;
         --c-emerald: #14A090;
         --c-sun: #F28C0F;
         --c-sun-hover: #FFA43A;
@@ -84,54 +93,79 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); -webkit-text-size-adjust: 100%; }
     body { margin: 0; font-family: var(--font-body); font-size: 16px; color: var(--c-ink); background: #fff; line-height: 1.65; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-    body.nav-open { overflow: hidden; }
+    body.nav-open, body.search-open { overflow: hidden; }
     img, video { max-width: 100%; }
     a { color: inherit; }
+    button { font: inherit; }
     ::selection { background: var(--c-sun); color: var(--c-forest); }
     .container { width: min(1200px, calc(100% - 48px)); margin-inline: auto; }
     .skip-link { position: absolute; left: -999px; top: 8px; z-index: 2000; padding: 10px 16px; background: var(--c-sun); color: var(--c-forest); border-radius: 8px; font-weight: 600; }
     .skip-link:focus { left: 8px; }
-    a:focus-visible, button:focus-visible { outline: 2px solid var(--c-sun); outline-offset: 3px; border-radius: 6px; }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--c-sun); outline-offset: 3px; border-radius: 6px; }
 
-    /* icons come from the sprite at the top of <body> */
-    .ico { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    /* Icons: one family, one grid (24), one stroke weight. Sprite sits at the top of <body>.
+       No hover spin or bounce; icons only change colour. */
+    .ico { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* ---------- header ---------- */
-    .site-header { position: sticky; top: 0; z-index: 100; height: var(--header-h); background: rgba(255,255,255,.92); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--c-line); transition: background-color .3s, border-color .3s, box-shadow .3s; }
-    .page-home .site-header, .page-dark .site-header { position: fixed; inset: 0 0 auto 0; background: transparent; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
-    .page-home .site-header.is-scrolled { background: rgba(255,255,255,.94); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-color: var(--c-line); box-shadow: 0 10px 30px -20px rgba(15,19,24,.35); }
-    .page-dark .site-header.is-scrolled { background: rgba(15,19,24,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: rgba(255,255,255,.08); }
+    /* ---------- header: solid dark bar, white links, orange underline ---------- */
+    .site-header { position: sticky; top: 0; z-index: 100; height: var(--header-h); background: var(--c-header); border-bottom: 1px solid rgba(255,255,255,.06); transition: box-shadow .3s; }
+    .page-home .site-header, .page-dark .site-header { position: fixed; inset: 0 0 auto 0; }
+    .site-header.is-scrolled { box-shadow: 0 12px 30px -18px rgba(0,0,0,.65); }
     .header-inner { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 24px; }
 
-    .brand { display: inline-flex; align-items: center; text-decoration: none; }
+    .brand { display: inline-flex; flex-shrink: 0; align-items: center; text-decoration: none; }
     .brand img { display: block; height: 38px; width: auto; }
-    .logo-light { display: none !important; }
-    .page-dark .site-header .logo-color { display: none; }
-    .page-dark .site-header .logo-light { display: block !important; }
 
-    /* desktop nav */
-    .nav { display: flex; align-items: center; gap: 2px; }
-    .nav a:not(.btn-nav) { position: relative; display: inline-flex; align-items: center; gap: 12px; padding: 10px 13px; text-decoration: none; font-size: .92rem; font-weight: 500; letter-spacing: .005em; color: var(--c-ink); transition: color .2s; }
-    .nav a:not(.btn-nav) .ico { display: none; }
-    .nav a:not(.btn-nav)::after { content: ""; position: absolute; left: 13px; right: 13px; bottom: 4px; height: 2px; border-radius: 2px; background: var(--c-sun); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
-    .nav a:not(.btn-nav):hover::after, .nav a.is-active::after { transform: scaleX(1); }
-    .nav a.is-active { font-weight: 600; }
-    .page-home .site-header:not(.is-scrolled) .nav a:not(.btn-nav),
-    .page-dark .nav a:not(.btn-nav) { color: #fff; }
-
-    .btn-nav { display: inline-flex; align-items: center; gap: 10px; margin-left: 14px; padding: 11px 24px; border-radius: 999px; text-decoration: none; font-family: var(--font-display); font-size: .9rem; font-weight: 600; background: var(--c-sun); color: var(--c-forest); box-shadow: 0 8px 20px -10px rgba(242,140,15,.75); transition: background-color .2s, transform .2s var(--ease), box-shadow .2s; }
-    .btn-nav:hover { background: var(--c-sun-hover); transform: translateY(-1px); box-shadow: 0 12px 24px -10px rgba(242,140,15,.8); }
-    .btn-nav .ico { display: none; }
+    /* desktop nav: plain text links, never wrapping */
+    .nav { display: flex; flex-shrink: 0; align-items: center; gap: 2px; margin-left: auto; white-space: nowrap; }
+    .nav-link { display: inline-flex; align-items: center; padding: 10px 12px; text-decoration: none; font-size: .92rem; font-weight: 500; letter-spacing: .005em; color: #fff; transition: color .2s; }
+    .nav-text { position: relative; display: inline-block; }
+    .nav-text::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 2px; border-radius: 2px; background: var(--c-sun); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+    .nav-link:hover .nav-text::after, .nav-link.is-active .nav-text::after { transform: scaleX(1); }
+    .nav-link.is-active { font-weight: 600; }
 
     .nav-head { display: none; }
-    .nav-toggle { display: none; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; color: var(--c-forest); transition: background-color .2s; }
-    .nav-toggle:hover { background: rgba(15,19,24,.06); }
-    .nav-toggle .ico { width: 26px; height: 26px; }
-    .page-home .site-header:not(.is-scrolled) .nav-toggle, .page-dark .nav-toggle { color: #fff; }
-    .page-home .site-header:not(.is-scrolled) .nav-toggle:hover, .page-dark .nav-toggle:hover { background: rgba(255,255,255,.12); }
 
-    .nav-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(15,19,24,.55); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+    /* header tools: search + menu toggle */
+    .header-tools { display: flex; flex-shrink: 0; align-items: center; gap: 4px; }
+    .icon-btn { display: inline-grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: #fff; cursor: pointer; transition: background-color .2s, color .2s; }
+    .icon-btn:hover { background: rgba(255,255,255,.1); color: var(--c-sun); }
+    .nav-toggle { display: none; }
+    .nav-toggle .ico { width: 24px; height: 24px; }
+
+    .nav-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(15,19,24,.6); opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
     .nav-backdrop.is-visible { opacity: 1; visibility: visible; }
+
+    /* ---------- social handles: plain glyphs, no circles ---------- */
+    .nav-social { display: flex; flex-shrink: 0; align-items: center; margin-left: 12px; padding-left: 16px; border-left: 1px solid rgba(255,255,255,.18); }
+    .nav-social-title { display: none; }
+    .nav-social-list { display: flex; align-items: center; gap: 2px; }
+    .social-link { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: rgba(255,255,255,.78); text-decoration: none; transition: color .2s, background-color .2s; }
+    .social-link .ico { width: 19px; height: 19px; }
+    .social-link:hover { color: var(--c-sun); background: rgba(255,255,255,.08); }
+    .social-label { display: none; }
+
+    /* ---------- search panel ---------- */
+    .search-backdrop { position: fixed; inset: 0; z-index: 95; background: rgba(15,19,24,.6); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+    .search-backdrop.is-visible { opacity: 1; visibility: visible; }
+    .search-panel { position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 99; background: var(--c-header); border-top: 1px solid rgba(255,255,255,.08); box-shadow: 0 30px 50px -28px rgba(0,0,0,.7); padding: 28px 0 32px; transform: translateY(-8px); opacity: 0; visibility: hidden; transition: transform .3s var(--ease), opacity .25s, visibility 0s linear .3s; }
+    .search-open .search-panel { transform: none; opacity: 1; visibility: visible; transition: transform .3s var(--ease), opacity .25s; }
+    .search-panel-inner { width: min(760px, calc(100% - 32px)); margin-inline: auto; }
+    .search-form { position: relative; display: flex; align-items: center; background: #fff; border-radius: 12px; box-shadow: 0 0 0 2px transparent; transition: box-shadow .2s; }
+    .search-form:focus-within { box-shadow: 0 0 0 2px var(--c-sun); }
+    .search-form > .ico { position: absolute; left: 18px; width: 20px; height: 20px; color: var(--c-muted); pointer-events: none; }
+    .search-input { flex: 1; min-width: 0; height: 56px; padding: 0 12px 0 52px; border: 0; background: transparent; font: inherit; font-size: 1.02rem; color: var(--c-ink); outline: none; -webkit-appearance: none; appearance: none; }
+    .search-input::placeholder { color: #8A939C; }
+    .search-input::-webkit-search-cancel-button { display: none; }
+    .search-submit { flex-shrink: 0; height: 40px; margin-right: 8px; padding: 0 20px; border: 0; border-radius: 8px; background: var(--c-sun); color: var(--c-forest); font-family: var(--font-display); font-size: .9rem; font-weight: 600; cursor: pointer; transition: background-color .2s; }
+    .search-submit:hover { background: var(--c-sun-hover); }
+    .search-hint { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 14px; font-size: .8rem; color: rgba(255,255,255,.5); }
+    .search-hint kbd { display: inline-block; min-width: 20px; padding: 1px 6px; border: 1px solid rgba(255,255,255,.25); border-radius: 4px; font: inherit; font-size: .74rem; text-align: center; color: rgba(255,255,255,.75); }
+    .search-suggest { margin-top: 22px; }
+    .search-suggest-title { display: block; margin-bottom: 10px; font-family: var(--font-display); font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+    .search-suggest ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .search-suggest a { display: inline-block; padding: 7px 14px; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; font-size: .88rem; color: #fff; text-decoration: none; transition: border-color .2s, color .2s, background-color .2s; }
+    .search-suggest a:hover { border-color: var(--c-sun); color: var(--c-sun); background: rgba(242,140,15,.08); }
 
     /* ---------- messages ---------- */
     .messages { position: fixed; top: calc(var(--header-h) + 12px); right: 24px; z-index: 150; display: grid; gap: 10px; max-width: min(420px, calc(100% - 32px)); }
@@ -148,10 +182,29 @@
     .footer-about { max-width: 340px; margin: 0; font-size: .94rem; line-height: 1.8; }
     .site-footer h4 { margin: 0 0 18px; font-family: var(--font-display); font-size: 1rem; font-weight: 600; letter-spacing: .01em; color: #fff; }
     .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-    .site-footer li a { display: inline-block; text-decoration: none; font-size: .93rem; transition: color .2s, transform .2s var(--ease); }
-    .site-footer li a:hover { color: var(--c-sun); transform: translateX(3px); }
-    .footer-cta { display: inline-block; margin-top: 22px; padding: 13px 26px; border-radius: 999px; background: var(--c-sun); color: var(--c-forest); font-family: var(--font-display); font-weight: 600; font-size: .92rem; text-decoration: none; transition: background-color .2s, transform .2s var(--ease); }
+    .site-footer li a { display: inline-block; text-decoration: none; font-size: .93rem; transition: color .2s; }
+    .site-footer li a:hover { color: var(--c-sun); }
+    .footer-cta { display: inline-flex; align-items: center; gap: 10px; margin-top: 22px; padding: 13px 26px; border-radius: 999px; background: var(--c-sun); color: var(--c-forest); font-family: var(--font-display); font-weight: 600; font-size: .92rem; text-decoration: none; transition: background-color .2s, transform .2s var(--ease); }
+    .footer-cta .ico { width: 16px; height: 16px; stroke-width: 2; transition: transform .25s var(--ease); }
     .footer-cta:hover { background: var(--c-sun-hover); transform: translateY(-1px); }
+    .footer-cta:hover .ico { transform: translate(2px, -2px); }
+
+    /* footer social: a plain directory of rows */
+    .footer-social { display: grid; grid-template-columns: minmax(180px, 1fr) 2.6fr; gap: 24px 56px; padding: 44px 0 52px; border-top: 1px solid rgba(255,255,255,.1); }
+    .footer-social h4 { margin: 0 0 8px; }
+    .footer-social-intro p { margin: 0; max-width: 260px; font-size: .9rem; line-height: 1.7; }
+    .site-footer .footer-social-list { grid-template-columns: 1fr 1fr; column-gap: 48px; row-gap: 0; align-content: start; }
+    .site-footer .footer-social-list li { border-top: 1px solid rgba(255,255,255,.12); }
+    .site-footer .social-row { display: grid; grid-template-columns: 22px 1fr auto 16px; align-items: center; gap: 16px; padding: 16px 0; color: #fff; transition: color .25s; }
+    .site-footer .social-row:hover { color: var(--c-sun); }
+    .social-row > .ico { width: 20px; height: 20px; color: rgba(255,255,255,.7); transition: color .25s; }
+    .social-row:hover > .ico { color: var(--c-sun); }
+    .social-row-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; letter-spacing: -.005em; }
+    .social-row-handle { font-size: .86rem; color: rgba(255,255,255,.5); text-align: right; transition: color .25s; }
+    .site-footer .social-row:hover .social-row-handle { color: rgba(255,255,255,.85); }
+    .social-row .arrow { width: 15px; height: 15px; opacity: .4; transition: transform .3s var(--ease), opacity .25s; }
+    .social-row:hover .arrow { opacity: 1; transform: translate(2px, -2px); }
+
     .footer-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 24px 0 calc(24px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(255,255,255,.1); font-size: .85rem; color: rgba(255,255,255,.5); }
 
     /* ---------- what we manufacture ---------- */
@@ -221,50 +274,71 @@
         .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-desktop), minmax(0, 1fr)); }
     }
 
-    /* ---------- mobile: nav becomes a drawer sliding in from the right ---------- */
-    @media (max-width: 1080px) {
-        /* backdrop-filter would trap the fixed drawer inside the header */
-        .site-header, .page-home .site-header.is-scrolled, .page-dark .site-header.is-scrolled { backdrop-filter: none; -webkit-backdrop-filter: none; }
-        .site-header { background: #fff; }
-        .page-home .site-header, .page-dark .site-header { background: transparent; }
-        .page-home .site-header.is-scrolled { background: #fff; }
-        .page-dark .site-header.is-scrolled { background: var(--c-forest); }
+    /* ---------- desktop (wide enough for every link on one row) ---------- */
+    @media (min-width: 1241px) {
+        .site-header .header-inner { width: min(1320px, calc(100% - 48px)); }
+        .header-tools { margin-left: 4px; }
+        /* handle name appears as a small tooltip under the icon */
+        .social-link .social-label {
+            display: block; position: absolute; top: calc(100% + 10px); left: 50%; z-index: 5;
+            padding: 5px 10px; border-radius: 6px; background: var(--c-forest); color: #fff;
+            box-shadow: 0 0 0 1px rgba(255,255,255,.14), 0 8px 20px -8px rgba(0,0,0,.6);
+            font-size: .72rem; font-weight: 500; letter-spacing: .02em; white-space: nowrap; pointer-events: none;
+            opacity: 0; transform: translate(-50%, -4px); transition: opacity .2s, transform .25s var(--ease);
+        }
+        .social-link:hover .social-label, .social-link:focus-visible .social-label { opacity: 1; transform: translate(-50%, 0); }
+    }
+    @media (min-width: 1561px) {
+        .nav-link { padding-inline: 14px; }
+    }
 
-        .nav-toggle { display: inline-flex; }
+    /* ---------- tablet + mobile: nav becomes a dark drawer sliding in from the right ---------- */
+    @media (max-width: 1240px) {
+        .nav-toggle { display: inline-grid; }
         .nav {
             position: fixed; top: 0; right: 0; bottom: 0; z-index: 110;
             width: min(86vw, 340px); height: 100vh; height: 100dvh;
-            flex-direction: column; align-items: stretch; gap: 0;
+            flex-direction: column; align-items: stretch; gap: 0; margin-left: 0;
             padding: 0 24px calc(28px + env(safe-area-inset-bottom, 0px)); overflow-y: auto;
-            background: #fff; box-shadow: -24px 0 48px -24px rgba(15,19,24,.35);
+            background: var(--c-header); box-shadow: -24px 0 48px -24px rgba(0,0,0,.6);
             transform: translateX(100%); visibility: hidden;
             transition: transform .4s var(--ease), visibility 0s linear .4s;
         }
         .nav-open .nav { transform: none; visibility: visible; transition: transform .4s var(--ease); }
 
-        .nav-head { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: var(--header-h); margin-bottom: 8px; border-bottom: 1px solid var(--c-line); }
+        .nav-head { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: var(--header-h); margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
         .nav-head img { display: block; height: 32px; width: auto; }
-        .nav-close { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-right: -8px; padding: 0; border: 0; border-radius: 10px; background: none; color: var(--c-ink); cursor: pointer; }
-        .nav-close:hover { background: var(--c-mist); }
+        .nav-close { margin-right: -8px; }
 
-        .nav a:not(.btn-nav), .page-home .site-header:not(.is-scrolled) .nav a:not(.btn-nav), .page-dark .nav a:not(.btn-nav) {
-            padding: 15px 0; font-size: 1rem; color: var(--c-ink); border-bottom: 1px solid var(--c-line);
-        }
-        .nav a:not(.btn-nav) .ico { display: block; color: var(--c-muted); transition: color .2s; }
-        .nav a:not(.btn-nav)::after { display: none; }
-        .nav a:not(.btn-nav):hover .ico, .nav a.is-active .ico { color: var(--c-sun); }
-        .nav a.is-active { font-weight: 600; }
+        /* drawer links: text only, active page marked by an orange bar */
+        .nav-link { position: relative; padding: 16px 0 16px 14px; font-family: var(--font-display); font-size: 1.08rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .nav-link::before { content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 0; border-radius: 2px; background: var(--c-sun); transform: translateY(-50%); transition: height .25s var(--ease); }
+        .nav-link:hover::before, .nav-link.is-active::before { height: 18px; }
+        .nav-link:hover { color: var(--c-sun); }
+        .nav-text::after { display: none; }
 
-        .btn-nav { justify-content: center; margin: 28px 0 0; padding: 14px 22px; }
-        .btn-nav .ico { display: block; width: 18px; height: 18px; }
-
+        /* social icons inside the drawer */
+        .nav-social { flex-direction: column; align-items: flex-start; margin: 28px 0 0; padding: 22px 0 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.1); }
+        .nav-social-title { display: block; margin-bottom: 12px; font-family: var(--font-display); font-size: .75rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+        .nav-social-list { gap: 6px; margin-left: -8px; }
+        .social-link { width: 44px; height: 44px; }
+        .social-link .ico { width: 21px; height: 21px; }
+    }
+    @media (max-width: 1080px) {
         .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+        .footer-social { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
         .container { width: calc(100% - 32px); }
         .footer-grid { grid-template-columns: 1fr; }
         .site-footer { padding-top: 60px; }
         .messages { right: 16px; }
+        .site-footer .footer-social-list { grid-template-columns: 1fr; }
+        .social-row-name { font-size: 1.02rem; }
+        .search-panel { padding: 18px 0 22px; }
+        .search-input { height: 52px; font-size: 16px; } /* 16px stops iOS zooming on focus */
+        .search-submit { padding: 0 14px; }
+        .search-hint { display: none; }
     }
     @media (prefers-reduced-motion: reduce) {
         html { scroll-behavior: auto; }
@@ -325,56 +399,81 @@
 
     <a href="#main" class="skip-link">Skip to content</a>
 
+    {# Icon sprite: only what the UI actually uses. All 24px grid, 1.6 stroke, round caps. #}
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-        <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
-        <symbol id="i-about" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
-        <symbol id="i-products" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2M6 11v2M10 11v2M14 11v2"/></symbol>
-        <symbol id="i-solutions" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
-        <symbol id="i-services" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></symbol>
-        <symbol id="i-works" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
-        <symbol id="i-news" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></symbol>
-        <symbol id="i-faq" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></symbol>
-        <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
-        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-        <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+        <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+        <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.2" cy="6.8" r=".6"/></symbol>
+        <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14 21v-8h2.6l.4-3H14V8.2c0-.9.3-1.5 1.6-1.5H17V4.1C16.700 4.100 15.800 4 14.800 4 12.600 4 11 5.300 11 7.700V10H8.500v3H11v8"/></symbol>
+        <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M14 4v10.500a3.500 3.500 0 1 1-3.500-3.500M14 4c.3 2.500 2 4.200 4.500 4.500"/></symbol>
+        <symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M4 20l1.200-4A8.300 8.300 0 1 1 8.200 18.800L4 20Z"/><path d="M9.200 8.800c0 3.300 2.700 6 6 6l1.100-1.400-1.900-1-.9.800c-.9-.4-1.700-1.200-2.100-2.100l.8-.9-1-1.900-2 .5Z"/></symbol>
     </svg>
-
-    {# If a URL with these names exists in urls.py it is used, otherwise the fallback path is. #}
-    {% url 'services' as services_url %}
-    {% url 'works' as works_url %}
-    {% url 'news' as news_url %}
-    {% url 'faq' as faq_url %}
 
     <header class="site-header" id="siteHeader">
         <div class="container header-inner">
-            <a href="{% url 'home' %}" class="brand" aria-label="Yunqida Energy Kenya home"><img class="logo-color" src="{% static 'img/logo.png' %}" alt="Yunqida Energy" width="184" height="36"><img class="logo-light" src="{% static 'img/logo-light.png' %}" alt="" width="184" height="36" aria-hidden="true"></a>
-
-            <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
-                <svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg>
-            </button>
+            <a href="{% url 'home' %}" class="brand" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo-light.png' %}" alt="Yunqida Energy" width="184" height="36"></a>
 
             <nav class="nav" id="siteNav" aria-label="Main">
                 <div class="nav-head">
-                    <img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" width="184" height="36">
-                    <button type="button" class="nav-close" id="navClose" aria-label="Close menu"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+                    <img src="{% static 'img/logo-light.png' %}" alt="Yunqida Energy" width="184" height="36">
+                    <button type="button" class="icon-btn nav-close" id="navClose" aria-label="Close menu"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
                 </div>
 
                 {% with current=request.resolver_match.url_name %}
-                <a href="{% url 'home' %}" class="{% if current == 'home' %}is-active{% endif %}"{% if current == 'home' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg>Home</a>
-                <a href="{% url 'about' %}" class="{% if current == 'about' %}is-active{% endif %}"{% if current == 'about' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-about"/></svg>About Us</a>
-                <a href="{% url 'products' %}" class="{% if current == 'products' %}is-active{% endif %}"{% if current == 'products' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-products"/></svg>Products</a>
-                <a href="{% url 'solutions' %}" class="{% if current == 'solutions' %}is-active{% endif %}"{% if current == 'solutions' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-solutions"/></svg>Solutions</a>
-                <a href="{% firstof services_url '/services/' %}" class="{% if current == 'services' %}is-active{% endif %}"{% if current == 'services' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-services"/></svg>Services</a>
-                <a href="{% firstof works_url '/works-done/' %}" class="{% if current == 'works' %}is-active{% endif %}"{% if current == 'works' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-works"/></svg>Works Done</a>
-                <a href="{% firstof news_url '/news/' %}" class="{% if current == 'news' %}is-active{% endif %}"{% if current == 'news' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-news"/></svg>News</a>
-                <a href="{% firstof faq_url '/faq/' %}" class="{% if current == 'faq' %}is-active{% endif %}"{% if current == 'faq' %} aria-current="page"{% endif %}><svg class="ico" aria-hidden="true"><use href="#i-faq"/></svg>FAQ</a>
+                <a href="{% url 'home' %}" class="nav-link{% if current == 'home' %} is-active{% endif %}"{% if current == 'home' %} aria-current="page"{% endif %}><span class="nav-text">Home</span></a>
+                <a href="{% url 'about' %}" class="nav-link{% if current == 'about' %} is-active{% endif %}"{% if current == 'about' %} aria-current="page"{% endif %}><span class="nav-text">About Us</span></a>
+                <a href="{% url 'products' %}" class="nav-link{% if current == 'products' %} is-active{% endif %}"{% if current == 'products' %} aria-current="page"{% endif %}><span class="nav-text">Products</span></a>
+                <a href="{% url 'solutions' %}" class="nav-link{% if current == 'solutions' %} is-active{% endif %}"{% if current == 'solutions' %} aria-current="page"{% endif %}><span class="nav-text">Solutions</span></a>
+                <a href="{% firstof services_url '/services/' %}" class="nav-link{% if current == 'services' %} is-active{% endif %}"{% if current == 'services' %} aria-current="page"{% endif %}><span class="nav-text">Services</span></a>
+                <a href="{% firstof works_url '/works-done/' %}" class="nav-link{% if current == 'works' %} is-active{% endif %}"{% if current == 'works' %} aria-current="page"{% endif %}><span class="nav-text">Works Done</span></a>
+                <a href="{% firstof news_url '/news/' %}" class="nav-link{% if current == 'news' %} is-active{% endif %}"{% if current == 'news' %} aria-current="page"{% endif %}><span class="nav-text">News</span></a>
+                <a href="{% firstof faq_url '/faq/' %}" class="nav-link{% if current == 'faq' %} is-active{% endif %}"{% if current == 'faq' %} aria-current="page"{% endif %}><span class="nav-text">FAQ</span></a>
+                <a href="{% url 'contact' %}" class="nav-link{% if current == 'contact' %} is-active{% endif %}"{% if current == 'contact' %} aria-current="page"{% endif %}><span class="nav-text">Contact us</span></a>
                 {% endwith %}
 
-                <a href="{% url 'contact' %}" class="btn-nav"><svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>Contact us</a>
+                <div class="nav-social">
+                    <span class="nav-social-title">Follow us</span>
+                    <div class="nav-social-list">
+                        <a href="https://www.instagram.com/yunqidaenergyke" class="social-link" target="_blank" rel="noopener" aria-label="Yunqida Energy Kenya on Instagram"><svg class="ico" aria-hidden="true"><use href="#i-instagram"/></svg><span class="social-label">Instagram</span></a>
+                        <a href="https://www.facebook.com/yunqidaenergyke" class="social-link" target="_blank" rel="noopener" aria-label="Yunqida Energy Kenya on Facebook"><svg class="ico" aria-hidden="true"><use href="#i-facebook"/></svg><span class="social-label">Facebook</span></a>
+                        <a href="https://www.tiktok.com/@yunqidaenergyke" class="social-link" target="_blank" rel="noopener" aria-label="Yunqida Energy Kenya on TikTok"><svg class="ico" aria-hidden="true"><use href="#i-tiktok"/></svg><span class="social-label">TikTok</span></a>
+                        <a href="https://wa.me/254700000000" class="social-link" target="_blank" rel="noopener" aria-label="Chat with Yunqida Energy Kenya on WhatsApp"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="social-label">WhatsApp</span></a>
+                    </div>
+                </div>
             </nav>
+
+            <div class="header-tools">
+                <button type="button" class="icon-btn" id="searchToggle" aria-label="Search the site" aria-expanded="false" aria-controls="searchPanel"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></button>
+                <button type="button" class="icon-btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
+            </div>
         </div>
     </header>
     <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
+
+    <div class="search-backdrop" id="searchBackdrop" aria-hidden="true"></div>
+    <div class="search-panel" id="searchPanel" aria-hidden="true">
+        <div class="search-panel-inner">
+            <form class="search-form" role="search" action="{% firstof search_url '/search/' %}" method="get">
+                <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+                <label for="searchInput" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">Search products, solutions and news</label>
+                <input type="search" id="searchInput" class="search-input" name="q" placeholder="Search products, solutions, news..." autocomplete="off" enterkeyhint="search" value="{{ request.GET.q|default:'' }}">
+                <button type="submit" class="search-submit">Search</button>
+            </form>
+            <div class="search-hint"><span>Press <kbd>/</kbd> to search from any page</span><span><kbd>Esc</kbd> to close</span></div>
+            <div class="search-suggest">
+                <span class="search-suggest-title">Popular searches</span>
+                <ul>
+                    <li><a href="{% firstof search_url '/search/' %}?q=hybrid+inverter">Hybrid inverter</a></li>
+                    <li><a href="{% firstof search_url '/search/' %}?q=LiFePO4+battery">LiFePO4 battery</a></li>
+                    <li><a href="{% firstof search_url '/search/' %}?q=home+backup">Home backup</a></li>
+                    <li><a href="{% firstof search_url '/search/' %}?q=commercial+storage">Commercial storage</a></li>
+                    <li><a href="{% firstof search_url '/search/' %}?q=off-grid+solar">Off-grid solar</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
     {% if messages %}
     <div class="messages" role="status">
@@ -414,9 +513,23 @@
             <div>
                 <h4>Talk to our team</h4>
                 <p class="footer-about">Tell us about your power needs and we will help you find the right system.</p>
-                <a href="{% url 'contact' %}" class="footer-cta">Contact Yunqida Kenya</a>
+                <a href="{% url 'contact' %}" class="footer-cta">Contact Yunqida Kenya<svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </div>
         </div>
+
+        <div class="container footer-social">
+            <div class="footer-social-intro">
+                <h4>Follow along</h4>
+                <p>Project updates, installations and offers from our team in Kenya.</p>
+            </div>
+            <ul class="footer-social-list">
+                <li><a href="https://www.instagram.com/yunqidaenergyke" class="social-row" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-instagram"/></svg><span class="social-row-name">Instagram</span><span class="social-row-handle">@yunqidaenergyke</span><svg class="ico arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+                <li><a href="https://www.facebook.com/yunqidaenergyke" class="social-row" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-facebook"/></svg><span class="social-row-name">Facebook</span><span class="social-row-handle">@yunqidaenergyke</span><svg class="ico arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+                <li><a href="https://www.tiktok.com/@yunqidaenergyke" class="social-row" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-tiktok"/></svg><span class="social-row-name">TikTok</span><span class="social-row-handle">@yunqidaenergyke</span><svg class="ico arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+                <li><a href="https://wa.me/254700000000" class="social-row" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg><span class="social-row-name">WhatsApp</span><span class="social-row-handle">+254 700 000 000</span><svg class="ico arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+            </ul>
+        </div>
+
         <div class="container footer-bottom">
             <span>&copy; {% now "Y" %} Yunqida Energy Technology Kenya. All rights reserved.</span>
             <span>Nairobi, Kenya</span>
@@ -429,25 +542,61 @@
         var toggle = document.getElementById('navToggle');
         var closeBtn = document.getElementById('navClose');
         var backdrop = document.getElementById('navBackdrop');
+        var sToggle = document.getElementById('searchToggle');
+        var sPanel = document.getElementById('searchPanel');
+        var sBackdrop = document.getElementById('searchBackdrop');
+        var sInput = document.getElementById('searchInput');
 
-        function isOpen() { return header.classList.contains('nav-open'); }
-        function syncHeader() { header.classList.toggle('is-scrolled', window.scrollY > 40 || isOpen()); }
-        function setOpen(open) {
+        function navIsOpen() { return header.classList.contains('nav-open'); }
+        function searchIsOpen() { return document.body.classList.contains('search-open'); }
+        function syncHeader() { header.classList.toggle('is-scrolled', window.scrollY > 40); }
+
+        function setNav(open) {
+            if (open && searchIsOpen()) setSearch(false);
             header.classList.toggle('nav-open', open);
             document.body.classList.toggle('nav-open', open);
             backdrop.classList.toggle('is-visible', open);
             toggle.setAttribute('aria-expanded', open);
-            syncHeader();
+        }
+        function setSearch(open) {
+            if (open && navIsOpen()) setNav(false);
+            document.body.classList.toggle('search-open', open);
+            sBackdrop.classList.toggle('is-visible', open);
+            sToggle.setAttribute('aria-expanded', open);
+            sPanel.setAttribute('aria-hidden', !open);
+            if (open) setTimeout(function () { sInput.focus(); sInput.select(); }, 60);
         }
 
         syncHeader();
         window.addEventListener('scroll', syncHeader, { passive: true });
-        toggle.addEventListener('click', function () { setOpen(true); });
-        closeBtn.addEventListener('click', function () { setOpen(false); toggle.focus(); });
-        backdrop.addEventListener('click', function () { setOpen(false); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) setOpen(false); });
-        window.addEventListener('resize', function () { if (window.innerWidth > 1080 && isOpen()) setOpen(false); });
-        document.querySelectorAll('#siteNav a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+        toggle.addEventListener('click', function () { setNav(true); });
+        closeBtn.addEventListener('click', function () { setNav(false); toggle.focus(); });
+        backdrop.addEventListener('click', function () { setNav(false); });
+        sToggle.addEventListener('click', function () { setSearch(!searchIsOpen()); });
+        sBackdrop.addEventListener('click', function () { setSearch(false); });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                if (navIsOpen()) setNav(false);
+                if (searchIsOpen()) { setSearch(false); sToggle.focus(); }
+                return;
+            }
+            // "/" opens search unless the person is already typing somewhere
+            var t = e.target, tag = t && t.tagName;
+            var typing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable);
+            if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey && !e.altKey) {
+                e.preventDefault();
+                setSearch(true);
+            }
+        });
+        window.addEventListener('resize', function () { if (window.innerWidth > 1240 && navIsOpen()) setNav(false); });
+        document.querySelectorAll('#siteNav a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
+
+        // don't submit an empty search
+        document.querySelector('.search-form').addEventListener('submit', function (e) {
+            if (!sInput.value.trim()) { e.preventDefault(); sInput.focus(); }
+        });
+
         document.querySelectorAll('.message').forEach(function (m) { setTimeout(function () { m.style.display = 'none'; }, 6000); });
     })();
     </script>
@@ -472,7 +621,7 @@
             if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
             var a = e.target.closest('a[href]');
             if (!a || a.hasAttribute('download') || a.hasAttribute('data-no-loader')) return;
-            if (a.target && a.target !== '_self') return;
+            if (a.target && a.target !== '_self') return;            // social links open in a new tab, so no loader
             var url;
             try { url = new URL(a.href, location.href); } catch (err) { return; }
             if (url.protocol !== 'http:' && url.protocol !== 'https:') return;   // mailto:, tel:, etc.

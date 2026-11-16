@@ -1,648 +1,445 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Yunqida Energy Technology Kenya | Solar, Lithium Batteries & Hybrid Inverters{% endblock %}
+{% block title %}Yunqida Energy Technology Kenya | Solar, Lithium Batteries &amp; Hybrid Inverters{% endblock %}
+{% block body_class %}has-hero page-home{% endblock %}
 
-{% block body_class %}page-dark{% endblock %}
+{% block extra_head %}
+<style>
+.page-home{overflow-x:clip}
+.page-home h1,.page-home h2,.page-home h3{font-family:var(--font-display);margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
+.page-home p{text-wrap:pretty}
+.yd-section{padding:128px 0}
+.yd-light{background:#fff}.yd-grey{background:var(--c-mist)}.yd-ink{background:var(--c-forest-2);color:#fff}
+:focus-visible{outline:3px solid var(--c-sun);outline-offset:3px}
+
+.yd-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 32px}
+.yd-btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 32px;border-radius:2px;font-family:var(--font-display);font-size:.95rem;font-weight:600;transition:background-color .25s,color .25s}
+.yd-btn-primary{background:var(--c-sun);color:var(--c-forest)}.yd-btn-primary:hover{background:#fff}
+.yd-btn-dark{background:var(--c-forest);color:#fff}.yd-btn-dark:hover{background:var(--c-sun);color:var(--c-forest)}
+.yd-textlink{display:inline-block;padding-bottom:4px;font-weight:600;font-size:.95rem;color:var(--c-forest);background:linear-gradient(var(--c-sun),var(--c-sun)) left bottom/100% 2px no-repeat;transition:background-size .35s var(--ease)}
+.yd-textlink:hover{background-size:35% 2px}
+.yd-textlink-light{color:#fff}
+
+/* Hero */
+.yd-hero{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:680px;height:min(940px,100svh);isolation:isolate;overflow:hidden;background:var(--c-forest);color:#fff}
+.yd-hero-video{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;transform:translateZ(0)}
+.yd-hero-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(15,19,24,.6),rgba(15,19,24,.08) 45%,rgba(15,19,24,0) 70%),linear-gradient(180deg,rgba(15,19,24,.4),rgba(15,19,24,0) 22%)}
+.yd-hero-content{padding-bottom:72px}
+.yd-hero h1{max-width:900px;font-size:clamp(3rem,7.4vw,6.6rem);line-height:.98;letter-spacing:-.045em;color:#fff;animation:yd-in 1.1s var(--ease) both}
+.yd-hero-content p{max-width:500px;margin:28px 0 38px;font-size:1.12rem;line-height:1.7;animation:yd-in 1.1s .12s var(--ease) both}
+.yd-hero .yd-actions{animation:yd-in 1.1s .22s var(--ease) both}
+@keyframes yd-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.yd-play{position:absolute;right:max(calc((100% - 1200px)/2),24px);bottom:150px;display:grid;place-items:center;width:42px;height:42px;padding:0;color:#fff;background:rgba(15,19,24,.45);border:1px solid rgba(255,255,255,.55);border-radius:50%;cursor:pointer;transition:background-color .2s,color .2s}
+.yd-play:hover{background:#fff;color:var(--c-forest)}
+.yd-play svg{fill:currentColor}
+.yd-play .ico-play{display:none}.yd-play.is-paused .ico-play{display:block}.yd-play.is-paused .ico-pause{display:none}
+.yd-sound{bottom:204px}.yd-sound .ico-on{display:none}.yd-sound.is-on .ico-on{display:block}.yd-sound.is-on .ico-off{display:none}
+.yd-bar{background:rgba(15,19,24,.9);border-top:3px solid var(--c-sun)}
+.yd-bar-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.yd-bar-grid>div{padding:26px 28px 28px;border-left:1px solid rgba(255,255,255,.12)}
+.yd-bar-grid>div:first-child{padding-left:0;border-left:0}
+.yd-bar-grid strong{display:block;margin-bottom:4px;font-family:var(--font-display);font-weight:600;font-size:1rem}
+.yd-bar-grid span{font-size:.88rem;line-height:1.5;color:rgba(255,255,255,.68)}
+
+/* Who */
+.yd-who{display:grid;grid-template-columns:1fr 1.7fr;gap:80px;align-items:start;margin-bottom:80px}
+.yd-who h2{font-size:clamp(2.2rem,4vw,3.4rem);line-height:1.05}
+.yd-lead{margin:0 0 22px;font-family:var(--font-display);font-weight:500;font-size:clamp(1.4rem,2.3vw,2rem);line-height:1.3;letter-spacing:-.025em}
+.yd-who-body p:not(.yd-lead){max-width:520px;margin:0 0 30px;color:var(--c-muted);line-height:1.8}
+.yd-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
+.yd-trio>div{padding-top:22px;border-top:1px solid var(--c-line)}
+.yd-trio h3{margin-bottom:8px;font-size:1.18rem}.yd-trio p{margin:0;color:var(--c-muted);line-height:1.7}
+
+/* Gallery: sticky copy left, big images right. Parallax + wipe reveal + light sweep. */
+.yd-gal{padding:112px 0;--serif:'Fraunces',Georgia,serif}
+.yd-gal-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.4fr);gap:clamp(16px,4vw,80px);align-items:start}
+.yd-gal-copy{position:sticky;top:calc(var(--header-h) + 40px)}
+.yd-gal-copy h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.45rem,3.9vw,3.1rem);line-height:1.08;letter-spacing:-.025em}
+.yd-gal-intro{margin:22px 0 28px;max-width:440px;font-size:clamp(.82rem,1.9vw,1.05rem);line-height:1.75;color:var(--c-muted)}
+.yd-gal-index{display:flex;flex-direction:column;gap:2px;margin:0 0 26px;padding:0;list-style:none}
+.yd-gal-index a{display:flex;align-items:baseline;gap:14px;padding:7px 0 7px 16px;border-left:2px solid var(--c-line);font-size:.92rem;color:var(--c-muted);transition:color .3s,border-color .3s,padding-left .4s var(--ease)}
+.yd-gal-index a span{min-width:12px;font-family:var(--serif);font-variant-numeric:tabular-nums}
+.yd-gal-index a.is-active{padding-left:22px;border-left-color:var(--c-sun);color:var(--c-forest);font-weight:600}
+.yd-gal-count{display:none;margin:0 0 18px;font-family:var(--serif);font-size:.95rem;color:var(--c-muted)}
+.yd-gal-count b{font-weight:500;color:var(--c-forest)}
+.yd-gal-col{display:flex;flex-direction:column;gap:clamp(28px,5vw,72px)}
+.yd-gal-img{margin:0}
+.yd-gal-frame{position:relative;overflow:hidden;background:#E3E6E9;border-radius:4px;box-shadow:0 40px 70px -40px rgba(15,19,24,.55)}
+.yd-gal-frame img{width:100%;height:auto;will-change:transform;transform:translate3d(0,var(--py,0%),0) scale(var(--sc,1.12))}
+.yd-gal-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-120%)}
+.yd-gal-img figcaption{display:flex;flex-direction:column;gap:3px;margin-top:14px;padding-left:12px;border-left:2px solid var(--c-sun)}
+.yd-gal-img figcaption strong{font-family:var(--serif);font-weight:400;font-size:clamp(.9rem,1.8vw,1.3rem);letter-spacing:-.01em}
+.yd-gal-img figcaption span{font-size:clamp(.72rem,1.4vw,.9rem);line-height:1.5;color:var(--c-muted)}
+.yd-js .yd-gal-frame{clip-path:inset(14% 8% 14% 8% round 24px);transition:clip-path 1.4s var(--ease)}
+.yd-js .yd-gal-img figcaption{opacity:0;transform:translateY(14px);transition:opacity 1s .5s var(--ease),transform 1.2s .5s var(--ease)}
+.yd-js .yd-gal-img.is-in .yd-gal-frame{clip-path:inset(0 0 0 0 round 4px)}
+.yd-js .yd-gal-img.is-in .yd-gal-frame::after{animation:yd-sweep 1.4s .35s ease-out both}
+.yd-js .yd-gal-img.is-in figcaption{opacity:1;transform:none}
+@keyframes yd-sweep{to{transform:translateX(120%)}}
+
+/* Why */
+.yd-why-sec{padding:96px 0}
+.yd-why{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:80px;align-items:start}
+.yd-why-main h2{font-size:clamp(2rem,3.4vw,2.9rem);line-height:1.08;color:#fff}
+.yd-why-lead{max-width:380px;margin:20px 0 32px;line-height:1.75;color:rgba(255,255,255,.72)}
+.yd-why-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px}
+.yd-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px 32px}
+.yd-why-grid article{padding-top:22px;border-top:1px solid rgba(255,255,255,.16)}
+.yd-why-ico{display:grid;place-items:center;width:44px;height:44px;margin-bottom:16px;border:1px solid rgba(255,255,255,.2);border-radius:8px}
+.yd-why-ico svg{width:22px;height:22px;fill:none;stroke:var(--c-sun);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.yd-why-grid h3{margin-bottom:8px;font-size:1.05rem;color:#fff}
+.yd-why-grid p{margin:0;font-size:.9rem;line-height:1.65;color:rgba(255,255,255,.66)}
+
+/* Reviews */
+.yd-rv-head{display:flex;align-items:flex-end;justify-content:space-between;gap:48px;margin-bottom:56px}
+.yd-rv-title h2{font-size:clamp(1.9rem,3.2vw,2.8rem);line-height:1.15}
+.yd-rv-title p{max-width:420px;margin:18px 0 0;color:var(--c-muted);line-height:1.75}
+.yd-rv-score{display:flex;align-items:center;gap:22px;padding-left:40px;border-left:1px solid #D5DADF}
+.yd-rv-score>strong{font-family:var(--font-display);font-size:clamp(3.4rem,6vw,4.8rem);font-weight:600;line-height:.9;letter-spacing:-.05em}
+.yd-rv-score small{display:block;margin-top:8px;font-size:.88rem;color:var(--c-muted)}
+.yd-stars{display:inline-block;width:110px;height:22px;background:linear-gradient(90deg,var(--c-sun) calc(var(--r,5)*20%),#D3D8DE 0);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 1.8l2.9 6.2 6.8.8-5 4.6 1.4 6.7L11 16.7 4.9 20.1l1.4-6.7-5-4.6 6.8-.8z'/%3E%3C/svg%3E") 0 0/22px 22px repeat-x;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 1.8l2.9 6.2 6.8.8-5 4.6 1.4 6.7L11 16.7 4.9 20.1l1.4-6.7-5-4.6 6.8-.8z'/%3E%3C/svg%3E") 0 0/22px 22px repeat-x}
+.yd-rv-card .yd-stars{width:90px;height:18px;-webkit-mask-size:18px 18px;mask-size:18px 18px}
+.yd-rv-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.yd-rv-track{display:flex;gap:20px;width:max-content;padding:6px 0 14px;animation:yd-rv var(--dur,60s) linear infinite}
+.yd-rv-marquee:hover .yd-rv-track{animation-play-state:paused}
+@keyframes yd-rv{to{transform:translateX(calc(-50% - 10px))}}
+.yd-rv-card{display:flex;flex-direction:column;flex:none;width:380px;margin:0;padding:32px 32px 28px;background:#fff;border:1px solid var(--c-line);border-radius:2px;transition:box-shadow .35s var(--ease),border-color .35s}
+.yd-rv-card:hover{border-color:transparent;box-shadow:0 22px 50px -26px rgba(15,19,24,.35)}
+.yd-rv-card blockquote{flex:1;margin:18px 0 26px;line-height:1.75;display:-webkit-box;-webkit-line-clamp:6;line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.yd-rv-card figcaption{display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid var(--c-line)}
+.yd-rv-card figcaption img,.yd-rv-card figcaption i{flex:none;width:40px;height:40px;border-radius:50%;object-fit:cover}
+.yd-rv-card figcaption i{display:grid;place-items:center;font-style:normal;font-family:var(--font-display);font-weight:600;background:#E7EAED}
+.yd-rv-card figcaption span{flex:1;min-width:0}
+.yd-rv-card figcaption strong{display:block;font-family:var(--font-display);font-weight:500;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yd-rv-card figcaption small{display:block;font-size:.82rem;color:var(--c-muted)}
+.yd-rv-card figcaption em{font-style:normal;font-size:.78rem;font-weight:600;color:var(--c-muted)}
+.yd-rv-foot{display:flex;flex-wrap:wrap;gap:14px 36px;margin-top:44px}
+.yd-rv-empty{display:flex;align-items:center;justify-content:space-between;gap:48px;padding:36px 0;border-block:1px solid #D5DADF}
+.yd-rv-empty p{max-width:460px;margin:0;font-family:var(--font-display);font-size:1.25rem;font-weight:500;line-height:1.4;letter-spacing:-.02em}
+
+/* Location */
+.yd-where{display:grid;grid-template-columns:1fr 1.3fr;gap:88px;align-items:center}
+.yd-where h2{font-size:clamp(1.9rem,3.2vw,2.8rem);line-height:1.15}
+.yd-where-copy>p{max-width:400px;margin:22px 0 34px;color:var(--c-muted);line-height:1.8}
+.yd-facts{margin:0 0 38px;border-top:1px solid var(--c-line)}
+.yd-facts>div{display:grid;grid-template-columns:110px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--c-line)}
+.yd-facts dt{font-size:.88rem;color:var(--c-muted)}.yd-facts dd{margin:0;font-weight:500}
+.yd-facts a{text-decoration:underline;text-decoration-color:var(--c-sun);text-underline-offset:4px;text-decoration-thickness:2px}
+.yd-map{position:relative;display:block;aspect-ratio:4/3.1;overflow:hidden;background:#E3E6E9;border-radius:2px}
+.yd-map svg{display:block;width:100%;height:100%}
+.yd-js .yd-map svg{clip-path:inset(100% 0 0 0);transform:scale(1.14);transition:clip-path 1.5s var(--ease),transform 2.2s var(--ease)}
+.yd-js .yd-map.is-in svg{clip-path:inset(0);transform:none}
+.yd-pin{position:absolute;left:50%;top:46%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--c-sun);box-shadow:0 0 0 5px #fff,0 8px 20px rgba(15,19,24,.35)}
+.yd-pin::before{content:"";position:absolute;inset:7px;border-radius:50%;background:var(--c-forest)}
+.yd-pin i{position:absolute;inset:-5px;border:2px solid var(--c-sun);border-radius:50%;animation:yd-ping 2.4s var(--ease) infinite}
+@keyframes yd-ping{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
+.yd-map-label{position:absolute;left:50%;top:calc(46% - 62px);transform:translateX(-50%);padding:9px 16px;background:#fff;border-radius:2px;font-family:var(--font-display);font-size:.86rem;font-weight:500;white-space:nowrap;box-shadow:0 10px 28px rgba(15,19,24,.18)}
+.yd-map-cta{position:absolute;left:20px;bottom:20px;padding:13px 20px;background:var(--c-forest);color:#fff;border-radius:2px;font-family:var(--font-display);font-size:.86rem;font-weight:600;transition:background-color .25s,color .25s}
+.yd-map:hover .yd-map-cta{background:var(--c-sun);color:var(--c-forest)}
+
+/* CTA */
+.yd-cta{position:relative;overflow:hidden;padding:128px 0;background:var(--c-sun)}
+.yd-ring{position:absolute;left:-220px;top:50%;width:640px;aspect-ratio:1;margin-top:-320px;border:2px solid rgba(15,19,24,.18);border-radius:50%}
+.yd-cta-inner{position:relative}
+.yd-cta h2{max-width:760px;margin-left:auto;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.08}
+.yd-cta p{max-width:480px;margin:24px 0 40px auto;line-height:1.8;font-weight:500;color:rgba(15,19,24,.82)}
+.yd-cta .yd-actions{max-width:480px;margin-left:auto}
+.yd-cta .yd-textlink{background-image:linear-gradient(var(--c-forest),var(--c-forest))}
+
+@media(max-width:1100px){.yd-why{gap:56px}.yd-why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:960px){
+  .yd-section{padding:88px 0}.yd-gal{padding:72px 0}.yd-why-sec{padding:72px 0}
+  .yd-hero{height:auto;min-height:max(620px,100svh)}
+  .yd-hero-content{padding-top:calc(var(--header-h) + 96px);padding-bottom:44px}
+  .yd-play,.yd-sound{top:calc(var(--header-h) + 16px);bottom:auto;right:24px}.yd-sound{right:78px}
+  .yd-bar-grid{grid-template-columns:repeat(2,1fr);column-gap:24px}
+  .yd-bar-grid>div,.yd-bar-grid>div:first-child{padding:18px 0;border-left:0;border-top:1px solid rgba(255,255,255,.12)}
+  .yd-bar-grid>div:nth-child(-n+2){border-top:0}
+  .yd-who{grid-template-columns:1fr;gap:28px;margin-bottom:52px}.yd-trio{grid-template-columns:1fr;gap:32px}
+  .yd-why,.yd-where{grid-template-columns:1fr;gap:44px}
+  .yd-cta{padding:88px 0}.yd-cta h2,.yd-cta p,.yd-cta .yd-actions{margin-left:0}
+  .yd-gal-index{display:none}.yd-gal-count{display:block}
+  .yd-rv-head{flex-direction:column;align-items:flex-start;gap:28px;margin-bottom:36px}
+  .yd-rv-score{padding-left:0;border-left:0}.yd-rv-card{width:320px;padding:26px 24px 22px}
+  .yd-rv-empty{flex-direction:column;align-items:flex-start;gap:24px}
+}
+@media(max-width:560px){
+  .yd-section{padding:72px 0}.yd-gal{padding:56px 0}
+  .yd-gal-grid{grid-template-columns:minmax(0,.72fr) minmax(0,1.4fr);gap:14px}
+  .yd-gal-intro{margin:14px 0 18px;line-height:1.6}.yd-gal-col{gap:24px}
+  .yd-bar-grid span{display:none}.yd-bar-grid strong{margin:0}
+  .yd-btn{width:100%}.yd-actions{gap:18px}
+  .yd-why-grid{grid-template-columns:1fr;gap:28px}
+  .yd-why-cta{flex-direction:column;align-items:stretch}.yd-why-cta .yd-textlink{align-self:flex-start}
+  .yd-facts>div{grid-template-columns:1fr;gap:4px}.yd-map{aspect-ratio:1/1}
+}
+@media(prefers-reduced-motion:reduce){
+  .yd-hero h1,.yd-hero-content p,.yd-hero .yd-actions,.yd-pin i,.yd-rv-track{animation:none}
+  .yd-js .yd-gal-frame,.yd-js .yd-map svg{clip-path:none;transform:none}
+  .yd-js .yd-gal-img figcaption{opacity:1;transform:none}
+  .yd-gal-frame img{transform:none}.yd-rv-marquee{overflow-x:auto}
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('yd-js');</script>
 
-<script>
-document.documentElement.classList.add('yd-js');
-/* Phones open at 75% zoom by default. Pinch-zoom still works. */
-(function () {
-    if (window.screen && window.screen.width <= 768) {
-        var m = document.querySelector('meta[name="viewport"]');
-        if (m) m.setAttribute('content', 'width=device-width, initial-scale=0.75, minimum-scale=0.5');
-    }
-})();
-</script>
-
-<!-- HERO -->
 <section class="yd-hero" aria-label="Introduction">
-    <video class="yd-hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="{% static 'img/video-poster.jpg' %}" disablepictureinpicture aria-hidden="true">
-        <source src="{% static 'video/yunqida.mp4' %}" type="video/mp4">
-    </video>
-    <div class="yd-hero-shade"></div>
-
-    <div class="container yd-hero-content">
-        <h1>Smarter energy for Kenya.</h1>
-        <p>Lithium battery storage, solar technology and hybrid inverters for homes, businesses and industry.</p>
-        <div class="yd-actions">
-            <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Get a free consultation</a>
-            <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
-        </div>
+  <video class="yd-hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="{% static 'img/video-poster.jpg' %}" disablepictureinpicture aria-hidden="true">
+    <source src="{% static 'video/yunqida.mp4' %}" type="video/mp4">
+  </video>
+  <div class="yd-hero-shade"></div>
+  <div class="container yd-hero-content">
+    <h1>Smarter energy for Kenya.</h1>
+    <p>Lithium battery storage, solar technology and hybrid inverters for homes, businesses and industry.</p>
+    <div class="yd-actions">
+      <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Get a free consultation</a>
+      <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
     </div>
-
-    <button type="button" class="yd-play" id="heroToggle" aria-label="Pause background video">
-        <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
-            <g class="ico-pause"><rect x="3" y="2" width="3.4" height="12"/><rect x="9.6" y="2" width="3.4" height="12"/></g>
-            <path class="ico-play" d="M4 2l10 6-10 6z"/>
-        </svg>
-    </button>
-    <button type="button" class="yd-play yd-sound" id="heroSound" aria-label="Turn sound on">
-        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
-            <path d="M2 6v4h3l4 3V3L5 6z"/>
-            <g class="ico-on"><path d="M11 5.5a3.5 3.5 0 010 5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g>
-            <g class="ico-off"><path d="M11 6l4 4m0-4l-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g>
-        </svg>
-    </button>
-
-    <div class="yd-bar">
-        <div class="container yd-bar-grid">
-            <div><strong>Energy storage</strong><span>Battery technology and storage systems</span></div>
-            <div><strong>Solar technology</strong><span>Integrated solar power solutions</span></div>
-            <div><strong>Hybrid inverters</strong><span>Intelligent power conversion</span></div>
-            <div><strong>Local support</strong><span>Product enquiries handled in Kenya</span></div>
-        </div>
+  </div>
+  <button type="button" class="yd-play" id="heroToggle" aria-label="Pause background video">
+    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><g class="ico-pause"><rect x="3" y="2" width="3.4" height="12"/><rect x="9.6" y="2" width="3.4" height="12"/></g><path class="ico-play" d="M4 2l10 6-10 6z"/></svg>
+  </button>
+  <button type="button" class="yd-play yd-sound" id="heroSound" aria-label="Turn sound on">
+    <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M2 6v4h3l4 3V3L5 6z"/><g class="ico-on"><path d="M11 5.5a3.5 3.5 0 010 5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g><g class="ico-off"><path d="M11 6l4 4m0-4l-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></g></svg>
+  </button>
+  <div class="yd-bar">
+    <div class="container yd-bar-grid">
+      <div><strong>Energy storage</strong><span>Battery technology and storage systems</span></div>
+      <div><strong>Solar technology</strong><span>Integrated solar power solutions</span></div>
+      <div><strong>Hybrid inverters</strong><span>Intelligent power conversion</span></div>
+      <div><strong>Local support</strong><span>Product enquiries handled in Kenya</span></div>
     </div>
+  </div>
 </section>
 
-<!-- WHO WE ARE -->
 <section class="yd-section yd-light" id="who-we-are">
-    <div class="container">
-        <div class="yd-who">
-            <h2>Who we are</h2>
-            <div class="yd-who-body">
-                <p class="yd-lead">Reliable power matters to homes, businesses and industry alike. Yunqida develops energy storage and solar technologies that help customers manage electricity more effectively.</p>
-                <p>Through its Kenyan presence, Yunqida Energy Technology Kenya connects customers with products suited to their power requirements.</p>
-                <a href="{% url 'about' %}" class="yd-textlink">About Yunqida</a>
-            </div>
-        </div>
-
-        <div class="yd-trio">
-            <div><h3>Lithium battery systems</h3><p>Storage built around the load you actually run.</p></div>
-            <div><h3>Solar power solutions</h3><p>Generation matched to the site and the budget.</p></div>
-            <div><h3>Hybrid inverters</h3><p>Smart conversion between solar, battery and grid.</p></div>
-        </div>
+  <div class="container">
+    <div class="yd-who">
+      <h2>Who we are</h2>
+      <div class="yd-who-body">
+        <p class="yd-lead">Reliable power matters to homes, businesses and industry alike. Yunqida develops energy storage and solar technologies that help customers manage electricity more effectively.</p>
+        <p>Through its Kenyan presence, Yunqida Energy Technology Kenya connects customers with products suited to their power requirements.</p>
+        <a href="{% url 'about' %}" class="yd-textlink">About Yunqida</a>
+      </div>
     </div>
+    <div class="yd-trio">
+      <div><h3>Lithium battery systems</h3><p>Storage built around the load you actually run.</p></div>
+      <div><h3>Solar power solutions</h3><p>Generation matched to the site and the budget.</p></div>
+      <div><h3>Hybrid inverters</h3><p>Smart conversion between solar, battery and grid.</p></div>
+    </div>
+  </div>
 </section>
 
-<!-- GALLERY: copy + index on the left, large uncropped images on the right.
-     Two columns on mobile and desktop. Images: static/img/1.png ... 5.png
-     Tip: export these at 1600px wide or more so they stay crisp on large screens.
-     Edit the captions below to match what each photo really shows. -->
+<!-- Gallery images: static/img/1.png ... 5.png (export at 1600px+ wide). Edit captions to match each photo. -->
 <section class="yd-section yd-grey yd-gal" id="gallery" aria-labelledby="gal-title">
-    <div class="container yd-gal-grid">
-        <div class="yd-gal-copy">
-            <h2 id="gal-title">Power that keeps working, wherever you are.</h2>
-            <p class="yd-gal-intro">From a single home in Nairobi to a busy factory floor, Yunqida systems pair solar generation with lithium storage and hybrid inverters, so essential loads stay on through outages and unstable supply.</p>
-
-            <dl class="yd-gal-facts">
-                <div><dt>Homes</dt><dd>Solar and battery storage that carries lights, fridges and Wi-Fi through the evening and the blackout.</dd></div>
-                <div><dt>Businesses</dt><dd>Hybrid inverters that keep tills, servers and cold rooms running without a generator.</dd></div>
-                <div><dt>Industry</dt><dd>Scalable battery systems sized to the load on site, and expanded as you grow.</dd></div>
-            </dl>
-
-            <ol class="yd-gal-index" aria-label="Jump to a project">
-                <li><a href="#gal-1" data-gal-link="0"><span>1</span>Home solar and storage</a></li>
-                <li><a href="#gal-2" data-gal-link="1"><span>2</span>Commercial backup power</a></li>
-                <li><a href="#gal-3" data-gal-link="2"><span>3</span>Industrial energy systems</a></li>
-                <li><a href="#gal-4" data-gal-link="3"><span>4</span>Lithium battery storage</a></li>
-                <li><a href="#gal-5" data-gal-link="4"><span>5</span>Hybrid inverter installs</a></li>
-            </ol>
-
-            <p class="yd-gal-count" aria-hidden="true"><b id="galNow">1</b> of 5</p>
-            <a href="{% url 'products' %}" class="yd-textlink">Explore products</a>
-        </div>
-
-        <div class="yd-gal-col">
-            <figure class="yd-gal-img" id="gal-1" data-reveal data-gal-item>
-                <div class="yd-gal-frame"><img src="{% static 'img/1.png' %}" alt="Home solar panels with battery storage installed by Yunqida" decoding="async"></div>
-                <figcaption><strong>Home solar and storage</strong><span>Daytime generation saved for the evening.</span></figcaption>
-            </figure>
-            <figure class="yd-gal-img" id="gal-2" data-reveal data-gal-item>
-                <div class="yd-gal-frame"><img src="{% static 'img/2.png' %}" alt="Commercial backup power system by Yunqida" decoding="async"></div>
-                <figcaption><strong>Commercial backup power</strong><span>Shops and offices that stay open through outages.</span></figcaption>
-            </figure>
-            <figure class="yd-gal-img" id="gal-3" data-reveal data-gal-item>
-                <div class="yd-gal-frame"><img src="{% static 'img/3.png' %}" alt="Industrial energy storage system by Yunqida" loading="lazy" decoding="async"></div>
-                <figcaption><strong>Industrial energy systems</strong><span>Capacity built around heavy, continuous loads.</span></figcaption>
-            </figure>
-            <figure class="yd-gal-img" id="gal-4" data-reveal data-gal-item>
-                <div class="yd-gal-frame"><img src="{% static 'img/4.png' %}" alt="Yunqida lithium battery storage unit" loading="lazy" decoding="async"></div>
-                <figcaption><strong>Lithium battery storage</strong><span>Compact, long-life storage for every scale.</span></figcaption>
-            </figure>
-            <figure class="yd-gal-img" id="gal-5" data-reveal data-gal-item>
-                <div class="yd-gal-frame"><img src="{% static 'img/5.png' %}" alt="Yunqida hybrid inverter installation" loading="lazy" decoding="async"></div>
-                <figcaption><strong>Hybrid inverter installs</strong><span>Solar, battery and grid managed as one system.</span></figcaption>
-            </figure>
-        </div>
+  <div class="container yd-gal-grid">
+    <div class="yd-gal-copy">
+      <h2 id="gal-title">Power that keeps working, wherever you are.</h2>
+      <p class="yd-gal-intro">From a single home in Nairobi to a busy factory floor, Yunqida systems pair solar generation with lithium storage and hybrid inverters, so essential loads stay on through outages and unstable supply.</p>
+      <ol class="yd-gal-index" aria-label="Jump to a project">
+        <li><a href="#gal-1" data-gal-link="0"><span>1</span>Home solar and storage</a></li>
+        <li><a href="#gal-2" data-gal-link="1"><span>2</span>Commercial backup power</a></li>
+        <li><a href="#gal-3" data-gal-link="2"><span>3</span>Industrial energy systems</a></li>
+        <li><a href="#gal-4" data-gal-link="3"><span>4</span>Lithium battery storage</a></li>
+        <li><a href="#gal-5" data-gal-link="4"><span>5</span>Hybrid inverter installs</a></li>
+      </ol>
+      <p class="yd-gal-count" aria-hidden="true"><b id="galNow">1</b> of 5</p>
+      <a href="{% url 'products' %}" class="yd-textlink">Explore products</a>
     </div>
+    <div class="yd-gal-col">
+      <figure class="yd-gal-img" id="gal-1" data-gal-item><div class="yd-gal-frame"><img src="{% static 'img/1.png' %}" alt="Home solar panels with battery storage installed by Yunqida" decoding="async"></div><figcaption><strong>Home solar and storage</strong><span>Daytime generation saved for the evening.</span></figcaption></figure>
+      <figure class="yd-gal-img" id="gal-2" data-gal-item><div class="yd-gal-frame"><img src="{% static 'img/2.png' %}" alt="Commercial backup power system by Yunqida" decoding="async"></div><figcaption><strong>Commercial backup power</strong><span>Shops and offices that stay open through outages.</span></figcaption></figure>
+      <figure class="yd-gal-img" id="gal-3" data-gal-item><div class="yd-gal-frame"><img src="{% static 'img/3.png' %}" alt="Industrial energy storage system by Yunqida" loading="lazy" decoding="async"></div><figcaption><strong>Industrial energy systems</strong><span>Capacity built around heavy, continuous loads.</span></figcaption></figure>
+      <figure class="yd-gal-img" id="gal-4" data-gal-item><div class="yd-gal-frame"><img src="{% static 'img/4.png' %}" alt="Yunqida lithium battery storage unit" loading="lazy" decoding="async"></div><figcaption><strong>Lithium battery storage</strong><span>Compact, long-life storage for every scale.</span></figcaption></figure>
+      <figure class="yd-gal-img" id="gal-5" data-gal-item><div class="yd-gal-frame"><img src="{% static 'img/5.png' %}" alt="Yunqida hybrid inverter installation" loading="lazy" decoding="async"></div><figcaption><strong>Hybrid inverter installs</strong><span>Solar, battery and grid managed as one system.</span></figcaption></figure>
+    </div>
+  </div>
 </section>
 
 {% include 'core/_manufacture.html' %}
 
-<!-- WHY CHOOSE US: compact, flat, no gradients -->
 <section class="yd-section yd-ink yd-why-sec" id="why-choose-us" aria-labelledby="why-title">
-    <div class="container yd-why">
-
-        <div class="yd-why-main">
-            <h2 id="why-title">Why choose Yunqida.</h2>
-            <p class="yd-why-lead">Energy systems should be chosen around real power requirements, operating conditions and the people who use them.</p>
-            <div class="yd-why-cta">
-                <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Talk to our team</a>
-                <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
-            </div>
-        </div>
-
-        <div class="yd-why-grid">
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span>
-                <h3>Purpose-built and scalable</h3>
-                <p>Capacities and configurations matched to homes, businesses and industry.</p>
-            </article>
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span>
-                <h3>Technology-led products</h3>
-                <p>Battery storage, power conversion and integrated energy technologies.</p>
-            </article>
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></svg></span>
-                <h3>One integrated range</h3>
-                <p>Solar, storage and inverters from a single technology provider.</p>
-            </article>
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg></span>
-                <h3>Local Kenyan team</h3>
-                <p>Talk to people in Kenya about products, requirements and enquiries.</p>
-            </article>
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
-                <h3>Built for Kenyan conditions</h3>
-                <p>Keeps essential loads running through outages and unstable supply.</p>
-            </article>
-            <article>
-                <span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L3 21l1.9-6.4A8 8 0 1121 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg></span>
-                <h3>Guidance before you buy</h3>
-                <p>Honest advice on sizing and configuration, so you invest in what you need.</p>
-            </article>
-        </div>
+  <div class="container yd-why">
+    <div class="yd-why-main">
+      <h2 id="why-title">Why choose Yunqida.</h2>
+      <p class="yd-why-lead">Energy systems should be chosen around real power requirements, operating conditions and the people who use them.</p>
+      <div class="yd-why-cta">
+        <a href="{% url 'contact' %}" class="yd-btn yd-btn-primary">Talk to our team</a>
+        <a href="{% url 'products' %}" class="yd-textlink yd-textlink-light">Explore products</a>
+      </div>
     </div>
+    <div class="yd-why-grid">
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span><h3>Purpose-built and scalable</h3><p>Capacities and configurations matched to homes, businesses and industry.</p></article>
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><h3>Technology-led products</h3><p>Battery storage, power conversion and integrated energy technologies.</p></article>
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></svg></span><h3>One integrated range</h3><p>Solar, storage and inverters from a single technology provider.</p></article>
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-6.5 8-12a8 8 0 10-16 0c0 5.5 8 12 8 12z"/><circle cx="12" cy="10" r="3"/></svg></span><h3>Local Kenyan team</h3><p>Talk to people in Kenya about products, requirements and enquiries.</p></article>
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v7c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><h3>Built for Kenyan conditions</h3><p>Keeps essential loads running through outages and unstable supply.</p></article>
+      <article><span class="yd-why-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L3 21l1.9-6.4A8 8 0 1121 12z"/><path d="M8.5 11h7M8.5 14h4"/></svg></span><h3>Guidance before you buy</h3><p>Honest advice on sizing and configuration, so you invest in what you need.</p></article>
+    </div>
+  </div>
 </section>
 
-<!-- GOOGLE REVIEWS: real data only. Supplied by the view (see google_reviews.py). -->
 <section class="yd-section yd-grey yd-reviews" id="reviews">
-    <div class="container">
-        <div class="yd-rv-head">
-            <div class="yd-rv-title">
-                <h2>What our customers say.</h2>
-                <p>Real feedback from customers, shared publicly on Google.</p>
-            </div>
-            {% if google_reviews and google_rating %}
-            <div class="yd-rv-score" aria-label="Rated {{ google_rating|stringformat:'.1f' }} out of 5 on Google">
-                <strong>{{ google_rating|stringformat:".1f" }}</strong>
-                <div>
-                    <span class="yd-stars" style="--r:{{ google_rating|stringformat:'.1f' }}" aria-hidden="true"></span>
-                    <small>{% if google_review_count %}Based on {{ google_review_count }} Google review{{ google_review_count|pluralize }}{% else %}Google rating{% endif %}</small>
-                </div>
-            </div>
-            {% endif %}
-        </div>
+  <div class="container">
+    <div class="yd-rv-head">
+      <div class="yd-rv-title"><h2>What our customers say.</h2><p>Real feedback from customers, shared publicly on Google.</p></div>
+      {% if google_reviews and google_rating %}
+      <div class="yd-rv-score" aria-label="Rated {{ google_rating|stringformat:'.1f' }} out of 5 on Google">
+        <strong>{{ google_rating|stringformat:".1f" }}</strong>
+        <div><span class="yd-stars" style="--r:{{ google_rating|stringformat:'.1f' }}" aria-hidden="true"></span>
+        <small>{% if google_review_count %}Based on {{ google_review_count }} Google review{{ google_review_count|pluralize }}{% else %}Google rating{% endif %}</small></div>
+      </div>
+      {% endif %}
     </div>
-
-    {% if google_reviews %}
-    <div class="yd-rv-marquee" aria-label="Customer reviews from Google">
-        <div class="yd-rv-track">
-            {% for r in google_reviews %}
-            <figure class="yd-rv-card">
-                <span class="yd-stars" style="--r:{{ r.rating|stringformat:'.1f' }}" role="img" aria-label="{{ r.rating|stringformat:'.0f' }} out of 5 stars"></span>
-                <blockquote>{{ r.text }}</blockquote>
-                <figcaption>
-                    {% if r.photo %}<img src="{{ r.photo }}" alt="" width="40" height="40" loading="lazy" referrerpolicy="no-referrer">{% else %}<i>{{ r.name|slice:":1"|upper }}</i>{% endif %}
-                    <span><strong>{{ r.name }}</strong>{% if r.time %}<small>{{ r.time }}</small>{% endif %}</span>
-                    <em>Google</em>
-                </figcaption>
-            </figure>
-            {% endfor %}
-        </div>
+  </div>
+  {% if google_reviews %}
+  <div class="yd-rv-marquee" aria-label="Customer reviews from Google">
+    <div class="yd-rv-track">
+      {% for r in google_reviews %}
+      <figure class="yd-rv-card">
+        <span class="yd-stars" style="--r:{{ r.rating|stringformat:'.1f' }}" role="img" aria-label="{{ r.rating|stringformat:'.0f' }} out of 5 stars"></span>
+        <blockquote>{{ r.text }}</blockquote>
+        <figcaption>
+          {% if r.photo %}<img src="{{ r.photo }}" alt="" width="40" height="40" loading="lazy" referrerpolicy="no-referrer">{% else %}<i>{{ r.name|slice:":1"|upper }}</i>{% endif %}
+          <span><strong>{{ r.name }}</strong>{% if r.time %}<small>{{ r.time }}</small>{% endif %}</span>
+          <em>Google</em>
+        </figcaption>
+      </figure>
+      {% endfor %}
     </div>
-    <div class="container yd-rv-foot">
-        {% if google_reviews_url %}
-        <a href="{{ google_reviews_url }}" class="yd-textlink" target="_blank" rel="noopener noreferrer">Read all reviews on Google</a>
-        {% endif %}
-        {% if google_write_url %}
-        <a href="{{ google_write_url }}" class="yd-textlink" target="_blank" rel="noopener noreferrer">Write a review</a>
-        {% endif %}
+  </div>
+  <div class="container yd-rv-foot">
+    {% if google_reviews_url %}<a href="{{ google_reviews_url }}" class="yd-textlink" target="_blank" rel="noopener noreferrer">Read all reviews on Google</a>{% endif %}
+    {% if google_write_url %}<a href="{{ google_write_url }}" class="yd-textlink" target="_blank" rel="noopener noreferrer">Write a review</a>{% endif %}
+  </div>
+  {% else %}
+  <div class="container"><div class="yd-rv-empty">
+    <p>See what customers say about Yunqida Energy Technology Kenya, and share your own experience.</p>
+    <div class="yd-actions">
+      <a href="{{ google_reviews_url|default:'https://www.google.com/maps/search/?api=1&query=Yunqida+Energy+Technology+Kenya' }}" class="yd-btn yd-btn-dark" target="_blank" rel="noopener">Read reviews on Google</a>
+      <a href="{{ google_write_url|default:'https://www.google.com/maps/search/?api=1&query=Yunqida+Energy+Technology+Kenya' }}" class="yd-textlink" target="_blank" rel="noopener">Leave a review</a>
     </div>
-    {% else %}
-    <div class="container">
-        <div class="yd-rv-empty">
-            <p>See what customers say about Yunqida Energy Technology Kenya, and share your own experience.</p>
-            <div class="yd-actions">
-                <a href="{{ google_reviews_url|default:'https://www.google.com/maps/search/?api=1&query=Yunqida+Energy+Technology+Kenya' }}" class="yd-btn yd-btn-dark" target="_blank" rel="noopener">Read reviews on Google</a>
-                <a href="{{ google_write_url|default:'https://www.google.com/maps/search/?api=1&query=Yunqida+Energy+Technology+Kenya' }}" class="yd-textlink" target="_blank" rel="noopener">Leave a review</a>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+  </div></div>
+  {% endif %}
 </section>
 
-<!-- LOCATION: the whole map card opens Google Maps -->
 {% with maps_url="https://www.google.com/maps/search/?api=1&query=Yunqida+Energy+Technology+Kenya" %}
 <section class="yd-section yd-light" id="location">
-    <div class="container yd-where">
-        <div class="yd-where-copy">
-            <h2>Find us in Kenya.</h2>
-            <p>Talk to our Kenyan team about your power requirements, or visit us to discuss the right system for your property.</p>
-            <dl class="yd-facts">
-                <div><dt>Company</dt><dd>Yunqida Energy Technology Kenya</dd></div>
-                <div><dt>Location</dt><dd>Nairobi, Kenya</dd></div>
-                <div><dt>Enquiries</dt><dd><a href="{% url 'contact' %}">Contact our team</a></dd></div>
-            </dl>
-            <a href="{{ maps_url }}" class="yd-btn yd-btn-dark" target="_blank" rel="noopener">Open in Google Maps</a>
-        </div>
-
-        <a href="{{ maps_url }}" class="yd-map yd-media" data-reveal target="_blank" rel="noopener" aria-label="Open Yunqida Energy Technology Kenya in Google Maps">
-            <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-                <rect width="640" height="480" fill="#EEF1F3"/>
-                <path d="M0 330 C140 300 220 380 360 340 S560 270 640 300 V480 H0Z" fill="#DDE9EC"/>
-                <rect x="410" y="60" width="150" height="110" rx="4" fill="#E2EBE4"/>
-                <g fill="#E4E8EB"><rect x="40" y="40" width="120" height="90"/><rect x="200" y="40" width="150" height="90"/><rect x="40" y="170" width="120" height="110"/><rect x="200" y="170" width="150" height="110"/><rect x="410" y="210" width="150" height="70"/><rect x="600" y="40" width="60" height="240"/></g>
-                <g stroke="#fff" stroke-width="12" fill="none"><path d="M0 150H640M0 295H640M180 0V480M380 0V480M580 0V480"/></g>
-                <g stroke="#fff" stroke-width="22" fill="none" stroke-linecap="round"><path d="M0 410C160 360 300 440 640 380"/><path d="M290 0C300 120 270 240 300 480"/></g>
-            </svg>
-            <span class="yd-pin" aria-hidden="true"><i></i></span>
-            <span class="yd-map-label">Yunqida Energy Kenya</span>
-            <span class="yd-map-cta">Open in Google Maps</span>
-        </a>
+  <div class="container yd-where">
+    <div class="yd-where-copy">
+      <h2>Find us in Kenya.</h2>
+      <p>Talk to our Kenyan team about your power requirements, or visit us to discuss the right system for your property.</p>
+      <dl class="yd-facts">
+        <div><dt>Company</dt><dd>Yunqida Energy Technology Kenya</dd></div>
+        <div><dt>Location</dt><dd>Nairobi, Kenya</dd></div>
+        <div><dt>Enquiries</dt><dd><a href="{% url 'contact' %}">Contact our team</a></dd></div>
+      </dl>
+      <a href="{{ maps_url }}" class="yd-btn yd-btn-dark" target="_blank" rel="noopener">Open in Google Maps</a>
     </div>
+    <a href="{{ maps_url }}" class="yd-map" data-reveal target="_blank" rel="noopener" aria-label="Open Yunqida Energy Technology Kenya in Google Maps">
+      <svg viewBox="0 0 640 480" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="640" height="480" fill="#EEF1F3"/>
+        <path d="M0 330 C140 300 220 380 360 340 S560 270 640 300 V480 H0Z" fill="#DDE9EC"/>
+        <rect x="410" y="60" width="150" height="110" rx="4" fill="#E2EBE4"/>
+        <g fill="#E4E8EB"><rect x="40" y="40" width="120" height="90"/><rect x="200" y="40" width="150" height="90"/><rect x="40" y="170" width="120" height="110"/><rect x="200" y="170" width="150" height="110"/><rect x="410" y="210" width="150" height="70"/><rect x="600" y="40" width="60" height="240"/></g>
+        <g stroke="#fff" stroke-width="12" fill="none"><path d="M0 150H640M0 295H640M180 0V480M380 0V480M580 0V480"/></g>
+        <g stroke="#fff" stroke-width="22" fill="none" stroke-linecap="round"><path d="M0 410C160 360 300 440 640 380"/><path d="M290 0C300 120 270 240 300 480"/></g>
+      </svg>
+      <span class="yd-pin" aria-hidden="true"><i></i></span>
+      <span class="yd-map-label">Yunqida Energy Kenya</span>
+      <span class="yd-map-cta">Open in Google Maps</span>
+    </a>
+  </div>
 </section>
 {% endwith %}
 
-<!-- CONTACT -->
 <section class="yd-cta">
-    <div class="yd-ring" aria-hidden="true"></div>
-    <div class="container yd-cta-inner">
-        <h2>Let's find the right energy solution for your needs.</h2>
-        <p>Tell us about your energy requirements and our Kenyan team will help you explore the available Yunqida products.</p>
-        <div class="yd-actions">
-            <a href="{% url 'contact' %}" class="yd-btn yd-btn-dark">Contact Yunqida Kenya</a>
-            <a href="{% url 'products' %}" class="yd-textlink yd-textlink-dark">Browse products</a>
-        </div>
+  <div class="yd-ring" aria-hidden="true"></div>
+  <div class="container yd-cta-inner">
+    <h2>Let's find the right energy solution for your needs.</h2>
+    <p>Tell us about your energy requirements and our Kenyan team will help you explore the available Yunqida products.</p>
+    <div class="yd-actions">
+      <a href="{% url 'contact' %}" class="yd-btn yd-btn-dark">Contact Yunqida Kenya</a>
+      <a href="{% url 'products' %}" class="yd-textlink">Browse products</a>
     </div>
+  </div>
 </section>
+{% endblock %}
 
-<style>
-.page-dark { overflow-x: clip; }
-.page-dark ::selection { background: var(--c-sun); color: var(--c-forest); }
-.page-dark h1, .page-dark h2, .page-dark h3 { font-family: var(--font-display); margin: 0; font-weight: 600; letter-spacing: -.03em; text-wrap: balance; }
-.page-dark p { text-wrap: pretty; }
-.yd-who > *, .yd-why > *, .yd-where > *, .yd-gal-grid > * { min-width: 0; }
-.page-dark h1, .page-dark h2, .page-dark h3, .page-dark p { overflow-wrap: break-word; }
-.yd-section { padding: 136px 0; }
-.yd-light { background: #fff; }
-.yd-light h2, .yd-light h3, .yd-grey h2, .yd-grey h3 { color: var(--c-forest); }
-.yd-grey { background: var(--c-mist); }
-.yd-dark { background: var(--c-forest); color: #fff; }
-/* --c-forest-2 is not defined in base.html, so give it a fallback. */
-.yd-ink { background: var(--c-forest-2, #171D24); color: #fff; }
-:focus-visible { outline: 3px solid var(--c-sun); outline-offset: 3px; }
-
-/* Buttons + links */
-.yd-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; }
-.yd-btn { display: inline-flex; align-items: center; min-height: 56px; padding: 0 32px; border-radius: 2px; text-decoration: none; font-family: var(--font-display); font-size: .95rem; font-weight: 600; letter-spacing: -.01em; transition: background-color .25s, color .25s; }
-.yd-btn-primary { background: var(--c-sun); color: var(--c-forest); }
-.yd-btn-primary:hover { background: #fff; }
-.yd-btn-dark { background: var(--c-forest); color: #fff; }
-.yd-btn-dark:hover { background: var(--c-sun); color: var(--c-forest); }
-.yd-textlink { display: inline-block; padding-bottom: 4px; font-weight: 600; font-size: .95rem; text-decoration: none; color: var(--c-forest); background: linear-gradient(var(--c-sun), var(--c-sun)) left bottom / 100% 2px no-repeat; transition: background-size .35s var(--ease); }
-.yd-textlink:hover { background-size: 35% 2px; }
-.yd-textlink-light { color: #fff; }
-.yd-textlink-dark { color: var(--c-forest); background-image: linear-gradient(var(--c-forest), var(--c-forest)); }
-
-/* Hero */
-.yd-hero { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 680px; height: min(940px, 100svh); isolation: isolate; overflow: hidden; background: var(--c-forest); color: #fff; }
-.yd-hero-video { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: auto; backface-visibility: hidden; transform: translateZ(0); }
-.yd-hero-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(15,19,24,.5) 0%, rgba(15,19,24,.1) 42%, rgba(15,19,24,0) 70%), linear-gradient(180deg, rgba(15,19,24,.36) 0%, rgba(15,19,24,0) 20%); }
-.yd-hero-content { padding-bottom: 72px; }
-.yd-hero h1 { max-width: 900px; font-size: clamp(3rem, 7.4vw, 6.6rem); line-height: .98; letter-spacing: -.045em; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.28); animation: yd-in 1.1s var(--ease) both; }
-.yd-hero-content p { max-width: 500px; margin: 28px 0 38px; font-size: 1.12rem; line-height: 1.7; text-shadow: 0 1px 16px rgba(0,0,0,.35); animation: yd-in 1.1s .12s var(--ease) both; }
-.yd-hero .yd-actions { animation: yd-in 1.1s .22s var(--ease) both; }
-@keyframes yd-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-.yd-play { position: absolute; right: max(calc((100% - 1200px) / 2), 24px); bottom: 150px; display: grid; place-items: center; width: 42px; height: 42px; padding: 0; color: #fff; background: rgba(15,19,24,.45); border: 1px solid rgba(255,255,255,.55); border-radius: 50%; cursor: pointer; transition: background-color .2s, color .2s; }
-.yd-play:hover { background: #fff; color: var(--c-forest); }
-.yd-play svg { fill: currentColor; }
-.yd-play .ico-play { display: none; }
-.yd-play.is-paused .ico-play { display: block; }
-.yd-play.is-paused .ico-pause { display: none; }
-.yd-sound { bottom: 204px; }
-.yd-sound .ico-on { display: none; }
-.yd-sound.is-on .ico-on { display: block; }
-.yd-sound.is-on .ico-off { display: none; }
-.yd-bar { background: rgba(15,19,24,.9); border-top: 3px solid var(--c-sun); }
-.yd-bar-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
-.yd-bar-grid > div { padding: 26px 28px 28px; border-left: 1px solid rgba(255,255,255,.12); }
-.yd-bar-grid > div:first-child { padding-left: 0; border-left: 0; }
-.yd-bar-grid strong { display: block; margin-bottom: 4px; font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: #fff; }
-.yd-bar-grid span { font-size: .88rem; line-height: 1.5; color: rgba(255,255,255,.68); }
-
-/* Who we are */
-.yd-who { display: grid; grid-template-columns: 1fr 1.7fr; gap: 80px; align-items: start; margin-bottom: 80px; }
-.yd-who h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.05; letter-spacing: -.04em; }
-.yd-lead { margin: 0 0 22px; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 2.3vw, 2rem); line-height: 1.3; letter-spacing: -.025em; color: var(--c-forest); }
-.yd-who-body p:not(.yd-lead) { max-width: 520px; margin: 0 0 30px; color: var(--c-muted); line-height: 1.8; }
-.yd-trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
-.yd-trio > div { padding-top: 22px; border-top: 1px solid var(--c-line); }
-.yd-trio h3 { margin-bottom: 8px; font-size: 1.18rem; letter-spacing: -.02em; }
-.yd-trio p { margin: 0; color: var(--c-muted); line-height: 1.7; }
-
-/* Image reveal used by the map: the frame stays put; the map wipes up inside it */
-.yd-media { margin: 0; overflow: hidden; background: #2A323C; border-radius: 2px; }
-.yd-light .yd-media { background: #E3E6E9; }
-.yd-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.yd-js .yd-media img, .yd-js .yd-media svg { clip-path: inset(100% 0 0 0); transform: scale(1.14); will-change: clip-path, transform; transition: clip-path 1.5s var(--ease), transform 2.2s var(--ease); transition-delay: var(--d, 0s); }
-.yd-js .yd-media.is-in img, .yd-js .yd-media.is-in svg { clip-path: inset(0 0 0 0); transform: scale(1); }
-
-/* ---------- Gallery: editorial serif + clean sans, copy left, large images right ----------
-   Two columns at EVERY screen size (mobile = desktop layout).
-   Images keep their natural proportions (no cropping, no up-scaling blur). */
-.yd-gal { --gal-serif: 'Fraunces', Georgia, 'Times New Roman', serif; --gal-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; padding: 112px 0; font-family: var(--gal-sans); }
-.yd-gal-grid { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr); gap: clamp(16px, 4vw, 80px); align-items: start; }
-.yd-gal-copy { position: sticky; top: 110px; }
-.yd-gal .yd-gal-copy h2 { font-family: var(--gal-serif); font-weight: 400; font-variation-settings: "opsz" 144; font-size: clamp(1.45rem, 3.9vw, 3.1rem); line-height: 1.08; letter-spacing: -.025em; }
-.yd-gal-intro { margin: 22px 0 30px; max-width: 440px; font-size: clamp(.82rem, 1.9vw, 1.05rem); line-height: 1.75; color: var(--c-muted); }
-.yd-gal-facts { margin: 0 0 30px; max-width: 440px; border-top: 1px solid var(--c-line); }
-.yd-gal-facts > div { display: grid; grid-template-columns: 96px 1fr; gap: 18px; padding: 15px 0; border-bottom: 1px solid var(--c-line); }
-.yd-gal-facts dt { font-family: var(--gal-serif); font-style: italic; font-weight: 400; font-size: 1.12rem; color: var(--c-forest); }
-.yd-gal-facts dd { margin: 0; font-size: .9rem; line-height: 1.6; color: var(--c-muted); }
-
-/* Index: shows which image is in view and jumps to it */
-.yd-gal-index { display: flex; flex-direction: column; gap: 2px; margin: 0 0 26px; padding: 0; list-style: none; }
-.yd-gal-index a { display: flex; align-items: baseline; gap: 14px; padding: 7px 0 7px 16px; border-left: 2px solid var(--c-line); font-size: .92rem; color: var(--c-muted); text-decoration: none; transition: color .3s, border-color .3s, padding-left .4s var(--ease); }
-.yd-gal-index a span { min-width: 12px; font-family: var(--gal-serif); font-size: .9rem; font-variant-numeric: tabular-nums; }
-.yd-gal-index a:hover { color: var(--c-forest); }
-.yd-gal-index a.is-active { padding-left: 22px; border-left-color: var(--c-sun); color: var(--c-forest); font-weight: 600; }
-.yd-gal-count { display: none; margin: 0 0 18px; font-family: var(--gal-serif); font-size: .95rem; color: var(--c-muted); }
-.yd-gal-count b { font-weight: 500; color: var(--c-forest); font-variant-numeric: tabular-nums; }
-
-/* Images */
-.yd-gal-col { display: flex; flex-direction: column; gap: clamp(28px, 5vw, 72px); }
-.yd-gal-img { margin: 0; }
-.yd-gal-frame { position: relative; overflow: hidden; background: #E3E6E9; border-radius: 4px; box-shadow: 0 34px 60px -38px rgba(15,19,24,.5); }
-.yd-gal-frame img { display: block; width: 100%; height: auto; image-rendering: auto; }
-.yd-gal-img figcaption { display: flex; flex-direction: column; gap: 3px; margin-top: 14px; padding-left: 12px; border-left: 2px solid var(--c-sun); }
-.yd-gal-img figcaption strong { font-family: var(--gal-serif); font-weight: 400; font-size: clamp(.9rem, 1.8vw, 1.3rem); letter-spacing: -.01em; color: var(--c-forest); }
-.yd-gal-img figcaption span { font-size: clamp(.72rem, 1.4vw, .9rem); line-height: 1.5; color: var(--c-muted); }
-
-/* Reveal on scroll: the card fades and glides up, the photo settles from a slight zoom to exactly 1:1.
-   No clip-path and no lingering will-change, so the final image is pin-sharp. */
-.yd-js .yd-gal-img { opacity: 0; transform: translate3d(0, 72px, 0); transition: opacity 1.3s var(--ease), transform 1.7s var(--ease); }
-.yd-js .yd-gal-img .yd-gal-frame img { transform: scale(1.1); transition: transform 2.6s var(--ease); }
-.yd-js .yd-gal-img figcaption { opacity: 0; transform: translateY(14px); transition: opacity 1s .45s var(--ease), transform 1.2s .45s var(--ease); }
-.yd-js .yd-gal-img.is-in { opacity: 1; transform: none; }
-.yd-js .yd-gal-img.is-in .yd-gal-frame img { transform: none; }
-.yd-js .yd-gal-img.is-in figcaption { opacity: 1; transform: none; }
-
-/* Lenis smooth-scroll support */
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-stopped { overflow: hidden; }
-
-/* ---------- Why choose us: compact, flat ---------- */
-.yd-why-sec { padding: 96px 0; }
-.yd-why { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 80px; align-items: start; }
-.yd-why-main h2 { font-size: clamp(2rem, 3.4vw, 2.9rem); line-height: 1.08; letter-spacing: -.04em; color: #fff; }
-.yd-why-lead { max-width: 380px; margin: 20px 0 32px; font-size: 1.02rem; line-height: 1.75; color: rgba(255,255,255,.72); }
-.yd-why-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-.yd-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px 32px; }
-.yd-why-grid article { padding-top: 22px; border-top: 1px solid rgba(255,255,255,.16); }
-.yd-why-ico { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,.2); border-radius: 8px; }
-.yd-why-ico svg { width: 22px; height: 22px; fill: none; stroke: var(--c-sun); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.yd-why-grid h3 { margin-bottom: 8px; font-size: 1.05rem; color: #fff; letter-spacing: -.015em; }
-.yd-why-grid p { margin: 0; font-size: .9rem; line-height: 1.65; color: rgba(255,255,255,.66); }
-
-/* Google reviews */
-.yd-rv-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; margin-bottom: 56px; }
-.yd-rv-title h2 { font-size: clamp(1.9rem, 3.2vw, 2.8rem); line-height: 1.15; }
-.yd-rv-title p { max-width: 420px; margin: 18px 0 0; color: var(--c-muted); line-height: 1.75; }
-.yd-rv-score { display: flex; align-items: center; gap: 22px; padding-left: 40px; border-left: 1px solid #D5DADF; }
-.yd-rv-score > strong { font-family: var(--font-display); font-size: clamp(3.4rem, 6vw, 4.8rem); font-weight: 600; line-height: .9; letter-spacing: -.05em; color: var(--c-forest); }
-.yd-rv-score small { display: block; margin-top: 8px; font-size: .88rem; color: var(--c-muted); }
-.yd-stars { display: inline-block; width: 110px; height: 22px; background: linear-gradient(90deg, var(--c-sun) calc(var(--r, 5) * 20%), #D3D8DE 0); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 1.8l2.9 6.2 6.8.8-5 4.6 1.4 6.7L11 16.7 4.9 20.1l1.4-6.7-5-4.6 6.8-.8z'/%3E%3C/svg%3E") 0 0 / 22px 22px repeat-x; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M11 1.8l2.9 6.2 6.8.8-5 4.6 1.4 6.7L11 16.7 4.9 20.1l1.4-6.7-5-4.6 6.8-.8z'/%3E%3C/svg%3E") 0 0 / 22px 22px repeat-x; }
-.yd-rv-card .yd-stars { width: 90px; height: 18px; -webkit-mask-size: 18px 18px; mask-size: 18px 18px; }
-
-.yd-rv-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); }
-.yd-rv-track { display: flex; gap: 20px; width: max-content; padding: 6px 0 14px; animation: yd-rv var(--dur, 60s) linear infinite; }
-.yd-rv-marquee:hover .yd-rv-track { animation-play-state: paused; }
-@keyframes yd-rv { to { transform: translateX(calc(-50% - 10px)); } }
-.yd-rv-card { display: flex; flex-direction: column; flex: none; width: 380px; margin: 0; padding: 32px 32px 28px; background: #fff; border: 1px solid var(--c-line); border-radius: 2px; transition: box-shadow .35s var(--ease), border-color .35s; }
-.yd-rv-card:hover { border-color: transparent; box-shadow: 0 22px 50px -26px rgba(15,19,24,.35); }
-.yd-rv-card blockquote { flex: 1; margin: 18px 0 26px; font-size: 1rem; line-height: 1.75; color: var(--c-forest); display: -webkit-box; -webkit-line-clamp: 6; line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
-.yd-rv-card figcaption { display: flex; align-items: center; gap: 14px; padding-top: 20px; border-top: 1px solid var(--c-line); }
-.yd-rv-card figcaption img, .yd-rv-card figcaption i { flex: none; width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.yd-rv-card figcaption i { display: grid; place-items: center; font-style: normal; font-family: var(--font-display); font-weight: 600; color: var(--c-forest); background: #E7EAED; }
-.yd-rv-card figcaption span { flex: 1; min-width: 0; }
-.yd-rv-card figcaption strong { display: block; font-family: var(--font-display); font-weight: 500; font-size: .95rem; color: var(--c-forest); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.yd-rv-card figcaption small { display: block; font-size: .82rem; color: var(--c-muted); }
-.yd-rv-card figcaption em { font-style: normal; font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: var(--c-muted); }
-.yd-rv-foot { display: flex; flex-wrap: wrap; gap: 14px 36px; margin-top: 44px; }
-.yd-rv-empty { display: flex; align-items: center; justify-content: space-between; gap: 48px; padding: 36px 0; border-top: 1px solid #D5DADF; border-bottom: 1px solid #D5DADF; }
-.yd-rv-empty p { max-width: 460px; margin: 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; line-height: 1.4; letter-spacing: -.02em; color: var(--c-forest); }
-
-/* Location */
-.yd-where { display: grid; grid-template-columns: 1fr 1.3fr; gap: 88px; align-items: center; }
-.yd-where h2 { font-size: clamp(1.9rem, 3.2vw, 2.8rem); line-height: 1.15; }
-.yd-where-copy > p { max-width: 400px; margin: 22px 0 34px; color: var(--c-muted); line-height: 1.8; }
-.yd-facts { margin: 0 0 38px; border-top: 1px solid var(--c-line); }
-.yd-facts > div { display: grid; grid-template-columns: 110px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--c-line); }
-.yd-facts dt { font-size: .88rem; color: var(--c-muted); }
-.yd-facts dd { margin: 0; font-weight: 500; color: var(--c-forest); }
-.yd-facts a { color: var(--c-forest); text-decoration-color: var(--c-sun); text-underline-offset: 4px; text-decoration-thickness: 2px; }
-.yd-map { position: relative; display: block; aspect-ratio: 4 / 3.1; color: inherit; text-decoration: none; background: #E3E6E9; cursor: pointer; }
-.yd-map svg { display: block; width: 100%; height: 100%; }
-.yd-pin { position: absolute; left: 50%; top: 46%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--c-sun); box-shadow: 0 0 0 5px #fff, 0 8px 20px rgba(15,19,24,.35); }
-.yd-pin::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: var(--c-forest); }
-.yd-pin i { position: absolute; inset: -5px; border: 2px solid var(--c-sun); border-radius: 50%; animation: yd-ping 2.4s var(--ease) infinite; }
-@keyframes yd-ping { from { transform: scale(1); opacity: .9; } to { transform: scale(3.2); opacity: 0; } }
-.yd-map-label { position: absolute; left: 50%; top: calc(46% - 62px); transform: translateX(-50%); padding: 9px 16px; background: #fff; border-radius: 2px; font-family: var(--font-display); font-size: .86rem; font-weight: 500; color: var(--c-forest); white-space: nowrap; box-shadow: 0 10px 28px rgba(15,19,24,.18); }
-.yd-map-cta { position: absolute; left: 20px; bottom: 20px; padding: 13px 20px; background: var(--c-forest); border-radius: 2px; font-family: var(--font-display); font-size: .86rem; font-weight: 600; color: #fff; transition: background-color .25s, color .25s; }
-.yd-map:hover .yd-map-cta, .yd-map:focus-visible .yd-map-cta { background: var(--c-sun); color: var(--c-forest); }
-
-/* Contact */
-.yd-cta { position: relative; overflow: hidden; padding: 128px 0; background: var(--c-sun); color: var(--c-forest); }
-.yd-ring { position: absolute; left: -220px; top: 50%; width: 640px; aspect-ratio: 1; margin-top: -320px; border: 2px solid rgba(15,19,24,.18); border-radius: 50%; }
-.yd-ring::after { content: ""; position: absolute; inset: 70px; border: 2px solid rgba(15,19,24,.12); border-radius: 50%; }
-.yd-cta-inner { position: relative; max-width: 1200px; }
-.yd-cta h2 { max-width: 760px; margin-left: auto; font-size: clamp(2rem, 4.2vw, 3.6rem); line-height: 1.08; color: var(--c-forest); }
-.yd-cta p { max-width: 480px; margin: 24px 0 40px auto; line-height: 1.8; color: rgba(15,19,24,.82); font-weight: 500; }
-.yd-cta .yd-actions { justify-content: flex-start; max-width: 480px; margin-left: auto; }
-.yd-cta .yd-btn-dark:hover { background: #fff; color: var(--c-forest); }
-
-/* Responsive */
-@media (max-width: 1100px) {
-    .yd-why { gap: 56px; }
-    .yd-why-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 960px) {
-    .yd-section { padding: 88px 0; }
-    .yd-gal { padding: 72px 0; }
-    .yd-why-sec { padding: 72px 0; }
-    .yd-hero { height: auto; min-height: max(620px, 100svh); }
-    .yd-hero-content { padding-top: calc(var(--header-h) + 96px); padding-bottom: 44px; }
-    .yd-hero h1 { font-size: clamp(2.6rem, 9vw, 4.4rem); }
-    .yd-play, .yd-sound { top: calc(var(--header-h) + 16px); bottom: auto; right: 24px; }
-    .yd-sound { right: 78px; }
-    .yd-bar-grid { grid-template-columns: repeat(2, 1fr); column-gap: 24px; }
-    .yd-bar-grid > div, .yd-bar-grid > div:first-child { padding: 18px 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.12); }
-    .yd-bar-grid > div:nth-child(-n+2) { border-top: 0; }
-
-    .yd-who { grid-template-columns: 1fr; gap: 28px; margin-bottom: 52px; }
-    .yd-trio { grid-template-columns: 1fr; gap: 32px; }
-    .yd-why, .yd-where { grid-template-columns: 1fr; gap: 44px; }
-    .yd-why-lead { margin-bottom: 28px; }
-    .yd-cta { padding: 88px 0; }
-    .yd-cta h2, .yd-cta p, .yd-cta .yd-actions { margin-left: 0; }
-    .yd-ring { left: auto; right: -300px; top: auto; bottom: -300px; margin-top: 0; opacity: .6; }
-
-    .yd-gal-facts, .yd-gal-index { display: none; }
-    .yd-gal-count { display: block; }
-
-    .yd-rv-head { flex-direction: column; align-items: flex-start; gap: 28px; margin-bottom: 36px; }
-    .yd-rv-score { padding-left: 0; border-left: 0; }
-    .yd-rv-card { width: 320px; padding: 26px 24px 22px; }
-    .yd-rv-empty { flex-direction: column; align-items: flex-start; gap: 24px; }
-}
-@media (max-width: 560px) {
-    .yd-section { padding: 72px 0; }
-    .yd-gal { padding: 56px 0; }
-    .yd-gal-grid { grid-template-columns: minmax(0, .72fr) minmax(0, 1.4fr); gap: 14px; }
-    .yd-gal-copy { top: calc(var(--header-h, 70px) + 16px); }
-    .yd-gal-intro { margin: 14px 0 18px; line-height: 1.6; }
-    .yd-gal-col { gap: 24px; }
-    .yd-gal-frame { border-radius: 3px; }
-    .yd-gal-img figcaption { margin-top: 10px; padding-left: 8px; }
-    .yd-hero-content { padding-top: calc(var(--header-h) + 88px); }
-    .yd-hero-content p { margin: 22px 0 30px; font-size: 1.02rem; }
-    .yd-bar-grid span { display: none; }
-    .yd-bar-grid strong { margin: 0; font-size: .95rem; }
-    .yd-bar-grid > div, .yd-bar-grid > div:first-child { padding: 15px 0; }
-    .yd-actions { gap: 18px; }
-    .yd-btn { width: 100%; justify-content: center; }
-    .yd-who h2 { font-size: 2.2rem; }
-    .yd-why-grid { grid-template-columns: 1fr; gap: 28px; }
-    .yd-why-cta { flex-direction: column; align-items: stretch; }
-    .yd-why-cta .yd-textlink { align-self: flex-start; }
-    .yd-facts > div { grid-template-columns: 1fr; gap: 4px; }
-    .yd-map { aspect-ratio: 1 / 1; }
-    .yd-map-label { font-size: .8rem; padding: 8px 12px; }
-    .yd-map-cta { left: 14px; bottom: 14px; padding: 11px 16px; }
-}
-@media (prefers-reduced-motion: reduce) {
-    .yd-hero h1, .yd-hero-content p, .yd-hero .yd-actions, .yd-pin i { animation: none; }
-    .yd-js .yd-media img, .yd-js .yd-media svg { clip-path: none; transform: none; transition: none; }
-    .yd-js .yd-gal-img, .yd-js .yd-gal-img .yd-gal-frame img, .yd-js .yd-gal-img figcaption { opacity: 1; transform: none; transition: none; }
-    .yd-gal-index a { transition: none; }
-    .yd-rv-track { animation: none; }
-    .yd-rv-marquee { overflow-x: auto; }
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+{% block extra_js %}
 <script>
 (function () {
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* Smooth, eased scrolling (skipped for visitors who prefer reduced motion) */
-    if (!reduce && window.Lenis) {
-        var lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
-        var raf = function (t) { lenis.raf(t); requestAnimationFrame(raf); };
-        requestAnimationFrame(raf);
-        document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-            var id = a.getAttribute('href');
-            if (id.length < 2) return;
-            a.addEventListener('click', function (e) {
-                var target = document.querySelector(id);
-                if (!target) return;
-                e.preventDefault();
-                lenis.scrollTo(target, { offset: -100, duration: 1.4 });
-            });
-        });
-    }
+  /* Hero video controls */
+  var video = document.getElementById('heroVideo'), btn = document.getElementById('heroToggle'), snd = document.getElementById('heroSound');
+  if (video && btn) {
+    var sync = function () { btn.classList.toggle('is-paused', video.paused); btn.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video'); };
+    if (reduce) { video.removeAttribute('autoplay'); video.pause(); }
+    btn.addEventListener('click', function () { video.paused ? video.play() : video.pause(); });
+    video.addEventListener('play', sync); video.addEventListener('pause', sync); sync();
+    if (snd) snd.addEventListener('click', function () {
+      video.muted = !video.muted;
+      if (!video.muted) { video.volume = 1; if (video.paused) video.play(); }
+      snd.classList.toggle('is-on', !video.muted);
+      snd.setAttribute('aria-label', video.muted ? 'Turn sound on' : 'Mute video');
+    });
+  }
 
-    /* Hero video: pause / play and sound */
-    var video = document.getElementById('heroVideo');
-    var btn = document.getElementById('heroToggle');
-    var soundBtn = document.getElementById('heroSound');
-    if (video && btn) {
-        var sync = function () {
-            btn.classList.toggle('is-paused', video.paused);
-            btn.setAttribute('aria-label', video.paused ? 'Play background video' : 'Pause background video');
-        };
-        if (reduce) { video.removeAttribute('autoplay'); video.pause(); }
-        btn.addEventListener('click', function () { video.paused ? video.play() : video.pause(); });
-        video.addEventListener('play', sync);
-        video.addEventListener('pause', sync);
-        sync();
-        if (soundBtn) {
-            soundBtn.addEventListener('click', function () {
-                video.muted = !video.muted;
-                if (!video.muted) { video.volume = 1; if (video.paused) video.play(); }
-                soundBtn.classList.toggle('is-on', !video.muted);
-                soundBtn.setAttribute('aria-label', video.muted ? 'Turn sound on' : 'Mute video');
-            });
-        }
-    }
+  /* Reviews: seamless loop */
+  var track = document.querySelector('.yd-rv-track');
+  if (track && !reduce) {
+    var orig = [].slice.call(track.children), g = 0;
+    var clone = function (list) { list.forEach(function (c) { var k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); track.appendChild(k); }); };
+    while (track.scrollWidth < window.innerWidth * 1.3 && g++ < 8) clone(orig);
+    var half = [].slice.call(track.children); clone(half);
+    track.style.setProperty('--dur', Math.max(40, half.length * 9) + 's');
+  }
 
-    /* Google reviews: seamless, auto-scrolling loop (pauses on hover) */
-    var rvTrack = document.querySelector('.yd-rv-track');
-    if (rvTrack && !reduce) {
-        var originals = Array.prototype.slice.call(rvTrack.children);
-        var addClones = function () {
-            originals.forEach(function (c) { var k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); rvTrack.appendChild(k); });
-        };
-        var guard = 0;
-        while (rvTrack.scrollWidth < window.innerWidth * 1.3 && guard++ < 8) { addClones(); }
-        var half = Array.prototype.slice.call(rvTrack.children);
-        half.forEach(function (c) { var k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); rvTrack.appendChild(k); });
-        rvTrack.style.setProperty('--dur', Math.max(40, half.length * 9) + 's');
-    }
+  /* Gallery: index highlight */
+  var items = [].slice.call(document.querySelectorAll('[data-gal-item]'));
+  var links = document.querySelectorAll('[data-gal-link]'), now = document.getElementById('galNow');
+  if (items.length && 'IntersectionObserver' in window) {
+    var setActive = function (i) {
+      links.forEach(function (l) { l.classList.toggle('is-active', +l.getAttribute('data-gal-link') === i); });
+      if (now) now.textContent = i + 1;
+    };
+    setActive(0);
+    var gio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) setActive(items.indexOf(e.target)); }); }, { rootMargin: '-45% 0px -45% 0px' });
+    items.forEach(function (el) { gio.observe(el); });
+  }
 
-    /* Gallery index: highlight the image nearest the middle of the screen */
-    var galItems = document.querySelectorAll('[data-gal-item]');
-    var galLinks = document.querySelectorAll('[data-gal-link]');
-    var galNow = document.getElementById('galNow');
-    if (galItems.length && 'IntersectionObserver' in window) {
-        var setActive = function (i) {
-            galLinks.forEach(function (l) { l.classList.toggle('is-active', +l.getAttribute('data-gal-link') === i); });
-            if (galNow) galNow.textContent = i + 1;
-        };
-        setActive(0);
-        var galIO = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-                if (e.isIntersecting) setActive(Array.prototype.indexOf.call(galItems, e.target));
-            });
-        }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-        galItems.forEach(function (el) { galIO.observe(el); });
-    }
+  /* Reveal: gallery frames wipe open with a light sweep; map wipes up */
+  var reveal = [].slice.call(document.querySelectorAll('[data-gal-item],[data-reveal]'));
+  if (reduce || !('IntersectionObserver' in window)) reveal.forEach(function (el) { el.classList.add('is-in'); });
+  else {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+    reveal.forEach(function (el) { io.observe(el); });
+  }
 
-    /* Scroll reveal for product rows (if present) */
-    var cards = document.querySelectorAll('[data-reveal-card]');
-    if (!reduce && 'IntersectionObserver' in window) {
-        var cardObserver = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    cardObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-        cards.forEach(function (card) { cardObserver.observe(card); });
-    } else {
-        cards.forEach(function (card) { card.classList.add('is-visible'); });
-    }
-
-    /* Scroll reveal for the gallery and the map.
-       Low threshold so tall gallery images begin revealing as soon as they enter view. */
-    var items = document.querySelectorAll('[data-reveal]');
-    if (reduce || !('IntersectionObserver' in window)) { items.forEach(function (el) { el.classList.add('is-in'); }); return; }
-    var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
-    }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
-    items.forEach(function (el) { io.observe(el); });
+  /* Gallery parallax: each photo drifts inside its frame as you scroll */
+  if (!reduce) {
+    var frames = items.map(function (f) { return { img: f.querySelector('img'), el: f }; });
+    var ticking = false;
+    var update = function () {
+      ticking = false;
+      var vh = window.innerHeight;
+      frames.forEach(function (f) {
+        var r = f.el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        var p = ((r.top + r.height / 2) - vh / 2) / vh;   /* -1 .. 1 */
+        p = Math.max(-1, Math.min(1, p));
+        f.img.style.setProperty('--py', (p * -4).toFixed(2) + '%');
+      });
+    };
+    var req = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req);
+    update();
+  }
 })();
 </script>
 {% endblock %}

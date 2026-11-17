@@ -1,430 +1,507 @@
 
 {% load static %}
-<style>/* ==========================================================
-   What We Manufacture — compact, transparent, frameless
-   Grid: 4 cards per row on desktop, multi-column on mobile
-   (same card design everywhere, only the column count changes).
-   ========================================================== */
+
+<style>
+/* =========================================================
+   YUNQIDA — MANUFACTURED PRODUCTS
+   Clean, premium presentation with transparent product images
+   ========================================================= */
 
 .yd-manufacture {
-    --yd-navy: #0a2f55;
-    --yd-ink: #1c2a39;
-    --yd-muted: #6b7684;
-    --yd-line: #dcdfe3;
+    --yd-green: #153c32;
+    --yd-green-dark: #102e27;
+    --yd-gold: #b99a62;
+    --yd-text: #202923;
+    --yd-muted: #737b75;
+    --yd-border: rgba(21, 60, 50, 0.12);
 
-    /* ▼ change these to control cards per row ▼ */
-    --yd-cols-mobile: 2;
-    --yd-cols-tablet: 3;
-    --yd-cols-desktop: 4;
-
-    --yd-gap: 12px;
-    --yd-pad: 12px;
-
+    position: relative;
+    width: 100%;
+    padding: clamp(65px, 8vw, 110px) 0;
+    overflow: hidden;
     background: transparent;
-    padding: 56px 0;
-    color: var(--yd-ink);
+    color: var(--yd-text);
+}
+
+.yd-manufacture *,
+.yd-manufacture *::before,
+.yd-manufacture *::after {
+    box-sizing: border-box;
 }
 
 .yd-manufacture__container {
-    width: min(1280px, 100% - 32px);
-    margin-inline: auto;
+    width: min(1280px, calc(100% - 48px));
+    margin: 0 auto;
 }
 
-/* ---------- Heading ---------- */
-.yd-manufacture__heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px 32px;
-    margin-bottom: 32px;
-}
+/* Section heading */
 
-.yd-manufacture__intro { max-width: 620px; }
+.yd-manufacture__header {
+    max-width: 680px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
 
 .yd-manufacture__eyebrow {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .14em;
-    color: var(--yd-muted);
-    margin-bottom: 12px;
-}
-
-.yd-manufacture__intro h2 {
-    margin: 0 0 12px;
-    font-size: 32px;
-    line-height: 1.12;
-    font-weight: 700;
-    letter-spacing: -.01em;
-    color: var(--yd-navy);
-}
-
-.yd-manufacture__intro h2 span { color: inherit; }
-
-.yd-manufacture__intro p {
-    margin: 0;
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--yd-muted);
-}
-
-.yd-manufacture__view-all {
-    flex-shrink: 0;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 11px 20px;
-    border: 1px solid var(--yd-navy);
-    background: transparent;
-    color: var(--yd-navy);
-    font-size: 14px;
+    gap: 11px;
+    margin-bottom: 17px;
+    color: var(--yd-gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.yd-manufacture__eyebrow::before,
+.yd-manufacture__eyebrow::after {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--yd-gold);
+    opacity: 0.8;
+}
+
+.yd-manufacture__heading {
+    margin: 0;
+    color: var(--yd-green-dark);
+    font-family: inherit;
+    font-size: clamp(30px, 4vw, 46px);
     font-weight: 600;
-    text-decoration: none;
-    transition: background .25s ease, color .25s ease;
+    letter-spacing: -1.7px;
+    line-height: 1.13;
 }
 
-.yd-manufacture__view-all:hover,
-.yd-manufacture__view-all:focus-visible {
-    background: var(--yd-navy);
-    color: #fff;
+.yd-manufacture__intro {
+    max-width: 540px;
+    margin: 17px auto 0;
+    color: var(--yd-muted);
+    font-size: 14px;
+    line-height: 1.8;
 }
 
-/* ---------- Grid ---------- */
+/* Product grid */
+
 .yd-manufacture__grid {
     display: grid;
-    grid-template-columns: repeat(var(--yd-cols-mobile), minmax(0, 1fr));
-    gap: var(--yd-gap);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 25px;
+    align-items: stretch;
 }
 
-/* ---------- Card: transparent, single hairline ---------- */
+/* Product card */
+
 .yd-manufacture__card {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: var(--yd-pad);
-    background: transparent;
-    border: 1px solid var(--yd-line);
-    border-radius: 0;
-    box-shadow: none;
-    transition: border-color .25s ease;
-}
-
-.yd-manufacture__card:hover { border-color: var(--yd-navy); }
-
-.yd-manufacture__content { display: contents; }
-
-/* ---------- Category + title ---------- */
-.yd-manufacture__category {
-    order: 0;
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: .06em;
-    line-height: 1.3;
-    color: var(--yd-muted);
-    margin-bottom: 4px;
-}
-
-.yd-manufacture__content h3 {
-    order: 0;
-    margin: 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--yd-line);
-    font-size: 13.5px;
-    line-height: 1.3;
-    font-weight: 700;
-    overflow-wrap: anywhere;
-}
-
-.yd-manufacture__content h3 a {
-    color: var(--yd-navy);
-    text-decoration: none;
-}
-
-/* ---------- Tagline + description ---------- */
-.yd-manufacture__tagline {
-    order: 1;
-    margin: 8px 0 0;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.4;
-    color: var(--yd-ink);
-    overflow-wrap: anywhere;
-}
-
-.yd-manufacture__description {
-    order: 1;
-    margin: 3px 0 0;
-    font-size: 11.5px;
-    line-height: 1.5;
-    color: var(--yd-muted);
-    overflow-wrap: anywhere;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    padding: 22px 19px 20px;
     overflow: hidden;
+    background: transparent;
+    border: 1px solid var(--yd-border);
+    border-radius: 5px;
+    transition:
+        border-color 0.3s ease,
+        transform 0.3s ease;
 }
 
-/* ---------- Image: same proportions on every screen ---------- */
-.yd-manufacture__image {
-    order: 2;
+.yd-manufacture__card:hover {
+    border-color: rgba(185, 154, 98, 0.55);
+    transform: translateY(-5px);
+}
+
+/* Product image area — deliberately transparent */
+
+.yd-manufacture__image-link {
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    margin-top: 10px;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+    height: 230px;
+    margin-bottom: 20px;
     overflow: hidden;
+    background: #eeeeec;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
-.yd-manufacture__image img {
+.yd-manufacture__image {
+    display: block;
     width: 100%;
     height: 100%;
-    max-width: none;
+    max-width: 100%;
     object-fit: contain;
     object-position: center;
     background: transparent;
     border: 0;
     box-shadow: none;
-    mix-blend-mode: multiply;
-    transition: transform .5s ease;
+    mix-blend-mode: normal;
+    opacity: 1;
+    filter: none;
+    transition: transform 0.45s ease;
+}
+.yd-manufacture__card:hover .yd-manufacture__image {
+    transform: scale(1.045);
 }
 
-.yd-manufacture__card:hover .yd-manufacture__image img { transform: scale(1.04); }
+/* Image unavailable */
 
-.yd-manufacture__image-index { display: none; }
+.yd-manufacture__image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--yd-muted);
+    font-size: 12px;
+    background: transparent;
+    border: 1px dashed var(--yd-border);
+    border-radius: 4px;
+}
 
-/* ---------- Specs: frameless text only ---------- */
+/* Product information */
+
+.yd-manufacture__category {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-bottom: 10px;
+    color: var(--yd-gold);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.6px;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.yd-manufacture__title {
+    margin: 0 0 9px;
+    color: var(--yd-green-dark);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.35px;
+    line-height: 1.35;
+}
+
+.yd-manufacture__title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.yd-manufacture__title a:hover {
+    color: var(--yd-gold);
+}
+
+.yd-manufacture__tagline {
+    margin: 0 0 11px;
+    color: var(--yd-green);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.yd-manufacture__description {
+    display: -webkit-box;
+    margin: 0 0 18px;
+    overflow: hidden;
+    color: var(--yd-muted);
+    font-size: 12px;
+    line-height: 1.8;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+/* Specifications */
+
 .yd-manufacture__specs {
-    order: 3;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 14px;
-    margin-top: 10px;
-    padding: 0;
-    background: none;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
+    gap: 7px;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid var(--yd-border);
 }
 
 .yd-manufacture__spec {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    padding: 0;
-    background: none;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.yd-manufacture__spec span {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 9px;
+    color: var(--yd-green);
     font-size: 10px;
-    color: var(--yd-muted);
-}
-
-.yd-manufacture__spec strong {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--yd-navy);
-}
-
-/* ---------- Link ---------- */
-.yd-manufacture__link {
-    order: 4;
-    align-self: flex-start;
-    margin-top: 12px;
-    padding-bottom: 2px;
-    border-bottom: 1px solid var(--yd-navy);
-    font-size: 11.5px;
     font-weight: 600;
-    color: var(--yd-navy);
+    line-height: 1.4;
+    background: rgba(21, 60, 50, 0.045);
+    border-radius: 3px;
+}
+
+/* Product link */
+
+.yd-manufacture__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    align-self: flex-start;
+    margin-top: 19px;
+    color: var(--yd-green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
     text-decoration: none;
+    transition: color 0.25s ease, gap 0.25s ease;
 }
 
 .yd-manufacture__link span {
-    display: inline-block;
-    transition: transform .25s ease;
+    font-size: 16px;
+    line-height: 1;
+    transition: transform 0.25s ease;
 }
 
-.yd-manufacture__link:hover span { transform: translateX(4px); }
+.yd-manufacture__link:hover {
+    gap: 13px;
+    color: var(--yd-gold);
+}
 
-/* ---------- Empty state ---------- */
+.yd-manufacture__link:hover span {
+    transform: translateX(3px);
+}
+
+/* Empty state */
+
 .yd-manufacture__empty {
-    padding: 40px 24px;
-    text-align: center;
-    border: 1px solid var(--yd-line);
-    background: transparent;
+    grid-column: 1 / -1;
+    padding: 55px 20px;
     color: var(--yd-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: center;
+    border: 1px dashed var(--yd-border);
+    border-radius: 5px;
 }
 
-.yd-manufacture__empty a { color: var(--yd-navy); font-weight: 600; }
+/* Responsive */
 
-/* ---------- Accessibility ---------- */
-.yd-manufacture a:focus-visible {
-    outline: 2px solid var(--yd-navy);
-    outline-offset: 3px;
-}
-
-/* ==========================================================
-   Larger screens: more columns, roomier cards
-   ========================================================== */
-@media (min-width: 768px) {
-    .yd-manufacture {
-        --yd-gap: 20px;
-        --yd-pad: 18px;
-        padding: 80px 0;
+@media (max-width: 1050px) {
+    .yd-manufacture__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 25px 18px;
     }
 
-    .yd-manufacture__container { width: min(1280px, 100% - 48px); }
-    .yd-manufacture__heading { margin-bottom: 44px; }
-    .yd-manufacture__intro h2 { font-size: 38px; }
-    .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-tablet), minmax(0, 1fr)); }
-
-    .yd-manufacture__category { font-size: 11px; margin-bottom: 6px; }
-    .yd-manufacture__content h3 { font-size: 16px; padding-bottom: 12px; }
-    .yd-manufacture__tagline { font-size: 13.5px; margin-top: 12px; }
-    .yd-manufacture__description { font-size: 13px; }
-    .yd-manufacture__image { margin-top: 16px; }
-    .yd-manufacture__specs { gap: 10px 22px; margin-top: 14px; }
-    .yd-manufacture__spec span { font-size: 11.5px; }
-    .yd-manufacture__spec strong { font-size: 14.5px; }
-    .yd-manufacture__link { font-size: 13.5px; margin-top: 16px; }
+    .yd-manufacture__image-link {
+        height: 215px;
+    }
 }
 
-@media (min-width: 1100px) {
-    .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-desktop), minmax(0, 1fr)); }
+@media (max-width: 700px) {
+    .yd-manufacture {
+        padding: 65px 0;
+    }
+
+    .yd-manufacture__container {
+        width: min(100% - 32px, 520px);
+    }
+
+    .yd-manufacture__header {
+        margin-bottom: 32px;
+    }
+
+    .yd-manufacture__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 17px 12px;
+    }
+
+    .yd-manufacture__card {
+        padding: 13px 12px 15px;
+    }
+
+    .yd-manufacture__image-link {
+        height: 165px;
+        margin-bottom: 14px;
+    }
+
+    .yd-manufacture__title {
+        font-size: 15px;
+    }
+
+    .yd-manufacture__description {
+        font-size: 11px;
+    }
+
+    .yd-manufacture__spec {
+        font-size: 9px;
+        padding: 5px 7px;
+    }
 }
+
+@media (max-width: 380px) {
+    .yd-manufacture__container {
+        width: calc(100% - 24px);
+    }
+
+    .yd-manufacture__image-link {
+        height: 140px;
+    }
+
+    .yd-manufacture__card {
+        padding: 10px;
+    }
+}
+
+/* Accessibility */
 
 @media (prefers-reduced-motion: reduce) {
-    .yd-manufacture * { transition: none !important; }
-}</style>
-<section class="yd-manufacture" id="what-we-manufacture">
+    .yd-manufacture__card,
+    .yd-manufacture__image,
+    .yd-manufacture__link,
+    .yd-manufacture__link span {
+        transition: none !important;
+    }
+
+    .yd-manufacture__card:hover {
+        transform: none;
+    }
+
+    .yd-manufacture__card:hover .yd-manufacture__image {
+        transform: none;
+    }
+}
+</style>
+
+
+<section class="yd-manufacture" aria-labelledby="yd-manufacture-heading">
     <div class="yd-manufacture__container">
 
-        <div class="yd-manufacture__heading">
-            <div class="yd-manufacture__intro">
-                <span class="yd-manufacture__eyebrow">
-                    ENGINEERED FOR PERFORMANCE
-                </span>
+        <header class="yd-manufacture__header">
+            <span class="yd-manufacture__eyebrow">
+                Built for Performance
+            </span>
 
-                <h2>What We <span>Manufacture</span></h2>
+            <h2
+                class="yd-manufacture__heading"
+                id="yd-manufacture-heading"
+            >
+                What We Manufacture
+            </h2>
 
-                <p>
-                    Explore our energy technology portfolio, engineered
-                    to deliver dependable power, intelligent energy
-                    management and long-term performance.
-                </p>
-            </div>
+            <p class="yd-manufacture__intro">
+                Explore our range of professionally engineered energy
+                products, designed to deliver dependable power,
+                efficiency and long-term performance.
+            </p>
+        </header>
 
-            <a href="{% url 'products' %}" class="yd-manufacture__view-all">
-                Explore all products
-                <span aria-hidden="true">↗</span>
-            </a>
-        </div>
 
-        {% if manufacture_products %}
-            <div class="yd-manufacture__grid">
+        <div class="yd-manufacture__grid">
 
-                {% for item in manufacture_products %}
-                    <article class="yd-manufacture__card">
+            {% for item in manufacture_products %}
 
-                        <a href="{{ item.get_absolute_url }}"
-                           class="yd-manufacture__image"
-                           aria-label="View {{ item.name }}">
+                <article class="yd-manufacture__card">
 
-                            {% if item.image %}
-                                <img
-                                    src="{{ item.image.url }}"
-                                    alt="{{ item.name }}"
-                                    loading="lazy"
-                                >
-                            {% else %}
-                                <img
-                                    src="{% static item.fallback_image %}"
-                                    alt="{{ item.name }}"
-                                    loading="lazy"
-                                >
-                            {% endif %}
+                    <a
+                        href="{{ item.get_absolute_url }}"
+                        class="yd-manufacture__image-link"
+                        aria-label="View {{ item.name }}"
+                    >
 
-                            <span class="yd-manufacture__image-index">
-                                {% if forloop.counter < 10 %}0{% endif %}{{ forloop.counter }}
-                            </span>
-                        </a>
+                        {% if item.image %}
+                            <img
+                                class="yd-manufacture__image"
+                                src="{{ item.image.url }}"
+                                alt="{{ item.name }}"
+                                loading="lazy"
+                                decoding="async"
+                            >
 
-                        <div class="yd-manufacture__content">
+                        {% elif item.fallback_image %}
+                            <img
+                                class="yd-manufacture__image"
+                                src="{{ item.fallback_image }}"
+                                alt="{{ item.name }}"
+                                loading="lazy"
+                                decoding="async"
+                            >
 
-                            <span class="yd-manufacture__category">
-                                {{ item.get_category_display }}
-                            </span>
-
-                            <h3>
-                                <a href="{{ item.get_absolute_url }}">
-                                    {{ item.name }}
-                                </a>
-                            </h3>
-
-                            {% if item.tagline %}
-                                <p class="yd-manufacture__tagline">
-                                    {{ item.tagline }}
-                                </p>
-                            {% endif %}
-
-                            {% if item.description %}
-                                <p class="yd-manufacture__description">
-                                    {{ item.description|truncatewords:22 }}
-                                </p>
-                            {% endif %}
-
-                            <div class="yd-manufacture__specs">
-
-                                {% if item.capacity %}
-                                    <div class="yd-manufacture__spec">
-                                        <span>Capacity</span>
-                                        <strong>{{ item.capacity }}</strong>
-                                    </div>
-                                {% endif %}
-
-                                {% if item.power %}
-                                    <div class="yd-manufacture__spec">
-                                        <span>Power</span>
-                                        <strong>{{ item.power }}</strong>
-                                    </div>
-                                {% endif %}
-
-                                {% if item.warranty %}
-                                    <div class="yd-manufacture__spec">
-                                        <span>Warranty</span>
-                                        <strong>{{ item.warranty }}</strong>
-                                    </div>
-                                {% endif %}
-
+                        {% else %}
+                            <div class="yd-manufacture__image-placeholder">
+                                Product image unavailable
                             </div>
+                        {% endif %}
 
-                            <a href="{{ item.get_absolute_url }}"
-                               class="yd-manufacture__link">
-                                Discover product
-                                <span aria-hidden="true">→</span>
-                            </a>
+                    </a>
 
-                        </div>
-                    </article>
-                {% endfor %}
 
-            </div>
+                    {% if item.get_category_display %}
+                        <span class="yd-manufacture__category">
+                            {{ item.get_category_display }}
+                        </span>
+                    {% endif %}
 
-        {% else %}
-            <div class="yd-manufacture__empty">
-                <p>Our product collection is being updated.</p>
-                <a href="{% url 'contact' %}">Contact our team</a>
-            </div>
-        {% endif %}
 
+                    <h3 class="yd-manufacture__title">
+                        <a href="{{ item.get_absolute_url }}">
+                            {{ item.name }}
+                        </a>
+                    </h3>
+
+
+                    {% if item.tagline %}
+                        <p class="yd-manufacture__tagline">
+                            {{ item.tagline }}
+                        </p>
+                    {% endif %}
+
+
+                    {% if item.description %}
+                        <p class="yd-manufacture__description">
+                            {{ item.description }}
+                        </p>
+                    {% endif %}
+
+
+                    <div class="yd-manufacture__specs">
+
+                        {% if item.capacity %}
+                            <span class="yd-manufacture__spec">
+                                {{ item.capacity }}
+                            </span>
+                        {% endif %}
+
+                        {% if item.power %}
+                            <span class="yd-manufacture__spec">
+                                {{ item.power }}
+                            </span>
+                        {% endif %}
+
+                        {% if item.warranty %}
+                            <span class="yd-manufacture__spec">
+                                {{ item.warranty }}
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+
+                    <a
+                        href="{{ item.get_absolute_url }}"
+                        class="yd-manufacture__link"
+                    >
+                        Explore Product
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                </article>
+
+            {% empty %}
+
+                <div class="yd-manufacture__empty">
+                    Our manufactured products will be displayed here soon.
+                </div>
+
+            {% endfor %}
+
+        </div>
     </div>
 </section>
- 

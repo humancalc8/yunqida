@@ -1,19 +1,21 @@
+
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Solar Projects & Energy Storage Installations in Kenya | Yunqida{% endblock %}
+{% block title %}Solar Projects & Energy Storage Solutions in Kenya | Yunqida Energy{% endblock %}
 
-{% block meta_description %}Explore selected solar power, lithium battery storage and hybrid inverter project work from Yunqida Energy Kenya. Discover energy solutions for residential and commercial applications.{% endblock %}
+{% block meta_description %}Explore solar power, lithium battery storage and hybrid inverter solutions showcased by Yunqida Energy Kenya. Discover energy technology for residential, commercial and other power applications.{% endblock %}
 
-{% block meta_keywords %}Yunqida Energy Kenya projects, solar installations Kenya, solar energy projects Kenya, lithium battery installation Kenya, energy storage projects Kenya, hybrid inverter installation Kenya, solar power systems Nairobi, commercial solar solutions Kenya{% endblock %}
+{% block meta_keywords %}Yunqida Energy Kenya, solar energy projects Kenya, solar power solutions Kenya, lithium battery storage Kenya, LiFePO4 battery systems, hybrid inverter solutions Kenya, residential solar power, commercial energy storage, solar technology Nairobi{% endblock %}
 
-{% block og_title %}Our Solar & Energy Storage Projects | Yunqida Energy Kenya{% endblock %}
+{% block og_title %}Solar & Energy Storage Projects | Yunqida Energy Kenya{% endblock %}
 
-{% block og_description %}Explore selected solar power and energy storage project work from Yunqida Energy Kenya, including battery storage and hybrid inverter solutions.{% endblock %}
+{% block og_description %}Discover solar power, lithium battery storage and hybrid inverter technology showcased by Yunqida Energy Kenya.{% endblock %}
 
 {% block og_image %}{% static 'img/w1.png' %}{% endblock %}
 
-{% block body_class %}page-dark{% endblock %}
+{% block body_class %}page-dark yd-works-page{% endblock %}
+
 
 {% block extra_head %}
 <script>
@@ -21,757 +23,1449 @@
 </script>
 
 <style>
-  html { scroll-behavior: smooth; }
+/* =========================================================
+   YUNQIDA ENERGY — PROJECT PORTFOLIO
+   Corporate energy technology / refined editorial layout
+========================================================= */
 
-  .yq-works {
-    --yq-forest: var(--c-forest, #0F1318);
-    --yq-emerald: var(--c-emerald, #14A090);
-    --yq-orange: var(--c-sun, #F28C0F);
-    --yq-ink: var(--c-ink, #0F1318);
-    --yq-muted: var(--c-muted, #5C6670);
-    --yq-line: var(--c-line, #E3E6EA);
-    --yq-mist: var(--c-mist, #F4F5F7);
-    --yq-ease: cubic-bezier(.2,.75,.2,1);
-    --yq-pop: cubic-bezier(.34,1.45,.5,1);
+.yq-works {
+  --yw-navy: var(--c-forest, #000a63);
+  --yw-deep: var(--c-forest-2, #00063d);
+  --yw-blue: var(--c-forest-3, #1a2bb8);
+  --yw-lime: var(--c-sun, #c4f135);
+  --yw-lime-dark: var(--c-sun-deep, #a8d81f);
+  --yw-green: var(--c-emerald, #0A806B);
+  --yw-paper: var(--c-mist, #f7f7f5);
+  --yw-ink: var(--c-text-main, #121512);
+  --yw-muted: var(--c-muted, #666b66);
+  --yw-line: var(--c-line, #e4e4df);
+  --yw-ease: cubic-bezier(.2,.75,.2,1);
 
-    color: var(--yq-ink);
-    background: #fff;
-    font-family: var(--font-body, sans-serif);
-    line-height: 1.7;
-    overflow: hidden;
-    overflow: clip;
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  width: 100%;
+  color: var(--yw-ink);
+  background: var(--yw-paper);
+  font-family: var(--font-body, sans-serif);
+  line-height: 1.7;
+}
+
+.yq-works *,
+.yq-works *::before,
+.yq-works *::after {
+  box-sizing: border-box;
+}
+
+.yq-works img {
+  max-width: 100%;
+}
+
+.yq-works .yq-wrap {
+  width: min(1160px, calc(100% - 56px));
+  margin-inline: auto;
+}
+
+.yq-works a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.yq-works a:focus-visible {
+  outline: 3px solid var(--yw-lime);
+  outline-offset: 5px;
+}
+
+.yq-works .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 19px;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .15em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.yq-works .eyebrow::before {
+  width: 25px;
+  height: 2px;
+  flex: 0 0 auto;
+  background: currentColor;
+  content: "";
+}
+
+.yq-works .section-heading {
+  max-width: 680px;
+  margin-bottom: 42px;
+}
+
+.yq-works .section-heading h2 {
+  margin: 0;
+  color: var(--yw-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.1rem, 4.2vw, 3.5rem);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.1;
+}
+
+.yq-works .section-heading > p:last-child {
+  max-width: 610px;
+  margin: 17px 0 0;
+  color: var(--yw-muted);
+  font-size: .98rem;
+  line-height: 1.85;
+}
+
+/* =========================================================
+   SCROLL PROGRESS
+========================================================= */
+
+.yq-progress {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+}
+
+.yq-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--yw-green), var(--yw-lime));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* =========================================================
+   REVEAL ANIMATIONS
+========================================================= */
+
+.js .yq-works [data-reveal] {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity .75s var(--yw-ease),
+    transform .75s var(--yw-ease);
+  transition-delay: var(--yw-delay, 0ms);
+}
+
+.js .yq-works [data-reveal].is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js .yq-works [data-reveal="card"] {
+  transform: translateY(30px);
+}
+
+.js .yq-works [data-reveal="card"].is-in {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.yq-works .hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 550px;
+  padding: 105px 0 100px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 84% 45%, rgba(26,43,184,.45), transparent 38%),
+    linear-gradient(115deg, var(--yw-deep) 0%, var(--yw-navy) 58%, #07136f 100%);
+}
+
+.yq-works .hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 85%);
+  content: "";
+}
+
+.yq-works .hero::after {
+  position: absolute;
+  z-index: -1;
+  top: -270px;
+  right: -100px;
+  width: 620px;
+  height: 620px;
+  border: 1px solid rgba(196,241,53,.15);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 55px rgba(196,241,53,.025),
+    0 0 0 115px rgba(196,241,53,.018);
+  content: "";
+  pointer-events: none;
+}
+
+.yq-works .hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  align-items: center;
+  gap: 65px;
+}
+
+.yq-works .hero-copy-block {
+  max-width: 720px;
+}
+
+.yq-works .hero .eyebrow {
+  color: var(--yw-lime);
+}
+
+.yq-works .hero h1 {
+  max-width: 760px;
+  margin: 0 0 25px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(3rem, 6.2vw, 5.3rem);
+  font-weight: 650;
+  letter-spacing: -.065em;
+  line-height: 1.015;
+}
+
+.yq-works .hero h1 span {
+  display: block;
+  color: var(--yw-lime);
+}
+
+.yq-works .hero-description {
+  max-width: 610px;
+  margin: 0;
+  color: rgba(255,255,255,.76);
+  font-size: clamp(.98rem, 1.5vw, 1.1rem);
+  line-height: 1.9;
+}
+
+.yq-works .hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 34px;
+}
+
+.yq-works .button {
+  display: inline-flex;
+  min-height: 53px;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  padding: 13px 23px;
+  border: 1px solid var(--yw-lime);
+  border-radius: 4px;
+  background: var(--yw-lime);
+  color: var(--yw-deep);
+  font-size: .87rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition:
+    transform .25s ease,
+    background .25s ease,
+    box-shadow .25s ease;
+}
+
+.yq-works .button:hover {
+  background: var(--yw-lime-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.2);
+}
+
+.yq-works .button svg {
+  width: 17px;
+  height: 17px;
+  transition: transform .25s ease;
+}
+
+.yq-works .button:hover svg {
+  transform: translateX(3px);
+}
+
+.yq-works .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: .9rem;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.yq-works .text-link svg {
+  width: 17px;
+  height: 17px;
+  transition: transform .25s ease;
+}
+
+.yq-works .text-link:hover svg {
+  transform: translateX(4px);
+}
+
+.yq-works .hero .text-link {
+  color: rgba(255,255,255,.88);
+}
+
+/* Hero technology illustration */
+
+.yq-works .hero-visual {
+  position: relative;
+  display: flex;
+  min-height: 335px;
+  align-items: center;
+  justify-content: center;
+}
+
+.yq-works .energy-orbit {
+  position: absolute;
+  width: min(100%, 340px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 50%;
+}
+
+.yq-works .energy-orbit::before,
+.yq-works .energy-orbit::after {
+  position: absolute;
+  inset: 24px;
+  border: 1px solid rgba(196,241,53,.16);
+  border-radius: 50%;
+  content: "";
+}
+
+.yq-works .energy-orbit::after {
+  inset: 50px;
+  border-color: rgba(255,255,255,.09);
+}
+
+.yq-works .energy-core {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 155px;
+  height: 155px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(196,241,53,.4);
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(26,43,184,.8), rgba(0,6,61,.95));
+  box-shadow:
+    0 0 55px rgba(26,43,184,.45),
+    inset 0 0 35px rgba(196,241,53,.06);
+}
+
+.yq-works .energy-core svg {
+  width: 49px;
+  height: 49px;
+  margin-bottom: 10px;
+  color: var(--yw-lime);
+  stroke: currentColor;
+}
+
+.yq-works .energy-core strong {
+  color: #fff;
+  font-size: .77rem;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.yq-works .orbit-label {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 5px;
+  background: rgba(0,6,61,.83);
+  color: rgba(255,255,255,.9);
+  font-size: .73rem;
+  font-weight: 650;
+  backdrop-filter: blur(12px);
+}
+
+.yq-works .orbit-label svg {
+  width: 19px;
+  height: 19px;
+  color: var(--yw-lime);
+}
+
+.yq-works .orbit-label.label-solar {
+  top: 25px;
+  left: 0;
+}
+
+.yq-works .orbit-label.label-storage {
+  right: -4px;
+  bottom: 48px;
+}
+
+.yq-works .orbit-label.label-power {
+  bottom: 4px;
+  left: 32px;
+}
+
+/* =========================================================
+   INTRO STRIP
+========================================================= */
+
+.yq-works .portfolio-intro {
+  position: relative;
+  z-index: 2;
+  padding: 37px 0;
+  background: #fff;
+  box-shadow: 0 -12px 35px rgba(0,0,0,.035);
+}
+
+.yq-works .intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.yq-works .intro-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 20px;
+  border-right: 1px solid var(--yw-line);
+}
+
+.yq-works .intro-item:first-child {
+  padding-left: 0;
+}
+
+.yq-works .intro-item:last-child {
+  border-right: 0;
+}
+
+.yq-works .intro-icon {
+  display: flex;
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(196,241,53,.2);
+  color: var(--yw-navy);
+}
+
+.yq-works .intro-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.yq-works .intro-item strong {
+  display: block;
+  color: var(--yw-deep);
+  font-size: .88rem;
+  font-weight: 750;
+}
+
+.yq-works .intro-item span {
+  display: block;
+  margin-top: 2px;
+  color: var(--yw-muted);
+  font-size: .77rem;
+}
+
+/* =========================================================
+   PROJECT GALLERY
+========================================================= */
+
+.yq-works .gallery {
+  padding: 105px 0 110px;
+  background: var(--yw-paper);
+  scroll-margin-top: 25px;
+}
+
+.yq-works .gallery-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 47px;
+}
+
+.yq-works .gallery-heading .section-heading {
+  margin: 0;
+}
+
+.yq-works .gallery-side-note {
+  max-width: 330px;
+  padding: 0 0 5px 19px;
+  border-left: 2px solid var(--yw-lime-dark);
+  color: var(--yw-muted);
+  font-size: .91rem;
+  line-height: 1.8;
+}
+
+/* Project cards */
+
+.yq-works .project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 54px 30px;
+}
+
+.yq-works .work {
+  min-width: 0;
+  margin: 0;
+}
+
+.yq-works .frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.42 / 1;
+  border-radius: 7px;
+  background: #e5e8e9;
+  isolation: isolate;
+}
+
+.yq-works .frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1s cubic-bezier(.2,.65,.25,1);
+}
+
+.yq-works .frame::before {
+  position: absolute;
+  z-index: 1;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, rgba(0,6,35,.25));
+  content: "";
+  pointer-events: none;
+}
+
+.yq-works .frame-tag {
+  position: absolute;
+  z-index: 2;
+  top: 17px;
+  left: 17px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 3px;
+  background: rgba(0,6,61,.78);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.yq-works .frame-tag svg {
+  width: 15px;
+  height: 15px;
+  color: var(--yw-lime);
+}
+
+.yq-works .caption {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 2px 0;
+}
+
+.yq-works .caption-copy {
+  min-width: 0;
+}
+
+.yq-works .caption h3 {
+  margin: 0 0 7px;
+  color: var(--yw-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(1.2rem, 2vw, 1.48rem);
+  font-weight: 700;
+  letter-spacing: -.035em;
+  line-height: 1.3;
+}
+
+.yq-works .caption p {
+  max-width: 490px;
+  margin: 0;
+  color: var(--yw-muted);
+  font-size: .9rem;
+  line-height: 1.8;
+}
+
+.yq-works .project-number {
+  display: inline-flex;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,10,99,.13);
+  border-radius: 50%;
+  color: var(--yw-navy);
+  font-family: var(--font-display, sans-serif);
+  font-size: .76rem;
+  font-weight: 750;
+  transition:
+    color .25s ease,
+    background .25s ease,
+    border-color .25s ease;
+}
+
+.yq-works .work:hover .project-number {
+  border-color: var(--yw-lime);
+  background: var(--yw-lime);
+  color: var(--yw-deep);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .yq-works .work:hover .frame img {
+    transform: scale(1.045);
   }
+}
 
+/* =========================================================
+   APPLICATIONS / SEO CONTENT
+========================================================= */
+
+.yq-works .applications {
+  position: relative;
+  padding: 90px 0 96px;
+  background: #fff;
+}
+
+.yq-works .applications-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: 75px;
+}
+
+.yq-works .applications-copy h2 {
+  margin: 0 0 18px;
+  color: var(--yw-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2rem, 3.8vw, 3.15rem);
+  font-weight: 650;
+  letter-spacing: -.05em;
+  line-height: 1.12;
+}
+
+.yq-works .applications-copy > p:not(.eyebrow) {
+  margin: 0 0 15px;
+  color: var(--yw-muted);
+  font-size: .96rem;
+  line-height: 1.9;
+}
+
+.yq-works .application-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.yq-works .application-item {
+  display: flex;
+  min-height: 85px;
+  align-items: center;
+  gap: 13px;
+  padding: 17px;
+  border: 1px solid var(--yw-line);
+  border-radius: 5px;
+  background: #fff;
+  transition:
+    border-color .25s ease,
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.yq-works .application-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0,10,99,.25);
+  box-shadow: 0 12px 25px rgba(0,10,99,.055);
+}
+
+.yq-works .application-icon {
+  display: flex;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: #f0f3ff;
+  color: var(--yw-navy);
+}
+
+.yq-works .application-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.yq-works .application-item strong {
+  color: var(--yw-deep);
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   PROJECT APPROACH
+========================================================= */
+
+.yq-works .approach {
+  padding: 82px 0;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 90% 15%, rgba(26,43,184,.38), transparent 38%),
+    var(--yw-deep);
+}
+
+.yq-works .approach .section-heading h2 {
+  color: #fff;
+}
+
+.yq-works .approach .section-heading > p:last-child {
+  color: rgba(255,255,255,.66);
+}
+
+.yq-works .approach .eyebrow {
+  color: var(--yw-lime);
+}
+
+.yq-works .approach-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.yq-works .approach-step {
+  position: relative;
+  min-height: 185px;
+  padding: 23px 20px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 5px;
+  background: rgba(255,255,255,.045);
+  transition:
+    background .25s ease,
+    border-color .25s ease,
+    transform .25s ease;
+}
+
+.yq-works .approach-step:hover {
+  transform: translateY(-4px);
+  border-color: rgba(196,241,53,.42);
+  background: rgba(255,255,255,.075);
+}
+
+.yq-works .step-number {
+  display: block;
+  margin-bottom: 25px;
+  color: var(--yw-lime);
+  font-family: var(--font-display, sans-serif);
+  font-size: .8rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+}
+
+.yq-works .approach-step h3 {
+  margin: 0 0 9px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: 1.07rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.yq-works .approach-step p {
+  margin: 0;
+  color: rgba(255,255,255,.65);
+  font-size: .83rem;
+  line-height: 1.75;
+}
+
+/* =========================================================
+   CLOSING CTA
+========================================================= */
+
+.yq-works .cta {
+  position: relative;
+  isolation: isolate;
+  padding: 90px 0;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 85% 50%, rgba(26,43,184,.4), transparent 40%),
+    linear-gradient(115deg, var(--yw-navy), var(--yw-deep));
+}
+
+.yq-works .cta::before {
+  position: absolute;
+  z-index: -1;
+  top: -200px;
+  right: -110px;
+  width: 480px;
+  height: 480px;
+  border: 1px solid rgba(196,241,53,.18);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 45px rgba(196,241,53,.025),
+    0 0 0 95px rgba(196,241,53,.018);
+  content: "";
+}
+
+.yq-works .cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+}
+
+.yq-works .cta-copy {
+  max-width: 700px;
+}
+
+.yq-works .cta .eyebrow {
+  color: var(--yw-lime);
+}
+
+.yq-works .cta h2 {
+  margin: 0 0 17px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.1rem, 4.5vw, 3.5rem);
+  font-weight: 650;
+  letter-spacing: -.055em;
+  line-height: 1.1;
+}
+
+.yq-works .cta-copy > p:last-child {
+  max-width: 590px;
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  font-size: .96rem;
+  line-height: 1.85;
+}
+
+.yq-works .cta-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 19px;
+}
+
+.yq-works .cta .text-link {
+  color: rgba(255,255,255,.86);
+}
+
+/* =========================================================
+   SECTION RHYTHM
+========================================================= */
+
+.yq-works > section + section {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
   .yq-works *,
   .yq-works *::before,
   .yq-works *::after {
-    box-sizing: border-box;
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
-
-  .yq-works .yq-wrap {
-    width: min(1120px, calc(100% - 48px));
-    margin-inline: auto;
-  }
-
-  .yq-works a:focus-visible {
-    outline: 3px solid var(--yq-orange);
-    outline-offset: 5px;
-  }
-
-  .yq-works .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 11px;
-    margin: 0 0 20px;
-    color: var(--yq-emerald);
-    font-size: .73rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    line-height: 1.4;
-    text-transform: uppercase;
-  }
-
-  .yq-works .eyebrow::before {
-    width: 24px;
-    height: 2px;
-    background: currentColor;
-    content: "";
-  }
-
-  /* =========================================================
-     SCROLL PROGRESS
-  ========================================================= */
-
-  .yq-progress {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    pointer-events: none;
-  }
-
-  .yq-progress span {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #14A090, #F28C0F);
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-
-  /* =========================================================
-     SECTION POP + FLASH
-     Each section springs into place with a light sweep as the
-     visitor scrolls to it.
-  ========================================================= */
-
-  .yq-works .yq-pop { position: relative; }
-
-  .js .yq-works .yq-pop:not(.is-in) {
-    opacity: 0;
-    transform: translate3d(0, 80px, 0) scale(.94);
-    transform-origin: 50% 0;
-  }
-
-  .js .yq-works .yq-pop.is-in {
-    animation: yqSectionPop 1s var(--yq-pop) both;
-    will-change: transform, opacity;
-  }
-
-  .js .yq-works .yq-pop.is-done {
-    animation: none;
-    opacity: 1;
-    transform: none;
-    will-change: auto;
-  }
-
-  @keyframes yqSectionPop {
-    0%   { opacity: 0; transform: translate3d(0, 80px, 0) scale(.94); }
-    55%  { opacity: 1; }
-    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
-  }
-
-  .yq-flash {
-    position: absolute;
-    z-index: 6;
-    inset: 0;
-    overflow: hidden;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .yq-flash::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, transparent 28%, rgba(255,255,255,.6) 48%, rgba(112,207,193,.45) 54%, transparent 72%);
-    transform: translateX(-110%);
-  }
-
-  .yq-flash::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.5), transparent 62%);
-    opacity: 0;
-  }
-
-  .yq-pop.is-in .yq-flash          { animation: yqFlashFade 1.2s ease-out .08s both; }
-  .yq-pop.is-in .yq-flash::before  { animation: yqFlashSweep 1.1s var(--yq-ease) .08s both; }
-  .yq-pop.is-in .yq-flash::after   { animation: yqFlashGlow .9s ease-out .05s both; }
-
-  @keyframes yqFlashFade  { 0% { opacity: 1; } 100% { opacity: 0; } }
-  @keyframes yqFlashSweep { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
-  @keyframes yqFlashGlow  { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
-
-  /* Elements inside each section stagger in */
 
   .js .yq-works [data-reveal] {
-    opacity: 0;
-    transform: translate3d(0, 34px, 0) scale(.97);
-    filter: blur(3px);
-    transition:
-      opacity .9s var(--yq-ease),
-      transform .9s var(--yq-ease),
-      filter .9s var(--yq-ease);
-    transition-delay: var(--yq-delay, 0ms);
+    opacity: 1 !important;
+    transform: none !important;
   }
+}
 
-  /* project cards: springier pop, no blur on photography */
-  .js .yq-works [data-reveal="card"] {
-    filter: none;
-    transform: translate3d(0, 46px, 0) scale(.94);
-    transition:
-      opacity .9s var(--yq-ease),
-      transform 1s var(--yq-pop);
-    transition-delay: var(--yq-delay, 0ms);
-  }
+/* =========================================================
+   TABLET
+========================================================= */
 
-  .js .yq-works [data-reveal].is-in {
-    opacity: 1;
-    transform: none;
-    filter: blur(0);
-  }
-
-  .js .yq-works [data-reveal="card"].is-in {
-    filter: none;
-  }
-
-  /* =========================================================
-     HERO
-  ========================================================= */
-
-  .yq-works .hero {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    align-items: center;
-    min-height: 470px;
-    padding: 105px 0 92px;
-    overflow: hidden;
-    background: var(--yq-forest);
-    color: #fff;
-  }
-
-  .yq-works .hero::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    content: "";
-    opacity: .15;
-    background-image:
-      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: linear-gradient(to right, #000, transparent 90%);
-  }
-
-  .yq-works .hero::after {
-    position: absolute;
-    z-index: -1;
-    top: -210px;
-    right: -130px;
-    width: 460px;
-    height: 460px;
-    border: 1px solid rgba(20,160,144,.25);
-    border-radius: 50%;
-    content: "";
-    box-shadow:
-      0 0 0 55px rgba(20,160,144,.035),
-      0 0 0 110px rgba(20,160,144,.025);
-  }
-
-  .yq-works .hero-inner { max-width: 790px; }
-
-  .yq-works .hero .eyebrow { color: #70CFC1; }
-
-  .yq-works .hero h1 {
-    max-width: 780px;
-    margin: 0 0 24px;
-    color: #fff;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2.8rem, 6.5vw, 5.2rem);
-    font-weight: 600;
-    letter-spacing: -.055em;
-    line-height: 1.03;
-  }
-
-  .yq-works .hero h1 span { color: var(--yq-orange); }
-
-  .yq-works .hero-copy {
-    max-width: 620px;
-    margin: 0;
-    color: rgba(255,255,255,.72);
-    font-size: clamp(1rem, 1.7vw, 1.12rem);
-    line-height: 1.85;
-  }
-
-  .yq-works .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+@media (max-width: 900px) {
+  .yq-works .hero-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(230px, .7fr);
     gap: 25px;
-    margin-top: 34px;
   }
 
-  .yq-works .button {
-    display: inline-flex;
-    min-height: 52px;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 13px 23px;
-    border: 1px solid var(--yq-orange);
-    background: var(--yq-orange);
-    color: var(--yq-forest);
-    font-size: .88rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition:
-      background .2s ease,
-      border-color .2s ease,
-      transform .2s ease,
-      box-shadow .3s ease;
+  .yq-works .hero-visual {
+    min-height: 290px;
   }
 
-  .yq-works .button:hover {
-    border-color: #FFA43A;
-    background: #FFA43A;
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px -16px rgba(242,140,15,.7);
+  .yq-works .energy-orbit {
+    width: 270px;
   }
 
-  .yq-works .text-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    color: inherit;
-    font-size: .9rem;
-    font-weight: 650;
-    text-decoration: none;
-  }
-
-  .yq-works .text-link span { transition: transform .2s ease; }
-  .yq-works .text-link:hover span { transform: translateX(4px); }
-  .yq-works .hero .text-link { color: rgba(255,255,255,.85); }
-
-  /* =========================================================
-     GALLERY
-  ========================================================= */
-
-  .yq-works .gallery {
-    padding: 88px 0 105px;
-    background: #fff;
-    scroll-margin-top: 20px;
-  }
-
-  .yq-works .gallery-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
+  .yq-works .applications-layout {
     gap: 35px;
-    margin-bottom: 42px;
   }
 
-  .yq-works .gallery-heading h2 {
-    max-width: 580px;
-    margin: 0;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-works .gallery-heading > p {
-    max-width: 350px;
-    margin: 0 0 4px;
-    color: var(--yq-muted);
-    font-size: .94rem;
-  }
-
-  /* PROJECT GRID */
-
-  .yq-works .grid {
-    display: grid;
+  .yq-works .approach-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 58px 32px;
-  }
-
-  .yq-works .work {
-    min-width: 0;
-    margin: 0;
-  }
-
-  .yq-works .frame {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 4 / 3;
-    background: #e8ebed;
-    isolation: isolate;
-  }
-
-  .yq-works .frame img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transform: scale(1);
-    transition: transform 1.1s cubic-bezier(.2,.65,.25,1);
-  }
-
-  /* a light flash crosses each photo as it lands */
-  .yq-works .frame::after {
-    content: "";
-    position: absolute;
-    z-index: 2;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.7) 50%, transparent 70%);
-    opacity: 0;
-    transform: translateX(-110%);
-  }
-
-  .yq-works .work.is-visible .frame::after {
-    animation: yqPhotoFlash 1s var(--yq-ease) .45s both;
-  }
-
-  @keyframes yqPhotoFlash {
-    0%   { opacity: 1; transform: translateX(-110%); }
-    100% { opacity: 0; transform: translateX(110%); }
-  }
-
-  /* Each image reveals independently when its project enters view. */
-
-  .js .yq-works .work .frame {
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 1s cubic-bezier(.22,.68,0,1);
-    transition-delay: var(--yq-delay, 0ms);
-  }
-
-  .js .yq-works .work .frame img {
-    transform: scale(1.12);
-    transition: transform 1.35s cubic-bezier(.2,.65,.25,1);
-  }
-
-  .js .yq-works .work.is-visible .frame {
-    clip-path: inset(0 0 0 0);
-  }
-
-  .js .yq-works .work.is-visible .frame img {
-    transform: scale(1);
-  }
-
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .yq-works .work.is-visible:hover .frame img {
-      transform: scale(1.045);
-    }
-  }
-
-  /* CAPTIONS */
-
-  .yq-works .caption {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 18px;
-    margin-top: 18px;
-  }
-
-  .yq-works .caption-copy { min-width: 0; }
-
-  .yq-works .caption h3 {
-    margin: 0 0 6px;
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.28rem;
-    font-weight: 600;
-    letter-spacing: -.025em;
-    line-height: 1.3;
-  }
-
-  .yq-works .caption p {
-    max-width: 480px;
-    margin: 0;
-    color: var(--yq-muted);
-    font-size: .92rem;
-    line-height: 1.7;
-  }
-
-  .yq-works .project-number {
-    flex-shrink: 0;
-    padding-top: 3px;
-    color: var(--yq-emerald);
-    font-family: var(--font-display, sans-serif);
-    font-size: .85rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-  }
-
-  /* =========================================================
-     CLOSING CTA
-  ========================================================= */
-
-  .yq-works .cta {
-    padding: 78px 0;
-    overflow: hidden;
-    background: var(--yq-forest);
-    color: #fff;
-  }
-
-  .yq-works .cta::after {
-    content: "";
-    position: absolute;
-    top: -210px;
-    right: -140px;
-    width: 420px;
-    height: 420px;
-    border: 1px solid rgba(20,160,144,.22);
-    border-radius: 50%;
-    box-shadow: 0 0 0 40px rgba(20,160,144,.03), 0 0 0 80px rgba(20,160,144,.02);
-    pointer-events: none;
   }
 
   .yq-works .cta-inner {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 38px;
-  }
-
-  .yq-works .cta-copy { max-width: 670px; }
-
-  .yq-works .cta .eyebrow { color: #70CFC1; }
-
-  .yq-works .cta h2 {
-    margin: 0 0 15px;
-    color: #fff;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.13;
-  }
-
-  .yq-works .cta p {
-    max-width: 570px;
-    margin: 0;
-    color: rgba(255,255,255,.7);
-    font-size: .96rem;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 30px;
   }
 
   .yq-works .cta-actions {
-    display: flex;
-    flex-shrink: 0;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+  .yq-works .yq-wrap {
+    width: min(100% - 36px, 1160px);
+  }
+
+  .yq-works .hero {
+    min-height: auto;
+    padding: 82px 0 66px;
+  }
+
+  .yq-works .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .yq-works .hero h1 {
+    font-size: clamp(2.8rem, 12.5vw, 4.2rem);
+  }
+
+  .yq-works .hero-description {
+    font-size: .96rem;
+  }
+
+  .yq-works .hero-actions {
     align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .yq-works .hero-visual {
+    min-height: 260px;
+    margin-top: 5px;
+  }
+
+  .yq-works .energy-orbit {
+    width: 245px;
+  }
+
+  .yq-works .energy-core {
+    width: 125px;
+    height: 125px;
+  }
+
+  .yq-works .energy-core svg {
+    width: 39px;
+    height: 39px;
+  }
+
+  .yq-works .orbit-label.label-solar {
+    top: 12px;
+    left: 0;
+  }
+
+  .yq-works .orbit-label.label-storage {
+    right: 0;
+    bottom: 36px;
+  }
+
+  .yq-works .orbit-label.label-power {
+    bottom: 0;
+    left: 12px;
+  }
+
+  .yq-works .portfolio-intro {
+    padding: 25px 0;
+  }
+
+  .yq-works .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+
+  .yq-works .intro-item,
+  .yq-works .intro-item:first-child {
+    padding: 0;
+    border-right: 0;
+  }
+
+  .yq-works .gallery {
+    padding: 72px 0 78px;
+  }
+
+  .yq-works .gallery-heading {
+    align-items: flex-start;
+    flex-direction: column;
     gap: 18px;
+    margin-bottom: 33px;
   }
 
-  .yq-works .cta .text-link { color: rgba(255,255,255,.82); }
-
-  /* =========================================================
-     REDUCED MOTION
-  ========================================================= */
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-
-    .js .yq-works .yq-pop,
-    .js .yq-works [data-reveal] {
-      opacity: 1 !important;
-      transform: none !important;
-      filter: none !important;
-      transition: none !important;
-      animation: none !important;
-    }
-
-    .js .yq-works .work .frame {
-      clip-path: none;
-      transition: none;
-    }
-
-    .js .yq-works .work .frame img {
-      transform: none;
-      transition: none;
-    }
-
-    .yq-flash,
-    .yq-works .frame::after { display: none; }
-
-    .yq-works .button,
-    .yq-works .text-link span { transition: none; }
+  .yq-works .gallery-side-note {
+    max-width: 100%;
   }
 
-  /* TABLET */
-
-  @media (max-width: 850px) {
-    .yq-works .gallery-heading {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .yq-works .cta-inner {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .yq-works .cta-actions {
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+  .yq-works .project-grid {
+    grid-template-columns: 1fr;
+    gap: 38px;
   }
 
-  /* MOBILE */
-
-  @media (max-width: 600px) {
-    .yq-works .yq-wrap { width: min(100% - 36px, 1120px); }
-
-    .yq-works .hero {
-      min-height: 420px;
-      padding: 85px 0 72px;
-    }
-
-    .yq-works .hero h1 { font-size: clamp(2.7rem, 13vw, 4rem); }
-
-    .yq-works .hero-actions {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .yq-works .gallery { padding: 68px 0 75px; }
-
-    .yq-works .grid {
-      grid-template-columns: 1fr;
-      gap: 42px;
-    }
-
-    .yq-works .caption { margin-top: 14px; }
-    .yq-works .caption h3 { font-size: 1.2rem; }
-
-    .yq-works .cta { padding: 68px 0; }
-
-    .yq-works .cta-actions {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    /* gentler pop on small screens */
-    .js .yq-works .yq-pop:not(.is-in) {
-      transform: translate3d(0, 50px, 0) scale(.96);
-    }
+  .yq-works .frame {
+    aspect-ratio: 1.28 / 1;
   }
+
+  .yq-works .caption {
+    padding-top: 15px;
+  }
+
+  .yq-works .applications {
+    padding: 70px 0;
+  }
+
+  .yq-works .applications-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .yq-works .application-list {
+    gap: 10px;
+  }
+
+  .yq-works .application-item {
+    min-height: 75px;
+    padding: 12px 10px;
+    gap: 9px;
+  }
+
+  .yq-works .application-icon {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .yq-works .application-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .yq-works .application-item strong {
+    font-size: .77rem;
+  }
+
+  .yq-works .approach {
+    padding: 70px 0;
+  }
+
+  .yq-works .approach-grid {
+    gap: 11px;
+  }
+
+  .yq-works .approach-step {
+    min-height: 170px;
+    padding: 17px 14px;
+  }
+
+  .yq-works .step-number {
+    margin-bottom: 18px;
+  }
+
+  .yq-works .approach-step h3 {
+    font-size: .98rem;
+  }
+
+  .yq-works .approach-step p {
+    font-size: .78rem;
+  }
+
+  .yq-works .cta {
+    padding: 70px 0;
+  }
+
+  .yq-works .cta-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 380px) {
+  .yq-works .application-list {
+    grid-template-columns: 1fr;
+  }
+
+  .yq-works .approach-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .yq-works .approach-step {
+    min-height: 0;
+  }
+}
 </style>
 {% endblock %}
 
+
 {% block content %}
-<div class="yq-progress" aria-hidden="true"><span id="yqProgressBar"></span></div>
+
+<div class="yq-progress" aria-hidden="true">
+  <span id="yqProgressBar"></span>
+</div>
 
 <main class="yq-works">
 
-  <!-- HERO (animates on load) -->
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+
   <section class="hero">
     <div class="yq-wrap">
-      <div class="hero-inner">
-        <p class="eyebrow" data-reveal data-hero>Yunqida Energy Kenya · Project Portfolio</p>
+      <div class="hero-layout">
 
-        <h1 data-reveal data-hero style="--yq-delay:120ms">
-          Energy solutions,
-          <span>put into practice.</span>
-        </h1>
+        <div class="hero-copy-block">
+          <p class="eyebrow" data-reveal>
+            Yunqida Energy Kenya · Project Portfolio
+          </p>
 
-        <p class="hero-copy" data-reveal data-hero style="--yq-delay:240ms">
-          Explore selected solar power and energy storage project work
-          featuring battery systems, hybrid inverters and renewable
-          energy solutions for different applications.
-        </p>
+          <h1 data-reveal style="--yw-delay:100ms">
+            Energy solutions,
+            <span>put into practice.</span>
+          </h1>
 
-        <div class="hero-actions" data-reveal data-hero style="--yq-delay:360ms">
-          <a class="button" href="#project-gallery">
-            Explore project work
-            <span aria-hidden="true">↓</span>
-          </a>
+          <p class="hero-description" data-reveal style="--yw-delay:180ms">
+            Discover the technology behind modern solar power and energy
+            storage. Explore selected images featuring solar equipment,
+            lithium battery systems and hybrid inverter solutions for
+            residential and commercial energy applications.
+          </p>
 
-          <a class="text-link" href="{% url 'contact' %}">
-            Discuss your project
-            <span aria-hidden="true">↗</span>
-          </a>
+          <div class="hero-actions" data-reveal style="--yw-delay:260ms">
+            <a class="button" href="#project-gallery">
+              Explore project work
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+
+            <a class="text-link" href="{% url 'contact' %}">
+              Discuss your project
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M7 17 17 7M7 7h10v10"/>
+              </svg>
+            </a>
+          </div>
         </div>
+
+        <!-- Decorative energy technology illustration -->
+        <div class="hero-visual" aria-hidden="true" data-reveal style="--yw-delay:200ms">
+
+          <div class="energy-orbit"></div>
+
+          <div class="energy-core">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="24" cy="24" r="8"/>
+              <path d="M24 3v6M24 39v6M3 24h6M39 24h6"/>
+              <path d="m9.15 9.15 4.25 4.25m21.2 21.2 4.25 4.25m0-29.7-4.25 4.25m-21.2 21.2-4.25 4.25"/>
+              <path d="m25 17-6 9h5l-1 6 7-10h-5l1-5z"/>
+            </svg>
+            <strong>Energy</strong>
+          </div>
+
+          <div class="orbit-label label-solar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>
+            </svg>
+            Solar power
+          </div>
+
+          <div class="orbit-label label-storage">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="7" width="17" height="10" rx="2"/>
+              <path d="M20 10h2v4h-2M10 9l-2 3h3l-1 3 4-5h-3l1-1"/>
+            </svg>
+            Battery storage
+          </div>
+
+          <div class="orbit-label label-power">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v10"/>
+              <path d="M6.2 5.8a8 8 0 1 0 11.6 0"/>
+            </svg>
+            Power systems
+          </div>
+
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- PROJECT GALLERY -->
-  <section class="gallery yq-pop" id="project-gallery">
+
+  <!-- =====================================================
+       INTRODUCTION STRIP
+  ====================================================== -->
+
+  <section class="portfolio-intro" aria-label="Portfolio overview">
+    <div class="yq-wrap">
+      <div class="intro-grid">
+
+        <div class="intro-item" data-reveal>
+          <div class="intro-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 2"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Modern energy technology</strong>
+            <span>Explore today's power solutions</span>
+          </div>
+        </div>
+
+        <div class="intro-item" data-reveal style="--yw-delay:100ms">
+          <div class="intro-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <rect x="3" y="7" width="17" height="10" rx="2"/>
+              <path d="M20 10h2v4h-2M10 9l-2 3h3l-1 3 4-5h-3l1-1"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Solar and battery solutions</strong>
+            <span>Generation, storage and conversion</span>
+          </div>
+        </div>
+
+        <div class="intro-item" data-reveal style="--yw-delay:200ms">
+          <div class="intro-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M3 21h18M5 21V7l7-4 7 4v14"/>
+              <path d="M9 21v-5h6v5M9 10h.01M15 10h.01"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Residential and commercial</strong>
+            <span>Solutions for different applications</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       PROJECT GALLERY
+  ====================================================== -->
+
+  <section class="gallery" id="project-gallery">
     <div class="yq-wrap">
 
       <div class="gallery-heading" data-reveal>
-        <div>
-          <p class="eyebrow">Selected work</p>
-          <h2>Solar and energy storage in focus.</h2>
+        <div class="section-heading">
+          <p class="eyebrow" style="color:var(--yw-green)">Selected work</p>
+          <h2>Technology that moves energy forward.</h2>
+          <p>
+            Explore selected visuals highlighting the equipment and
+            technologies that form part of modern solar power and
+            energy storage systems.
+          </p>
         </div>
 
-        <p>
-          A closer look at selected project images showcasing the
-          equipment and energy solutions associated with Yunqida.
+        <p class="gallery-side-note">
+          From solar generation to intelligent power conversion and
+          battery storage, each component plays a role in building
+          an effective energy system.
         </p>
       </div>
 
-      <div class="grid">
 
-        <!-- PROJECT 1 -->
+      <div class="project-grid">
+
+        <!-- PROJECT 01 -->
         <figure class="work" data-reveal="card">
           <div class="frame">
             <img
               src="{% static 'img/w1.png' %}"
-              alt="Solar power system project by Yunqida Energy Kenya"
+              alt="Solar power equipment and renewable energy solution showcased by Yunqida Energy Kenya"
               loading="lazy"
               decoding="async"
             >
+
+            <span class="frame-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2m0 16v2M2 12h2m16 0h2"/>
+              </svg>
+              Solar technology
+            </span>
           </div>
 
           <figcaption class="caption">
             <div class="caption-copy">
               <h3>Solar power solutions</h3>
               <p>
-                Solar energy equipment and system solutions designed
-                around practical electricity requirements.
+                Solar energy technology for applications looking to
+                make use of renewable electricity. Explore equipment
+                and system options for different power requirements.
               </p>
             </div>
             <span class="project-number">01</span>
           </figcaption>
         </figure>
 
-        <!-- PROJECT 2 -->
-        <figure class="work" data-reveal="card" data-stagger="1">
+
+        <!-- PROJECT 02 -->
+        <figure class="work" data-reveal="card" style="--yw-delay:100ms">
           <div class="frame">
             <img
               src="{% static 'img/w2.png' %}"
-              alt="Lithium battery energy storage system associated with Yunqida Energy"
+              alt="Lithium battery energy storage technology for backup power applications"
               loading="lazy"
               decoding="async"
             >
+
+            <span class="frame-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <rect x="3" y="7" width="17" height="10" rx="2"/>
+                <path d="M20 10h2v4h-2M10 9l-2 3h3l-1 3 4-5h-3l1-1"/>
+              </svg>
+              Battery storage
+            </span>
           </div>
 
           <figcaption class="caption">
             <div class="caption-copy">
               <h3>Lithium battery storage</h3>
               <p>
-                Battery energy storage solutions for applications
-                requiring dependable backup and stored power.
+                Battery storage technology designed to retain electrical
+                energy for later use. Explore lithium battery options
+                for backup and energy storage applications.
               </p>
             </div>
             <span class="project-number">02</span>
           </figcaption>
         </figure>
 
-        <!-- PROJECT 3 -->
+
+        <!-- PROJECT 03 -->
         <figure class="work" data-reveal="card">
           <div class="frame">
             <img
               src="{% static 'img/w3.png' %}"
-              alt="Hybrid inverter equipment for solar and battery power management"
+              alt="Hybrid solar inverter equipment for managing solar generation and battery power"
               loading="lazy"
               decoding="async"
             >
+
+            <span class="frame-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M13 2 4 14h7l-1 8 10-13h-7l1-7z"/>
+              </svg>
+              Inverter systems
+            </span>
           </div>
 
           <figcaption class="caption">
             <div class="caption-copy">
               <h3>Hybrid inverter systems</h3>
               <p>
-                Inverter technology that coordinates solar generation,
-                battery storage and electrical loads.
+                Inverter technology that helps coordinate solar power,
+                battery storage and electrical loads within an integrated
+                energy system.
               </p>
             </div>
             <span class="project-number">03</span>
           </figcaption>
         </figure>
 
-        <!-- PROJECT 4 -->
-        <figure class="work" data-reveal="card" data-stagger="1">
+
+        <!-- PROJECT 04 -->
+        <figure class="work" data-reveal="card" style="--yw-delay:100ms">
           <div class="frame">
             <img
               src="{% static 'img/w4.png' %}"
-              alt="Integrated solar and energy storage solution from Yunqida Energy"
+              alt="Integrated solar power and energy storage equipment for modern electricity applications"
               loading="lazy"
               decoding="async"
             >
+
+            <span class="frame-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M4 19V5m0 14h16"/>
+                <path d="m7 15 4-4 3 2 5-6"/>
+                <path d="M15 7h4v4"/>
+              </svg>
+              Integrated solutions
+            </span>
           </div>
 
           <figcaption class="caption">
             <div class="caption-copy">
               <h3>Integrated energy solutions</h3>
               <p>
-                An overview of solar and energy storage equipment
-                brought together for practical power applications.
+                An overview of the relationship between solar generation,
+                power conversion and battery storage in modern energy
+                system configurations.
               </p>
             </div>
             <span class="project-number">04</span>
@@ -782,32 +1476,221 @@
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta yq-pop">
+
+  <!-- =====================================================
+       APPLICATIONS
+  ====================================================== -->
+
+  <section class="applications">
     <div class="yq-wrap">
-      <div class="cta-inner">
 
-        <div class="cta-copy" data-reveal>
-          <p class="eyebrow">Your project starts here</p>
+      <div class="applications-layout">
 
-          <h2>Planning a solar or energy storage project?</h2>
+        <div class="applications-copy" data-reveal>
+          <p class="eyebrow" style="color:var(--yw-green)">
+            Energy applications
+          </p>
+
+          <h2>Power solutions for different environments.</h2>
 
           <p>
-            Tell us about your energy requirements. Our Kenyan team
-            can help you explore suitable products and discuss the
-            next steps for your application.
+            Energy requirements vary from one property and business
+            to another. A home may need dependable backup electricity,
+            while a commercial facility may require a different
+            combination of solar generation, inverter capacity
+            and battery storage.
+          </p>
+
+          <p>
+            Yunqida Energy Kenya brings together solar products,
+            lithium battery technology and inverter solutions to
+            help customers explore options suited to their intended
+            application.
           </p>
         </div>
 
-        <div class="cta-actions" data-reveal style="--yq-delay:200ms">
+
+        <div class="application-list">
+
+          <div class="application-item" data-reveal>
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="m3 10 9-7 9 7"/>
+                <path d="M5 9v12h14V9M9 21v-7h6v7"/>
+              </svg>
+            </div>
+            <strong>Residential properties</strong>
+          </div>
+
+          <div class="application-item" data-reveal style="--yw-delay:70ms">
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M3 21h18M5 21V7l7-4 7 4v14"/>
+                <path d="M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/>
+              </svg>
+            </div>
+            <strong>Commercial buildings</strong>
+          </div>
+
+          <div class="application-item" data-reveal style="--yw-delay:140ms">
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M3 21h18M5 21V8l7-5 7 5v13"/>
+                <path d="M9 21v-6h6v6"/>
+                <path d="M9 10h.01M15 10h.01"/>
+              </svg>
+            </div>
+            <strong>Offices and retail</strong>
+          </div>
+
+          <div class="application-item" data-reveal style="--yw-delay:210ms">
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M3 21h18M5 21V9l7-6 7 6v12"/>
+                <path d="M9 21v-6h6v6M9 10h6"/>
+              </svg>
+            </div>
+            <strong>Schools and institutions</strong>
+          </div>
+
+          <div class="application-item" data-reveal style="--yw-delay:280ms">
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M3 21h18M5 21V8h14v13"/>
+                <path d="M8 8V4h8v4M8 13h8M8 17h8"/>
+              </svg>
+            </div>
+            <strong>Industrial facilities</strong>
+          </div>
+
+          <div class="application-item" data-reveal style="--yw-delay:350ms">
+            <div class="application-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true">
+                <path d="M3 20h18M5 20V9l7-5 7 5v11"/>
+                <path d="M8 13c2-3 6-3 8 0M12 11v6"/>
+              </svg>
+            </div>
+            <strong>Farms and rural properties</strong>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       HOW WE APPROACH YOUR REQUIREMENTS
+  ====================================================== -->
+
+  <section class="approach">
+    <div class="yq-wrap">
+
+      <div class="section-heading" data-reveal>
+        <p class="eyebrow">A considered approach</p>
+        <h2>Start with your energy requirements.</h2>
+        <p>
+          Choosing an energy solution begins with understanding how
+          electricity is used, what needs to be powered and what
+          the system is expected to achieve.
+        </p>
+      </div>
+
+      <div class="approach-grid">
+
+        <article class="approach-step" data-reveal>
+          <span class="step-number">01 / UNDERSTAND</span>
+          <h3>Tell us what you need</h3>
+          <p>
+            Share your application, power requirements and the
+            challenges you want your energy system to address.
+          </p>
+        </article>
+
+        <article class="approach-step" data-reveal style="--yw-delay:100ms">
+          <span class="step-number">02 / REVIEW</span>
+          <h3>Review the requirements</h3>
+          <p>
+            Consider the equipment, expected loads and the role
+            of solar generation, battery storage or inverter power.
+          </p>
+        </article>
+
+        <article class="approach-step" data-reveal style="--yw-delay:200ms">
+          <span class="step-number">03 / EXPLORE</span>
+          <h3>Explore suitable options</h3>
+          <p>
+            Discuss relevant products and configurations for
+            your intended residential or commercial application.
+          </p>
+        </article>
+
+        <article class="approach-step" data-reveal style="--yw-delay:300ms">
+          <span class="step-number">04 / CONNECT</span>
+          <h3>Discuss the next steps</h3>
+          <p>
+            Get in touch with Yunqida Energy to continue your
+            product enquiry or discuss your project requirements.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =====================================================
+       FINAL CTA
+  ====================================================== -->
+
+  <section class="cta">
+    <div class="yq-wrap">
+
+      <div class="cta-inner">
+
+        <div class="cta-copy" data-reveal>
+          <p class="eyebrow">Let's talk energy</p>
+
+          <h2>Have a solar or energy storage project in mind?</h2>
+
+          <p>
+            Whether you are exploring solar power for a home,
+            battery storage for a business or inverter options
+            for a new application, Yunqida Energy Kenya is ready
+            to hear about your requirements.
+          </p>
+        </div>
+
+        <div class="cta-actions" data-reveal style="--yw-delay:150ms">
           <a class="button" href="{% url 'contact' %}">
             Contact Yunqida Kenya
-            <span aria-hidden="true">↗</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
           </a>
 
           <a class="text-link" href="{% url 'products' %}">
             Explore our products
-            <span aria-hidden="true">→</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
           </a>
         </div>
 
@@ -818,6 +1701,7 @@
 </main>
 {% endblock %}
 
+
 {% block extra_js %}
 <script>
 (function () {
@@ -826,89 +1710,94 @@
   var page = document.querySelector('.yq-works');
   if (!page) return;
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hasIO = 'IntersectionObserver' in window;
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var sections = page.querySelectorAll('.yq-pop');
   var revealItems = page.querySelectorAll('[data-reveal]');
-  var projectItems = page.querySelectorAll('.work');
+  var progressBar = document.getElementById('yqProgressBar');
 
-  /* Inject the flash layer into every section. */
-  sections.forEach(function (section) {
-    var flash = document.createElement('span');
-    flash.className = 'yq-flash';
-    flash.setAttribute('aria-hidden', 'true');
-    section.appendChild(flash);
-  });
-
-  /* No-animation fallback. */
-  if (reduceMotion || !hasIO) {
-    document.documentElement.classList.remove('js');
-    sections.forEach(function (s) { s.classList.add('is-in', 'is-done'); });
-    revealItems.forEach(function (el) { el.classList.add('is-in'); });
-    projectItems.forEach(function (el) { el.classList.add('is-visible'); });
+  /*
+   * Reveal content progressively as it enters the viewport.
+   * If IntersectionObserver is unavailable, all content stays visible.
+   */
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealItems.forEach(function (item) {
+      item.classList.add('is-in');
+    });
   } else {
-
-    /* Section pop + flash when scrolled to. */
-    var sectionObserver = new IntersectionObserver(function (entries, observer) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var section = entry.target;
-        section.classList.add('is-in');
-        section.addEventListener('animationend', function onEnd(e) {
-          if (e.target !== section || e.animationName !== 'yqSectionPop') return;
-          section.classList.add('is-done');
-          section.removeEventListener('animationend', onEnd);
-        });
-        observer.unobserve(section);
-      });
-    }, { threshold: 0.06, rootMargin: '0px 0px -10% 0px' });
-
-    sections.forEach(function (s) { sectionObserver.observe(s); });
-
-    /* Inner elements stagger in; project photos reveal as they enter. */
     var revealObserver = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var stagger = parseInt(el.getAttribute('data-stagger') || '0', 10);
-        if (stagger) el.style.setProperty('--yq-delay', (stagger * 140) + 'ms');
-        el.classList.add('is-in');
-        el.classList.add('is-visible');
-        observer.unobserve(el);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
 
-    revealItems.forEach(function (el) {
-      if (el.hasAttribute('data-hero')) {
-        /* hero text reveals on page load */
-        requestAnimationFrame(function () { el.classList.add('is-in'); });
-      } else {
-        revealObserver.observe(el);
-      }
+        entry.target.classList.add('is-in');
+        observer.unobserve(entry.target);
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -45px 0px'
+    });
+
+    revealItems.forEach(function (item) {
+      revealObserver.observe(item);
     });
   }
 
-  /* Scroll progress bar. */
-  var bar = document.getElementById('yqProgressBar');
+  /*
+   * Smooth anchor navigation without locking page scrolling.
+   */
+  page.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      var targetId = link.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+
+      var target = document.querySelector(targetId);
+      if (!target) return;
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+    });
+  });
+
+  /*
+   * Scroll progress indicator.
+   */
   var queued = false;
 
   function updateProgress() {
-    if (!bar) return;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    var value = max > 0 ? window.scrollY / max : 0;
-    bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, value)) + ')';
+    if (!progressBar) return;
+
+    var doc = document.documentElement;
+    var maxScroll = doc.scrollHeight - window.innerHeight;
+    var current = window.scrollY || doc.scrollTop || 0;
+    var progress = maxScroll > 0 ? current / maxScroll : 0;
+
+    progressBar.style.transform =
+      'scaleX(' + Math.max(0, Math.min(1, progress)) + ')';
+
     queued = false;
   }
 
-  window.addEventListener('scroll', function () {
-    if (!queued) {
-      queued = true;
-      requestAnimationFrame(updateProgress);
-    }
-  }, { passive: true });
-  window.addEventListener('resize', updateProgress, { passive: true });
+  function requestProgressUpdate() {
+    if (queued) return;
+
+    queued = true;
+    window.requestAnimationFrame(updateProgress);
+  }
+
+  window.addEventListener('scroll', requestProgressUpdate, {
+    passive: true
+  });
+
+  window.addEventListener('resize', requestProgressUpdate, {
+    passive: true
+  });
+
   updateProgress();
+
 })();
 </script>
 {% endblock %}

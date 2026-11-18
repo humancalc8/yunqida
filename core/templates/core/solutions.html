@@ -2,1029 +2,1973 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}Solar & Battery Storage Solutions in Kenya | Yunqida Energy{% endblock %}
+{% block title %}Solar & Energy Solutions in Kenya | Yunqida Energy{% endblock %}
 
-{% block meta_description %}Discover solar and lithium battery storage solutions in Kenya for homes, shops, clinics, schools, offices, factories and farms. Explore residential, commercial and industrial energy systems with Yunqida Energy Kenya.{% endblock %}
+{% block meta_description %}Discover reliable solar power, hybrid inverter, lithium battery storage and backup energy solutions in Kenya. Yunqida Energy provides tailored residential, commercial and industrial energy systems.{% endblock %}
 
 {% block meta_keywords %}solar solutions Kenya, solar energy systems Kenya, home solar power Kenya, commercial solar systems Kenya, industrial energy storage Kenya, lithium battery storage Kenya, LiFePO4 batteries Kenya, hybrid inverter Kenya, solar backup systems Nairobi, Yunqida Energy Kenya{% endblock %}
 
-{% block og_title %}Solar & Energy Storage Solutions in Kenya | Yunqida Energy{% endblock %}
+{% block og_title %}Energy Solutions Designed Around You | Yunqida Energy Kenya{% endblock %}
+{% block og_description %}Explore dependable solar, inverter and energy storage solutions for homes, businesses and industries across Kenya.{% endblock %}
 
-{% block og_description %}Explore residential, commercial and industrial solar and battery storage solutions from Yunqida Energy Kenya.{% endblock %}
-
-{% block body_class %}page-dark{% endblock %}
+{% block body_class %}page-dark yd-solutions-page{% endblock %}
 
 {% block extra_head %}
-<script>
-  document.documentElement.classList.add('js');
-</script>
-
 <style>
-  .yq-solutions {
-    --so-forest: var(--c-forest, #0F1318);
-    --so-emerald: var(--c-emerald, #14A090);
-    --so-orange: var(--c-sun, #F28C0F);
-    --so-orange-hover: var(--c-sun-hover, #FFA43A);
-    --so-ink: var(--c-ink, #0F1318);
-    --so-muted: var(--c-muted, #5C6670);
-    --so-line: var(--c-line, #E3E6EA);
-    --so-mist: var(--c-mist, #F4F5F7);
+/* =========================================================
+   YUNQIDA ENERGY — SOLUTIONS
+   Brand palette:
+   Navy       #00063D
+   Brand blue #000A63
+   Lime       #C4F135
+   Deep lime  #A8D81F
+   Emerald    #0A806B
+   Off-white  #F7F7F5
+   ========================================================= */
 
-    background: #fff;
+.yq-solutions {
+    --so-navy: #00063D;
+    --so-blue: #000A63;
+    --so-lime: #C4F135;
+    --so-lime-dark: #A8D81F;
+    --so-emerald: #0A806B;
+    --so-paper: #F7F7F5;
+    --so-white: #FFFFFF;
+    --so-ink: #121512;
+    --so-muted: #666B66;
+    --so-line: #E4E6DF;
+
+    --so-radius: 18px;
+    --so-radius-lg: 26px;
+    --so-shadow: 0 18px 55px rgba(0, 6, 61, .08);
+    --so-shadow-hover: 0 26px 65px rgba(0, 6, 61, .14);
+    --so-ease: cubic-bezier(.16, 1, .3, 1);
+
+    background: var(--so-paper);
     color: var(--so-ink);
-    font-family: var(--font-body, sans-serif);
-    line-height: 1.7;
-    overflow: hidden;
-  }
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    overflow: visible;
+    isolation: isolate;
+    font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+}
 
-  .yq-solutions *,
-  .yq-solutions *::before,
-  .yq-solutions *::after {
+.yq-solutions *,
+.yq-solutions *::before,
+.yq-solutions *::after {
     box-sizing: border-box;
-  }
+}
 
-  .yq-solutions a:focus-visible {
-    outline: 3px solid var(--so-orange);
+.yq-solutions a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.yq-solutions img {
+    display: block;
+    max-width: 100%;
+}
+
+.yq-solutions button,
+.yq-solutions a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.yq-solutions a:focus-visible {
+    outline: 3px solid var(--so-lime-dark);
     outline-offset: 5px;
-  }
+}
 
-  .yq-solutions .so-eyebrow {
+.yq-solutions .so-container {
+    width: min(1200px, calc(100% - 64px));
+    margin-inline: auto;
+}
+
+.yq-solutions .so-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 11px;
-    margin: 0 0 20px;
     color: var(--so-emerald);
-    font-size: .73rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    line-height: 1.4;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .2em;
     text-transform: uppercase;
-  }
+}
 
-  .yq-solutions .so-eyebrow::before {
-    width: 24px;
+.yq-solutions .so-eyebrow::before {
+    content: "";
+    width: 25px;
     height: 2px;
-    background: currentColor;
-    content: "";
-  }
+    background: var(--so-lime-dark);
+}
 
-  .yq-solutions .so-h2 {
-    margin: 0;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3.15rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-solutions .so-section {
-    padding: clamp(75px, 9vw, 115px) 0;
-  }
-
-  .yq-solutions .so-section--mist {
-    background: var(--so-mist);
-  }
-
-  /* HERO */
-
-  .yq-solutions .so-hero {
-    position: relative;
-    isolation: isolate;
-    padding: calc(var(--header-h, 80px) + clamp(70px, 9vw, 115px)) 0 75px;
-    overflow: hidden;
-    background: var(--so-forest);
-    color: #fff;
-  }
-
-  .yq-solutions .so-hero::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    content: "";
-    opacity: .15;
-    background-image:
-      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: linear-gradient(to right, #000, transparent 90%);
-  }
-
-  .yq-solutions .so-hero::after {
-    position: absolute;
-    z-index: -1;
-    top: -220px;
-    right: -140px;
-    width: 470px;
-    height: 470px;
-    border: 1px solid rgba(20,160,144,.25);
-    border-radius: 50%;
-    content: "";
-    box-shadow:
-      0 0 0 55px rgba(20,160,144,.035),
-      0 0 0 110px rgba(20,160,144,.025);
-  }
-
-  .yq-solutions .so-hero .container {
-    position: relative;
-  }
-
-  .yq-solutions .so-hero .so-eyebrow {
-    color: #70CFC1;
-  }
-
-  .yq-solutions .so-hero h1 {
-    max-width: 800px;
-    margin: 0;
-    color: #fff;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2.8rem, 6.5vw, 5.2rem);
-    font-weight: 600;
+.yq-solutions .so-heading {
+    color: var(--so-navy);
+    font-size: clamp(34px, 4.4vw, 57px);
+    line-height: 1.07;
     letter-spacing: -.055em;
-    line-height: 1.03;
-  }
+    font-weight: 700;
+    margin: 18px 0 0;
+}
 
-  .yq-solutions .so-hero h1 em {
-    color: var(--so-orange);
+.yq-solutions .so-heading em {
+    color: var(--so-emerald);
     font-style: normal;
-  }
+}
 
-  .yq-solutions .so-hero .lead {
-    max-width: 610px;
-    margin: 26px 0 0;
-    color: rgba(255,255,255,.7);
-    font-size: clamp(1rem, 1.7vw, 1.12rem);
-    line-height: 1.85;
-  }
+.yq-solutions .so-description {
+    max-width: 650px;
+    color: var(--so-muted);
+    font-size: 15px;
+    line-height: 1.9;
+    margin: 20px 0 0;
+}
 
-  .yq-solutions .so-hero-actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 25px;
-    margin-top: 32px;
-  }
-
-  /* BUTTONS */
-
-  .yq-solutions .so-btn {
+.yq-solutions .so-button {
+    min-height: 54px;
+    padding: 0 24px;
+    border-radius: 5px;
     display: inline-flex;
-    min-height: 52px;
     align-items: center;
     justify-content: center;
-    gap: 11px;
-    padding: 13px 23px;
-    border: 1px solid transparent;
-    font-size: .89rem;
-    font-weight: 700;
-    text-decoration: none;
+    gap: 13px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .035em;
     transition:
-      background .2s ease,
-      border-color .2s ease,
-      color .2s ease,
-      transform .2s ease;
-  }
+        background .3s var(--so-ease),
+        color .3s var(--so-ease),
+        transform .3s var(--so-ease),
+        box-shadow .3s var(--so-ease);
+}
 
-  .yq-solutions .so-btn--sun {
-    border-color: var(--so-orange);
-    background: var(--so-orange);
-    color: var(--so-forest);
-  }
+.yq-solutions .so-button:hover {
+    transform: translateY(-3px);
+}
 
-  .yq-solutions .so-btn--sun:hover {
-    border-color: var(--so-orange-hover);
-    background: var(--so-orange-hover);
-    transform: translateY(-2px);
-  }
+.yq-solutions .so-button-primary {
+    background: var(--so-lime);
+    color: var(--so-navy);
+    box-shadow: 0 10px 28px rgba(196, 241, 53, .17);
+}
 
-  .yq-solutions .so-btn--line {
-    border-color: rgba(255,255,255,.35);
-    color: #fff;
-  }
+.yq-solutions .so-button-primary:hover {
+    background: var(--so-lime-dark);
+    box-shadow: 0 14px 35px rgba(196, 241, 53, .25);
+}
 
-  .yq-solutions .so-btn--line:hover {
-    border-color: #fff;
-    background: rgba(255,255,255,.06);
-  }
+.yq-solutions .so-button-outline {
+    color: var(--so-navy);
+    border: 1px solid rgba(0, 10, 99, .2);
+    background: transparent;
+}
 
-  .yq-solutions .so-text-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    color: inherit;
-    font-size: .91rem;
-    font-weight: 650;
-    text-decoration: none;
-  }
+.yq-solutions .so-button-outline:hover {
+    background: var(--so-navy);
+    color: white;
+    border-color: var(--so-navy);
+}
 
-  .yq-solutions .so-text-link span {
-    transition: transform .2s ease;
-  }
+.yq-solutions .so-arrow {
+    font-size: 17px;
+    line-height: 1;
+    transition: transform .3s var(--so-ease);
+}
 
-  .yq-solutions .so-text-link:hover span {
+.yq-solutions .so-button:hover .so-arrow {
     transform: translateX(4px);
-  }
+}
 
-  .yq-solutions .so-hero .so-text-link {
-    color: rgba(255,255,255,.85);
-  }
+/* =========================================================
+   HERO
+   ========================================================= */
 
-  /* HERO NAVIGATION */
-
-  .yq-solutions .so-jump {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-top: clamp(55px, 7vw, 88px);
-    border-top: 1px solid rgba(255,255,255,.15);
-  }
-
-  .yq-solutions .so-jump a {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    gap: 7px;
-    padding: 23px 25px 0 0;
-    color: #fff;
-    text-decoration: none;
-    transition: color .2s ease;
-  }
-
-  .yq-solutions .so-jump a + a {
-    padding-left: 25px;
-    border-left: 1px solid rgba(255,255,255,.15);
-  }
-
-  .yq-solutions .so-jump small {
-    color: var(--so-orange);
-    font-size: .76rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-  }
-
-  .yq-solutions .so-jump strong {
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.22rem;
-    font-weight: 600;
-    letter-spacing: -.02em;
-    line-height: 1.3;
-  }
-
-  .yq-solutions .so-jump span {
-    color: rgba(255,255,255,.58);
-    font-size: .87rem;
-  }
-
-  .yq-solutions .so-jump a:hover strong {
-    color: var(--so-orange);
-  }
-
-  /* SOLUTION BLOCKS */
-
-  .yq-solutions .so-block {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(42px, 7vw, 95px);
-    align-items: center;
-  }
-
-  .yq-solutions .so-block--reverse .so-media {
-    order: 2;
-  }
-
-  .yq-solutions .so-media {
-    min-width: 0;
-    margin: 0;
-  }
-
-  .yq-solutions .so-frame {
+.yq-solutions .so-hero {
+    min-height: 610px;
+    padding: 105px 0 100px;
+    background:
+        radial-gradient(ellipse at 82% 28%, rgba(10, 128, 107, .19), transparent 38%),
+        radial-gradient(ellipse at 5% 100%, rgba(196, 241, 53, .09), transparent 35%),
+        linear-gradient(125deg, var(--so-navy), var(--so-blue) 72%, #07145D);
+    color: white;
     position: relative;
     overflow: hidden;
-    aspect-ratio: 4 / 4.7;
-    background: #e8ebed;
-    isolation: isolate;
-  }
+    display: flex;
+    align-items: center;
+}
 
-  .yq-solutions .so-frame img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transform: scale(1);
-    transition: transform 1.2s cubic-bezier(.2,.65,.25,1);
-  }
-
-  .yq-solutions .so-num {
-    display: block;
-    margin-bottom: 18px;
-    color: var(--so-emerald);
-    font-family: var(--font-display, sans-serif);
-    font-size: .86rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-  }
-
-  .yq-solutions .so-text .so-h2 {
-    margin-bottom: 22px;
-  }
-
-  .yq-solutions .so-text > p {
-    margin: 0 0 25px;
-    color: var(--so-muted);
-    font-size: 1rem;
-    line-height: 1.85;
-  }
-
-  .yq-solutions .so-list {
-    margin: 0 0 28px;
-    padding: 0;
-    border-top: 1px solid var(--so-line);
-    list-style: none;
-  }
-
-  .yq-solutions .so-list li {
-    position: relative;
-    padding: 13px 0 13px 27px;
-    border-bottom: 1px solid var(--so-line);
-    font-size: .94rem;
-    line-height: 1.55;
-  }
-
-  .yq-solutions .so-list li::before {
-    position: absolute;
-    top: 50%;
-    left: 2px;
-    width: 9px;
-    height: 5px;
-    margin-top: -4px;
-    border-bottom: 2px solid var(--so-emerald);
-    border-left: 2px solid var(--so-emerald);
+.yq-solutions .so-hero::before {
     content: "";
-    transform: rotate(-45deg);
-  }
+    position: absolute;
+    width: 520px;
+    height: 520px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 50%;
+    right: -130px;
+    top: -190px;
+    box-shadow:
+        0 0 0 45px rgba(255,255,255,.025),
+        0 0 0 95px rgba(255,255,255,.018);
+    pointer-events: none;
+}
 
-  .yq-solutions .so-link {
+.yq-solutions .so-hero::after {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(196,241,53,.19);
+    border-radius: 50%;
+    right: 14%;
+    bottom: -205px;
+    pointer-events: none;
+}
+
+.yq-solutions .so-hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+    align-items: center;
+    gap: 65px;
+}
+
+.yq-solutions .so-hero-copy {
+    max-width: 730px;
+}
+
+.yq-solutions .so-hero .so-eyebrow {
+    color: var(--so-lime);
+}
+
+.yq-solutions .so-hero h1 {
+    color: white;
+    font-size: clamp(46px, 6.2vw, 78px);
+    line-height: .99;
+    letter-spacing: -.065em;
+    font-weight: 700;
+    margin: 25px 0 0;
+    max-width: 760px;
+}
+
+.yq-solutions .so-hero h1 span {
+    color: var(--so-lime);
+}
+
+.yq-solutions .so-hero-copy > p {
+    max-width: 590px;
+    color: rgba(255,255,255,.72);
+    font-size: 16px;
+    line-height: 1.9;
+    margin: 25px 0 0;
+}
+
+.yq-solutions .so-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 13px;
+    margin-top: 34px;
+}
+
+.yq-solutions .so-hero .so-button-outline {
+    color: white;
+    border-color: rgba(255,255,255,.25);
+}
+
+.yq-solutions .so-hero .so-button-outline:hover {
+    background: white;
+    color: var(--so-navy);
+}
+
+.yq-solutions .so-hero-note {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-top: 45px;
+    color: rgba(255,255,255,.67);
+    font-size: 11px;
+    letter-spacing: .07em;
+}
+
+.yq-solutions .so-hero-note::before {
+    content: "";
+    width: 36px;
+    height: 1px;
+    background: var(--so-lime);
+}
+
+.yq-solutions .so-hero-visual {
+    position: relative;
+    min-height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yq-solutions .so-energy-orbit {
+    width: min(330px, 100%);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: radial-gradient(circle, rgba(10,128,107,.19), transparent 68%);
+}
+
+.yq-solutions .so-energy-orbit::before,
+.yq-solutions .so-energy-orbit::after {
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border: 1px solid rgba(196,241,53,.18);
+    border-radius: 50%;
+}
+
+.yq-solutions .so-energy-orbit::after {
+    inset: 48px;
+    border-color: rgba(255,255,255,.12);
+}
+
+.yq-solutions .so-energy-core {
+    width: 145px;
+    height: 145px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(145deg, var(--so-lime), var(--so-lime-dark));
+    color: var(--so-navy);
+    box-shadow: 0 0 75px rgba(196,241,53,.22);
+    position: relative;
+    z-index: 1;
+}
+
+.yq-solutions .so-energy-core svg {
+    width: 68px;
+    height: 68px;
+}
+
+.yq-solutions .so-orbit-dot {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background: var(--so-lime);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(196,241,53,.55);
+}
+
+.yq-solutions .so-orbit-dot.one {
+    top: 18%;
+    right: 17%;
+}
+
+.yq-solutions .so-orbit-dot.two {
+    bottom: 15%;
+    left: 20%;
+    width: 8px;
+    height: 8px;
+    background: white;
+}
+
+.yq-solutions .so-orbit-dot.three {
+    top: 48%;
+    left: -5px;
+    width: 7px;
+    height: 7px;
+    background: var(--so-emerald);
+}
+
+.yq-solutions .so-visual-label {
+    position: absolute;
+    right: -8px;
+    bottom: 28px;
+    padding: 14px 17px;
+    background: rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+/* HERO QUICK LINKS */
+
+.yq-solutions .so-hero-links {
+    position: relative;
+    z-index: 3;
+    background: var(--so-white);
+    margin-top: -1px;
+    border-bottom: 1px solid var(--so-line);
+}
+
+.yq-solutions .so-hero-links-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.yq-solutions .so-hero-link {
+    min-height: 84px;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-right: 1px solid var(--so-line);
+    transition: background .3s ease;
+}
+
+.yq-solutions .so-hero-link:first-child {
+    border-left: 1px solid var(--so-line);
+}
+
+.yq-solutions .so-hero-link:hover {
+    background: #F0F5E2;
+}
+
+.yq-solutions .so-hero-link strong {
+    color: var(--so-navy);
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.yq-solutions .so-hero-link small {
+    display: block;
+    color: var(--so-muted);
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.yq-solutions .so-hero-link span {
+    color: var(--so-emerald);
+    font-size: 19px;
+    transition: transform .3s var(--so-ease);
+}
+
+.yq-solutions .so-hero-link:hover span {
+    transform: translateX(5px);
+}
+
+/* =========================================================
+   INTRODUCTION
+   ========================================================= */
+
+.yq-solutions .so-intro {
+    padding: 115px 0 105px;
+    background: var(--so-paper);
+    position: relative;
+    z-index: 2;
+}
+
+.yq-solutions .so-intro-grid {
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 90px;
+    align-items: start;
+}
+
+.yq-solutions .so-intro-aside {
+    padding-top: 10px;
+}
+
+.yq-solutions .so-intro-aside .so-index {
+    font-size: 86px;
+    line-height: 1;
+    letter-spacing: -.08em;
+    font-weight: 700;
+    color: rgba(0,10,99,.09);
+}
+
+.yq-solutions .so-intro-aside p {
+    max-width: 280px;
+    color: var(--so-muted);
+    font-size: 13px;
+    line-height: 1.85;
+    margin-top: 18px;
+}
+
+.yq-solutions .so-intro-main h2 {
+    color: var(--so-navy);
+    font-size: clamp(32px, 4vw, 49px);
+    line-height: 1.12;
+    letter-spacing: -.05em;
+    margin: 0;
+}
+
+.yq-solutions .so-intro-main h2 span {
+    color: var(--so-emerald);
+}
+
+.yq-solutions .so-intro-main > p {
+    color: var(--so-muted);
+    font-size: 15px;
+    line-height: 1.95;
+    max-width: 720px;
+    margin: 22px 0 0;
+}
+
+.yq-solutions .so-intro-rule {
+    height: 1px;
+    background: var(--so-line);
+    margin-top: 35px;
+}
+
+/* =========================================================
+   SOLUTION CARDS
+   ========================================================= */
+
+.yq-solutions .so-services {
+    padding: 105px 0 115px;
+    background: white;
+    position: relative;
+    z-index: 3;
+}
+
+.yq-solutions .so-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 35px;
+    margin-bottom: 55px;
+}
+
+.yq-solutions .so-section-heading .so-description {
+    max-width: 390px;
+    margin-bottom: 5px;
+}
+
+.yq-solutions .so-service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 19px;
+}
+
+.yq-solutions .so-service-card {
+    position: relative;
+    min-height: 330px;
+    padding: 34px 30px 30px;
+    border: 1px solid var(--so-line);
+    border-radius: var(--so-radius);
+    background: var(--so-paper);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition:
+        transform .45s var(--so-ease),
+        box-shadow .45s var(--so-ease),
+        border-color .35s ease,
+        background .35s ease;
+}
+
+.yq-solutions .so-service-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 3px;
+    background: var(--so-lime-dark);
+    transition: width .45s var(--so-ease);
+}
+
+.yq-solutions .so-service-card:hover {
+    transform: translateY(-8px);
+    background: white;
+    border-color: rgba(0,10,99,.15);
+    box-shadow: var(--so-shadow-hover);
+}
+
+.yq-solutions .so-service-card:hover::before {
+    width: 100%;
+}
+
+.yq-solutions .so-service-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 34px;
+}
+
+.yq-solutions .so-service-icon {
+    width: 57px;
+    height: 57px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    background: rgba(196,241,53,.25);
+    color: var(--so-navy);
+    transition: background .3s ease, transform .3s var(--so-ease);
+}
+
+.yq-solutions .so-service-card:hover .so-service-icon {
+    background: var(--so-lime);
+    transform: rotate(-5deg);
+}
+
+.yq-solutions .so-service-icon svg {
+    width: 27px;
+    height: 27px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.yq-solutions .so-service-number {
+    font-size: 11px;
+    color: #9A9E95;
+    font-weight: 700;
+    letter-spacing: .12em;
+}
+
+.yq-solutions .so-service-card h3 {
+    color: var(--so-navy);
+    font-size: 21px;
+    line-height: 1.25;
+    letter-spacing: -.035em;
+    margin: 0;
+}
+
+.yq-solutions .so-service-card p {
+    color: var(--so-muted);
+    font-size: 13px;
+    line-height: 1.85;
+    margin: 14px 0 25px;
+}
+
+.yq-solutions .so-service-link {
+    margin-top: auto;
+    color: var(--so-emerald);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--so-orange);
-    color: var(--so-ink);
-    font-size: .93rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
+}
 
-  .yq-solutions .so-link span {
-    transition: transform .2s ease;
-  }
+.yq-solutions .so-service-link span {
+    font-size: 16px;
+    transition: transform .3s var(--so-ease);
+}
 
-  .yq-solutions .so-link:hover span {
+.yq-solutions .so-service-card:hover .so-service-link span {
     transform: translateX(5px);
-  }
+}
 
-  /* COMPARISON SECTION */
+/* =========================================================
+   SOLUTIONS BY APPLICATION
+   ========================================================= */
 
-  .yq-solutions .so-head {
-    max-width: 650px;
-    margin-bottom: 38px;
-  }
+.yq-solutions .so-applications {
+    padding: 112px 0;
+    background: var(--so-navy);
+    color: white;
+    position: relative;
+    z-index: 4;
+    overflow: hidden;
+}
 
-  .yq-solutions .so-head .so-h2 {
-    margin-top: 0;
-  }
+.yq-solutions .so-applications::before {
+    content: "";
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.06);
+    right: -180px;
+    top: -240px;
+    box-shadow: 0 0 0 55px rgba(255,255,255,.018),
+                0 0 0 110px rgba(255,255,255,.012);
+    pointer-events: none;
+}
 
-  .yq-solutions .so-head > p:last-child {
-    max-width: 550px;
-    margin: 16px 0 0;
-    color: var(--so-muted);
-  }
+.yq-solutions .so-applications .so-container {
+    position: relative;
+    z-index: 1;
+}
 
-  .yq-solutions .so-table-wrap {
-    overflow-x: auto;
-    border-top: 1px solid var(--so-line);
-  }
+.yq-solutions .so-applications .so-eyebrow {
+    color: var(--so-lime);
+}
 
-  .yq-solutions .so-table {
-    width: 100%;
-    min-width: 650px;
-    border-collapse: collapse;
-  }
+.yq-solutions .so-applications .so-heading {
+    color: white;
+}
 
-  .yq-solutions .so-table th,
-  .yq-solutions .so-table td {
-    padding: 21px 22px 21px 0;
-    border-bottom: 1px solid var(--so-line);
-    text-align: left;
-    vertical-align: top;
-    font-size: .94rem;
-    line-height: 1.65;
-  }
+.yq-solutions .so-applications .so-description {
+    color: rgba(255,255,255,.65);
+}
 
-  .yq-solutions .so-table thead th {
-    padding-top: 18px;
-    padding-bottom: 16px;
-    color: var(--so-muted);
-    font-size: .76rem;
-    font-weight: 700;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-  }
+.yq-solutions .so-application-list {
+    margin-top: 55px;
+    border-top: 1px solid rgba(255,255,255,.15);
+}
 
-  .yq-solutions .so-table tbody th {
-    width: 19%;
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.08rem;
-    font-weight: 600;
-  }
-
-  .yq-solutions .so-table td {
-    color: var(--so-muted);
-  }
-
-  .yq-solutions .so-table a {
-    color: var(--so-ink);
-    font-weight: 700;
-    text-decoration-color: var(--so-orange);
-    text-underline-offset: 4px;
-  }
-
-  /* CTA */
-
-  .yq-solutions .so-cta {
-    padding: clamp(75px, 9vw, 115px) 0;
-    background: var(--so-forest);
-    color: #fff;
-  }
-
-  .yq-solutions .so-cta .container {
+.yq-solutions .so-application-row {
     display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    gap: 45px;
-    align-items: end;
-  }
+    grid-template-columns: 80px 1fr 1.1fr 40px;
+    gap: 30px;
+    align-items: center;
+    padding: 30px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    transition: background .3s ease, padding .3s var(--so-ease);
+}
 
-  .yq-solutions .so-cta .so-eyebrow {
-    color: #70CFC1;
-  }
+.yq-solutions .so-application-row:hover {
+    background: rgba(255,255,255,.045);
+    padding-inline: 20px;
+}
 
-  .yq-solutions .so-cta h2 {
-    max-width: 680px;
+.yq-solutions .so-application-number {
+    color: var(--so-lime);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.yq-solutions .so-application-row h3 {
+    color: white;
+    font-size: 23px;
+    letter-spacing: -.04em;
     margin: 0;
-    color: #fff;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2.1rem, 4.5vw, 3.6rem);
-    font-weight: 600;
-    letter-spacing: -.05em;
-    line-height: 1.08;
-  }
+}
 
-  .yq-solutions .so-cta p {
-    max-width: 510px;
-    margin: 19px 0 0;
-    color: rgba(255,255,255,.68);
-    font-size: 1rem;
+.yq-solutions .so-application-row p {
+    color: rgba(255,255,255,.61);
+    font-size: 13px;
     line-height: 1.8;
-  }
+    margin: 0;
+}
 
-  .yq-solutions .so-cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+.yq-solutions .so-application-arrow {
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(196,241,53,.45);
+    color: var(--so-lime);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transition: background .3s ease, color .3s ease, transform .3s ease;
+}
+
+.yq-solutions .so-application-row:hover .so-application-arrow {
+    background: var(--so-lime);
+    color: var(--so-navy);
+    transform: translateX(4px);
+}
+
+/* =========================================================
+   APPROACH / PROCESS
+   ========================================================= */
+
+.yq-solutions .so-process {
+    padding: 115px 0;
+    background: #EFF1E9;
+    position: relative;
+    z-index: 5;
+}
+
+.yq-solutions .so-process-grid {
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: 85px;
+    align-items: start;
+}
+
+.yq-solutions .so-process-intro {
+    position: sticky;
+    top: 110px;
+}
+
+.yq-solutions .so-process-intro .so-description {
+    max-width: 390px;
+}
+
+.yq-solutions .so-process-note {
+    margin-top: 35px;
+    padding: 19px 20px;
+    border-left: 3px solid var(--so-lime-dark);
+    background: rgba(255,255,255,.65);
+    color: var(--so-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.yq-solutions .so-process-steps {
+    border-top: 1px solid rgba(0,10,99,.16);
+}
+
+.yq-solutions .so-process-step {
+    display: grid;
+    grid-template-columns: 55px 1fr;
+    gap: 23px;
+    padding: 30px 0;
+    border-bottom: 1px solid rgba(0,10,99,.16);
+}
+
+.yq-solutions .so-step-number {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--so-navy);
+    color: var(--so-lime);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.yq-solutions .so-process-step h3 {
+    color: var(--so-navy);
+    font-size: 21px;
+    letter-spacing: -.035em;
+    margin: 4px 0 10px;
+}
+
+.yq-solutions .so-process-step p {
+    color: var(--so-muted);
+    font-size: 13px;
+    line-height: 1.9;
+    margin: 0;
+    max-width: 480px;
+}
+
+/* =========================================================
+   WHY YUNQIDA
+   ========================================================= */
+
+.yq-solutions .so-why {
+    padding: 110px 0;
+    background: white;
+    position: relative;
+    z-index: 6;
+}
+
+.yq-solutions .so-why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 75px;
+    align-items: center;
+}
+
+.yq-solutions .so-why-copy h2 {
+    color: var(--so-navy);
+    font-size: clamp(35px, 4.5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -.055em;
+    margin: 18px 0 0;
+}
+
+.yq-solutions .so-why-copy h2 span {
+    color: var(--so-emerald);
+}
+
+.yq-solutions .so-why-copy > p {
+    color: var(--so-muted);
+    font-size: 14px;
+    line-height: 1.95;
+    margin-top: 22px;
+}
+
+.yq-solutions .so-why-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 13px;
-  }
+}
 
-  /* SCROLL REVEAL */
+.yq-solutions .so-why-point {
+    min-height: 145px;
+    padding: 22px;
+    background: var(--so-paper);
+    border: 1px solid var(--so-line);
+    border-radius: 12px;
+    transition: transform .35s var(--so-ease), box-shadow .35s ease;
+}
 
-  .js .yq-solutions [data-reveal] {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-      opacity .75s ease,
-      transform .75s cubic-bezier(.2,.7,.2,1);
-    transition-delay: var(--d, 0s);
-  }
+.yq-solutions .so-why-point:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--so-shadow);
+}
 
-  .js .yq-solutions [data-reveal].is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.yq-solutions .so-why-point .so-check {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--so-lime);
+    color: var(--so-navy);
+    font-size: 13px;
+    font-weight: 900;
+    margin-bottom: 15px;
+}
 
-  /* Image reveals independently from text. */
-  .js .yq-solutions [data-reveal="image"] {
+.yq-solutions .so-why-point h3 {
+    color: var(--so-navy);
+    font-size: 14px;
+    margin: 0;
+}
+
+.yq-solutions .so-why-point p {
+    color: var(--so-muted);
+    font-size: 11px;
+    line-height: 1.7;
+    margin: 8px 0 0;
+}
+
+/* =========================================================
+   FINAL CTA
+   ========================================================= */
+
+.yq-solutions .so-final-cta {
+    position: relative;
+    z-index: 7;
+    padding: 95px 0;
+    background:
+        radial-gradient(ellipse at 90% 10%, rgba(10,128,107,.25), transparent 40%),
+        linear-gradient(125deg, var(--so-navy), var(--so-blue));
+    color: white;
+    overflow: hidden;
+}
+
+.yq-solutions .so-final-cta::after {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border: 1px solid rgba(196,241,53,.16);
+    border-radius: 50%;
+    right: -130px;
+    bottom: -260px;
+    box-shadow: 0 0 0 45px rgba(255,255,255,.025),
+                0 0 0 90px rgba(255,255,255,.015);
+}
+
+.yq-solutions .so-cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 45px;
+    position: relative;
+    z-index: 1;
+}
+
+.yq-solutions .so-final-cta .so-eyebrow {
+    color: var(--so-lime);
+}
+
+.yq-solutions .so-final-cta h2 {
+    color: white;
+    max-width: 720px;
+    font-size: clamp(35px, 4.6vw, 58px);
+    line-height: 1.06;
+    letter-spacing: -.055em;
+    margin: 17px 0 0;
+}
+
+.yq-solutions .so-final-cta p {
+    max-width: 600px;
+    color: rgba(255,255,255,.67);
+    font-size: 14px;
+    line-height: 1.9;
+    margin: 18px 0 0;
+}
+
+.yq-solutions .so-cta-actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.yq-solutions .so-cta-actions .so-button-outline {
+    color: white;
+    border-color: rgba(255,255,255,.25);
+}
+
+.yq-solutions .so-cta-actions .so-button-outline:hover {
+    background: white;
+    color: var(--so-navy);
+}
+
+/* =========================================================
+   BOOK-LIKE SECTION LAYERING
+   ========================================================= */
+
+.yq-solutions > section:not(.so-hero) {
+    border-radius: 15px 15px 0 0;
+    margin-top: -13px;
+    box-shadow: 0 -14px 40px rgba(0,6,61,.045);
+}
+
+.yq-solutions > .so-hero-links {
+    border-radius: 0;
+    margin-top: 0;
+}
+
+/* =========================================================
+   REVEAL ANIMATIONS
+   ========================================================= */
+
+.yq-solutions [data-reveal] {
     opacity: 1;
     transform: none;
-  }
+}
 
-  .js .yq-solutions [data-reveal="image"] .so-frame {
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 1.15s cubic-bezier(.22,.68,0,1);
-  }
+.js .yq-solutions [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity .85s var(--so-ease),
+        transform .85s var(--so-ease);
+}
 
-  .js .yq-solutions [data-reveal="image"] img {
-    transform: scale(1.14);
-    transition: transform 1.55s cubic-bezier(.2,.65,.25,1);
-  }
+.js .yq-solutions [data-reveal].is-in {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-  .js .yq-solutions [data-reveal="image"].is-in .so-frame {
-    clip-path: inset(0);
-  }
+.js .yq-solutions [data-reveal="left"] {
+    transform: translateX(-30px);
+}
 
-  .js .yq-solutions [data-reveal="image"].is-in img {
-    transform: scale(1);
-  }
+.js .yq-solutions [data-reveal="right"] {
+    transform: translateX(30px);
+}
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .yq-solutions .so-media:hover img {
-      transform: scale(1.045);
+.js .yq-solutions [data-reveal="left"].is-in,
+.js .yq-solutions [data-reveal="right"].is-in {
+    transform: translateX(0);
+}
+
+.yq-solutions .so-service-card:nth-child(2) {
+    transition-delay: .08s;
+}
+
+.yq-solutions .so-service-card:nth-child(3) {
+    transition-delay: .16s;
+}
+
+.yq-solutions .so-service-card:nth-child(4) {
+    transition-delay: .05s;
+}
+
+.yq-solutions .so-service-card:nth-child(5) {
+    transition-delay: .12s;
+}
+
+.yq-solutions .so-service-card:nth-child(6) {
+    transition-delay: .19s;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+    .yq-solutions .so-hero-grid {
+        gap: 30px;
     }
-  }
 
-  /* TABLET */
-
-  @media (max-width: 900px) {
-    .yq-solutions .so-jump {
-      grid-template-columns: 1fr;
+    .yq-solutions .so-intro-grid {
+        gap: 45px;
     }
 
-    .yq-solutions .so-jump a,
-    .yq-solutions .so-jump a + a {
-      padding: 17px 0;
-      border-left: 0;
+    .yq-solutions .so-process-grid {
+        gap: 45px;
     }
 
-    .yq-solutions .so-jump a + a {
-      border-top: 1px solid rgba(255,255,255,.14);
+    .yq-solutions .so-why-grid {
+        gap: 35px;
     }
 
-    .yq-solutions .so-block,
-    .yq-solutions .so-cta .container {
-      grid-template-columns: 1fr;
+    .yq-solutions .so-service-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .yq-solutions .so-container {
+        width: min(100% - 38px, 600px);
     }
 
-    .yq-solutions .so-block--reverse .so-media {
-      order: 0;
-    }
-
-    .yq-solutions .so-frame {
-      aspect-ratio: 16 / 10;
-    }
-
-    .yq-solutions .so-cta-actions {
-      justify-content: flex-start;
-    }
-  }
-
-  /* MOBILE */
-
-  @media (max-width: 600px) {
     .yq-solutions .so-hero {
-      padding-top: calc(var(--header-h, 70px) + 65px);
-      padding-bottom: 65px;
+        min-height: auto;
+        padding: 85px 0 75px;
+    }
+
+    .yq-solutions .so-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
     }
 
     .yq-solutions .so-hero h1 {
-      font-size: clamp(2.65rem, 12vw, 4rem);
+        font-size: clamp(44px, 11vw, 65px);
     }
 
-    .yq-solutions .so-hero .lead {
-      margin-top: 20px;
-      font-size: 1rem;
+    .yq-solutions .so-hero-copy > p {
+        font-size: 14px;
     }
 
-    .yq-solutions .so-hero-actions {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 19px;
+    .yq-solutions .so-hero-visual {
+        min-height: 270px;
     }
 
-    .yq-solutions .so-section {
-      padding: 68px 0;
+    .yq-solutions .so-energy-orbit {
+        width: 245px;
     }
 
-    .yq-solutions .so-block {
-      gap: 30px;
+    .yq-solutions .so-energy-core {
+        width: 112px;
+        height: 112px;
     }
 
-    .yq-solutions .so-frame {
-      aspect-ratio: 4 / 3;
+    .yq-solutions .so-energy-core svg {
+        width: 52px;
+        height: 52px;
     }
 
-    .yq-solutions .so-text .so-h2 {
-      margin-bottom: 17px;
+    .yq-solutions .so-visual-label {
+        right: 0;
+        bottom: 5px;
     }
 
-    .yq-solutions .so-text > p {
-      font-size: .96rem;
+    .yq-solutions .so-hero-links-inner {
+        grid-template-columns: 1fr;
     }
 
-    .yq-solutions .so-table th,
-    .yq-solutions .so-table td {
-      padding-right: 16px;
+    .yq-solutions .so-hero-link,
+    .yq-solutions .so-hero-link:first-child {
+        min-height: 68px;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--so-line);
+        padding-inline: 5px;
     }
 
-    .yq-solutions .so-cta .container {
-      gap: 30px;
+    .yq-solutions .so-intro {
+        padding: 80px 0;
+    }
+
+    .yq-solutions .so-intro-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .yq-solutions .so-intro-aside {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .yq-solutions .so-intro-aside .so-index {
+        font-size: 58px;
+    }
+
+    .yq-solutions .so-intro-aside p {
+        margin: 0;
+    }
+
+    .yq-solutions .so-services,
+    .yq-solutions .so-applications,
+    .yq-solutions .so-process,
+    .yq-solutions .so-why {
+        padding: 80px 0;
+    }
+
+    .yq-solutions .so-section-heading {
+        display: block;
+        margin-bottom: 35px;
+    }
+
+    .yq-solutions .so-section-heading .so-description {
+        margin-top: 18px;
+    }
+
+    .yq-solutions .so-service-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .yq-solutions .so-service-card {
+        min-height: 275px;
+    }
+
+    .yq-solutions .so-application-row {
+        grid-template-columns: 35px 1fr 35px;
+        gap: 13px;
+        padding: 24px 0;
+    }
+
+    .yq-solutions .so-application-row h3 {
+        font-size: 19px;
+    }
+
+    .yq-solutions .so-application-row p {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .yq-solutions .so-application-arrow {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .yq-solutions .so-process-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .yq-solutions .so-process-intro {
+        position: static;
+    }
+
+    .yq-solutions .so-why-grid {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .yq-solutions .so-why-points {
+        gap: 10px;
+    }
+
+    .yq-solutions .so-why-point {
+        padding: 17px;
+        min-height: 135px;
+    }
+
+    .yq-solutions .so-cta-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 30px;
     }
 
     .yq-solutions .so-cta-actions {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-  }
-
-  /* ACCESSIBILITY */
-
-  @media (prefers-reduced-motion: reduce) {
-    .js .yq-solutions [data-reveal],
-    .js .yq-solutions [data-reveal="image"] {
-      opacity: 1;
-      transform: none;
-      transition: none;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
-    .js .yq-solutions [data-reveal="image"] .so-frame {
-      clip-path: none;
-      transition: none;
+    .yq-solutions .so-final-cta {
+        padding: 75px 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .yq-solutions .so-container {
+        width: calc(100% - 30px);
     }
 
-    .js .yq-solutions [data-reveal="image"] img {
-      transform: none;
-      transition: none;
+    .yq-solutions .so-hero-actions {
+        align-items: stretch;
+        flex-direction: column;
     }
 
-    .yq-solutions .so-btn,
-    .yq-solutions .so-link span,
-    .yq-solutions .so-text-link span {
-      transition: none;
+    .yq-solutions .so-button {
+        width: 100%;
     }
-  }
+
+    .yq-solutions .so-why-points {
+        grid-template-columns: 1fr;
+    }
+
+    .yq-solutions .so-cta-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .yq-solutions *,
+    .yq-solutions *::before,
+    .yq-solutions *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+
+    .js .yq-solutions [data-reveal] {
+        opacity: 1;
+        transform: none;
+    }
+}
 </style>
+
+<script>
+document.documentElement.classList.add('js');
+</script>
 {% endblock %}
+
 
 {% block content %}
 <main class="yq-solutions">
 
-  <!-- HERO -->
-  <section class="so-hero">
-    <div class="container">
+    <!-- HERO -->
+    <section class="so-hero">
+        <div class="so-container so-hero-grid">
 
-      <p class="so-eyebrow" data-reveal>
-        Yunqida Energy Kenya · Our Solutions
-      </p>
+            <div class="so-hero-copy" data-reveal="left">
+                <span class="so-eyebrow">Yunqida Energy Solutions</span>
 
-      <h1 data-reveal style="--d:.08s">
-        Energy designed around
-        <em>your needs.</em>
-      </h1>
+                <h1>
+                    Energy designed
+                    <span>around your needs.</span>
+                </h1>
 
-      <p class="lead" data-reveal style="--d:.16s">
-        Explore solar power and lithium battery storage solutions
-        for homes, businesses and larger energy applications.
-        From everyday backup needs to higher-capacity storage,
-        the right system starts with understanding your requirements.
-      </p>
+                <p>
+                    Every property, business and operation has different energy
+                    demands. We help you find the right combination of solar
+                    power, intelligent inverters and dependable battery storage
+                    to support the way you live and work.
+                </p>
 
-      <div class="so-hero-actions" data-reveal style="--d:.22s">
-        <a class="so-btn so-btn--sun" href="{% url 'contact' %}">
-          Discuss your requirements
-          <span aria-hidden="true">↗</span>
-        </a>
+                <div class="so-hero-actions">
+                    <a href="{% url 'contact' %}" class="so-button so-button-primary">
+                        Discuss your requirements
+                        <span class="so-arrow">→</span>
+                    </a>
 
-        <a class="so-text-link" href="#home">
-          Explore our solutions
-          <span aria-hidden="true">↓</span>
-        </a>
-      </div>
+                    <a href="{% url 'products' %}" class="so-button so-button-outline">
+                        Explore our products
+                    </a>
+                </div>
 
-      <nav class="so-jump" aria-label="Explore solutions" data-reveal style="--d:.28s">
+                <div class="so-hero-note">
+                    Practical energy systems. Designed for real-world needs.
+                </div>
+            </div>
 
-        <a href="#home">
-          <small>01</small>
-          <strong>Residential</strong>
-          <span>Solar and backup for homes</span>
-        </a>
+            <div class="so-hero-visual" data-reveal="right">
+                <div class="so-energy-orbit">
+                    <span class="so-orbit-dot one"></span>
+                    <span class="so-orbit-dot two"></span>
+                    <span class="so-orbit-dot three"></span>
 
-        <a href="#business">
-          <small>02</small>
-          <strong>Commercial</strong>
-          <span>Energy storage for businesses and institutions</span>
-        </a>
+                    <div class="so-energy-core">
+                        <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                            <path d="M35 5L13 35H29L25 59L51 25H35L35 5Z"
+                                  stroke="currentColor"
+                                  stroke-width="2.5"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
 
-        <a href="#industrial">
-          <small>03</small>
-          <strong>Industrial</strong>
-          <span>Higher-capacity storage applications</span>
-        </a>
+                <div class="so-visual-label">Powering what matters</div>
+            </div>
 
-      </nav>
-    </div>
-  </section>
-
-  <!-- RESIDENTIAL SOLUTIONS -->
-  <section class="so-section" id="home">
-    <div class="container so-block">
-
-      <figure class="so-media" data-reveal="image">
-        <div class="so-frame">
-          <img
-            src="{% static 'img/solution-home.jpg' %}"
-            onerror="this.onerror=null;this.src='{% static 'img/solution-home.svg' %}'"
-            alt="Residential solar power and battery energy storage solution"
-            loading="lazy"
-            decoding="async"
-          >
         </div>
-      </figure>
+    </section>
 
-      <div class="so-text">
 
-        <span class="so-num" data-reveal>01 — RESIDENTIAL</span>
+    <!-- QUICK NAVIGATION -->
+    <div class="so-hero-links">
+        <div class="so-container so-hero-links-inner">
 
-        <h2 class="so-h2" data-reveal style="--d:.06s">
-          More control over the power your home uses.
-        </h2>
+            <a href="#residential" class="so-hero-link">
+                <div>
+                    <strong>Residential energy</strong>
+                    <small>Solutions for homes and families</small>
+                </div>
+                <span>↗</span>
+            </a>
 
-        <p data-reveal style="--d:.12s">
-          A home energy system can combine solar panels, a hybrid
-          inverter and battery storage to help meet household
-          electricity needs. The right configuration depends on
-          your appliances, daily consumption and backup expectations.
-        </p>
+            <a href="#commercial" class="so-hero-link">
+                <div>
+                    <strong>Commercial energy</strong>
+                    <small>Solutions for businesses and institutions</small>
+                </div>
+                <span>↗</span>
+            </a>
 
-        <ul class="so-list" data-reveal style="--d:.18s">
-          <li>Solar power system options for residential properties</li>
-          <li>LiFePO4 lithium battery storage</li>
-          <li>Hybrid inverter configurations</li>
-          <li>Battery capacity options for different household loads</li>
-        </ul>
+            <a href="#industrial" class="so-hero-link">
+                <div>
+                    <strong>Industrial energy</strong>
+                    <small>Solutions for demanding operations</small>
+                </div>
+                <span>↗</span>
+            </a>
 
-        <a
-          class="so-link"
-          href="{% url 'products' %}?category=residential"
-          data-reveal
-          style="--d:.24s"
-        >
-          Explore residential products
-          <span aria-hidden="true">→</span>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- COMMERCIAL SOLUTIONS -->
-  <section class="so-section so-section--mist" id="business">
-    <div class="container so-block so-block--reverse">
-
-      <figure class="so-media" data-reveal="image">
-        <div class="so-frame">
-          <img
-            src="{% static 'img/solution-business.jpg' %}"
-            onerror="this.onerror=null;this.src='{% static 'img/solution-business.svg' %}'"
-            alt="Commercial property with solar power and battery storage"
-            loading="lazy"
-            decoding="async"
-          >
         </div>
-      </figure>
-
-      <div class="so-text">
-
-        <span class="so-num" data-reveal>02 — COMMERCIAL</span>
-
-        <h2 class="so-h2" data-reveal style="--d:.06s">
-          Energy storage for businesses that need dependable power.
-        </h2>
-
-        <p data-reveal style="--d:.12s">
-          Shops, clinics, schools and offices rely on electricity
-          for their daily operations. Solar and battery storage
-          solutions can be configured around essential equipment,
-          operating hours and the level of backup required.
-        </p>
-
-        <ul class="so-list" data-reveal style="--d:.18s">
-          <li>Backup power options for essential business equipment</li>
-          <li>Energy storage for offices and commercial premises</li>
-          <li>Battery cabinet and higher-capacity system options</li>
-          <li>Configurations for new or existing solar systems</li>
-        </ul>
-
-        <a
-          class="so-link"
-          href="{% url 'products' %}?category=commercial"
-          data-reveal
-          style="--d:.24s"
-        >
-          Explore commercial products
-          <span aria-hidden="true">→</span>
-        </a>
-
-      </div>
     </div>
-  </section>
 
-  <!-- INDUSTRIAL SOLUTIONS -->
-  <section class="so-section" id="industrial">
-    <div class="container so-block">
 
-      <figure class="so-media" data-reveal="image">
-        <div class="so-frame">
-          <img
-            src="{% static 'img/solution-industrial.jpg' %}"
-            onerror="this.onerror=null;this.src='{% static 'img/solution-industrial.svg' %}'"
-            alt="Industrial energy storage and solar power system for a large facility"
-            loading="lazy"
-            decoding="async"
-          >
+    <!-- INTRODUCTION -->
+    <section class="so-intro">
+        <div class="so-container so-intro-grid">
+
+            <div class="so-intro-aside" data-reveal="left">
+                <div class="so-index">01</div>
+                <p>
+                    A considered approach to energy, from the first conversation
+                    to the right system for your space.
+                </p>
+            </div>
+
+            <div class="so-intro-main" data-reveal>
+                <span class="so-eyebrow">A better way to power forward</span>
+
+                <h2>
+                    The right energy system starts with
+                    <span>understanding your needs.</span>
+                </h2>
+
+                <p>
+                    Reliable energy is not simply about installing equipment.
+                    It is about understanding how much power you use, when you
+                    need it, what you want to protect and how your requirements
+                    may change over time.
+                </p>
+
+                <p>
+                    At Yunqida Energy, we bring together solar technology,
+                    hybrid inverters and advanced battery storage to help
+                    customers make informed decisions about their energy
+                    requirements.
+                </p>
+
+                <div class="so-intro-rule"></div>
+            </div>
+
         </div>
-      </figure>
+    </section>
 
-      <div class="so-text">
 
-        <span class="so-num" data-reveal>03 — INDUSTRIAL</span>
+    <!-- SIX CORE SOLUTIONS -->
+    <section class="so-services" id="solutions">
+        <div class="so-container">
 
-        <h2 class="so-h2" data-reveal style="--d:.06s">
-          Higher-capacity storage for demanding applications.
-        </h2>
+            <div class="so-section-heading" data-reveal>
+                <div>
+                    <span class="so-eyebrow">What we provide</span>
+                    <h2 class="so-heading">
+                        Energy solutions for
+                        <em>every environment.</em>
+                    </h2>
+                </div>
 
-        <p data-reveal style="--d:.12s">
-          Factories, farms and larger facilities can have substantial
-          and varying electricity requirements. Energy storage
-          configurations can be explored around operating loads,
-          backup priorities and the role of solar generation.
-        </p>
+                <p class="so-description">
+                    From everyday household electricity to larger commercial
+                    and industrial requirements, explore the technologies
+                    that can help you build a more dependable energy setup.
+                </p>
+            </div>
 
-        <ul class="so-list" data-reveal style="--d:.18s">
-          <li>Scalable battery cabinet and rack system options</li>
-          <li>Energy storage for larger electrical loads</li>
-          <li>Solar self-consumption and peak-demand applications</li>
-          <li>Product selection discussions based on site requirements</li>
-        </ul>
+            <div class="so-service-grid">
 
-        <a
-          class="so-link"
-          href="{% url 'contact' %}"
-          data-reveal
-          style="--d:.24s"
-        >
-          Discuss an industrial requirement
-          <span aria-hidden="true">→</span>
-        </a>
+                <!-- 01 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <path d="M4 14.5L16 5L28 14.5"/>
+                                <path d="M7 13V27H25V13"/>
+                                <path d="M13 27V18H19V27"/>
+                                <path d="M11 13H21"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">01 / 06</span>
+                    </div>
 
-      </div>
-    </div>
-  </section>
+                    <h3>Residential Solar Systems</h3>
+                    <p>
+                        Thoughtfully configured solar systems for homes,
+                        apartments and residential properties. Support your
+                        daily electricity needs with a solution designed
+                        around your household's consumption.
+                    </p>
 
-  <!-- SOLUTION COMPARISON -->
-  <section class="so-section so-section--mist">
-    <div class="container">
+                    <a href="{% url 'products' %}?category=residential" class="so-service-link">
+                        Explore residential products <span>→</span>
+                    </a>
+                </article>
 
-      <div class="so-head">
-        <p class="so-eyebrow" data-reveal>Choosing a solution</p>
+                <!-- 02 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <rect x="5" y="7" width="22" height="20" rx="2"/>
+                                <path d="M11 27V13H21V27"/>
+                                <path d="M9 11H11M21 11H23"/>
+                                <path d="M14 17H18M14 21H18"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">02 / 06</span>
+                    </div>
 
-        <h2 class="so-h2" data-reveal style="--d:.06s">
-          Find the right starting point.
-        </h2>
+                    <h3>Commercial Solar Systems</h3>
+                    <p>
+                        Energy solutions for shops, offices, schools, clinics
+                        and other businesses. Build a more resilient power
+                        setup that supports your operations and business needs.
+                    </p>
 
-        <p data-reveal style="--d:.12s">
-          Different properties have different energy requirements.
-          Use this overview to identify the type of solution worth
-          exploring for your application.
-        </p>
-      </div>
+                    <a href="{% url 'products' %}?category=commercial" class="so-service-link">
+                        Explore commercial products <span>→</span>
+                    </a>
+                </article>
 
-      <div class="so-table-wrap" data-reveal style="--d:.16s">
-        <table class="so-table">
+                <!-- 03 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <path d="M5 27V13L12 17V11L20 16V7H27V27H5Z"/>
+                                <path d="M10 22H12M17 22H19M23 22H25"/>
+                                <path d="M23 7V4H27V7"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">03 / 06</span>
+                    </div>
 
-          <thead>
-            <tr>
-              <th scope="col">Application</th>
-              <th scope="col">Typical sites</th>
-              <th scope="col">Solutions to explore</th>
-              <th scope="col">Next step</th>
-            </tr>
-          </thead>
+                    <h3>Industrial Energy Systems</h3>
+                    <p>
+                        Scalable energy configurations for factories,
+                        agricultural facilities, workshops and other
+                        power-intensive environments where continuity
+                        and capacity matter.
+                    </p>
 
-          <tbody>
-            <tr>
-              <th scope="row">Residential</th>
-              <td>Houses and apartments</td>
-              <td>Home solar, hybrid inverters and lithium battery backup</td>
-              <td>
-                <a href="{% url 'products' %}?category=residential">
-                  Home products
+                    <a href="{% url 'contact' %}" class="so-service-link">
+                        Discuss industrial requirements <span>→</span>
+                    </a>
+                </article>
+
+                <!-- 04 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <rect x="6" y="8" width="20" height="19" rx="2"/>
+                                <path d="M12 8V5H20V8"/>
+                                <path d="M17 11L12 19H17L15 24L21 16H16L17 11Z"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">04 / 06</span>
+                    </div>
+
+                    <h3>Lithium Battery Storage</h3>
+                    <p>
+                        Modern lithium battery storage for dependable energy
+                        reserves. Explore LiFePO4 battery technology and
+                        storage options suited to your system's capacity
+                        and backup requirements.
+                    </p>
+
+                    <a href="{% url 'products' %}" class="so-service-link">
+                        Explore battery products <span>→</span>
+                    </a>
+                </article>
+
+                <!-- 05 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <rect x="6" y="4" width="20" height="24" rx="2"/>
+                                <path d="M12 9H20M12 14H20"/>
+                                <path d="M16 17L12 22H16L15 26L21 20H17L16 17Z"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">05 / 06</span>
+                    </div>
+
+                    <h3>Hybrid Inverter Systems</h3>
+                    <p>
+                        Flexible inverter technology that brings together
+                        available power sources, solar generation and battery
+                        storage to support an intelligently configured
+                        energy system.
+                    </p>
+
+                    <a href="{% url 'products' %}" class="so-service-link">
+                        Explore inverter products <span>→</span>
+                    </a>
+                </article>
+
+                <!-- 06 -->
+                <article class="so-service-card" data-reveal>
+                    <div class="so-service-top">
+                        <div class="so-service-icon">
+                            <svg viewBox="0 0 32 32" aria-hidden="true">
+                                <path d="M16 4L27 9V16C27 22 22.5 26 16 29C9.5 26 5 22 5 16V9L16 4Z"/>
+                                <path d="M16 9V18"/>
+                                <path d="M12 14L16 18L20 14"/>
+                                <path d="M11 23H21"/>
+                            </svg>
+                        </div>
+                        <span class="so-service-number">06 / 06</span>
+                    </div>
+
+                    <h3>Backup Power Solutions</h3>
+                    <p>
+                        Energy backup configurations designed to help keep
+                        essential equipment, lighting and selected operations
+                        running when the usual electricity supply is
+                        interrupted.
+                    </p>
+
+                    <a href="{% url 'contact' %}" class="so-service-link">
+                        Find your backup solution <span>→</span>
+                    </a>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- APPLICATIONS -->
+    <section class="so-applications">
+        <div class="so-container">
+
+            <div data-reveal>
+                <span class="so-eyebrow">Where our solutions fit</span>
+
+                <h2 class="so-heading">
+                    One energy partner.
+                    <br>
+                    <em>Different possibilities.</em>
+                </h2>
+
+                <p class="so-description">
+                    The best energy configuration depends on the environment
+                    it serves. We consider the practical demands of each
+                    application when helping customers explore their options.
+                </p>
+            </div>
+
+            <div class="so-application-list">
+
+                <article class="so-application-row" id="residential" data-reveal>
+                    <span class="so-application-number">01</span>
+
+                    <h3>Residential</h3>
+
+                    <p>
+                        For homes and residential properties seeking solar
+                        generation, battery storage and dependable backup
+                        for everyday electricity requirements.
+                    </p>
+
+                    <a href="{% url 'products' %}?category=residential"
+                       class="so-application-arrow"
+                       aria-label="Explore residential products">↗</a>
+                </article>
+
+                <article class="so-application-row" id="commercial" data-reveal>
+                    <span class="so-application-number">02</span>
+
+                    <h3>Commercial</h3>
+
+                    <p>
+                        For shops, offices, clinics, schools and businesses
+                        looking for practical energy systems that support
+                        their day-to-day operations.
+                    </p>
+
+                    <a href="{% url 'products' %}?category=commercial"
+                       class="so-application-arrow"
+                       aria-label="Explore commercial products">↗</a>
+                </article>
+
+                <article class="so-application-row" id="industrial" data-reveal>
+                    <span class="so-application-number">03</span>
+
+                    <h3>Industrial</h3>
+
+                    <p>
+                        For factories, farms, workshops and larger facilities
+                        with more demanding energy requirements and a need
+                        to consider scalable storage capacity.
+                    </p>
+
+                    <a href="{% url 'contact' %}"
+                       class="so-application-arrow"
+                       aria-label="Discuss industrial energy solutions">↗</a>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- OUR APPROACH -->
+    <section class="so-process">
+        <div class="so-container so-process-grid">
+
+            <div class="so-process-intro" data-reveal="left">
+                <span class="so-eyebrow">How we approach energy</span>
+
+                <h2 class="so-heading">
+                    Good solutions
+                    <em>begin with a good process.</em>
+                </h2>
+
+                <p class="so-description">
+                    Choosing an energy system should be a considered decision.
+                    Our approach focuses on understanding your requirements
+                    before identifying suitable products and configurations.
+                </p>
+
+                <div class="so-process-note">
+                    The aim is simple: help you make a confident, informed
+                    decision about the energy system that fits your needs.
+                </div>
+            </div>
+
+            <div class="so-process-steps">
+
+                <article class="so-process-step" data-reveal>
+                    <div class="so-step-number">01</div>
+
+                    <div>
+                        <h3>Understand your requirements</h3>
+                        <p>
+                            We begin by considering your property or facility,
+                            electricity usage, essential loads, available space
+                            and the outcomes you want from your energy system.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="so-process-step" data-reveal>
+                    <div class="so-step-number">02</div>
+
+                    <div>
+                        <h3>Identify a suitable configuration</h3>
+                        <p>
+                            We help you explore appropriate solar panels,
+                            inverter capacities, battery storage options and
+                            system combinations based on your requirements.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="so-process-step" data-reveal>
+                    <div class="so-step-number">03</div>
+
+                    <div>
+                        <h3>Choose the right products</h3>
+                        <p>
+                            We guide you through the relevant product options
+                            so you can better understand the equipment,
+                            capabilities and considerations involved.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="so-process-step" data-reveal>
+                    <div class="so-step-number">04</div>
+
+                    <div>
+                        <h3>Move forward with confidence</h3>
+                        <p>
+                            With a clearer understanding of your needs and
+                            available options, you can move forward with an
+                            energy solution that has been considered for
+                            your application.
+                        </p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- WHY YUNQIDA -->
+    <section class="so-why">
+        <div class="so-container so-why-grid">
+
+            <div class="so-why-copy" data-reveal="left">
+                <span class="so-eyebrow">Why Yunqida Energy</span>
+
+                <h2>
+                    Technology matters.
+                    <span>Choosing wisely matters more.</span>
+                </h2>
+
+                <p>
+                    Energy technology is an investment in how your home,
+                    business or facility operates. We believe customers
+                    deserve clear information, relevant product choices
+                    and solutions that are considered around their actual
+                    requirements.
+                </p>
+
+                <p>
+                    Our focus is on helping you navigate solar, inverter
+                    and energy storage options with greater clarity.
+                </p>
+
+                <a href="{% url 'about' %}" class="so-button so-button-outline" style="margin-top:25px;">
+                    Get to know Yunqida
+                    <span class="so-arrow">→</span>
                 </a>
-              </td>
-            </tr>
+            </div>
 
-            <tr>
-              <th scope="row">Commercial</th>
-              <td>Shops, clinics, schools and offices</td>
-              <td>Commercial battery storage and backup configurations</td>
-              <td>
-                <a href="{% url 'products' %}?category=commercial">
-                  Commercial products
+            <div class="so-why-points" data-reveal="right">
+
+                <article class="so-why-point">
+                    <span class="so-check">✓</span>
+                    <h3>Relevant technology</h3>
+                    <p>
+                        Explore energy products selected around different
+                        applications and requirements.
+                    </p>
+                </article>
+
+                <article class="so-why-point">
+                    <span class="so-check">✓</span>
+                    <h3>Practical guidance</h3>
+                    <p>
+                        Understand the options before making decisions
+                        about your energy setup.
+                    </p>
+                </article>
+
+                <article class="so-why-point">
+                    <span class="so-check">✓</span>
+                    <h3>Flexible applications</h3>
+                    <p>
+                        Consider solutions for residential, commercial
+                        and industrial environments.
+                    </p>
+                </article>
+
+                <article class="so-why-point">
+                    <span class="so-check">✓</span>
+                    <h3>Integrated systems</h3>
+                    <p>
+                        Explore how solar, inverters and battery storage
+                        can work together.
+                    </p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FINAL CTA -->
+    <section class="so-final-cta">
+        <div class="so-container so-cta-inner">
+
+            <div data-reveal="left">
+                <span class="so-eyebrow">Let's find the right fit</span>
+
+                <h2>
+                    Not sure which system is right for your site?
+                </h2>
+
+                <p>
+                    Tell us a little about your home, business or facility.
+                    Our team can help you explore the available energy
+                    options and identify a suitable direction.
+                </p>
+            </div>
+
+            <div class="so-cta-actions" data-reveal="right">
+                <a href="{% url 'contact' %}" class="so-button so-button-primary">
+                    Talk to our team
+                    <span class="so-arrow">→</span>
                 </a>
-              </td>
-            </tr>
 
-            <tr>
-              <th scope="row">Industrial</th>
-              <td>Factories, farms and larger facilities</td>
-              <td>Higher-capacity cabinet and rack storage systems</td>
-              <td>
-                <a href="{% url 'contact' %}">
-                  Discuss a project
+                <a href="{% url 'products' %}" class="so-button so-button-outline">
+                    Browse products
                 </a>
-              </td>
-            </tr>
-          </tbody>
+            </div>
 
-        </table>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="so-cta">
-    <div class="container">
-
-      <div>
-        <p class="so-eyebrow" data-reveal>
-          Start with your energy requirements
-        </p>
-
-        <h2 data-reveal style="--d:.06s">
-          Not sure which system is right for your site?
-        </h2>
-
-        <p data-reveal style="--d:.12s">
-          Tell us what you need to power, how much backup you require
-          and the type of property you have. Our Kenyan team can help
-          you explore suitable energy storage products and configurations.
-        </p>
-      </div>
-
-      <div class="so-cta-actions" data-reveal style="--d:.18s">
-        <a class="so-btn so-btn--sun" href="{% url 'contact' %}">
-          Talk to our team
-          <span aria-hidden="true">↗</span>
-        </a>
-
-        <a class="so-btn so-btn--line" href="{% url 'products' %}">
-          Browse products
-        </a>
-      </div>
-
-    </div>
-  </section>
+        </div>
+    </section>
 
 </main>
 {% endblock %}
 
+
 {% block extra_js %}
 <script>
 (function () {
-  const page = document.querySelector('.yq-solutions');
+    'use strict';
 
-  if (!page) return;
+    const page = document.querySelector('.yq-solutions');
 
-  const items = page.querySelectorAll('[data-reveal]');
+    if (!page) return;
 
-  const reducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+    const revealItems = page.querySelectorAll('[data-reveal]');
+    const reduceMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (
-    reducedMotion ||
-    !('IntersectionObserver' in window)
-  ) {
-    items.forEach(function (item) {
-      item.classList.add('is-in');
-    });
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    function (entries, currentObserver) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-
-        entry.target.classList.add('is-in');
-        currentObserver.unobserve(entry.target);
-      });
-    },
-    {
-      threshold: 0.12,
-      rootMargin: '0px 0px -45px 0px'
+    /*
+     * Keep all content visible when animations are unavailable
+     * or when the visitor prefers reduced motion.
+     */
+    if (
+        reduceMotion ||
+        !('IntersectionObserver' in window)
+    ) {
+        revealItems.forEach(function (item) {
+            item.classList.add('is-in');
+        });
+        return;
     }
-  );
 
-  items.forEach(function (item) {
-    observer.observe(item);
-  });
+    const observer = new IntersectionObserver(
+        function (entries, currentObserver) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-in');
+                    currentObserver.unobserve(entry.target);
+                }
+            });
+        },
+        {
+            threshold: 0.12,
+            rootMargin: '0px 0px -45px 0px'
+        }
+    );
+
+    revealItems.forEach(function (item) {
+        observer.observe(item);
+    });
+
+    /*
+     * Smooth movement for the three application links.
+     * Native anchor navigation remains available without JavaScript.
+     */
+    page.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            const targetId = link.getAttribute('href');
+
+            if (!targetId || targetId === '#') return;
+
+            const target = page.querySelector(targetId);
+
+            if (!target) return;
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+                behavior: reduceMotion ? 'auto' : 'smooth',
+                block: 'start'
+            });
+
+            if (history.replaceState) {
+                history.replaceState(null, '', targetId);
+            }
+        });
+    });
+
 })();
 </script>
 {% endblock %}

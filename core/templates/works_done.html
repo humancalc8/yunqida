@@ -1,4 +1,3 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
 
@@ -22,6 +21,8 @@
 </script>
 
 <style>
+  html { scroll-behavior: smooth; }
+
   .yq-works {
     --yq-forest: var(--c-forest, #0F1318);
     --yq-emerald: var(--c-emerald, #14A090);
@@ -30,12 +31,15 @@
     --yq-muted: var(--c-muted, #5C6670);
     --yq-line: var(--c-line, #E3E6EA);
     --yq-mist: var(--c-mist, #F4F5F7);
+    --yq-ease: cubic-bezier(.2,.75,.2,1);
+    --yq-pop: cubic-bezier(.34,1.45,.5,1);
 
     color: var(--yq-ink);
     background: #fff;
     font-family: var(--font-body, sans-serif);
     line-height: 1.7;
     overflow: hidden;
+    overflow: clip;
   }
 
   .yq-works *,
@@ -74,7 +78,130 @@
     content: "";
   }
 
-  /* HERO */
+  /* =========================================================
+     SCROLL PROGRESS
+  ========================================================= */
+
+  .yq-progress {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    pointer-events: none;
+  }
+
+  .yq-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #14A090, #F28C0F);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  /* =========================================================
+     SECTION POP + FLASH
+     Each section springs into place with a light sweep as the
+     visitor scrolls to it.
+  ========================================================= */
+
+  .yq-works .yq-pop { position: relative; }
+
+  .js .yq-works .yq-pop:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) scale(.94);
+    transform-origin: 50% 0;
+  }
+
+  .js .yq-works .yq-pop.is-in {
+    animation: yqSectionPop 1s var(--yq-pop) both;
+    will-change: transform, opacity;
+  }
+
+  .js .yq-works .yq-pop.is-done {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  @keyframes yqSectionPop {
+    0%   { opacity: 0; transform: translate3d(0, 80px, 0) scale(.94); }
+    55%  { opacity: 1; }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  .yq-flash {
+    position: absolute;
+    z-index: 6;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .yq-flash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 28%, rgba(255,255,255,.6) 48%, rgba(112,207,193,.45) 54%, transparent 72%);
+    transform: translateX(-110%);
+  }
+
+  .yq-flash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.5), transparent 62%);
+    opacity: 0;
+  }
+
+  .yq-pop.is-in .yq-flash          { animation: yqFlashFade 1.2s ease-out .08s both; }
+  .yq-pop.is-in .yq-flash::before  { animation: yqFlashSweep 1.1s var(--yq-ease) .08s both; }
+  .yq-pop.is-in .yq-flash::after   { animation: yqFlashGlow .9s ease-out .05s both; }
+
+  @keyframes yqFlashFade  { 0% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes yqFlashSweep { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+  @keyframes yqFlashGlow  { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* Elements inside each section stagger in */
+
+  .js .yq-works [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0) scale(.97);
+    filter: blur(3px);
+    transition:
+      opacity .9s var(--yq-ease),
+      transform .9s var(--yq-ease),
+      filter .9s var(--yq-ease);
+    transition-delay: var(--yq-delay, 0ms);
+  }
+
+  /* project cards: springier pop, no blur on photography */
+  .js .yq-works [data-reveal="card"] {
+    filter: none;
+    transform: translate3d(0, 46px, 0) scale(.94);
+    transition:
+      opacity .9s var(--yq-ease),
+      transform 1s var(--yq-pop);
+    transition-delay: var(--yq-delay, 0ms);
+  }
+
+  .js .yq-works [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+
+  .js .yq-works [data-reveal="card"].is-in {
+    filter: none;
+  }
+
+  /* =========================================================
+     HERO
+  ========================================================= */
 
   .yq-works .hero {
     position: relative;
@@ -116,13 +243,9 @@
       0 0 0 110px rgba(20,160,144,.025);
   }
 
-  .yq-works .hero-inner {
-    max-width: 790px;
-  }
+  .yq-works .hero-inner { max-width: 790px; }
 
-  .yq-works .hero .eyebrow {
-    color: #70CFC1;
-  }
+  .yq-works .hero .eyebrow { color: #70CFC1; }
 
   .yq-works .hero h1 {
     max-width: 780px;
@@ -135,9 +258,7 @@
     line-height: 1.03;
   }
 
-  .yq-works .hero h1 span {
-    color: var(--yq-orange);
-  }
+  .yq-works .hero h1 span { color: var(--yq-orange); }
 
   .yq-works .hero-copy {
     max-width: 620px;
@@ -171,13 +292,15 @@
     transition:
       background .2s ease,
       border-color .2s ease,
-      transform .2s ease;
+      transform .2s ease,
+      box-shadow .3s ease;
   }
 
   .yq-works .button:hover {
     border-color: #FFA43A;
     background: #FFA43A;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -16px rgba(242,140,15,.7);
   }
 
   .yq-works .text-link {
@@ -190,23 +313,18 @@
     text-decoration: none;
   }
 
-  .yq-works .text-link span {
-    transition: transform .2s ease;
-  }
+  .yq-works .text-link span { transition: transform .2s ease; }
+  .yq-works .text-link:hover span { transform: translateX(4px); }
+  .yq-works .hero .text-link { color: rgba(255,255,255,.85); }
 
-  .yq-works .text-link:hover span {
-    transform: translateX(4px);
-  }
-
-  .yq-works .hero .text-link {
-    color: rgba(255,255,255,.85);
-  }
-
-  /* GALLERY INTRO */
+  /* =========================================================
+     GALLERY
+  ========================================================= */
 
   .yq-works .gallery {
     padding: 88px 0 105px;
     background: #fff;
+    scroll-margin-top: 20px;
   }
 
   .yq-works .gallery-heading {
@@ -265,11 +383,33 @@
     transition: transform 1.1s cubic-bezier(.2,.65,.25,1);
   }
 
+  /* a light flash crosses each photo as it lands */
+  .yq-works .frame::after {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.7) 50%, transparent 70%);
+    opacity: 0;
+    transform: translateX(-110%);
+  }
+
+  .yq-works .work.is-visible .frame::after {
+    animation: yqPhotoFlash 1s var(--yq-ease) .45s both;
+  }
+
+  @keyframes yqPhotoFlash {
+    0%   { opacity: 1; transform: translateX(-110%); }
+    100% { opacity: 0; transform: translateX(110%); }
+  }
+
   /* Each image reveals independently when its project enters view. */
 
   .js .yq-works .work .frame {
     clip-path: inset(0 0 100% 0);
     transition: clip-path 1s cubic-bezier(.22,.68,0,1);
+    transition-delay: var(--yq-delay, 0ms);
   }
 
   .js .yq-works .work .frame img {
@@ -286,7 +426,7 @@
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .yq-works .work:hover .frame img {
+    .yq-works .work.is-visible:hover .frame img {
       transform: scale(1.045);
     }
   }
@@ -301,9 +441,7 @@
     margin-top: 18px;
   }
 
-  .yq-works .caption-copy {
-    min-width: 0;
-  }
+  .yq-works .caption-copy { min-width: 0; }
 
   .yq-works .caption h3 {
     margin: 0 0 6px;
@@ -332,28 +470,42 @@
     letter-spacing: .08em;
   }
 
-  /* CLOSING CTA */
+  /* =========================================================
+     CLOSING CTA
+  ========================================================= */
 
   .yq-works .cta {
     padding: 78px 0;
+    overflow: hidden;
     background: var(--yq-forest);
     color: #fff;
   }
 
+  .yq-works .cta::after {
+    content: "";
+    position: absolute;
+    top: -210px;
+    right: -140px;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(20,160,144,.22);
+    border-radius: 50%;
+    box-shadow: 0 0 0 40px rgba(20,160,144,.03), 0 0 0 80px rgba(20,160,144,.02);
+    pointer-events: none;
+  }
+
   .yq-works .cta-inner {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 38px;
   }
 
-  .yq-works .cta-copy {
-    max-width: 670px;
-  }
+  .yq-works .cta-copy { max-width: 670px; }
 
-  .yq-works .cta .eyebrow {
-    color: #70CFC1;
-  }
+  .yq-works .cta .eyebrow { color: #70CFC1; }
 
   .yq-works .cta h2 {
     margin: 0 0 15px;
@@ -380,30 +532,22 @@
     gap: 18px;
   }
 
-  .yq-works .cta .text-link {
-    color: rgba(255,255,255,.82);
-  }
+  .yq-works .cta .text-link { color: rgba(255,255,255,.82); }
 
-  /* SECTION REVEALS */
-
-  .js .yq-works [data-reveal] {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-      opacity .7s ease,
-      transform .7s cubic-bezier(.2,.7,.2,1);
-  }
-
-  .js .yq-works [data-reveal].is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* =========================================================
+     REDUCED MOTION
+  ========================================================= */
 
   @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    .js .yq-works .yq-pop,
     .js .yq-works [data-reveal] {
-      opacity: 1;
-      transform: none;
-      transition: none;
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
+      animation: none !important;
     }
 
     .js .yq-works .work .frame {
@@ -416,10 +560,11 @@
       transition: none;
     }
 
+    .yq-flash,
+    .yq-works .frame::after { display: none; }
+
     .yq-works .button,
-    .yq-works .text-link span {
-      transition: none;
-    }
+    .yq-works .text-link span { transition: none; }
   }
 
   /* TABLET */
@@ -446,18 +591,14 @@
   /* MOBILE */
 
   @media (max-width: 600px) {
-    .yq-works .yq-wrap {
-      width: min(100% - 36px, 1120px);
-    }
+    .yq-works .yq-wrap { width: min(100% - 36px, 1120px); }
 
     .yq-works .hero {
       min-height: 420px;
       padding: 85px 0 72px;
     }
 
-    .yq-works .hero h1 {
-      font-size: clamp(2.7rem, 13vw, 4rem);
-    }
+    .yq-works .hero h1 { font-size: clamp(2.7rem, 13vw, 4rem); }
 
     .yq-works .hero-actions {
       align-items: flex-start;
@@ -465,56 +606,54 @@
       gap: 20px;
     }
 
-    .yq-works .gallery {
-      padding: 68px 0 75px;
-    }
+    .yq-works .gallery { padding: 68px 0 75px; }
 
     .yq-works .grid {
       grid-template-columns: 1fr;
       gap: 42px;
     }
 
-    .yq-works .caption {
-      margin-top: 14px;
-    }
+    .yq-works .caption { margin-top: 14px; }
+    .yq-works .caption h3 { font-size: 1.2rem; }
 
-    .yq-works .caption h3 {
-      font-size: 1.2rem;
-    }
-
-    .yq-works .cta {
-      padding: 68px 0;
-    }
+    .yq-works .cta { padding: 68px 0; }
 
     .yq-works .cta-actions {
       align-items: flex-start;
       flex-direction: column;
+    }
+
+    /* gentler pop on small screens */
+    .js .yq-works .yq-pop:not(.is-in) {
+      transform: translate3d(0, 50px, 0) scale(.96);
     }
   }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="yq-progress" aria-hidden="true"><span id="yqProgressBar"></span></div>
+
 <main class="yq-works">
 
-  <!-- HERO -->
+  <!-- HERO (animates on load) -->
   <section class="hero">
     <div class="yq-wrap">
-      <div class="hero-inner" data-reveal>
-        <p class="eyebrow">Yunqida Energy Kenya · Project Portfolio</p>
+      <div class="hero-inner">
+        <p class="eyebrow" data-reveal data-hero>Yunqida Energy Kenya · Project Portfolio</p>
 
-        <h1>
+        <h1 data-reveal data-hero style="--yq-delay:120ms">
           Energy solutions,
           <span>put into practice.</span>
         </h1>
 
-        <p class="hero-copy">
+        <p class="hero-copy" data-reveal data-hero style="--yq-delay:240ms">
           Explore selected solar power and energy storage project work
           featuring battery systems, hybrid inverters and renewable
           energy solutions for different applications.
         </p>
 
-        <div class="hero-actions">
+        <div class="hero-actions" data-reveal data-hero style="--yq-delay:360ms">
           <a class="button" href="#project-gallery">
             Explore project work
             <span aria-hidden="true">↓</span>
@@ -530,7 +669,7 @@
   </section>
 
   <!-- PROJECT GALLERY -->
-  <section class="gallery" id="project-gallery">
+  <section class="gallery yq-pop" id="project-gallery">
     <div class="yq-wrap">
 
       <div class="gallery-heading" data-reveal>
@@ -548,7 +687,7 @@
       <div class="grid">
 
         <!-- PROJECT 1 -->
-        <figure class="work" data-reveal>
+        <figure class="work" data-reveal="card">
           <div class="frame">
             <img
               src="{% static 'img/w1.png' %}"
@@ -571,7 +710,7 @@
         </figure>
 
         <!-- PROJECT 2 -->
-        <figure class="work" data-reveal>
+        <figure class="work" data-reveal="card" data-stagger="1">
           <div class="frame">
             <img
               src="{% static 'img/w2.png' %}"
@@ -594,7 +733,7 @@
         </figure>
 
         <!-- PROJECT 3 -->
-        <figure class="work" data-reveal>
+        <figure class="work" data-reveal="card">
           <div class="frame">
             <img
               src="{% static 'img/w3.png' %}"
@@ -617,7 +756,7 @@
         </figure>
 
         <!-- PROJECT 4 -->
-        <figure class="work" data-reveal>
+        <figure class="work" data-reveal="card" data-stagger="1">
           <div class="frame">
             <img
               src="{% static 'img/w4.png' %}"
@@ -644,7 +783,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="cta">
+  <section class="cta yq-pop">
     <div class="yq-wrap">
       <div class="cta-inner">
 
@@ -660,7 +799,7 @@
           </p>
         </div>
 
-        <div class="cta-actions" data-reveal>
+        <div class="cta-actions" data-reveal style="--yq-delay:200ms">
           <a class="button" href="{% url 'contact' %}">
             Contact Yunqida Kenya
             <span aria-hidden="true">↗</span>
@@ -682,49 +821,94 @@
 {% block extra_js %}
 <script>
 (function () {
-  const page = document.querySelector('.yq-works');
+  'use strict';
 
+  var page = document.querySelector('.yq-works');
   if (!page) return;
 
-  const revealItems = page.querySelectorAll('[data-reveal]');
-  const projectItems = page.querySelectorAll('.work');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasIO = 'IntersectionObserver' in window;
 
-  const reducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
+  var sections = page.querySelectorAll('.yq-pop');
+  var revealItems = page.querySelectorAll('[data-reveal]');
+  var projectItems = page.querySelectorAll('.work');
 
-  if (reducedMotion || !('IntersectionObserver' in window)) {
-    revealItems.forEach(function (item) {
-      item.classList.add('is-in');
-    });
+  /* Inject the flash layer into every section. */
+  sections.forEach(function (section) {
+    var flash = document.createElement('span');
+    flash.className = 'yq-flash';
+    flash.setAttribute('aria-hidden', 'true');
+    section.appendChild(flash);
+  });
 
-    projectItems.forEach(function (item) {
-      item.classList.add('is-visible');
-    });
+  /* No-animation fallback. */
+  if (reduceMotion || !hasIO) {
+    document.documentElement.classList.remove('js');
+    sections.forEach(function (s) { s.classList.add('is-in', 'is-done'); });
+    revealItems.forEach(function (el) { el.classList.add('is-in'); });
+    projectItems.forEach(function (el) { el.classList.add('is-visible'); });
+  } else {
 
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    function (entries, currentObserver) {
+    /* Section pop + flash when scrolled to. */
+    var sectionObserver = new IntersectionObserver(function (entries, observer) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
-
-        entry.target.classList.add('is-in');
-        entry.target.classList.add('is-visible');
-
-        currentObserver.unobserve(entry.target);
+        var section = entry.target;
+        section.classList.add('is-in');
+        section.addEventListener('animationend', function onEnd(e) {
+          if (e.target !== section || e.animationName !== 'yqSectionPop') return;
+          section.classList.add('is-done');
+          section.removeEventListener('animationend', onEnd);
+        });
+        observer.unobserve(section);
       });
-    },
-    {
-      threshold: 0.12,
-      rootMargin: '0px 0px -45px 0px'
-    }
-  );
+    }, { threshold: 0.06, rootMargin: '0px 0px -10% 0px' });
 
-  revealItems.forEach(function (item) {
-    observer.observe(item);
-  });
+    sections.forEach(function (s) { sectionObserver.observe(s); });
+
+    /* Inner elements stagger in; project photos reveal as they enter. */
+    var revealObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var stagger = parseInt(el.getAttribute('data-stagger') || '0', 10);
+        if (stagger) el.style.setProperty('--yq-delay', (stagger * 140) + 'ms');
+        el.classList.add('is-in');
+        el.classList.add('is-visible');
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+    revealItems.forEach(function (el) {
+      if (el.hasAttribute('data-hero')) {
+        /* hero text reveals on page load */
+        requestAnimationFrame(function () { el.classList.add('is-in'); });
+      } else {
+        revealObserver.observe(el);
+      }
+    });
+  }
+
+  /* Scroll progress bar. */
+  var bar = document.getElementById('yqProgressBar');
+  var queued = false;
+
+  function updateProgress() {
+    if (!bar) return;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var value = max > 0 ? window.scrollY / max : 0;
+    bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, value)) + ')';
+    queued = false;
+  }
+
+  window.addEventListener('scroll', function () {
+    if (!queued) {
+      queued = true;
+      requestAnimationFrame(updateProgress);
+    }
+  }, { passive: true });
+  window.addEventListener('resize', updateProgress, { passive: true });
+  updateProgress();
 })();
 </script>
 {% endblock %}

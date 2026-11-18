@@ -1,4 +1,3 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
 
@@ -45,14 +44,20 @@
 {% endblock %}
 
 {% block extra_head %}
+<script>document.documentElement.classList.add('js');</script>
 <style>
 /* =========================================================
    YUNQIDA ABOUT PAGE
    Uses the design tokens defined in base.html
 ========================================================= */
 
+html { scroll-behavior: smooth; }
+
 .ab-page {
+    --ab-ease: cubic-bezier(.2,.75,.2,1);
+    --ab-pop: cubic-bezier(.34,1.45,.5,1);
     overflow: hidden;
+    overflow: clip;
     background: #fff;
 }
 
@@ -72,6 +77,11 @@
 .ab-section--dark {
     background: var(--c-forest);
     color: #fff;
+}
+
+.ab-page a:focus-visible {
+    outline: 3px solid var(--c-sun);
+    outline-offset: 4px;
 }
 
 .ab-eyebrow {
@@ -152,6 +162,122 @@
 }
 
 /* =========================================================
+   SCROLL PROGRESS
+========================================================= */
+
+.ab-progress {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    pointer-events: none;
+}
+
+.ab-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--c-emerald), var(--c-sun));
+    transform: scaleX(0);
+    transform-origin: left;
+}
+
+/* =========================================================
+   SECTION POP + FLASH
+   Each section springs into place with a light sweep as the
+   visitor scrolls to it.
+========================================================= */
+
+.ab-pop {
+    position: relative;
+}
+
+.js .ab-pop:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) scale(.94);
+    transform-origin: 50% 0;
+}
+
+.js .ab-pop.is-in {
+    animation: abSectionPop 1s var(--ab-pop) both;
+    will-change: transform, opacity;
+}
+
+.js .ab-pop.is-done {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+}
+
+@keyframes abSectionPop {
+    0%   { opacity: 0; transform: translate3d(0, 80px, 0) scale(.94); }
+    55%  { opacity: 1; }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.ab-flash {
+    position: absolute;
+    z-index: 6;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ab-flash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 28%, rgba(255,255,255,.6) 48%, rgba(20,160,144,.35) 54%, transparent 72%);
+    transform: translateX(-110%);
+}
+
+.ab-flash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.5), transparent 62%);
+    opacity: 0;
+}
+
+.ab-pop.is-in .ab-flash          { animation: abFlashFade 1.2s ease-out .08s both; }
+.ab-pop.is-in .ab-flash::before  { animation: abFlashSweep 1.1s var(--ab-ease) .08s both; }
+.ab-pop.is-in .ab-flash::after   { animation: abFlashGlow .9s ease-out .05s both; }
+
+@keyframes abFlashFade  { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes abFlashSweep { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+@keyframes abFlashGlow  { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+
+/* Elements inside each section stagger in */
+.js [data-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale(.97);
+    filter: blur(3px);
+    transition:
+        opacity .9s var(--ab-ease),
+        transform .9s var(--ab-ease),
+        filter .9s var(--ab-ease);
+    transition-delay: var(--d, 0s);
+}
+
+.js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+}
+
+.js [data-reveal="image"] {
+    transform: translate3d(0, 40px, 0) scale(.95);
+}
+
+.js [data-reveal="image"].is-in {
+    transform: none;
+}
+
+/* =========================================================
    HERO
 ========================================================= */
 
@@ -174,6 +300,12 @@
         linear-gradient(90deg, rgba(15,19,24,.98) 0%, rgba(15,19,24,.91) 52%, rgba(15,19,24,.52) 100%),
         url("{% static 'img/about/factory-floor.jpg' %}") center 48% / cover no-repeat;
     opacity: .9;
+    transform: scale(1.05);
+    transition: transform 9s ease;
+}
+
+.ab-hero.is-settled::before {
+    transform: scale(1);
 }
 
 .ab-hero::after {
@@ -243,12 +375,13 @@
     font-size: .94rem;
     font-weight: 700;
     text-decoration: none;
-    transition: background .25s, transform .25s var(--ease);
+    transition: background .25s, transform .25s var(--ease), box-shadow .3s;
 }
 
 .ab-button:hover {
     background: var(--c-sun-hover);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -16px rgba(242,140,15,.7);
 }
 
 .ab-button--outline {
@@ -261,6 +394,7 @@
     border-color: var(--c-sun);
     background: rgba(255,255,255,.06);
     color: #fff;
+    box-shadow: none;
 }
 
 .ab-hero-note {
@@ -300,6 +434,7 @@
 .ab-image-wrap {
     position: relative;
     min-width: 0;
+    margin: 0;
 }
 
 .ab-image {
@@ -406,7 +541,8 @@
     transition: transform .35s var(--ease), box-shadow .35s var(--ease);
 }
 
-.ab-product-card:hover {
+/* hover lift only once the card has landed */
+.ab-product-card.is-in:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
 }
@@ -456,6 +592,10 @@
     color: var(--c-muted);
     font-size: .91rem;
     line-height: 1.8;
+}
+
+.ab-products-more {
+    margin-top: 38px;
 }
 
 /* =========================================================
@@ -655,32 +795,6 @@
 }
 
 /* =========================================================
-   SCROLL REVEALS
-========================================================= */
-
-.js [data-reveal] {
-    opacity: 0;
-    transform: translateY(25px);
-    transition:
-        opacity .8s var(--ease),
-        transform .8s var(--ease);
-    transition-delay: var(--d, 0s);
-}
-
-.js [data-reveal].is-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.js [data-reveal="image"] {
-    transform: translateY(30px) scale(.985);
-}
-
-.js [data-reveal="image"].is-in {
-    transform: translateY(0) scale(1);
-}
-
-/* =========================================================
    RESPONSIVE
 ========================================================= */
 
@@ -805,42 +919,62 @@
         flex-direction: column;
         gap: 5px;
     }
+
+    /* gentler pop on small screens */
+    .js .ab-pop:not(.is-in) {
+        transform: translate3d(0, 50px, 0) scale(.96);
+    }
 }
 
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
+    .js .ab-pop,
     .js [data-reveal],
     .js [data-reveal="image"] {
-        opacity: 1;
-        transform: none;
-        transition: none;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+        animation: none !important;
     }
+
+    .ab-flash { display: none; }
+
+    .ab-hero::before { transform: none; transition: none; }
 }
 </style>
 {% endblock %}
 
 {% block content %}
 
+<div class="ab-progress" aria-hidden="true"><span id="abProgressBar"></span></div>
+
 <div class="ab-page">
 
-    <!-- HERO -->
+    <!-- HERO (animates on load) -->
     <section class="ab-hero">
         <div class="ab-container">
             <div class="ab-hero-content">
-                <span class="ab-eyebrow" data-reveal>About Yunqida Energy</span>
+                <span class="ab-eyebrow" data-reveal data-hero>About Yunqida Energy</span>
 
-                <h1 data-reveal style="--d:.08s">
+                <h1 data-reveal data-hero style="--d:.08s">
                     Powering a more
                     <em>energy-secure</em>
                     future.
                 </h1>
 
-                <p class="ab-hero-description" data-reveal style="--d:.16s">
+                <p class="ab-hero-description" data-reveal data-hero style="--d:.16s">
                     Yunqida Energy Technology Kenya brings solar power systems,
                     lithium battery storage and hybrid inverter solutions to
                     homes, businesses and industries across Kenya.
                 </p>
 
-                <div class="ab-hero-actions" data-reveal style="--d:.22s">
+                <div class="ab-hero-actions" data-reveal data-hero style="--d:.22s">
                     <a href="{% url 'products' %}" class="ab-button">
                         Explore our products <span aria-hidden="true">&rarr;</span>
                     </a>
@@ -849,7 +983,7 @@
                     </a>
                 </div>
 
-                <div class="ab-hero-note" data-reveal style="--d:.28s">
+                <div class="ab-hero-note" data-reveal data-hero style="--d:.28s">
                     Manufacturer-backed energy storage · Local support in Kenya · OEM &amp; ODM capabilities
                 </div>
             </div>
@@ -857,7 +991,7 @@
     </section>
 
     <!-- COMPANY INTRODUCTION -->
-    <section class="ab-section">
+    <section class="ab-section ab-pop">
         <div class="ab-container">
 
             <div class="ab-intro-grid">
@@ -936,7 +1070,7 @@
     </section>
 
     <!-- PRODUCTS -->
-    <section class="ab-section ab-section--mist">
+    <section class="ab-section ab-section--mist ab-pop">
         <div class="ab-container">
 
             <div class="ab-products-heading">
@@ -1025,7 +1159,7 @@
 
             </div>
 
-            <div style="margin-top:38px" data-reveal>
+            <div class="ab-products-more" data-reveal>
                 <a href="{% url 'products' %}" class="ab-link">
                     Discover our product range <span aria-hidden="true">&rarr;</span>
                 </a>
@@ -1035,7 +1169,7 @@
     </section>
 
     <!-- SOLUTIONS -->
-    <section class="ab-section ab-section--dark">
+    <section class="ab-section ab-section--dark ab-pop">
         <div class="ab-container">
 
             <div class="ab-solutions-grid">
@@ -1123,7 +1257,7 @@
     </section>
 
     <!-- HOW WE WORK -->
-    <section class="ab-section">
+    <section class="ab-section ab-pop">
         <div class="ab-container">
 
             <div class="ab-process-heading">
@@ -1199,7 +1333,7 @@
     </section>
 
     <!-- FINAL CTA -->
-    <section class="ab-cta">
+    <section class="ab-cta ab-pop">
         <div class="ab-container">
             <div class="ab-cta-inner">
 
@@ -1233,36 +1367,89 @@
 {% block extra_js %}
 <script>
 (function () {
-    var elements = document.querySelectorAll('[data-reveal]');
+    'use strict';
 
-    if (!elements.length) return;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var hasIO = 'IntersectionObserver' in window;
 
-    if (
-        !('IntersectionObserver' in window) ||
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-        elements.forEach(function (element) {
-            element.classList.add('is-in');
+    var sections = document.querySelectorAll('.ab-pop');
+    var elements = document.querySelectorAll('.ab-page [data-reveal]');
+
+    /* Inject the flash layer into every section. */
+    sections.forEach(function (section) {
+        var flash = document.createElement('span');
+        flash.className = 'ab-flash';
+        flash.setAttribute('aria-hidden', 'true');
+        section.appendChild(flash);
+    });
+
+    /* No-animation fallback. */
+    if (reduceMotion || !hasIO) {
+        document.documentElement.classList.remove('js');
+        sections.forEach(function (s) { s.classList.add('is-in', 'is-done'); });
+        elements.forEach(function (el) { el.classList.add('is-in'); });
+    } else {
+
+        /* Section pop + flash when scrolled to. */
+        var sectionObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                var section = entry.target;
+                section.classList.add('is-in');
+                section.addEventListener('animationend', function onEnd(e) {
+                    if (e.target !== section || e.animationName !== 'abSectionPop') return;
+                    section.classList.add('is-done');
+                    section.removeEventListener('animationend', onEnd);
+                });
+                observer.unobserve(section);
+            });
+        }, { threshold: 0.06, rootMargin: '0px 0px -10% 0px' });
+
+        sections.forEach(function (s) { sectionObserver.observe(s); });
+
+        /* Inner elements stagger in. */
+        var revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+        elements.forEach(function (el) {
+            if (el.hasAttribute('data-hero')) {
+                /* hero content reveals on page load */
+                requestAnimationFrame(function () { el.classList.add('is-in'); });
+            } else {
+                revealObserver.observe(el);
+            }
         });
-        return;
     }
 
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
+    /* Hero background settles on load. */
+    var hero = document.querySelector('.ab-hero');
+    if (hero) requestAnimationFrame(function () { hero.classList.add('is-settled'); });
 
-            entry.target.classList.add('is-in');
-            observer.unobserve(entry.target);
-        });
-    }, {
-        threshold: 0.12,
-        rootMargin: '0px 0px -55px 0px'
-    });
+    /* Scroll progress bar. */
+    var bar = document.getElementById('abProgressBar');
+    var queued = false;
 
-    elements.forEach(function (element) {
-        observer.observe(element);
-    });
+    function updateProgress() {
+        if (!bar) return;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var value = max > 0 ? window.scrollY / max : 0;
+        bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, value)) + ')';
+        queued = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!queued) {
+            queued = true;
+            requestAnimationFrame(updateProgress);
+        }
+    }, { passive: true });
+    window.addEventListener('resize', updateProgress, { passive: true });
+    updateProgress();
 })();
 </script>
 {% endblock %}
- 

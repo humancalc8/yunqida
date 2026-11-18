@@ -1,26 +1,33 @@
-
 {% load static %}
+<script>document.documentElement.classList.add("yd-js");</script>
 
 <style>
 /* =========================================================
-   YUNQIDA — MANUFACTURED PRODUCTS
-   Clean, premium presentation with transparent product images
+   YUNQIDA — PREMIUM MANUFACTURED PRODUCTS
+   Cinematic luxury | Forest green | Stone | Bronze
    ========================================================= */
 
 .yd-manufacture {
-    --yd-green: #153c32;
-    --yd-green-dark: #102e27;
-    --yd-gold: #b99a62;
-    --yd-text: #202923;
-    --yd-muted: #737b75;
-    --yd-border: rgba(21, 60, 50, 0.12);
+    --yd-forest: #173b32;
+    --yd-forest-deep: #102a24;
+    --yd-bronze: #a98755;
+    --yd-bronze-light: #c7a879;
+    --yd-ink: #202923;
+    --yd-muted: #727b75;
+    --yd-stone: #eeefeb;
+    --yd-line: rgba(23,59,50,.13);
+    --ydm-ease: cubic-bezier(.2,.75,.25,1);
+    --ydm-pop: cubic-bezier(.34,1.45,.5,1);
 
     position: relative;
+    isolation: isolate;
     width: 100%;
-    padding: clamp(65px, 8vw, 110px) 0;
-    overflow: hidden;
-    background: transparent;
-    color: var(--yd-text);
+    padding: clamp(76px, 9vw, 120px) 0;
+    overflow: clip;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(169,135,85,.07), transparent 45%),
+        linear-gradient(180deg, #f7f7f3 0%, #f0f1ed 100%);
+    color: var(--yd-ink);
 }
 
 .yd-manufacture *,
@@ -29,28 +36,119 @@
     box-sizing: border-box;
 }
 
+.yd-manufacture a:focus-visible {
+    outline: 2px solid var(--yd-bronze);
+    outline-offset: 3px;
+}
+
 .yd-manufacture__container {
-    width: min(1280px, calc(100% - 48px));
+    width: min(1320px, calc(100% - 64px));
     margin: 0 auto;
 }
 
-/* Section heading */
+/* When placed inside a homepage section that already pops in,
+   the partial drops its own outer spacing to avoid double gaps. */
+.yd-section .yd-manufacture {
+    padding: 0;
+}
+
+/* Decorative background */
+
+.yd-manufacture::before,
+.yd-manufacture::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 430px;
+    height: 430px;
+    border: 1px solid rgba(169,135,85,.09);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.yd-manufacture::before {
+    top: 8%;
+    right: -180px;
+}
+
+.yd-manufacture::after {
+    bottom: -230px;
+    left: -180px;
+    border-color: rgba(23,59,50,.07);
+}
+
+/* =========================================================
+   SECTION POP + FLASH (standalone use only)
+   ========================================================= */
+
+.yd-js .yd-manufacture--standalone:not(.is-in) {
+    opacity: 0;
+    transform: translate3d(0, 80px, 0) scale(.94);
+    transform-origin: 50% 0;
+}
+
+.yd-js .yd-manufacture--standalone.is-in {
+    animation: ydmSectionPop 1s var(--ydm-pop) both;
+}
+
+.yd-js .yd-manufacture--standalone.is-done {
+    animation: none;
+    opacity: 1;
+    transform: none;
+}
+
+@keyframes ydmSectionPop {
+    0%   { opacity: 0; transform: translate3d(0, 80px, 0) scale(.94); }
+    55%  { opacity: 1; }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.yd-manufacture__flash {
+    position: absolute;
+    z-index: 6;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.yd-manufacture__flash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 28%, rgba(255,255,255,.65) 48%, rgba(199,168,121,.35) 54%, transparent 72%);
+    transform: translateX(-110%);
+}
+
+.yd-manufacture--standalone.is-in .yd-manufacture__flash {
+    animation: ydmFlashFade 1.2s ease-out .08s both;
+}
+
+.yd-manufacture--standalone.is-in .yd-manufacture__flash::before {
+    animation: ydmFlashSweep 1.1s var(--ydm-ease) .08s both;
+}
+
+@keyframes ydmFlashFade  { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes ydmFlashSweep { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+
+/* Heading */
 
 .yd-manufacture__header {
-    max-width: 680px;
-    margin: 0 auto 48px;
+    max-width: 720px;
+    margin: 0 auto 58px;
     text-align: center;
 }
 
 .yd-manufacture__eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 11px;
-    margin-bottom: 17px;
-    color: var(--yd-gold);
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 19px;
+    color: var(--yd-bronze);
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
+    font-weight: 800;
+    letter-spacing: 2.8px;
     line-height: 1.5;
     text-transform: uppercase;
 }
@@ -58,97 +156,180 @@
 .yd-manufacture__eyebrow::before,
 .yd-manufacture__eyebrow::after {
     content: "";
-    width: 24px;
+    width: 27px;
     height: 1px;
-    background: var(--yd-gold);
-    opacity: 0.8;
+    background: currentColor;
+    opacity: .7;
 }
 
 .yd-manufacture__heading {
     margin: 0;
-    color: var(--yd-green-dark);
+    color: var(--yd-forest-deep);
     font-family: inherit;
-    font-size: clamp(30px, 4vw, 46px);
+    font-size: clamp(34px, 4.5vw, 53px);
     font-weight: 600;
-    letter-spacing: -1.7px;
-    line-height: 1.13;
+    letter-spacing: -2px;
+    line-height: 1.1;
 }
 
 .yd-manufacture__intro {
-    max-width: 540px;
-    margin: 17px auto 0;
+    max-width: 570px;
+    margin: 19px auto 0;
     color: var(--yd-muted);
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 1.9;
 }
 
-/* Product grid */
+/* Grid */
 
 .yd-manufacture__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 34px 25px;
+    gap: 25px;
     align-items: stretch;
 }
 
-/* Product card */
+/* Cards */
 
 .yd-manufacture__card {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: 22px 19px 20px;
+    padding: 13px 13px 22px;
     overflow: hidden;
-    background: transparent;
-    border: 1px solid var(--yd-border);
-    border-radius: 5px;
+    background: rgba(255,255,255,.76);
+    border: 1px solid rgba(23,59,50,.09);
+    border-radius: 8px;
+    box-shadow:
+        0 8px 25px rgba(20,38,31,.035),
+        0 1px 2px rgba(20,38,31,.025);
     transition:
-        border-color 0.3s ease,
-        transform 0.3s ease;
+        transform .55s var(--ydm-ease),
+        box-shadow .55s ease,
+        border-color .4s ease;
+}
+
+.yd-manufacture__card::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(199,168,121,.7), transparent);
+    opacity: 0;
+    transition: opacity .4s ease;
+}
+
+/* light flash across each card as it lands */
+.yd-manufacture__card::after {
+    content: "";
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.7) 50%, transparent 70%);
+    opacity: 0;
+    transform: translateX(-110%);
+}
+
+.yd-manufacture__card.is-visible::after {
+    animation: ydmCardFlash .95s var(--ydm-ease) .15s both;
+}
+
+@keyframes ydmCardFlash {
+    0%   { opacity: 1; transform: translateX(-110%); }
+    100% { opacity: 0; transform: translateX(110%); }
 }
 
 .yd-manufacture__card:hover {
-    border-color: rgba(185, 154, 98, 0.55);
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    border-color: rgba(169,135,85,.4);
+    box-shadow:
+        0 24px 55px rgba(20,38,31,.105),
+        0 5px 15px rgba(20,38,31,.035);
 }
 
-/* Product image area — deliberately transparent */
+.yd-manufacture__card:hover::before {
+    opacity: 1;
+}
+
+/* Image area */
 
 .yd-manufacture__image-link {
-    display: flex;
     position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 230px;
-    margin-bottom: 20px;
+    height: 245px;
+    margin-bottom: 23px;
     overflow: hidden;
-    background: #eeeeec;
-    border-radius: 4px;
+    isolation: isolate;
+    background:
+        radial-gradient(
+            ellipse at 50% 42%,
+            rgba(255,255,255,.95) 0%,
+            rgba(239,240,235,.85) 48%,
+            rgba(226,229,222,.95) 100%
+        );
+    border-radius: 5px;
     text-decoration: none;
 }
 
+.yd-manufacture__image-link::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 72%;
+    height: 72%;
+    border-radius: 50%;
+    background: rgba(255,255,255,.72);
+    filter: blur(35px);
+    opacity: .75;
+    transition: transform .7s ease, opacity .7s ease;
+}
+
+.yd-manufacture__image-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(135deg, rgba(255,255,255,.30), transparent 42%, rgba(23,59,50,.035));
+    pointer-events: none;
+}
+
+.yd-manufacture__card:hover .yd-manufacture__image-link::before {
+    transform: scale(1.25);
+    opacity: 1;
+}
+
 .yd-manufacture__image {
+    position: relative;
+    z-index: 0;
     display: block;
     width: 100%;
     height: 100%;
     max-width: 100%;
+    padding: 12px;
     object-fit: contain;
     object-position: center;
     background: transparent;
     border: 0;
     box-shadow: none;
     mix-blend-mode: normal;
-    opacity: 1;
-    filter: none;
-    transition: transform 0.45s ease;
-}
-.yd-manufacture__card:hover .yd-manufacture__image {
-    transform: scale(1.045);
+    filter: drop-shadow(0 9px 11px rgba(20,35,28,.10));
+    transition:
+        transform .75s var(--ydm-ease),
+        filter .6s ease;
 }
 
-/* Image unavailable */
+.yd-manufacture__card:hover .yd-manufacture__image {
+    transform: scale(1.065);
+    filter: drop-shadow(0 15px 17px rgba(20,35,28,.17));
+}
 
 .yd-manufacture__image-placeholder {
     display: flex;
@@ -156,11 +337,13 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+    padding: 20px;
     color: var(--yd-muted);
     font-size: 12px;
-    background: transparent;
-    border: 1px dashed var(--yd-border);
-    border-radius: 4px;
+    text-align: center;
+    background: var(--yd-stone);
+    border: 1px dashed rgba(23,59,50,.2);
+    border-radius: 5px;
 }
 
 /* Product information */
@@ -168,51 +351,52 @@
 .yd-manufacture__category {
     display: inline-flex;
     align-self: flex-start;
-    margin-bottom: 10px;
-    color: var(--yd-gold);
+    margin: 0 5px 10px;
+    color: var(--yd-bronze);
     font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1.6px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
     line-height: 1.5;
     text-transform: uppercase;
 }
 
 .yd-manufacture__title {
-    margin: 0 0 9px;
-    color: var(--yd-green-dark);
+    margin: 0 5px 9px;
+    color: var(--yd-forest-deep);
     font-size: 18px;
-    font-weight: 600;
-    letter-spacing: -0.35px;
-    line-height: 1.35;
+    font-weight: 650;
+    letter-spacing: -.45px;
+    line-height: 1.4;
 }
 
 .yd-manufacture__title a {
     color: inherit;
     text-decoration: none;
-    transition: color 0.25s ease;
+    transition: color .3s ease;
 }
 
 .yd-manufacture__title a:hover {
-    color: var(--yd-gold);
+    color: var(--yd-bronze);
 }
 
 .yd-manufacture__tagline {
-    margin: 0 0 11px;
-    color: var(--yd-green);
+    margin: 0 5px 11px;
+    color: var(--yd-forest);
     font-size: 12px;
-    font-weight: 500;
-    line-height: 1.6;
+    font-weight: 600;
+    line-height: 1.65;
 }
 
 .yd-manufacture__description {
     display: -webkit-box;
-    margin: 0 0 18px;
+    margin: 0 5px 19px;
     overflow: hidden;
     color: var(--yd-muted);
     font-size: 12px;
-    line-height: 1.8;
+    line-height: 1.85;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
 }
 
 /* Specifications */
@@ -222,104 +406,164 @@
     flex-wrap: wrap;
     gap: 7px;
     margin-top: auto;
-    padding-top: 15px;
-    border-top: 1px solid var(--yd-border);
+    padding: 15px 5px 0;
+    border-top: 1px solid var(--yd-line);
 }
 
 .yd-manufacture__spec {
     display: inline-flex;
     align-items: center;
     padding: 6px 9px;
-    color: var(--yd-green);
+    color: var(--yd-forest);
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 650;
     line-height: 1.4;
-    background: rgba(21, 60, 50, 0.045);
+    background: rgba(23,59,50,.055);
+    border: 1px solid rgba(23,59,50,.055);
     border-radius: 3px;
 }
 
-/* Product link */
+/* Explore link */
 
 .yd-manufacture__link {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
     align-self: flex-start;
-    margin-top: 19px;
-    color: var(--yd-green);
+    margin: 20px 5px 0;
+    color: var(--yd-forest);
     font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.4px;
+    font-weight: 800;
+    letter-spacing: .5px;
     text-decoration: none;
-    transition: color 0.25s ease, gap 0.25s ease;
+    transition: color .3s ease, gap .3s ease;
 }
 
 .yd-manufacture__link span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 23px;
+    height: 23px;
+    color: var(--yd-bronze);
     font-size: 16px;
     line-height: 1;
-    transition: transform 0.25s ease;
+    border: 1px solid rgba(169,135,85,.35);
+    border-radius: 50%;
+    transition: transform .3s ease, background .3s ease, color .3s ease;
 }
 
 .yd-manufacture__link:hover {
-    gap: 13px;
-    color: var(--yd-gold);
+    gap: 14px;
+    color: var(--yd-bronze);
 }
 
 .yd-manufacture__link:hover span {
     transform: translateX(3px);
+    color: #fff;
+    background: var(--yd-forest);
 }
 
 /* Empty state */
 
 .yd-manufacture__empty {
     grid-column: 1 / -1;
-    padding: 55px 20px;
+    padding: 60px 20px;
     color: var(--yd-muted);
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.8;
     text-align: center;
-    border: 1px dashed var(--yd-border);
-    border-radius: 5px;
+    background: rgba(255,255,255,.5);
+    border: 1px dashed var(--yd-line);
+    border-radius: 8px;
+}
+
+/* =========================================================
+   SCROLL REVEAL (header + cards pop into place)
+   Hidden only while JavaScript is running.
+   ========================================================= */
+
+.yd-js .yd-manufacture__reveal {
+    opacity: 0;
+    transform: translate3d(0, 36px, 0) scale(.95);
+    transition:
+        opacity .8s ease,
+        transform .9s var(--ydm-pop),
+        box-shadow .55s ease,
+        border-color .4s ease;
+}
+
+.yd-js .yd-manufacture__reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* stagger by column */
+.yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 2) { transition-delay: .09s; }
+.yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 3) { transition-delay: .18s; }
+.yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 4) { transition-delay: .27s; }
+
+/* once a card has landed, remove the stagger delay so hover feels instant */
+.yd-manufacture__card.is-settled {
+    transition-delay: 0s !important;
+}
+
+/* keep hover lift working once visible */
+.yd-js .yd-manufacture__card.yd-manufacture__reveal.is-visible:hover {
+    transform: translateY(-8px);
 }
 
 /* Responsive */
 
-@media (max-width: 1050px) {
+@media (max-width: 1100px) {
     .yd-manufacture__grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 25px 18px;
+        gap: 21px;
     }
 
     .yd-manufacture__image-link {
-        height: 215px;
+        height: 225px;
     }
+
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 2),
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 3),
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(4n + 4) { transition-delay: 0s; }
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(3n + 2) { transition-delay: .09s; }
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(3n + 3) { transition-delay: .18s; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
     .yd-manufacture {
-        padding: 65px 0;
+        padding: 72px 0;
+    }
+
+    .yd-section .yd-manufacture {
+        padding: 0;
     }
 
     .yd-manufacture__container {
-        width: min(100% - 32px, 520px);
+        width: min(100% - 36px, 600px);
     }
 
     .yd-manufacture__header {
-        margin-bottom: 32px;
+        margin-bottom: 38px;
     }
 
     .yd-manufacture__grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 17px 12px;
+        gap: 16px;
     }
 
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(n) { transition-delay: 0s; }
+    .yd-manufacture__card.yd-manufacture__reveal:nth-child(2n) { transition-delay: .1s; }
+
     .yd-manufacture__card {
-        padding: 13px 12px 15px;
+        padding: 10px 10px 17px;
     }
 
     .yd-manufacture__image-link {
-        height: 165px;
-        margin-bottom: 14px;
+        height: 185px;
+        margin-bottom: 17px;
     }
 
     .yd-manufacture__title {
@@ -330,37 +574,102 @@
         font-size: 11px;
     }
 
+    .yd-manufacture__tagline {
+        font-size: 11px;
+    }
+
     .yd-manufacture__spec {
         font-size: 9px;
         padding: 5px 7px;
     }
-}
 
-@media (max-width: 380px) {
-    .yd-manufacture__container {
-        width: calc(100% - 24px);
+    .yd-manufacture__link {
+        font-size: 10px;
     }
 
-    .yd-manufacture__image-link {
-        height: 140px;
+    .yd-js .yd-manufacture--standalone:not(.is-in) {
+        transform: translate3d(0, 50px, 0) scale(.96);
+    }
+}
+
+@media (max-width: 430px) {
+    .yd-manufacture__container {
+        width: calc(100% - 26px);
+    }
+
+    .yd-manufacture__grid {
+        gap: 11px;
     }
 
     .yd-manufacture__card {
-        padding: 10px;
+        padding: 8px 8px 14px;
+    }
+
+    .yd-manufacture__image-link {
+        height: 150px;
+        margin-bottom: 14px;
+    }
+
+    .yd-manufacture__image {
+        padding: 7px;
+    }
+
+    .yd-manufacture__title {
+        font-size: 14px;
+    }
+
+    .yd-manufacture__category {
+        font-size: 8px;
+        letter-spacing: 1.2px;
+    }
+
+    .yd-manufacture__specs {
+        gap: 5px;
+    }
+
+    .yd-manufacture__spec {
+        padding: 5px 6px;
+        font-size: 8px;
+    }
+
+    .yd-manufacture__link {
+        gap: 6px;
+        margin-top: 15px;
+        font-size: 9px;
+    }
+
+    .yd-manufacture__link span {
+        width: 19px;
+        height: 19px;
+        font-size: 13px;
     }
 }
 
 /* Accessibility */
 
 @media (prefers-reduced-motion: reduce) {
-    .yd-manufacture__card,
-    .yd-manufacture__image,
-    .yd-manufacture__link,
-    .yd-manufacture__link span {
-        transition: none !important;
+    .yd-manufacture *,
+    .yd-manufacture *::before,
+    .yd-manufacture *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
     }
 
-    .yd-manufacture__card:hover {
+    .yd-js .yd-manufacture--standalone,
+    .yd-js .yd-manufacture__reveal {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .yd-manufacture__flash,
+    .yd-manufacture__card::after {
+        display: none;
+    }
+
+    .yd-manufacture__card:hover,
+    .yd-js .yd-manufacture__card.yd-manufacture__reveal.is-visible:hover {
         transform: none;
     }
 
@@ -372,17 +681,16 @@
 
 
 <section class="yd-manufacture" aria-labelledby="yd-manufacture-heading">
+
     <div class="yd-manufacture__container">
 
-        <header class="yd-manufacture__header">
+        <header class="yd-manufacture__header yd-manufacture__reveal">
+
             <span class="yd-manufacture__eyebrow">
                 Built for Performance
             </span>
 
-            <h2
-                class="yd-manufacture__heading"
-                id="yd-manufacture-heading"
-            >
+            <h2 class="yd-manufacture__heading" id="yd-manufacture-heading">
                 What We Manufacture
             </h2>
 
@@ -391,6 +699,7 @@
                 products, designed to deliver dependable power,
                 efficiency and long-term performance.
             </p>
+
         </header>
 
 
@@ -398,7 +707,7 @@
 
             {% for item in manufacture_products %}
 
-                <article class="yd-manufacture__card">
+                <article class="yd-manufacture__card yd-manufacture__reveal">
 
                     <a
                         href="{{ item.get_absolute_url }}"
@@ -407,6 +716,7 @@
                     >
 
                         {% if item.image %}
+
                             <img
                                 class="yd-manufacture__image"
                                 src="{{ item.image.url }}"
@@ -416,6 +726,7 @@
                             >
 
                         {% elif item.fallback_image %}
+
                             <img
                                 class="yd-manufacture__image"
                                 src="{{ item.fallback_image }}"
@@ -425,60 +736,78 @@
                             >
 
                         {% else %}
+
                             <div class="yd-manufacture__image-placeholder">
                                 Product image unavailable
                             </div>
+
                         {% endif %}
 
                     </a>
 
 
                     {% if item.get_category_display %}
+
                         <span class="yd-manufacture__category">
                             {{ item.get_category_display }}
                         </span>
+
                     {% endif %}
 
 
                     <h3 class="yd-manufacture__title">
+
                         <a href="{{ item.get_absolute_url }}">
                             {{ item.name }}
                         </a>
+
                     </h3>
 
 
                     {% if item.tagline %}
+
                         <p class="yd-manufacture__tagline">
                             {{ item.tagline }}
                         </p>
+
                     {% endif %}
 
 
                     {% if item.description %}
+
                         <p class="yd-manufacture__description">
                             {{ item.description }}
                         </p>
+
                     {% endif %}
 
 
                     <div class="yd-manufacture__specs">
 
                         {% if item.capacity %}
+
                             <span class="yd-manufacture__spec">
                                 {{ item.capacity }}
                             </span>
+
                         {% endif %}
 
+
                         {% if item.power %}
+
                             <span class="yd-manufacture__spec">
                                 {{ item.power }}
                             </span>
+
                         {% endif %}
 
+
                         {% if item.warranty %}
+
                             <span class="yd-manufacture__spec">
                                 {{ item.warranty }}
                             </span>
+
                         {% endif %}
 
                     </div>
@@ -496,12 +825,95 @@
 
             {% empty %}
 
-                <div class="yd-manufacture__empty">
+                <div class="yd-manufacture__empty yd-manufacture__reveal">
                     Our manufactured products will be displayed here soon.
                 </div>
 
             {% endfor %}
 
         </div>
+
     </div>
+
 </section>
+
+
+<script>
+(function () {
+    "use strict";
+
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var hasIO = "IntersectionObserver" in window;
+    var sections = document.querySelectorAll(".yd-manufacture");
+
+    if (!sections.length) return;
+
+    sections.forEach(function (section) {
+
+        var revealItems = section.querySelectorAll(".yd-manufacture__reveal");
+        var cards = section.querySelectorAll(".yd-manufacture__card");
+
+        /* Show everything immediately when animation isn't available. */
+        if (reduceMotion || !hasIO) {
+            section.classList.add("is-in", "is-done");
+            revealItems.forEach(function (item) {
+                item.classList.add("is-visible", "is-settled", "yd-card-visible");
+            });
+            return;
+        }
+
+        /* Standalone use: the whole section pops in with a light flash.
+           When nested inside a .yd-section, the parent already does this. */
+        var nested = !!section.parentElement.closest(".yd-section");
+
+        if (!nested) {
+            section.classList.add("yd-manufacture--standalone");
+
+            var flash = document.createElement("span");
+            flash.className = "yd-manufacture__flash";
+            flash.setAttribute("aria-hidden", "true");
+            section.appendChild(flash);
+
+            var sectionObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    section.classList.add("is-in");
+                    section.addEventListener("animationend", function onEnd(e) {
+                        if (e.target !== section || e.animationName !== "ydmSectionPop") return;
+                        section.classList.add("is-done");
+                        section.removeEventListener("animationend", onEnd);
+                    });
+                    observer.unobserve(section);
+                });
+            }, { threshold: 0.06, rootMargin: "0px 0px -10% 0px" });
+
+            sectionObserver.observe(section);
+        }
+
+        /* Header and cards pop in one after another. */
+        var revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                var item = entry.target;
+
+                item.classList.add("is-visible");
+                /* also satisfies the homepage's own card reveal rule */
+                item.classList.add("yd-card-visible");
+
+                /* clear the stagger delay after landing so hover stays instant */
+                setTimeout(function () {
+                    item.classList.add("is-settled");
+                }, 1300);
+
+                observer.unobserve(item);
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+
+        revealItems.forEach(function (item) {
+            revealObserver.observe(item);
+        });
+
+    });
+
+})();
+</script>

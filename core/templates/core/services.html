@@ -16,592 +16,969 @@
 
 {% block extra_head %}
 <script>
-  document.documentElement.classList.add('js');
+document.documentElement.classList.add('js');
 </script>
 
 <style>
-  .yq-services {
-    --yq-forest: var(--c-forest, #0F1318);
-    --yq-emerald: var(--c-emerald, #14A090);
-    --yq-orange: var(--c-sun, #F28C0F);
-    --yq-ink: var(--c-ink, #0F1318);
-    --yq-muted: var(--c-muted, #5C6670);
-    --yq-line: var(--c-line, #E3E6EA);
-    --yq-mist: var(--c-mist, #F4F5F7);
-    --yq-white: #fff;
+/* =========================================================
+   YUNQIDA ENERGY — PREMIUM SERVICES EXPERIENCE
+   Cinematic luxury technology / forest / charcoal / bronze
+   ========================================================= */
 
-    color: var(--yq-ink);
-    background: var(--yq-white);
-    font-family: var(--font-body, sans-serif);
-    line-height: 1.7;
-    overflow: hidden;
+.yq-services {
+  --yq-night: #101815;
+  --yq-night-2: #15231d;
+  --yq-forest: #183d32;
+  --yq-forest-deep: #102c24;
+  --yq-green: #326b59;
+  --yq-green-light: #8ba99a;
+  --yq-bronze: #a98758;
+  --yq-champagne: #d5bd91;
+  --yq-gold-light: #ead8b4;
+  --yq-paper: #f6f5f0;
+  --yq-stone: #ecebe4;
+  --yq-white: #fff;
+  --yq-ink: #18221d;
+  --yq-muted: #68736c;
+  --yq-line: rgba(28, 55, 43, .14);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--yq-ink);
+  background: var(--yq-paper);
+  font-family: var(--font-body, sans-serif);
+  line-height: 1.75;
+}
+
+.yq-services *,
+.yq-services *::before,
+.yq-services *::after {
+  box-sizing: border-box;
+}
+
+.yq-services a {
+  color: inherit;
+}
+
+.yq-services a:focus-visible {
+  outline: 2px solid var(--yq-champagne);
+  outline-offset: 5px;
+}
+
+.yq-services .yq-wrap {
+  width: min(1160px, calc(100% - 56px));
+  margin-inline: auto;
+}
+
+.yq-services .yq-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  color: var(--yq-bronze);
+  font-size: .69rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.yq-services .yq-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+
+.yq-services h1,
+.yq-services h2,
+.yq-services h3 {
+  text-wrap: balance;
+}
+
+.yq-services p {
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------
+   HERO
+   --------------------------------------------------------- */
+
+.yq-services .yq-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: 620px;
+  padding: 125px 0 115px;
+  overflow: hidden;
+  color: var(--yq-white);
+  background:
+    radial-gradient(ellipse at 78% 38%, rgba(65, 111, 85, .27), transparent 35%),
+    radial-gradient(ellipse at 12% 90%, rgba(169, 135, 88, .12), transparent 35%),
+    linear-gradient(115deg, #0b1511 0%, #142a20 52%, #101b16 100%);
+}
+
+.yq-services .yq-hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  opacity: .13;
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(110deg, #000, transparent 88%);
+}
+
+.yq-services .yq-hero::after {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: -220px;
+  width: 650px;
+  height: 650px;
+  border: 1px solid rgba(213, 189, 145, .19);
+  border-radius: 50%;
+  content: "";
+  transform: translateY(-50%);
+  box-shadow:
+    0 0 0 55px rgba(213, 189, 145, .025),
+    0 0 0 115px rgba(213, 189, 145, .025),
+    0 0 0 175px rgba(213, 189, 145, .018);
+  animation: yq-orbit 24s linear infinite;
+}
+
+.yq-services .yq-hero-inner {
+  position: relative;
+  max-width: 850px;
+  z-index: 2;
+}
+
+.yq-services .yq-hero .yq-eyebrow,
+.yq-services .yq-cta .yq-eyebrow {
+  color: var(--yq-champagne);
+}
+
+.yq-services .yq-hero h1 {
+  max-width: 850px;
+  margin: 0 0 28px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(3.3rem, 7.2vw, 6.5rem);
+  font-weight: 500;
+  letter-spacing: -.065em;
+  line-height: .99;
+}
+
+.yq-services .yq-hero h1 span {
+  display: block;
+  color: var(--yq-champagne);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.yq-services .yq-hero-copy {
+  max-width: 640px;
+  margin: 0;
+  color: rgba(255,255,255,.72);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.9;
+}
+
+.yq-services .yq-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+/* Decorative hero marker */
+.yq-services .yq-hero-marker {
+  position: absolute;
+  right: 8%;
+  bottom: 13%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,.48);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+.yq-services .yq-hero-marker::before {
+  width: 34px;
+  height: 1px;
+  background: var(--yq-champagne);
+  content: "";
+}
+
+/* ---------------------------------------------------------
+   BUTTONS
+   --------------------------------------------------------- */
+
+.yq-services .yq-button {
+  position: relative;
+  display: inline-flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 25px;
+  overflow: hidden;
+  border: 1px solid var(--yq-champagne);
+  border-radius: 2px;
+  background: linear-gradient(115deg, #d7c198, #b99b6c);
+  color: #17251d;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .025em;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    background .35s ease;
+}
+
+.yq-services .yq-button::before {
+  position: absolute;
+  top: -100%;
+  left: -60%;
+  width: 35%;
+  height: 300%;
+  content: "";
+  background: rgba(255,255,255,.38);
+  transform: rotate(25deg);
+  transition: left .7s ease;
+}
+
+.yq-services .yq-button:hover::before {
+  left: 130%;
+}
+
+.yq-services .yq-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(0,0,0,.2);
+}
+
+.yq-services .yq-button span {
+  position: relative;
+  font-size: 1.1rem;
+  transition: transform .3s ease;
+}
+
+.yq-services .yq-button:hover span {
+  transform: translate(3px, -3px);
+}
+
+.yq-services .yq-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: .86rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color .3s ease;
+}
+
+.yq-services .yq-text-link span {
+  display: inline-block;
+  transition: transform .3s ease;
+}
+
+.yq-services .yq-text-link:hover span {
+  transform: translate(5px, -2px);
+}
+
+.yq-services .yq-hero .yq-text-link,
+.yq-services .yq-cta .yq-text-link {
+  color: rgba(255,255,255,.82);
+}
+
+.yq-services .yq-hero .yq-text-link:hover,
+.yq-services .yq-cta .yq-text-link:hover {
+  color: var(--yq-champagne);
+}
+
+/* ---------------------------------------------------------
+   INTRODUCTION
+   --------------------------------------------------------- */
+
+.yq-services .yq-intro {
+  position: relative;
+  padding: 118px 0 110px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(169,135,88,.08), transparent 35%),
+    var(--yq-paper);
+}
+
+.yq-services .yq-intro-grid {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 100px;
+  align-items: start;
+}
+
+.yq-services .yq-intro h2 {
+  max-width: 480px;
+  margin: 0;
+  color: var(--yq-forest-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: 1.08;
+}
+
+.yq-services .yq-intro-copy {
+  max-width: 610px;
+  padding-top: 8px;
+}
+
+.yq-services .yq-intro-copy p {
+  margin: 0 0 20px;
+  color: var(--yq-muted);
+  font-size: .98rem;
+  line-height: 1.9;
+}
+
+.yq-services .yq-intro-copy p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------------------------------------------------------
+   SERVICES SECTION
+   --------------------------------------------------------- */
+
+.yq-services .yq-service-section {
+  position: relative;
+  padding: 112px 0 120px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 5% 20%, rgba(169,135,88,.08), transparent 35%),
+    linear-gradient(135deg, #e9e9e1, #f4f3ed 55%, #e9ebe4);
+}
+
+.yq-services .yq-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+.yq-services .yq-section-heading h2 {
+  max-width: 650px;
+  margin: 0;
+  color: var(--yq-forest-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.5rem, 4.8vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: 1.06;
+}
+
+.yq-services .yq-section-heading > p {
+  max-width: 350px;
+  margin: 0 0 6px;
+  color: var(--yq-muted);
+  font-size: .92rem;
+  line-height: 1.85;
+}
+
+.yq-services .yq-service-list {
+  display: grid;
+  gap: 16px;
+}
+
+.yq-services .yq-service {
+  position: relative;
+  display: grid;
+  grid-template-columns: 65px minmax(210px, .82fr) 1.18fr;
+  gap: 30px;
+  align-items: start;
+  padding: 38px 34px;
+  overflow: hidden;
+  border: 1px solid rgba(34,65,48,.11);
+  border-radius: 4px;
+  background: rgba(255,255,255,.72);
+  box-shadow: 0 8px 30px rgba(22,38,28,.035);
+  transition:
+    transform .5s cubic-bezier(.2,.7,.2,1),
+    box-shadow .5s ease,
+    border-color .5s ease,
+    background .5s ease;
+}
+
+.yq-services .yq-service::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  content: "";
+  background: linear-gradient(to bottom, var(--yq-bronze), transparent);
+  transform: scaleY(.25);
+  transform-origin: top;
+  transition: transform .5s ease;
+}
+
+.yq-services .yq-service::after {
+  position: absolute;
+  top: -80%;
+  left: -50%;
+  width: 35%;
+  height: 260%;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+  transform: rotate(25deg);
+  transition: left .9s ease;
+  pointer-events: none;
+}
+
+.yq-services .yq-service:hover {
+  z-index: 2;
+  border-color: rgba(169,135,88,.4);
+  background: #fff;
+  box-shadow: 0 24px 55px rgba(22,38,28,.11);
+  transform: translateY(-5px);
+}
+
+.yq-services .yq-service:hover::before {
+  transform: scaleY(1);
+}
+
+.yq-services .yq-service:hover::after {
+  left: 130%;
+}
+
+.yq-services .yq-service-number {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(169,135,88,.35);
+  border-radius: 50%;
+  background: rgba(169,135,88,.07);
+  color: var(--yq-bronze);
+  font-family: var(--font-display, sans-serif);
+  font-size: .95rem;
+  font-weight: 700;
+  transition: background .35s ease, color .35s ease, transform .35s ease;
+}
+
+.yq-services .yq-service:hover .yq-service-number {
+  background: var(--yq-forest);
+  color: var(--yq-champagne);
+  transform: rotate(8deg);
+}
+
+.yq-services .yq-service h3 {
+  margin: 5px 0 0;
+  color: var(--yq-forest-deep);
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -.04em;
+  line-height: 1.22;
+}
+
+.yq-services .yq-service-content {
+  position: relative;
+  z-index: 1;
+}
+
+.yq-services .yq-service-content p {
+  max-width: 600px;
+  margin: 0 0 21px;
+  color: var(--yq-muted);
+  font-size: .92rem;
+  line-height: 1.85;
+}
+
+.yq-services .yq-service-content ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yq-services .yq-service-content li {
+  position: relative;
+  padding-left: 18px;
+  color: #35453b;
+  font-size: .83rem;
+  line-height: 1.55;
+}
+
+.yq-services .yq-service-content li::before {
+  position: absolute;
+  top: .55em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--yq-bronze);
+  border-radius: 50%;
+  background: var(--yq-champagne);
+  content: "";
+  box-shadow: 0 0 9px rgba(169,135,88,.25);
+}
+
+/* ---------------------------------------------------------
+   APPROACH
+   --------------------------------------------------------- */
+
+.yq-services .yq-approach {
+  position: relative;
+  padding: 120px 0 125px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(74,112,83,.22), transparent 40%),
+    linear-gradient(125deg, #101a15, #19372a 65%, #10221a);
+}
+
+.yq-services .yq-approach::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: .08;
+  background-image:
+    linear-gradient(rgba(255,255,255,.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+  background-size: 70px 70px;
+  mask-image: linear-gradient(120deg, transparent, #000 75%);
+  pointer-events: none;
+}
+
+.yq-services .yq-approach-header {
+  position: relative;
+  max-width: 720px;
+  margin-bottom: 65px;
+}
+
+.yq-services .yq-approach-header h2 {
+  margin: 0 0 18px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.5rem, 4.8vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: 1.08;
+}
+
+.yq-services .yq-approach-header p:last-child {
+  max-width: 650px;
+  margin: 0;
+  color: rgba(255,255,255,.65);
+  font-size: .95rem;
+  line-height: 1.9;
+}
+
+.yq-services .yq-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba(213,189,145,.32);
+}
+
+.yq-services .yq-step {
+  position: relative;
+  padding: 30px 26px 0 0;
+}
+
+.yq-services .yq-step:not(:first-child) {
+  padding-left: 26px;
+  border-left: 1px solid rgba(255,255,255,.12);
+}
+
+.yq-services .yq-step::before {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  content: "";
+  background: var(--yq-champagne);
+  box-shadow: 0 0 14px rgba(213,189,145,.6);
+  transition: width .55s ease;
+}
+
+.yq-services .yq-step:hover::before {
+  width: 55px;
+}
+
+.yq-services .yq-step-number {
+  display: block;
+  margin-bottom: 26px;
+  color: var(--yq-champagne);
+  font-family: var(--font-display, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.yq-services .yq-step h3 {
+  margin: 0 0 13px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.yq-services .yq-step p {
+  margin: 0;
+  color: rgba(255,255,255,.61);
+  font-size: .86rem;
+  line-height: 1.85;
+}
+
+/* ---------------------------------------------------------
+   CTA
+   --------------------------------------------------------- */
+
+.yq-services .yq-cta {
+  position: relative;
+  isolation: isolate;
+  padding: 100px 0;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(169,135,88,.18), transparent 40%),
+    linear-gradient(115deg, #122d24, #1d4435 55%, #10271f);
+}
+
+.yq-services .yq-cta::before {
+  position: absolute;
+  z-index: -1;
+  top: -200px;
+  right: -140px;
+  width: 520px;
+  height: 520px;
+  border: 1px solid rgba(213,189,145,.2);
+  border-radius: 50%;
+  content: "";
+  box-shadow:
+    0 0 0 45px rgba(213,189,145,.025),
+    0 0 0 90px rgba(213,189,145,.02);
+}
+
+.yq-services .yq-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 55px;
+}
+
+.yq-services .yq-cta-copy {
+  max-width: 720px;
+}
+
+.yq-services .yq-cta h2 {
+  margin: 0 0 18px;
+  color: #fff;
+  font-family: var(--font-display, sans-serif);
+  font-size: clamp(2.5rem, 4.8vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: 1.08;
+}
+
+.yq-services .yq-cta-copy p:last-child {
+  max-width: 620px;
+  margin: 0;
+  color: rgba(255,255,255,.67);
+  font-size: .94rem;
+  line-height: 1.9;
+}
+
+.yq-services .yq-cta-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+/* ---------------------------------------------------------
+   REVEAL ANIMATIONS
+   --------------------------------------------------------- */
+
+.js .yq-services [data-reveal] {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translate3d(0, 34px, 0) scale(.985);
+  transition:
+    opacity .85s cubic-bezier(.2,.7,.2,1),
+    transform .85s cubic-bezier(.2,.7,.2,1),
+    filter .85s ease;
+  will-change: opacity, transform, filter;
+}
+
+.js .yq-services [data-reveal].is-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Staggered service rows */
+.js .yq-services .yq-service:nth-child(2) { transition-delay: .08s; }
+.js .yq-services .yq-service:nth-child(3) { transition-delay: .14s; }
+.js .yq-services .yq-service:nth-child(4) { transition-delay: .20s; }
+.js .yq-services .yq-service:nth-child(5) { transition-delay: .26s; }
+.js .yq-services .yq-service:nth-child(6) { transition-delay: .32s; }
+
+/* Staggered process cards */
+.js .yq-services .yq-step:nth-child(2) { transition-delay: .1s; }
+.js .yq-services .yq-step:nth-child(3) { transition-delay: .2s; }
+.js .yq-services .yq-step:nth-child(4) { transition-delay: .3s; }
+
+/* Section light flash */
+.yq-services .yq-service-section,
+.yq-services .yq-approach,
+.yq-services .yq-intro,
+.yq-services .yq-cta {
+  scroll-margin-top: 90px;
+}
+
+.yq-services .yq-service-section,
+.yq-services .yq-approach,
+.yq-services .yq-intro,
+.yq-services .yq-cta {
+  isolation: isolate;
+}
+
+/* ---------------------------------------------------------
+   KEYFRAMES
+   --------------------------------------------------------- */
+
+@keyframes yq-orbit {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* ---------------------------------------------------------
+   TABLET
+   --------------------------------------------------------- */
+
+@media (max-width: 950px) {
+  .yq-services .yq-intro-grid {
+    gap: 55px;
+  }
+
+  .yq-services .yq-service {
+    grid-template-columns: 55px 1fr;
+    gap: 15px 24px;
+  }
+
+  .yq-services .yq-service-content {
+    grid-column: 2;
+  }
+
+  .yq-services .yq-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 38px;
+  }
+
+  .yq-services .yq-step:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .yq-services .yq-cta-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .yq-services .yq-cta-actions {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 620px) {
+  .yq-services .yq-wrap {
+    width: min(100% - 36px, 1160px);
+  }
+
+  .yq-services .yq-hero {
+    min-height: 570px;
+    padding: 95px 0 100px;
+  }
+
+  .yq-services .yq-hero h1 {
+    font-size: clamp(3rem, 13vw, 4.4rem);
+  }
+
+  .yq-services .yq-hero::after {
+    right: -390px;
+    width: 570px;
+    height: 570px;
+  }
+
+  .yq-services .yq-hero-marker {
+    right: 20px;
+    bottom: 35px;
+    font-size: .56rem;
+  }
+
+  .yq-services .yq-hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 23px;
+  }
+
+  .yq-services .yq-intro {
+    padding: 78px 0;
+  }
+
+  .yq-services .yq-intro-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .yq-services .yq-intro h2 {
+    font-size: clamp(2.3rem, 10vw, 3.3rem);
+  }
+
+  .yq-services .yq-service-section {
+    padding: 80px 0;
+  }
+
+  .yq-services .yq-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 35px;
+  }
+
+  .yq-services .yq-section-heading h2 {
+    font-size: clamp(2.3rem, 10vw, 3.4rem);
+  }
+
+  .yq-services .yq-service {
+    grid-template-columns: 42px 1fr;
+    gap: 15px;
+    padding: 27px 20px;
+  }
+
+  .yq-services .yq-service-number {
+    width: 37px;
+    height: 37px;
+    font-size: .8rem;
+  }
+
+  .yq-services .yq-service h3 {
+    font-size: 1.35rem;
+  }
+
+  .yq-services .yq-service-content {
+    grid-column: 1 / -1;
+    padding-top: 6px;
+  }
+
+  .yq-services .yq-service-content ul {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .yq-services .yq-approach {
+    padding: 82px 0;
+  }
+
+  .yq-services .yq-approach-header {
+    margin-bottom: 40px;
+  }
+
+  .yq-services .yq-approach-header h2 {
+    font-size: clamp(2.3rem, 10vw, 3.3rem);
+  }
+
+  .yq-services .yq-steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .yq-services .yq-step,
+  .yq-services .yq-step:not(:first-child),
+  .yq-services .yq-step:nth-child(3) {
+    padding: 25px 0;
+    border-left: 0;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+  }
+
+  .yq-services .yq-step-number {
+    margin-bottom: 12px;
+  }
+
+  .yq-services .yq-cta {
+    padding: 82px 0;
+  }
+
+  .yq-services .yq-cta h2 {
+    font-size: clamp(2.3rem, 10vw, 3.3rem);
+  }
+
+  .yq-services .yq-cta-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* ---------------------------------------------------------
+   ACCESSIBILITY
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .js .yq-services [data-reveal] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
   }
 
   .yq-services *,
   .yq-services *::before,
   .yq-services *::after {
-    box-sizing: border-box;
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
-
-  .yq-services a {
-    color: inherit;
-  }
-
-  .yq-services a:focus-visible {
-    outline: 3px solid var(--yq-orange);
-    outline-offset: 5px;
-  }
-
-  .yq-services .yq-wrap {
-    width: min(1120px, calc(100% - 48px));
-    margin-inline: auto;
-  }
-
-  .yq-services .yq-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 11px;
-    margin: 0 0 20px;
-    color: var(--yq-emerald);
-    font-size: .73rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    line-height: 1.4;
-    text-transform: uppercase;
-  }
-
-  .yq-services .yq-eyebrow::before {
-    content: "";
-    width: 24px;
-    height: 2px;
-    background: currentColor;
-  }
-
-  /* Hero */
-  .yq-services .yq-hero {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    align-items: center;
-    min-height: 490px;
-    padding: 112px 0 100px;
-    color: #fff;
-    background: var(--yq-forest);
-  }
-
-  .yq-services .yq-hero::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    content: "";
-    opacity: .16;
-    background-image:
-      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: linear-gradient(to right, #000, transparent 90%);
-  }
-
-  .yq-services .yq-hero::after {
-    position: absolute;
-    z-index: -1;
-    content: "";
-    width: 440px;
-    height: 440px;
-    right: -150px;
-    top: -180px;
-    border: 1px solid rgba(20,160,144,.25);
-    border-radius: 50%;
-    box-shadow:
-      0 0 0 55px rgba(20,160,144,.035),
-      0 0 0 110px rgba(20,160,144,.025);
-  }
-
-  .yq-services .yq-hero-inner {
-    max-width: 790px;
-  }
-
-  .yq-services .yq-hero .yq-eyebrow {
-    color: #70CFC1;
-  }
-
-  .yq-services .yq-hero h1 {
-    max-width: 780px;
-    margin: 0 0 25px;
-    color: #fff;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2.8rem, 6.5vw, 5.3rem);
-    font-weight: 600;
-    letter-spacing: -.055em;
-    line-height: 1.02;
-  }
-
-  .yq-services .yq-hero h1 span {
-    color: var(--yq-orange);
-  }
-
-  .yq-services .yq-hero-copy {
-    max-width: 600px;
-    margin: 0;
-    color: rgba(255,255,255,.72);
-    font-size: clamp(1rem, 1.7vw, 1.15rem);
-    line-height: 1.85;
-  }
-
-  .yq-services .yq-hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 26px;
-    margin-top: 36px;
-  }
-
-  /* Buttons */
-  .yq-services .yq-button {
-    display: inline-flex;
-    min-height: 52px;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 13px 22px;
-    border: 1px solid var(--yq-orange);
-    background: var(--yq-orange);
-    color: var(--yq-forest);
-    font-size: .88rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background .2s ease, border-color .2s ease, transform .2s ease;
-  }
-
-  .yq-services .yq-button:hover {
-    border-color: #FFA43A;
-    background: #FFA43A;
-    transform: translateY(-2px);
-  }
-
-  .yq-services .yq-text-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    color: inherit;
-    font-size: .9rem;
-    font-weight: 650;
-    text-decoration: none;
-  }
-
-  .yq-services .yq-text-link span {
-    transition: transform .2s ease;
-  }
-
-  .yq-services .yq-text-link:hover span {
-    transform: translateX(4px);
-  }
-
-  .yq-services .yq-hero .yq-text-link {
-    color: rgba(255,255,255,.85);
-  }
-
-  /* Intro */
-  .yq-services .yq-intro {
-    padding: 100px 0 72px;
-  }
-
-  .yq-services .yq-intro-grid {
-    display: grid;
-    grid-template-columns: .85fr 1.15fr;
-    gap: 70px;
-    align-items: start;
-  }
-
-  .yq-services .yq-intro h2 {
-    max-width: 440px;
-    margin: 0;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-services .yq-intro-copy {
-    max-width: 590px;
-    padding-top: 7px;
-  }
-
-  .yq-services .yq-intro-copy p {
-    margin: 0 0 17px;
-    color: var(--yq-muted);
-    font-size: 1rem;
-  }
-
-  .yq-services .yq-intro-copy p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Services */
-  .yq-services .yq-service-section {
-    padding: 82px 0 95px;
-    background: var(--yq-mist);
-  }
-
-  .yq-services .yq-section-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 32px;
-    margin-bottom: 42px;
-  }
-
-  .yq-services .yq-section-heading h2 {
-    max-width: 570px;
-    margin: 0;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-services .yq-section-heading > p {
-    max-width: 340px;
-    margin: 0 0 4px;
-    color: var(--yq-muted);
-    font-size: .93rem;
-  }
-
-  .yq-services .yq-service-list {
-    border-top: 1px solid var(--yq-line);
-  }
-
-  .yq-services .yq-service {
-    display: grid;
-    grid-template-columns: 76px minmax(220px, .85fr) 1.15fr;
-    gap: 30px;
-    align-items: start;
-    padding: 36px 0 38px;
-    border-bottom: 1px solid var(--yq-line);
-  }
-
-  .yq-services .yq-service-number {
-    padding-top: 5px;
-    color: var(--yq-emerald);
-    font-family: var(--font-display, sans-serif);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: .04em;
-  }
-
-  .yq-services .yq-service h3 {
-    margin: 0;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(1.35rem, 2.4vw, 1.8rem);
-    font-weight: 600;
-    letter-spacing: -.035em;
-    line-height: 1.2;
-  }
-
-  .yq-services .yq-service-content p {
-    max-width: 580px;
-    margin: 0 0 17px;
-    color: var(--yq-muted);
-    font-size: .96rem;
-  }
-
-  .yq-services .yq-service-content ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px 20px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .yq-services .yq-service-content li {
-    position: relative;
-    padding-left: 17px;
-    color: var(--yq-ink);
-    font-size: .87rem;
-  }
-
-  .yq-services .yq-service-content li::before {
-    position: absolute;
-    top: .72em;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--yq-emerald);
-    content: "";
-  }
-
-  /* Approach */
-  .yq-services .yq-approach {
-    padding: 100px 0;
-    background: #fff;
-  }
-
-  .yq-services .yq-approach-header {
-    max-width: 650px;
-    margin-bottom: 48px;
-  }
-
-  .yq-services .yq-approach-header h2 {
-    margin: 0 0 16px;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-services .yq-approach-header p {
-    margin: 0;
-    color: var(--yq-muted);
-  }
-
-  .yq-services .yq-steps {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    border-top: 1px solid var(--yq-line);
-  }
-
-  .yq-services .yq-step {
-    padding: 25px 24px 0 0;
-  }
-
-  .yq-services .yq-step:not(:first-child) {
-    padding-left: 24px;
-    border-left: 1px solid var(--yq-line);
-  }
-
-  .yq-services .yq-step-number {
-    display: block;
-    margin-bottom: 23px;
-    color: var(--yq-orange);
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.1rem;
-    font-weight: 700;
-  }
-
-  .yq-services .yq-step h3 {
-    margin: 0 0 10px;
-    font-family: var(--font-display, sans-serif);
-    font-size: 1.15rem;
-    font-weight: 600;
-    letter-spacing: -.02em;
-  }
-
-  .yq-services .yq-step p {
-    margin: 0;
-    color: var(--yq-muted);
-    font-size: .9rem;
-  }
-
-  /* Closing CTA */
-  .yq-services .yq-cta {
-    padding: 78px 0;
-    background: var(--yq-forest);
-    color: #fff;
-  }
-
-  .yq-services .yq-cta-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 45px;
-  }
-
-  .yq-services .yq-cta-copy {
-    max-width: 650px;
-  }
-
-  .yq-services .yq-cta .yq-eyebrow {
-    color: #70CFC1;
-  }
-
-  .yq-services .yq-cta h2 {
-    margin: 0 0 14px;
-    font-family: var(--font-display, sans-serif);
-    font-size: clamp(2rem, 4vw, 3.1rem);
-    font-weight: 600;
-    letter-spacing: -.045em;
-    line-height: 1.12;
-  }
-
-  .yq-services .yq-cta-copy p {
-    max-width: 570px;
-    margin: 0;
-    color: rgba(255,255,255,.68);
-    font-size: .96rem;
-  }
-
-  .yq-services .yq-cta-actions {
-    display: flex;
-    flex-shrink: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 17px;
-  }
-
-  .yq-services .yq-cta .yq-text-link {
-    color: rgba(255,255,255,.8);
-  }
-
-  /* Reveal animation */
-  .js .yq-services [data-reveal] {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-      opacity .7s ease,
-      transform .7s cubic-bezier(.2,.7,.2,1);
-  }
-
-  .js .yq-services [data-reveal].is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .js .yq-services [data-reveal] {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-
-    .yq-services *,
-    .yq-services *::before,
-    .yq-services *::after {
-      scroll-behavior: auto !important;
-      transition-duration: .01ms !important;
-    }
-  }
-
-  /* Tablet */
-  @media (max-width: 850px) {
-    .yq-services .yq-intro-grid {
-      grid-template-columns: 1fr;
-      gap: 25px;
-    }
-
-    .yq-services .yq-service {
-      grid-template-columns: 50px 1fr;
-      gap: 15px 22px;
-    }
-
-    .yq-services .yq-service-content {
-      grid-column: 2;
-    }
-
-    .yq-services .yq-steps {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: 35px;
-    }
-
-    .yq-services .yq-step:nth-child(3) {
-      padding-left: 0;
-      border-left: 0;
-    }
-
-    .yq-services .yq-cta-inner {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .yq-services .yq-cta-actions {
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-  }
-
-  /* Mobile */
-  @media (max-width: 600px) {
-    .yq-services .yq-wrap {
-      width: min(100% - 36px, 1120px);
-    }
-
-    .yq-services .yq-hero {
-      min-height: 430px;
-      padding: 90px 0 75px;
-    }
-
-    .yq-services .yq-hero h1 {
-      font-size: clamp(2.7rem, 13vw, 4rem);
-    }
-
-    .yq-services .yq-hero-actions {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .yq-services .yq-intro {
-      padding: 70px 0 60px;
-    }
-
-    .yq-services .yq-service-section {
-      padding: 68px 0;
-    }
-
-    .yq-services .yq-section-heading {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .yq-services .yq-service {
-      grid-template-columns: 35px 1fr;
-      gap: 12px;
-      padding: 28px 0;
-    }
-
-    .yq-services .yq-service-content ul {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .yq-services .yq-approach {
-      padding: 70px 0;
-    }
-
-    .yq-services .yq-steps {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
-
-    .yq-services .yq-step,
-    .yq-services .yq-step:not(:first-child),
-    .yq-services .yq-step:nth-child(3) {
-      padding: 22px 0;
-      border-left: 0;
-      border-bottom: 1px solid var(--yq-line);
-    }
-
-    .yq-services .yq-step-number {
-      margin-bottom: 12px;
-    }
-
-    .yq-services .yq-cta {
-      padding: 68px 0;
-    }
-
-    .yq-services .yq-cta-actions {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-  }
+}
 </style>
 {% endblock %}
+
 
 {% block content %}
 <main class="yq-services">
 
-  <!-- Hero -->
+  <!-- HERO -->
   <section class="yq-hero">
     <div class="yq-wrap">
       <div class="yq-hero-inner" data-reveal>
-        <p class="yq-eyebrow">Yunqida Energy Kenya · Our Services</p>
+
+        <p class="yq-eyebrow">
+          Yunqida Energy Kenya · Our Services
+        </p>
 
         <h1>
           Energy solutions for a more
@@ -625,17 +1002,28 @@
             <span aria-hidden="true">↓</span>
           </a>
         </div>
+
       </div>
+    </div>
+
+    <div class="yq-hero-marker" aria-hidden="true">
+      Powering possibilities
     </div>
   </section>
 
-  <!-- Introduction -->
+
+  <!-- INTRODUCTION -->
   <section class="yq-intro">
     <div class="yq-wrap">
+
       <div class="yq-intro-grid">
+
         <div data-reveal>
           <p class="yq-eyebrow">What we do</p>
-          <h2>Practical energy solutions, guided by your needs.</h2>
+
+          <h2>
+            Practical energy solutions, guided by your needs.
+          </h2>
         </div>
 
         <div class="yq-intro-copy" data-reveal>
@@ -657,29 +1045,38 @@
             intended application.
           </p>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Service list -->
+
+  <!-- SERVICES -->
   <section class="yq-service-section" id="our-services">
     <div class="yq-wrap">
 
       <div class="yq-section-heading" data-reveal>
+
         <div>
           <p class="yq-eyebrow">Our capabilities</p>
-          <h2>Solutions across the energy storage journey.</h2>
+
+          <h2>
+            Solutions across the energy storage journey.
+          </h2>
         </div>
 
         <p>
           From understanding your power needs to exploring suitable
           equipment, we help make energy-storage decisions clearer.
         </p>
+
       </div>
+
 
       <div class="yq-service-list">
 
         <article class="yq-service" id="energy-consultation" data-reveal>
+
           <div class="yq-service-number">01</div>
 
           <h3>Energy consultation & system sizing</h3>
@@ -699,9 +1096,12 @@
               <li>Exploring suitable system configurations</li>
             </ul>
           </div>
+
         </article>
 
+
         <article class="yq-service" id="residential-solar" data-reveal>
+
           <div class="yq-service-number">02</div>
 
           <h3>Residential solar & backup solutions</h3>
@@ -721,9 +1121,12 @@
               <li>Energy storage capacity discussions</li>
             </ul>
           </div>
+
         </article>
 
+
         <article class="yq-service" id="commercial-storage" data-reveal>
+
           <div class="yq-service-number">03</div>
 
           <h3>Commercial & industrial energy storage</h3>
@@ -743,9 +1146,12 @@
               <li>Application-based equipment selection</li>
             </ul>
           </div>
+
         </article>
 
+
         <article class="yq-service" id="battery-solutions" data-reveal>
+
           <div class="yq-service-number">04</div>
 
           <h3>LiFePO4 lithium battery solutions</h3>
@@ -764,9 +1170,12 @@
               <li>Energy storage product enquiries</li>
             </ul>
           </div>
+
         </article>
 
+
         <article class="yq-service" id="inverter-solutions" data-reveal>
+
           <div class="yq-service-number">05</div>
 
           <h3>Solar & hybrid inverter solutions</h3>
@@ -786,9 +1195,12 @@
               <li>Product selection guidance</li>
             </ul>
           </div>
+
         </article>
 
+
         <article class="yq-service" id="oem-odm" data-reveal>
+
           <div class="yq-service-number">06</div>
 
           <h3>OEM & ODM manufacturing support</h3>
@@ -808,58 +1220,78 @@
               <li>Business and distribution enquiries</li>
             </ul>
           </div>
+
         </article>
 
       </div>
     </div>
   </section>
 
-  <!-- How we work -->
+
+  <!-- HOW WE WORK -->
   <section class="yq-approach">
     <div class="yq-wrap">
 
       <div class="yq-approach-header" data-reveal>
+
         <p class="yq-eyebrow">How we work</p>
-        <h2>A considered approach to choosing your energy system.</h2>
+
+        <h2>
+          A considered approach to choosing your energy system.
+        </h2>
+
         <p>
           Every application is different. We start with your requirements
           and help you understand the options before moving towards
           a suitable product selection.
         </p>
+
       </div>
+
 
       <div class="yq-steps">
 
         <article class="yq-step" data-reveal>
           <span class="yq-step-number">01</span>
+
           <h3>Tell us what you need</h3>
+
           <p>
             Share your location, intended application, power requirements
             and what you want the system to achieve.
           </p>
         </article>
 
+
         <article class="yq-step" data-reveal>
           <span class="yq-step-number">02</span>
+
           <h3>Review the requirements</h3>
+
           <p>
             We discuss your energy needs, expected loads and the
             storage capacity or system configuration to consider.
           </p>
         </article>
 
+
         <article class="yq-step" data-reveal>
           <span class="yq-step-number">03</span>
+
           <h3>Explore suitable options</h3>
+
           <p>
             Review relevant batteries, inverters and solar
             energy-storage products for your application.
           </p>
         </article>
 
+
         <article class="yq-step" data-reveal>
           <span class="yq-step-number">04</span>
+
           <h3>Discuss the next steps</h3>
+
           <p>
             Our Kenyan team can assist with product enquiries,
             quotations and the appropriate follow-up for your needs.
@@ -870,24 +1302,32 @@
     </div>
   </section>
 
-  <!-- CTA -->
+
+  <!-- FINAL CTA -->
   <section class="yq-cta">
     <div class="yq-wrap">
+
       <div class="yq-cta-inner">
 
         <div class="yq-cta-copy" data-reveal>
+
           <p class="yq-eyebrow">Start a conversation</p>
 
-          <h2>Let's discuss the right energy solution for your application.</h2>
+          <h2>
+            Let's discuss the right energy solution for your application.
+          </h2>
 
           <p>
             Whether you are planning a home solar system, exploring
             commercial battery storage or enquiring about energy products,
             our team is ready to hear from you.
           </p>
+
         </div>
 
+
         <div class="yq-cta-actions" data-reveal>
+
           <a class="yq-button" href="{% url 'contact' %}">
             Contact Yunqida Kenya
             <span aria-hidden="true">↗</span>
@@ -897,6 +1337,7 @@
             View our products
             <span aria-hidden="true">→</span>
           </a>
+
         </div>
 
       </div>
@@ -906,40 +1347,99 @@
 </main>
 {% endblock %}
 
+
 {% block extra_js %}
 <script>
 (function () {
-  const revealItems = document.querySelectorAll(
-    '.yq-services [data-reveal]'
-  );
+  'use strict';
 
-  if (!revealItems.length) return;
+  const root = document.querySelector('.yq-services');
 
+  if (!root) return;
+
+  const revealItems = root.querySelectorAll('[data-reveal]');
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  /* Reveal elements when they enter the viewport */
   if (
-    !('IntersectionObserver' in window) ||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    reduceMotion ||
+    !('IntersectionObserver' in window)
   ) {
     revealItems.forEach(function (item) {
       item.classList.add('is-in');
     });
-    return;
+  } else {
+    const revealObserver = new IntersectionObserver(
+      function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -45px 0px'
+      }
+    );
+
+    revealItems.forEach(function (item) {
+      revealObserver.observe(item);
+    });
   }
 
-  const observer = new IntersectionObserver(function (entries, obs) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-in');
-        obs.unobserve(entry.target);
+  /* Smooth internal navigation */
+  root.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      const targetId = link.getAttribute('href');
+
+      if (!targetId || targetId === '#') return;
+
+      const target = root.querySelector(targetId);
+
+      if (!target) return;
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+        behavior: reduceMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, '', targetId);
       }
     });
-  }, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -35px 0px'
   });
 
-  revealItems.forEach(function (item) {
-    observer.observe(item);
-  });
+  /* Subtle section-entry lighting */
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const sections = root.querySelectorAll(
+      '.yq-intro, .yq-service-section, .yq-approach, .yq-cta'
+    );
+
+    const sectionObserver = new IntersectionObserver(
+      function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('yq-section-active');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.15
+      }
+    );
+
+    sections.forEach(function (section) {
+      sectionObserver.observe(section);
+    });
+  }
+
 })();
 </script>
 {% endblock %}

@@ -8,2743 +8,782 @@
 
 {% block extra_head %}
 <style>
-/* ==========================================================
-   YUNQIDA ENERGY — HOMEPAGE
-   Editorial energy technology / navy, yellow and warm stone
-   ========================================================== */
-
-html {
-    height: auto !important;
-    overflow-x: clip !important;
-    overflow-y: auto !important;
-    scroll-behavior: smooth;
-}
-
-body.yd-home {
-    height: auto !important;
-    min-height: 100%;
-    overflow-x: clip !important;
-    overflow-y: visible !important;
-}
-
-.yd-home {
-    --yd-navy: #10172f;
-    --yd-deep: #080f27;
-    --yd-yellow: #ffe000;
-    --yd-cream: #f3f1df;
-    --yd-stone: #f5f5f1;
-    --yd-ink: #171d30;
-    --yd-muted: #687083;
-    --yd-line: rgba(16, 23, 47, .14);
-    --yd-green: #176b5b;
-    --yd-bronze: #b77b4b;
-    --yd-ease: cubic-bezier(.2, .75, .25, 1);
-
-    position: relative;
-    width: 100%;
-    min-height: 100%;
-    overflow: visible !important;
-    background: #fff;
-    color: var(--yd-ink);
-    font-family: var(--font-body, Arial, sans-serif);
-}
-
-.yd-home *,
-.yd-home *::before,
-.yd-home *::after {
-    box-sizing: border-box;
-}
-
-.yd-home img,
-.yd-home video {
-    display: block;
-    max-width: 100%;
-}
-
-.yd-home a {
-    text-decoration: none;
-}
-
-.yd-wrap {
-    width: min(1220px, calc(100% - 9vw));
-    margin-inline: auto;
-}
-
-.yd-section {
-    position: relative;
-}
-
-.yd-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 10px;
-    font-weight: 850;
-    letter-spacing: .17em;
-    line-height: 1.5;
-    text-transform: uppercase;
-}
-
-.yd-eyebrow::before {
-    content: "";
-    width: 25px;
-    height: 2px;
-    flex: 0 0 25px;
-    background: var(--yd-yellow);
-}
-
-.yd-title {
-    margin: 14px 0 0;
-    font-size: clamp(34px, 4.8vw, 62px);
-    font-weight: 950;
-    line-height: .99;
-    letter-spacing: -.055em;
-    text-transform: uppercase;
-}
-
-.yd-copy {
-    color: var(--yd-muted);
-    font-size: 13px;
-    line-height: 1.9;
-}
-
-.yd-btn {
-    display: inline-flex;
-    min-height: 48px;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 0 21px;
-    border: 1px solid var(--yd-yellow);
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-    transition:
-        transform .3s var(--yd-ease),
-        background .3s ease,
-        color .3s ease,
-        box-shadow .3s ease;
-}
-
-.yd-btn span {
-    font-size: 17px;
-    line-height: 1;
-}
-
-.yd-btn:hover {
-    transform: translateY(-3px);
-    background: #fff;
-    border-color: #fff;
-    color: var(--yd-navy);
-    box-shadow: 0 12px 30px #0002;
-}
-
-.yd-btn--outline {
-    border-color: #ffffff80;
-    background: transparent;
-    color: #fff;
-}
-
-.yd-btn--outline:hover {
-    border-color: var(--yd-yellow);
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-}
-
-.yd-home button,
-.yd-home input,
-.yd-home select,
-.yd-home textarea {
-    font: inherit;
-}
-
-.yd-home a:focus-visible,
-.yd-home button:focus-visible,
-.yd-home input:focus-visible,
-.yd-home select:focus-visible,
-.yd-home textarea:focus-visible {
-    outline: 3px solid #bca600;
-    outline-offset: 4px;
-}
-
-/* Reveal animation.
-   Elements remain visible if JavaScript is unavailable. */
-.yd-reveal {
-    opacity: 1;
-    transform: none;
-}
-
-.yd-home.yd-js-ready .yd-reveal {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-        opacity .75s var(--yd-ease),
-        transform .75s var(--yd-ease);
-}
-
-.yd-home.yd-js-ready .yd-reveal.is-visible {
-    opacity: 1;
-    transform: none;
-}
-
-.yd-delay-1 { transition-delay: .10s !important; }
-.yd-delay-2 { transition-delay: .20s !important; }
-.yd-delay-3 { transition-delay: .30s !important; }
-
-/* Scroll progress */
-.yd-progress {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    pointer-events: none;
-}
-
-.yd-progress span {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: var(--yd-yellow);
-    transform: scaleX(0);
-    transform-origin: left center;
-}
-
-/* ==========================================================
-   HERO
-   ========================================================== */
-
-.yd-hero {
-    position: relative;
-    isolation: isolate;
-    display: flex;
-    min-height: min(790px, calc(100svh - 70px));
-    align-items: center;
-    overflow: hidden;
-    background: var(--yd-deep);
-    color: #fff;
-}
-
-.yd-hero__media {
-    position: absolute;
-    z-index: -2;
-    inset: 0;
-}
-
-.yd-hero__media video,
-.yd-hero__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.yd-hero::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    content: "";
-    background:
-        linear-gradient(90deg,
-            rgba(8, 15, 39, .94) 0%,
-            rgba(8, 15, 39, .78) 45%,
-            rgba(8, 15, 39, .22) 100%),
-        linear-gradient(0deg, rgba(8, 15, 39, .45), transparent 55%);
-}
-
-.yd-hero::after {
-    position: absolute;
-    z-index: -1;
-    top: -34%;
-    right: -13%;
-    width: min(58vw, 760px);
-    aspect-ratio: 1;
-    border: 1px solid #ffffff20;
-    border-radius: 50%;
-    content: "";
-    box-shadow:
-        0 0 0 45px #ffffff08,
-        0 0 0 95px #ffffff05;
-    pointer-events: none;
-}
-
-.yd-hero__inner {
-    width: min(1220px, calc(100% - 9vw));
-    margin-inline: auto;
-    padding: 115px 0 42px;
-}
-
-.yd-hero__content {
-    max-width: 790px;
-}
-
-.yd-hero .yd-eyebrow {
-    color: var(--yd-yellow);
-}
-
-.yd-hero h1 {
-    margin: 24px 0 0;
-    font-size: clamp(50px, 8.5vw, 112px);
-    font-weight: 950;
-    line-height: .88;
-    letter-spacing: -.075em;
-    text-transform: uppercase;
-}
-
-.yd-hero h1 span {
-    display: block;
-    color: var(--yd-yellow);
-}
-
-.yd-hero__text {
-    max-width: 500px;
-    margin: 27px 0 30px;
-    color: #ffffffc9;
-    font-size: 14px;
-    line-height: 1.95;
-}
-
-.yd-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.yd-hero__bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: clamp(65px, 11vh, 115px);
-    padding-top: 17px;
-    border-top: 1px solid #ffffff40;
-    color: #ffffffb8;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-}
-
-.yd-scroll-cue {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.yd-scroll-cue::after {
-    width: 35px;
-    height: 2px;
-    background: var(--yd-yellow);
-    content: "";
-    animation: ydPulse 1.8s ease-in-out infinite;
-}
-
-@keyframes ydPulse {
-    50% {
-        transform: scaleX(.4);
-        transform-origin: left;
-        opacity: .5;
-    }
-}
-
-.yd-video-toggle {
-    position: absolute;
-    z-index: 3;
-    top: 28px;
-    right: 4.5vw;
-    display: grid;
-    width: 42px;
-    height: 42px;
-    place-items: center;
-    border: 1px solid #ffffff80;
-    border-radius: 50%;
-    background: #10172f66;
-    color: #fff;
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    transition: background .25s ease, color .25s ease;
-}
-
-.yd-video-toggle:hover {
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-}
-
-
-/* ==========================================================
-   YUNQIDA — HUMAN-CENTRED WHO WE ARE
-   ========================================================== */
-
-.yd-who {
-    position: relative;
-    padding: clamp(75px, 9vw, 125px) 0;
-    overflow: hidden;
-    background: #f5f5ef;
-    color: #17251f;
-}
-
-.yd-who::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
-    background: #c69b57;
-    content: "";
-}
-
-.yd-who::after {
-    position: absolute;
-    right: -180px;
-    bottom: -220px;
-    width: 490px;
-    height: 490px;
-    border: 1px solid #173e3310;
-    border-radius: 50%;
-    box-shadow:
-        0 0 0 45px #173e3307,
-        0 0 0 90px #173e3305;
-    content: "";
-    pointer-events: none;
-}
-
-.yd-who__inner {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    width: min(1220px, calc(100% - 9vw));
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(42px, 7vw, 92px);
-    margin-inline: auto;
-}
-
-
-/* WHO WE ARE — REFINED TECHNOLOGY ICON PANEL */
-
-.yd-who__visual {
-    position: relative;
-    min-height: 500px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 65px 28px 85px;
-    overflow: hidden;
-    border: 1px solid #173e3215;
-    background:
-        radial-gradient(circle at 50% 40%, #fff 0%, #f0f2eb 75%);
-}
-
-.yd-who__visual-label {
-    position: absolute;
-    top: 25px;
-    left: 28px;
-    color: #748176;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .19em;
-}
-
-.yd-who__icon-layout {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-    max-width: 470px;
-    margin: 0 auto;
-}
-
-.yd-who__icon-card {
-    position: relative;
-    min-height: 175px;
-    padding: 23px 19px;
-    border: 1px solid #183e3214;
-    background: rgba(255,255,255,.76);
-    transition:
-        transform .35s cubic-bezier(.2,.75,.25,1),
-        box-shadow .35s ease,
-        border-color .35s ease;
-}
-
-.yd-who__icon-card:first-child {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 76px 1fr;
-    align-items: center;
-    column-gap: 20px;
-    min-height: 145px;
-}
-
-.yd-who__icon-card:hover {
-    transform: translateY(-5px);
-    border-color: #b9955e70;
-    box-shadow: 0 16px 35px #172d2510;
-}
-
-.yd-who__icon {
-    display: grid;
-    width: 56px;
-    height: 56px;
-    place-items: center;
-    color: #245b48;
-    background: #edf2eb;
-    border: 1px solid #245b4815;
-}
-
-.yd-who__icon svg {
-    width: 39px;
-    height: 39px;
-    display: block;
-}
-
-.yd-who__icon-card:first-child .yd-who__icon {
-    width: 70px;
-    height: 70px;
-}
-
-.yd-who__icon-card:first-child .yd-who__icon svg {
-    width: 48px;
-    height: 48px;
-}
-
-.yd-who__icon-index {
-    display: block;
-    margin-top: 17px;
-    color: #b18b53;
-    font-size: 8px;
-    font-weight: 850;
-    letter-spacing: .14em;
-}
-
-.yd-who__icon-card:first-child .yd-who__icon-index {
-    margin-top: 0;
-}
-
-.yd-who__icon-card h3 {
-    margin: 8px 0 6px;
-    color: #193b30;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.yd-who__icon-card p {
-    margin: 0;
-    color: #78837b;
-    font-size: 10px;
-    line-height: 1.7;
-}
-
-.yd-who__visual-caption {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 17px 23px;
-    border-top: 1px solid #173e3214;
-    background: #f5f5efeb;
-}
-
-.yd-who__caption-mark {
-    display: grid;
-    width: 37px;
-    height: 37px;
-    flex: 0 0 37px;
-    place-items: center;
-    background: #173e33;
-    color: #e5c18a;
-    font-family: Georgia, serif;
-    font-size: 19px;
-}
-
-.yd-who__visual-caption strong {
-    display: block;
-    color: #19382f;
-    font-family: Georgia, serif;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.yd-who__visual-caption span:not(.yd-who__caption-mark) {
-    display: block;
-    margin-top: 4px;
-    color: #7a857c;
-    font-size: 9px;
-}
-
-@media (max-width: 600px) {
-    .yd-who__visual {
-        min-height: 440px;
-        padding: 65px 15px 85px;
-    }
-
-    .yd-who__icon-layout {
-        gap: 10px;
-    }
-
-    .yd-who__icon-card {
-        min-height: 155px;
-        padding: 16px 12px;
-    }
-
-    .yd-who__icon-card:first-child {
-        min-height: 125px;
-        grid-template-columns: 57px 1fr;
-        gap: 12px;
-    }
-
-    .yd-who__icon-card:first-child .yd-who__icon {
-        width: 53px;
-        height: 53px;
-    }
-
-    .yd-who__icon-card:first-child .yd-who__icon svg {
-        width: 38px;
-        height: 38px;
-    }
-
-    .yd-who__icon {
-        width: 45px;
-        height: 45px;
-    }
-
-    .yd-who__icon svg {
-        width: 32px;
-        height: 32px;
-    }
-
-    .yd-who__icon-card h3 {
-        font-size: 15px;
-    }
-
-    .yd-who__icon-card p {
-        font-size: 9px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .yd-who__icon-card {
-        transition: none;
-    }
-}
-
-
-.yd-who__lead {
-    max-width: 550px;
-    margin: 0 0 19px;
-    color: #354c40;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(17px, 1.8vw, 20px);
-    line-height: 1.55;
-}
-
-.yd-who__description {
-    max-width: 570px;
-    color: #69766e;
-    font-size: 12px;
-    line-height: 1.95;
-}
-
-.yd-who__description p {
-    margin: 0 0 13px;
-}
-
-/* Home and business detail rows */
-
-.yd-who__details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 27px;
-    padding-top: 23px;
-    border-top: 1px solid #19382f24;
-}
-
-.yd-who__detail {
-    display: flex;
-    align-items: flex-start;
-    gap: 11px;
-}
-
-.yd-who__detail-number {
-    display: grid;
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    place-items: center;
-    border: 1px solid #c69b57;
-    border-radius: 50%;
-    color: #99713e;
-    font-size: 9px;
-    font-weight: 850;
-}
-
-.yd-who__detail strong {
-    display: block;
-    margin: 2px 0 6px;
-    color: #1b3b30;
-    font-family: Georgia, serif;
-    font-size: 17px;
-    font-weight: 600;
-}
-
-.yd-who__detail div > span {
-    display: block;
-    color: #78837b;
-    font-size: 10px;
-    line-height: 1.8;
-}
-
-/* Link */
-
-.yd-who__link {
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-    margin-top: 30px;
-    padding-bottom: 9px;
-    border-bottom: 1px solid #c69b57;
-    color: #173e33;
-    font-size: 10px;
-    font-weight: 850;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    transition: gap .3s ease, color .3s ease;
-}
-
-.yd-who__link span {
-    font-size: 17px;
-}
-
-.yd-who__link:hover {
-    gap: 23px;
-    color: #9c713b;
-}
-
-/* Responsive */
-
-@media (max-width: 900px) {
-    .yd-who__inner {
-        grid-template-columns: 1fr;
-        gap: 38px;
-    }
-
-    .yd-who__visual {
-        min-height: 400px;
-    }
-
-    .yd-who__illustration {
-        max-width: 560px;
-        max-height: 440px;
-        align-self: center;
-    }
-
-    .yd-who__content {
-        max-width: 720px;
-    }
-}
-
-@media (max-width: 600px) {
-    .yd-who {
-        padding: 65px 0;
-    }
-
-    .yd-who__inner {
-        width: calc(100% - 34px);
-        gap: 30px;
-    }
-
-    .yd-who__visual {
-        min-height: 315px;
-    }
-
-    .yd-who__visual-label {
-        top: 15px;
-        left: 15px;
-        font-size: 8px;
-    }
-
-    .yd-who__illustration {
-        max-height: 330px;
-        padding: 24px 0 50px;
-    }
-
-    .yd-who__visual-caption {
-        gap: 10px;
-        padding: 12px 14px;
-    }
-
-    .yd-who__caption-mark {
-        width: 32px;
-        height: 32px;
-        flex-basis: 32px;
-        font-size: 17px;
-    }
-
-    .yd-who__visual-caption strong {
-        font-size: 11px;
-    }
-
-    .yd-who__visual-caption span:not(.yd-who__caption-mark) {
-        font-size: 8px;
-    }
-
-    .yd-who__title {
-        font-size: clamp(39px, 10vw, 49px);
-    }
-
-    .yd-who__lead {
-        font-size: 17px;
-    }
-
-    .yd-who__description {
-        font-size: 11px;
-    }
-
-    .yd-who__details {
-        gap: 14px;
-    }
-
-    .yd-who__detail {
-        gap: 8px;
-    }
-
-    .yd-who__detail strong {
-        font-size: 15px;
-    }
-
-    .yd-who__detail div > span {
-        font-size: 9px;
-    }
-}
-
-@media (max-width: 380px) {
-    .yd-who__details {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-who__visual {
-        min-height: 275px;
-    }
-}
-
-/* ==========================================================
-   CATEGORY STRIP
-   ========================================================== */
-
-.yd-proof {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-}
-
-.yd-proof__item {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 13px;
-    padding: 22px clamp(13px, 3vw, 35px);
-    border-right: 1px solid #10172f25;
-}
-
-.yd-proof__item:last-child {
-    border-right: 0;
-}
-
-.yd-proof__num {
-    flex: 0 0 auto;
-    font-size: clamp(23px, 3vw, 36px);
-    font-weight: 950;
-    letter-spacing: -.06em;
-}
-
-.yd-proof__label {
-    max-width: 145px;
-    font-size: 9px;
-    font-weight: 950;
-    line-height: 1.5;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   SOLUTIONS RAIL
-   ========================================================== */
-
-.yd-solutions {
-    padding: clamp(70px, 9vw, 110px) 0 85px;
-    overflow: hidden;
-    background: var(--yd-navy);
-    color: #fff;
-}
-
-.yd-solutions__head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 30px;
-}
-
-.yd-solutions__head .yd-eyebrow {
-    color: var(--yd-yellow);
-}
-
-.yd-solutions__head .yd-title {
-    font-size: clamp(32px, 4vw, 54px);
-}
-
-.yd-arrows {
-    display: flex;
-    flex: 0 0 auto;
-    gap: 10px;
-}
-
-.yd-arrow {
-    display: grid;
-    width: 46px;
-    height: 43px;
-    place-items: center;
-    border: 1px solid #ffffff70;
-    background: transparent;
-    color: #fff;
-    font-size: 22px;
-    cursor: pointer;
-    transition: background .25s ease, color .25s ease, border-color .25s ease;
-}
-
-.yd-arrow:hover,
-.yd-arrow--next {
-    border-color: var(--yd-yellow);
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-}
-
-.yd-rail {
-    display: grid;
-    grid-auto-columns: minmax(245px, 1fr);
-    grid-auto-flow: column;
-    gap: 17px;
-    overflow-x: auto;
-    padding: 3px 2px 18px;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-}
-
-.yd-rail::-webkit-scrollbar {
-    display: none;
-}
-
-.yd-solution {
-    display: flex;
-    min-height: 325px;
-    flex-direction: column;
-    overflow: hidden;
-    background: #fff;
-    color: var(--yd-ink);
-    scroll-snap-align: start;
-    transition: transform .35s ease, box-shadow .35s ease;
-}
-
-.yd-solution:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 45px #0005;
-}
-
-.yd-solution__image {
-    position: relative;
-    height: 160px;
-    overflow: hidden;
-    background: #e9eaf0;
-}
-
-.yd-solution__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .75s var(--yd-ease);
-}
-
-.yd-solution:hover .yd-solution__image img {
-    transform: scale(1.06);
-}
-
-.yd-solution__icon {
-    position: absolute;
-    bottom: -20px;
-    left: 17px;
-    display: grid;
-    width: 56px;
-    height: 56px;
-    place-items: center;
-    border: 4px solid #fff;
-    border-radius: 50%;
-    background: var(--yd-navy);
-    color: #fff;
-    font-size: 22px;
-}
-
-.yd-solution__body {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding: 30px 19px 20px;
-}
-
-.yd-solution h3 {
-    margin: 0 0 8px;
-    font-size: 16px;
-    font-weight: 900;
-}
-
-.yd-solution p {
-    margin: 0 0 16px;
-    color: #626a7b;
-    font-size: 11px;
-    line-height: 1.8;
-}
-
-.yd-solution a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: auto;
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   TECHNOLOGY FEATURE
-   ========================================================== */
-
-.yd-platform {
-    padding: clamp(70px, 9vw, 110px) 0;
-    overflow: hidden;
-    background: var(--yd-cream);
-}
-
-.yd-platform__heading {
-    max-width: 850px;
-    margin: 0 auto 42px;
-    text-align: center;
-}
-
-.yd-platform__heading .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-platform__heading h2 {
-    margin: 14px 0 0;
-    font-size: clamp(32px, 4.4vw, 58px);
-    font-weight: 950;
-    line-height: 1.02;
-    letter-spacing: -.05em;
-    text-transform: uppercase;
-}
-
-.yd-platform__grid {
-    display: grid;
-    grid-template-columns: .95fr 1.05fr;
-    align-items: center;
-    gap: clamp(28px, 5vw, 62px);
-}
-
-.yd-platform__photo {
-    position: relative;
-    min-height: 475px;
-    overflow: hidden;
-    background: #d4d8d6;
-    box-shadow: 0 20px 55px #10172f1a;
-}
-
-.yd-platform__photo img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .9s var(--yd-ease);
-}
-
-.yd-platform__photo:hover img {
-    transform: scale(1.045);
-}
-
-.yd-platform__photo::after {
-    position: absolute;
-    inset: 55% 0 0;
-    background: linear-gradient(transparent, #080f2766);
-    content: "";
-}
-
-.yd-platform__tag {
-    position: absolute;
-    z-index: 1;
-    bottom: 18px;
-    left: 20px;
-    color: #fff;
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-}
-
-.yd-features {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.yd-feature {
-    min-height: 150px;
-    padding: 19px;
-    border: 1px solid transparent;
-    transition:
-        background .3s ease,
-        border-color .3s ease,
-        transform .3s ease,
-        box-shadow .3s ease;
-}
-
-.yd-feature:hover {
-    transform: translateY(-4px);
-    border-color: #fff;
-    background: #fff;
-    box-shadow: 0 12px 30px #10172f10;
-}
-
-.yd-feature__icon {
-    display: grid;
-    width: 41px;
-    height: 41px;
-    place-items: center;
-    margin-bottom: 14px;
-    border-radius: 50%;
-    background: var(--yd-navy);
-    color: #fff;
-    font-size: 18px;
-}
-
-.yd-feature:first-child .yd-feature__icon {
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-}
-
-.yd-feature h3 {
-    margin: 0 0 6px;
-    font-size: 14px;
-    font-weight: 900;
-}
-
-.yd-feature p {
-    margin: 0;
-    color: #646b78;
-    font-size: 10px;
-    line-height: 1.75;
-}
-
-/* ==========================================================
-   CLEAN ENERGY / ENVIRONMENT
-   ========================================================== */
-
-.yd-environment {
-    padding: clamp(70px, 9vw, 110px) 0;
-    background: #fff;
-}
-
-.yd-environment__grid {
-    display: grid;
-    grid-template-columns: .72fr 1.28fr;
-    align-items: center;
-    gap: clamp(30px, 6vw, 80px);
-}
-
-.yd-environment__copy .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-environment__copy h2 {
-    margin: 16px 0;
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 950;
-    line-height: .98;
-    letter-spacing: -.06em;
-    text-transform: uppercase;
-}
-
-.yd-environment__copy h2 span {
-    color: #9ca4b3;
-}
-
-.yd-environment__copy p {
-    max-width: 400px;
-    margin: 0 0 24px;
-    color: var(--yd-muted);
-    font-size: 12px;
-    line-height: 1.95;
-}
-
-.yd-environment__visual {
-    position: relative;
-    min-height: 380px;
-    overflow: hidden;
-    background: #dce4e5;
-}
-
-.yd-environment__visual img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .9s var(--yd-ease);
-}
-
-.yd-environment__visual:hover img {
-    transform: scale(1.045);
-}
-
-.yd-environment__badge {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 15px 20px;
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   SERVICES
-   ========================================================== */
-
-.yd-services {
-    padding: 0 0 clamp(70px, 9vw, 105px);
-    background: #fff;
-}
-
-.yd-services__grid {
-    display: grid;
-    grid-template-columns: 1.15fr repeat(3, 1fr);
-    border: 1px solid var(--yd-line);
-}
-
-.yd-services__lead {
-    position: relative;
-    min-height: 240px;
-    padding: 28px;
-    overflow: hidden;
-    background: var(--yd-navy);
-    color: #fff;
-}
-
-.yd-services__lead::after {
-    position: absolute;
-    right: -48px;
-    bottom: -75px;
-    width: 175px;
-    height: 175px;
-    background: var(--yd-yellow);
-    content: "";
-    transform: rotate(35deg);
-}
-
-.yd-services__lead h3 {
-    position: relative;
-    z-index: 1;
-    max-width: 230px;
-    margin: 0;
-    font-size: 23px;
-    font-weight: 950;
-    line-height: 1.05;
-    text-transform: uppercase;
-}
-
-.yd-services__lead p {
-    position: relative;
-    z-index: 1;
-    max-width: 205px;
-    color: #ffffffb8;
-    font-size: 10px;
-    line-height: 1.8;
-}
-
-.yd-service {
-    display: flex;
-    min-height: 240px;
-    flex-direction: column;
-    justify-content: center;
-    padding: 24px 20px;
-    border-right: 1px solid var(--yd-line);
-    transition: background .3s ease;
-}
-
-.yd-service:last-child {
-    border-right: 0;
-}
-
-.yd-service:hover {
-    background: var(--yd-cream);
-}
-
-.yd-service__icon {
-    display: grid;
-    width: 38px;
-    height: 38px;
-    place-items: center;
-    margin-bottom: 21px;
-    border-radius: 50%;
-    background: var(--yd-yellow);
-    font-size: 17px;
-}
-
-.yd-service h3 {
-    margin: 0 0 8px;
-    font-size: 13px;
-    font-weight: 950;
-}
-
-.yd-service p {
-    margin: 0 0 15px;
-    color: var(--yd-muted);
-    font-size: 10px;
-    line-height: 1.8;
-}
-
-.yd-service a {
-    margin-top: auto;
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   PRODUCT INTEGRATION
-   ========================================================== */
-
-.yd-products {
-    padding: clamp(72px, 9vw, 112px) 0;
-    background: #f4f3eb;
-}
-
-.yd-products__intro {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 30px;
-    margin-bottom: 34px;
-}
-
-.yd-products__intro .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-products__intro h2 {
-    margin: 13px 0 0;
-    font-size: clamp(34px, 4.8vw, 60px);
-    font-weight: 950;
-    line-height: .98;
-    letter-spacing: -.055em;
-    text-transform: uppercase;
-}
-
-.yd-products__intro > p {
-    max-width: 360px;
-    margin: 0 0 5px;
-    color: var(--yd-muted);
-    font-size: 12px;
-    line-height: 1.9;
-}
-
-.yd-products .yd-manufacture {
-    padding: 24px 0;
-    background: transparent !important;
-}
-
-.yd-products .yd-manufacture__container {
-    width: 100% !important;
-    max-width: none !important;
-    padding: 0 !important;
-}
-
-.yd-products .yd-manufacture__grid {
-    gap: 18px !important;
-}
-
-.yd-products .yd-manufacture__card {
-    height: 100%;
-    border: 1px solid #10172f12 !important;
-    border-radius: 2px;
-    background: #fff !important;
-    box-shadow: 0 12px 35px #10172f0b;
-    transition:
-        transform .4s var(--yd-ease),
-        box-shadow .4s ease !important;
-}
-
-.yd-products .yd-manufacture__card:hover {
-    transform: translateY(-6px) !important;
-    box-shadow: 0 22px 45px #10172f1c !important;
-}
-
-.yd-products .yd-manufacture__image-link,
-.yd-products .yd-manufacture__image {
-    background: #eceef0 !important;
-}
-
-.yd-products .yd-manufacture__image img {
-    transition: transform .7s var(--yd-ease), filter .5s ease !important;
-}
-
-.yd-products .yd-manufacture__card:hover .yd-manufacture__image img {
-    transform: scale(1.045);
-    filter: brightness(1.04) saturate(1.06);
-}
-
-/* ==========================================================
-   APPROACH
-   ========================================================== */
-
-.yd-approach {
-    padding: clamp(75px, 9vw, 112px) 0;
-    background: #fff;
-}
-
-.yd-approach__grid {
-    display: grid;
-    grid-template-columns: .85fr 1.15fr;
-    align-items: start;
-    gap: clamp(35px, 7vw, 90px);
-}
-
-.yd-approach__lead .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-approach__lead h2 {
-    margin: 13px 0 0;
-    font-size: clamp(34px, 4.8vw, 60px);
-    font-weight: 950;
-    line-height: .98;
-    letter-spacing: -.055em;
-    text-transform: uppercase;
-}
-
-.yd-approach__lead p {
-    max-width: 410px;
-    margin: 20px 0 24px;
-    color: var(--yd-muted);
-    font-size: 12px;
-    line-height: 1.95;
-}
-
-.yd-approach__list {
-    border-top: 1px solid var(--yd-line);
-}
-
-.yd-approach-item {
-    display: grid;
-    grid-template-columns: 48px 1fr;
-    gap: 17px;
-    padding: 23px 0;
-    border-bottom: 1px solid var(--yd-line);
-}
-
-.yd-approach-item > b {
-    color: #b59b25;
-    font-size: 21px;
-    font-weight: 950;
-}
-
-.yd-approach-item h3 {
-    margin: 0 0 7px;
-    font-size: 15px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-.yd-approach-item p {
-    max-width: 510px;
-    margin: 0;
-    color: var(--yd-muted);
-    font-size: 11px;
-    line-height: 1.8;
-}
-
-/* ==========================================================
-   GALLERY
-   ========================================================== */
-
-.yd-gallery {
-    padding: clamp(75px, 9vw, 112px) 0;
-    overflow: hidden;
-    background: var(--yd-navy);
-    color: #fff;
-}
-
-.yd-gallery__head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 30px;
-}
-
-.yd-gallery__head .yd-eyebrow {
-    color: var(--yd-yellow);
-}
-
-.yd-gallery__head h2 {
-    margin: 13px 0 0;
-    font-size: clamp(34px, 4.8vw, 60px);
-    font-weight: 950;
-    line-height: .98;
-    letter-spacing: -.055em;
-    text-transform: uppercase;
-}
-
-.yd-gallery__head > p {
-    max-width: 340px;
-    margin: 0 0 5px;
-    color: #ffffffb0;
-    font-size: 12px;
-    line-height: 1.9;
-}
-
-.yd-gallery__grid {
-    display: grid;
-    grid-template-columns: 1.1fr .9fr 1fr;
-    grid-template-rows: 260px 220px;
-    gap: 14px;
-}
-
-.yd-gallery__item {
-    position: relative;
-    overflow: hidden;
-    margin: 0;
-    background: #27304b;
-    box-shadow: 0 15px 35px #0002;
-}
-
-.yd-gallery__item:first-child {
-    grid-row: span 2;
-}
-
-.yd-gallery__item:nth-child(4) {
-    grid-column: span 2;
-}
-
-.yd-gallery__item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: saturate(.88) contrast(1.04);
-    transition:
-        transform .9s var(--yd-ease),
-        filter .5s ease;
-}
-
-.yd-gallery__item:hover img {
-    transform: scale(1.055);
-    filter: saturate(1.05) brightness(1.04);
-}
-
-.yd-gallery__item::after {
-    position: absolute;
-    inset: 35% 0 0;
-    background: linear-gradient(transparent, #080f27aa);
-    content: "";
-    pointer-events: none;
-}
-
-.yd-gallery__item figcaption {
-    position: absolute;
-    z-index: 1;
-    bottom: 16px;
-    left: 18px;
-    color: #fff;
-    font-size: 9px;
-    font-weight: 950;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   REVIEWS
-   ========================================================== */
-
-.yd-reviews {
-    padding: clamp(75px, 9vw, 112px) 0;
-    background: #f7f7f5;
-}
-
-.yd-reviews__head {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 25px;
-    margin-bottom: 25px;
-}
-
-.yd-reviews__head .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-reviews__head h2 {
-    margin: 12px 0 0;
-    font-size: clamp(34px, 4.5vw, 56px);
-    font-weight: 950;
-    line-height: 1;
-    letter-spacing: -.05em;
-    text-transform: uppercase;
-}
-
-.yd-rating {
-    text-align: right;
-    white-space: nowrap;
-}
-
-.yd-rating strong {
-    display: block;
-    color: var(--yd-navy);
-    font-size: 40px;
-    font-weight: 950;
-}
-
-.yd-rating span {
-    color: var(--yd-muted);
-    font-size: 9px;
-}
-
-.yd-stars {
-    color: #b99a00;
-    letter-spacing: .08em;
-}
-
-.yd-review-track {
-    display: grid;
-    grid-auto-columns: minmax(255px, 1fr);
-    grid-auto-flow: column;
-    gap: 13px;
-    overflow-x: auto;
-    padding: 3px 2px 17px;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-    scrollbar-color: #b6b8b1 transparent;
-    overscroll-behavior-x: contain;
-}
-
-.yd-review-card {
-    min-height: 215px;
-    padding: 22px;
-    border: 1px solid #10172f12;
-    background: #fff;
-    scroll-snap-align: start;
-    transition: transform .3s ease, box-shadow .3s ease;
-}
-
-.yd-review-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 35px #10172f12;
-}
-
-.yd-review-card__top {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 13px;
-}
-
-.yd-review-time {
-    color: #9298a4;
-    font-size: 9px;
-}
-
-.yd-review-text {
-    display: -webkit-box;
-    overflow: hidden;
-    color: #5e6676;
-    font-size: 10px;
-    line-height: 1.8;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
-}
-
-.yd-review-author {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-top: 15px;
-    font-size: 10px;
-    font-weight: 900;
-}
-
-.yd-review-photo {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    border-radius: 50%;
-    background: #e8e9e5;
-    object-fit: cover;
-}
-
-.yd-review-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 10px;
-}
-
-.yd-review-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.yd-review-links a {
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-.yd-review-links a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
-
-.yd-review-invite {
-    display: grid;
-    grid-template-columns: .8fr 1.2fr;
-    gap: 30px;
-    margin-top: 42px;
-    padding: clamp(22px, 4vw, 40px);
-    background: var(--yd-navy);
-    color: #fff;
-}
-
-.yd-review-invite .yd-eyebrow {
-    color: var(--yd-yellow);
-}
-
-.yd-review-invite h3 {
-    margin: 12px 0;
-    font-size: 23px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-.yd-review-invite p {
-    max-width: 340px;
-    color: #ffffffb8;
-    font-size: 10px;
-    line-height: 1.8;
-}
-
-.yd-review-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 13px;
-}
-
-.yd-review-form label {
-    display: block;
-    margin-bottom: 6px;
-    color: #ffffffbd;
-    font-size: 9px;
-    font-weight: 900;
-    text-transform: uppercase;
-}
-
-.yd-review-form input,
-.yd-review-form select,
-.yd-review-form textarea {
-    width: 100%;
-    min-height: 43px;
-    padding: 11px;
-    border: 1px solid #ffffff35;
-    border-radius: 0;
-    background: #ffffff0d;
-    color: #fff;
-    font-size: 11px;
-}
-
-.yd-review-form input::placeholder,
-.yd-review-form textarea::placeholder {
-    color: #ffffff70;
-}
-
-.yd-review-form select option {
-    color: #111;
-}
-
-.yd-review-form textarea {
-    min-height: 85px;
-    resize: vertical;
-}
-
-.yd-wide,
-.yd-review-submit {
-    grid-column: 1 / -1;
-}
-
-.yd-review-submit {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.yd-review-note {
-    color: #ffffff9e;
-    font-size: 9px;
-    line-height: 1.5;
-}
-
-/* ==========================================================
-   LOCATION
-   ========================================================== */
-
-.yd-location {
-    padding: clamp(75px, 9vw, 112px) 0;
-    background: var(--yd-cream);
-}
-
-.yd-location__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(30px, 6vw, 75px);
-}
-
-.yd-location__visual {
-    position: relative;
-    min-height: 390px;
-    overflow: hidden;
-    background: #d7d9d1;
-}
-
-.yd-location__visual img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform .9s var(--yd-ease);
-}
-
-.yd-location__visual:hover img {
-    transform: scale(1.045);
-}
-
-.yd-location__stamp {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 14px 18px;
-    background: var(--yd-yellow);
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
-
-.yd-location__content .yd-eyebrow {
-    color: var(--yd-navy);
-}
-
-.yd-location__content h2 {
-    margin: 15px 0;
-    font-size: clamp(34px, 4.5vw, 56px);
-    font-weight: 950;
-    line-height: .98;
-    letter-spacing: -.05em;
-    text-transform: uppercase;
-}
-
-.yd-location__content > p {
-    color: var(--yd-muted);
-    font-size: 11px;
-    line-height: 1.9;
-}
-
-.yd-location__details {
-    margin: 20px 0;
-    border-top: 1px solid var(--yd-line);
-}
-
-.yd-location__detail {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 11px 0;
-    border-bottom: 1px solid var(--yd-line);
-    font-size: 9px;
-}
-
-.yd-location__detail span:first-child {
-    color: #89909c;
-    font-weight: 900;
-    text-transform: uppercase;
-}
-
-.yd-location__detail span:last-child {
-    text-align: right;
-    font-weight: 800;
-}
-
-.yd-location__actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-}
-
-.yd-location__actions > a:last-child {
-    color: var(--yd-navy);
-    font-size: 9px;
-    font-weight: 950;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   FINAL CTA
-   ========================================================== */
-
-.yd-final {
-    position: relative;
-    padding: clamp(60px, 8vw, 95px) 0;
-    overflow: hidden;
-    background: var(--yd-navy);
-    color: #fff;
-}
-
-.yd-final::before,
-.yd-final::after {
-    position: absolute;
-    width: 160px;
-    height: 18px;
-    background: var(--yd-yellow);
-    content: "";
-    transform: skewX(-35deg);
-}
-
-.yd-final::before {
-    top: 0;
-    left: 8%;
-}
-
-.yd-final::after {
-    right: 8%;
-    bottom: 0;
-}
-
-.yd-final__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-}
-
-.yd-final .yd-eyebrow {
-    color: var(--yd-yellow);
-}
-
-.yd-final h2 {
-    max-width: 700px;
-    margin: 13px 0 0;
-    font-size: clamp(30px, 4.5vw, 56px);
-    font-weight: 950;
-    line-height: 1;
-    letter-spacing: -.05em;
-    text-transform: uppercase;
-}
-
-/* ==========================================================
-   RESPONSIVE
-   ========================================================== */
-
-@media (max-width: 1000px) {
-    .yd-platform__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-platform__photo {
-        min-height: 410px;
-    }
-
-    .yd-services__grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .yd-services__lead {
-        grid-column: 1 / -1;
-        min-height: 180px;
-    }
-
-    .yd-service:nth-child(3) {
-        border-right: 0;
-    }
-
-    .yd-proof {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .yd-proof__item:nth-child(2) {
-        border-right: 0;
-    }
-
-    .yd-proof__item:nth-child(-n+2) {
-        border-bottom: 1px solid #10172f25;
-    }
-
-    .yd-who__inner {
-        gap: 40px;
-    }
-
-    .yd-gallery__grid {
-        grid-template-rows: 230px 190px;
-    }
-}
-
-@media (max-width: 800px) {
-    .yd-who__inner {
-        grid-template-columns: 1fr;
-        gap: 35px;
-        width: calc(100% - 40px);
-    }
-
-    .yd-who__visual {
-        min-height: 320px;
-    }
-
-    .yd-who__visual svg {
-        max-width: 440px;
-    }
-
-    .yd-who__content {
-        max-width: 680px;
-    }
-
-    .yd-environment__grid,
-    .yd-approach__grid,
-    .yd-location__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-environment__visual {
-        min-height: 350px;
-    }
-
-    .yd-approach__grid {
-        gap: 35px;
-    }
-
-    .yd-location__visual {
-        min-height: 350px;
-    }
-
-    .yd-review-invite {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 600px) {
-    .yd-wrap,
-    .yd-hero__inner {
-        width: calc(100% - 34px);
-    }
-
-    .yd-hero {
-        min-height: 660px;
-    }
-
-    .yd-hero__inner {
-        padding: 90px 0 28px;
-    }
-
-    .yd-hero h1 {
-        font-size: clamp(46px, 13vw, 75px);
-    }
-
-    .yd-hero__text {
-        max-width: 430px;
-        font-size: 13px;
-    }
-
-    .yd-hero__bottom {
-        margin-top: 60px;
-        font-size: 8px;
-    }
-
-    .yd-video-toggle {
-        top: 18px;
-        right: 17px;
-    }
-
-    .yd-who {
-        padding: 68px 0;
-    }
-
-    .yd-who__inner {
-        width: calc(100% - 34px);
-    }
-
-    .yd-who__visual {
-        min-height: 260px;
-    }
-
-    .yd-who__visual svg {
-        max-width: 360px;
-    }
-
-    .yd-who__title {
-        font-size: clamp(40px, 11vw, 52px);
-    }
-
-    .yd-who__description {
-        font-size: 13px;
-    }
-
-    .yd-who__details {
-        gap: 15px;
-    }
-
-    .yd-who__detail strong {
-        font-size: 19px;
-    }
-
-    .yd-who__detail span {
-        font-size: 10px;
-    }
-
-    .yd-proof__item {
-        gap: 8px;
-        padding: 16px 12px;
-    }
-
-    .yd-proof__num {
-        font-size: 23px;
-    }
-
-    .yd-proof__label {
-        font-size: 8px;
-    }
-
-    .yd-solutions__head,
-    .yd-products__intro,
-    .yd-gallery__head,
-    .yd-reviews__head {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .yd-arrows {
-        align-self: flex-end;
-    }
-
-    .yd-rail {
-        grid-auto-columns: minmax(245px, 82vw);
-    }
-
-    .yd-platform__photo {
-        min-height: 320px;
-    }
-
-    .yd-features {
-        gap: 8px;
-    }
-
-    .yd-feature {
-        min-height: 145px;
-        padding: 14px 11px;
-    }
-
-    .yd-feature h3 {
-        font-size: 12px;
-    }
-
-    .yd-feature p {
-        font-size: 9px;
-    }
-
-    .yd-environment__visual {
-        min-height: 270px;
-    }
-
-    .yd-services__grid {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .yd-service {
-        min-height: 205px;
-        padding: 16px 13px;
-    }
-
-    .yd-service:nth-child(3) {
-        border-right: 1px solid var(--yd-line);
-    }
-
-    .yd-service:nth-child(odd) {
-        border-right: 0;
-    }
-
-    .yd-products__intro > p {
-        max-width: 100%;
-    }
-
-    .yd-gallery__grid {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 195px 145px 145px;
-        gap: 9px;
-    }
-
-    .yd-gallery__item:first-child {
-        grid-row: span 2;
-    }
-
-    .yd-gallery__item:nth-child(4) {
-        grid-column: 1 / -1;
-    }
-
-    .yd-gallery__item figcaption {
-        bottom: 12px;
-        left: 12px;
-        font-size: 8px;
-    }
-
-    .yd-rating {
-        text-align: left;
-    }
-
-    .yd-review-track {
-        grid-auto-columns: minmax(250px, 84vw);
-    }
-
-    .yd-review-invite {
-        gap: 20px;
-        padding: 22px 17px;
-    }
-
-    .yd-review-form {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-wide,
-    .yd-review-submit {
-        grid-column: 1;
-    }
-
-    .yd-review-controls {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .yd-location__visual {
-        min-height: 285px;
-    }
-
-    .yd-location__detail {
-        align-items: flex-start;
-        font-size: 8px;
-    }
-
-    .yd-location__detail span:last-child {
-        max-width: 62%;
-    }
-
-    .yd-final__inner {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 380px) {
-    .yd-hero h1 {
-        font-size: 44px;
-    }
-
-    .yd-proof__item {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .yd-who__details {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-services__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .yd-services__lead {
-        grid-column: auto;
-    }
-
-    .yd-service,
-    .yd-service:nth-child(3),
-    .yd-service:nth-child(odd) {
-        min-height: 175px;
-        border-right: 0;
-        border-bottom: 1px solid var(--yd-line);
-    }
-
-    .yd-gallery__grid {
-        grid-template-rows: 180px 130px 130px;
-    }
-}
-
-/* Reduced motion accessibility */
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto !important;
-    }
-
-    .yd-home *,
-    .yd-home *::before,
-    .yd-home *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-        scroll-behavior: auto !important;
-    }
-
-    .yd-home.yd-js-ready .yd-reveal,
-    .yd-home.yd-js-ready .yd-reveal.is-visible {
-        opacity: 1 !important;
-        transform: none !important;
-    }
+html{height:auto!important;overflow-x:clip!important;overflow-y:auto!important;scroll-behavior:smooth}
+body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;overflow-y:visible!important}
+
+.yd-home{
+ --yd-navy:#10172f;--yd-deep:#080f27;--yd-yellow:#ffe000;
+ --yd-cream:#f3f1df;--yd-stone:#f5f5f1;--yd-ink:#171d30;
+ --yd-muted:#687083;--yd-line:rgba(16,23,47,.14);
+ --yd-green:#176b5b;--yd-bronze:#b77b4b;
+ --yd-ease:cubic-bezier(.2,.75,.25,1);
+ position:relative;width:100%;min-height:100%;overflow:visible!important;
+ background:#fff;color:var(--yd-ink);font-family:var(--font-body,Arial,sans-serif)
+}
+.yd-home *,.yd-home *:before,.yd-home *:after{box-sizing:border-box}
+.yd-home img,.yd-home video{display:block;max-width:100%}
+.yd-home a{text-decoration:none}
+.yd-wrap{width:min(1220px,calc(100% - 9vw));margin-inline:auto}
+.yd-section{position:relative}
+.yd-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:850;letter-spacing:.17em;line-height:1.5;text-transform:uppercase}
+.yd-eyebrow:before{content:"";width:25px;height:2px;flex:0 0 25px;background:var(--yd-yellow)}
+.yd-title{margin:14px 0 0;font-size:clamp(34px,4.8vw,62px);font-weight:950;line-height:.99;letter-spacing:-.055em;text-transform:uppercase}
+.yd-copy{color:var(--yd-muted);font-size:13px;line-height:1.9}
+.yd-btn{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:15px;padding:0 21px;border:1px solid var(--yd-yellow);background:var(--yd-yellow);color:var(--yd-navy);font-size:10px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;transition:transform .3s var(--yd-ease),background .3s ease,color .3s ease,box-shadow .3s ease}
+.yd-btn span{font-size:17px}
+.yd-btn:hover{transform:translateY(-3px);background:#fff;border-color:#fff;color:var(--yd-navy);box-shadow:0 12px 30px #0002}
+.yd-btn--outline{border-color:#ffffff80;background:transparent;color:#fff}
+.yd-btn--outline:hover{border-color:var(--yd-yellow);background:var(--yd-yellow);color:var(--yd-navy)}
+.yd-btn--dark{border-color:var(--yd-navy);background:var(--yd-navy);color:#fff}
+.yd-btn--dark:hover{background:var(--yd-yellow);border-color:var(--yd-yellow);color:var(--yd-navy)}
+.yd-home button,.yd-home input,.yd-home select,.yd-home textarea{font:inherit}
+.yd-home a:focus-visible,.yd-home button:focus-visible,.yd-home input:focus-visible,.yd-home select:focus-visible,.yd-home textarea:focus-visible{outline:3px solid #bca600;outline-offset:4px}
+
+.yd-reveal{opacity:1;transform:none}
+.yd-home.yd-js-ready .yd-reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--yd-ease),transform .9s var(--yd-ease)}
+.yd-home.yd-js-ready .yd-reveal.is-visible{opacity:1;transform:none}
+.yd-delay-1{transition-delay:.1s!important}.yd-delay-2{transition-delay:.2s!important}.yd-delay-3{transition-delay:.3s!important}
+.yd-progress{position:fixed;z-index:9999;top:0;left:0;width:100%;height:3px;pointer-events:none}
+.yd-progress span{display:block;width:100%;height:100%;background:var(--yd-yellow);transform:scaleX(0);transform-origin:left}
+
+/* HERO: VIDEO + IMAGE SLIDES */
+.yd-hero{position:relative;isolation:isolate;display:flex;min-height:min(760px,calc(100svh - 70px));align-items:center;overflow:hidden;background:var(--yd-deep);color:#fff}
+.yd-hero__slides{position:absolute;z-index:-2;inset:0;background:#080f27}
+.yd-hero__slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 1.2s ease}
+.yd-hero__slide.is-active{opacity:1;visibility:visible}
+.yd-hero__slide img,.yd-hero__slide video{width:100%;height:100%;object-fit:cover;object-position:center}
+.yd-hero__slide img{animation:ydHeroZoom 13s ease-in-out infinite alternate}
+.yd-hero__slide video{background:#080f27}
+@keyframes ydHeroZoom{from{transform:scale(1)}to{transform:scale(1.075)}}
+.yd-hero:before{position:absolute;z-index:-1;inset:0;content:"";background:linear-gradient(90deg,rgba(5,11,29,.78),rgba(5,11,29,.35) 52%,rgba(5,11,29,.08)),linear-gradient(0deg,rgba(5,11,29,.55),transparent 55%);pointer-events:none}
+.yd-hero:after{position:absolute;z-index:-1;top:-34%;right:-13%;width:min(58vw,760px);aspect-ratio:1;border:1px solid #ffffff20;border-radius:50%;content:"";box-shadow:0 0 0 45px #ffffff08,0 0 0 95px #ffffff05;pointer-events:none}
+.yd-hero__inner{width:min(1220px,calc(100% - 9vw));margin-inline:auto;padding:100px 0 100px}
+.yd-hero__content{max-width:680px;min-height:300px;display:flex;flex-direction:column;justify-content:center}
+.yd-hero .yd-eyebrow{color:var(--yd-yellow)}
+.yd-hero h1{margin:22px 0 0;font-size:clamp(48px,7.6vw,96px);font-weight:950;line-height:.9;letter-spacing:-.075em;text-transform:uppercase}
+.yd-hero h1 span{display:block;color:var(--yd-yellow)}
+.yd-hero__text{max-width:440px;margin:22px 0 24px;color:#ffffffdc;font-size:13px;line-height:1.8}
+.yd-hero__actions{display:flex;flex-wrap:wrap;gap:11px}
+.yd-hero__bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:clamp(65px,10vh,110px);padding-top:17px;border-top:1px solid #ffffff55;color:#ffffffc2;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.yd-hero__controls{display:flex;align-items:center;gap:10px}
+.yd-hero__dots{display:flex;align-items:center;gap:7px}
+.yd-hero__dot{width:22px;height:3px;padding:0;border:0;background:#ffffff65;cursor:pointer;transition:width .3s,background .3s}
+.yd-hero__dot.is-active{width:38px;background:var(--yd-yellow)}
+.yd-hero__arrow{display:grid;width:36px;height:34px;place-items:center;border:1px solid #ffffff70;background:#ffffff12;color:#fff;font-size:18px;cursor:pointer;transition:.25s}
+.yd-hero__arrow:hover{background:var(--yd-yellow);border-color:var(--yd-yellow);color:var(--yd-navy)}
+.yd-hero__slide-copy{transition:opacity .6s ease,transform .6s ease}
+.yd-hero__slide:not(.is-active) .yd-hero__slide-copy{opacity:0;transform:translateY(12px)}
+.yd-hero__slide.is-active .yd-hero__slide-copy{opacity:1;transform:none}
+.yd-hero__video-label{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;color:#fff;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.yd-hero__video-label:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--yd-yellow);box-shadow:0 0 12px var(--yd-yellow)}
+.yd-hero__minimal{max-width:600px}
+.yd-hero__minimal h2{margin:0;color:#fff;font-size:clamp(38px,6.4vw,76px);font-weight:950;line-height:.94;letter-spacing:-.065em;text-transform:uppercase}
+.yd-hero__minimal h2 span{color:var(--yd-yellow)}
+.yd-hero__minimal p{max-width:370px;margin:17px 0 22px;color:#ffffffd0;font-size:12px;line-height:1.8}
+
+/* WHO WE ARE */
+.yd-who{position:relative;padding:clamp(75px,9vw,125px) 0;overflow:hidden;background:#fff;color:#17251f}
+.yd-who:before{position:absolute;top:0;left:0;width:5px;height:100%;background:#c69b57;content:""}
+.yd-who:after{position:absolute;right:-180px;bottom:-220px;width:490px;height:490px;border:1px solid #173e3310;border-radius:50%;box-shadow:0 0 0 45px #173e3307,0 0 0 90px #173e3305;content:"";pointer-events:none}
+.yd-who__inner{position:relative;z-index:1;display:grid;width:min(1220px,calc(100% - 9vw));grid-template-columns:1fr 1fr;align-items:center;gap:clamp(42px,7vw,92px);margin-inline:auto}
+.yd-who__visual{position:relative;min-height:500px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #173e3215;background:radial-gradient(circle at 50% 40%,#fff 0%,#f0f2eb 75%)}
+.yd-who__visual:before{position:absolute;inset:20px;border:1px solid #173e3210;content:""}
+.yd-who__visual-label{position:absolute;top:25px;left:28px;color:#748176;font-size:9px;font-weight:800;letter-spacing:.19em}
+.yd-who__illustration{position:relative;z-index:1;width:100%;max-width:530px;padding:35px 24px 65px}
+.yd-who__illustration svg{display:block;width:100%;height:auto;max-height:365px}
+.yd-who__visual-caption{position:absolute;right:0;bottom:0;left:0;display:flex;align-items:center;gap:13px;padding:17px 23px;border-top:1px solid #173e3214;background:#f5f5efeb}
+.yd-who__caption-mark{display:grid;width:37px;height:37px;flex:0 0 37px;place-items:center;background:#173e33;color:#e5c18a;font-family:Georgia,serif;font-size:19px}
+.yd-who__visual-caption strong{display:block;color:#19382f;font-family:Georgia,serif;font-size:13px;font-weight:600}
+.yd-who__visual-caption span:not(.yd-who__caption-mark){display:block;margin-top:4px;color:#7a857c;font-size:9px}
+.yd-who__eyebrow{display:inline-flex;align-items:center;gap:10px;color:#99713e;font-size:10px;font-weight:850;letter-spacing:.17em;text-transform:uppercase}
+.yd-who__eyebrow:before{content:"";width:25px;height:2px;background:#c69b57}
+.yd-who__title{margin:14px 0 20px;color:#17251f;font-family:Georgia,"Times New Roman",serif;font-size:clamp(36px,4.6vw,58px);font-weight:500;line-height:1.03;letter-spacing:-.04em}
+.yd-who__title em{color:#99713e;font-style:italic}
+.yd-who__lead{max-width:550px;margin:0 0 19px;color:#354c40;font-family:Georgia,serif;font-size:clamp(17px,1.8vw,20px);line-height:1.55}
+.yd-who__description{max-width:570px;color:#69766e;font-size:12px;line-height:1.95}
+.yd-who__description p{margin:0 0 13px}
+.yd-who__details{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:27px;padding-top:23px;border-top:1px solid #19382f24}
+.yd-who__detail{display:flex;align-items:flex-start;gap:11px}
+.yd-who__detail-number{display:grid;width:30px;height:30px;flex:0 0 30px;place-items:center;border:1px solid #c69b57;border-radius:50%;color:#99713e;font-size:9px;font-weight:850}
+.yd-who__detail strong{display:block;margin:2px 0 6px;color:#1b3b30;font-family:Georgia,serif;font-size:17px;font-weight:600}
+.yd-who__detail div>span{display:block;color:#78837b;font-size:10px;line-height:1.8}
+.yd-who__link{display:inline-flex;align-items:center;gap:15px;margin-top:30px;padding-bottom:9px;border-bottom:1px solid #c69b57;color:#173e33;font-size:10px;font-weight:850;letter-spacing:.13em;text-transform:uppercase;transition:gap .3s,color .3s}
+.yd-who__link span{font-size:17px}
+.yd-who__link:hover{gap:23px;color:#9c713b}
+
+/* CATEGORY STRIP */
+.yd-proof{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--yd-yellow);color:var(--yd-navy)}
+.yd-proof__item{display:flex;min-width:0;align-items:center;gap:13px;padding:22px clamp(13px,3vw,35px);border-right:1px solid #10172f25}
+.yd-proof__item:last-child{border-right:0}
+.yd-proof__num{flex:0 0 auto;font-size:clamp(23px,3vw,36px);font-weight:950;letter-spacing:-.06em}
+.yd-proof__label{max-width:145px;font-size:9px;font-weight:950;line-height:1.5;letter-spacing:.08em;text-transform:uppercase}
+
+/* SOLUTIONS */
+.yd-solutions{padding:clamp(70px,9vw,110px) 0 85px;overflow:hidden;background:var(--yd-navy);color:#fff}
+.yd-solutions__head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:30px}
+.yd-solutions__head .yd-eyebrow{color:var(--yd-yellow)}
+.yd-solutions__head .yd-title{font-size:clamp(32px,4vw,54px)}
+.yd-arrows{display:flex;flex:0 0 auto;gap:10px}
+.yd-arrow{display:grid;width:46px;height:43px;place-items:center;border:1px solid #ffffff70;background:transparent;color:#fff;font-size:22px;cursor:pointer;transition:.25s}
+.yd-arrow:hover,.yd-arrow--next{border-color:var(--yd-yellow);background:var(--yd-yellow);color:var(--yd-navy)}
+.yd-rail{display:grid;grid-auto-columns:minmax(245px,1fr);grid-auto-flow:column;gap:17px;overflow-x:auto;padding:3px 2px 18px;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.yd-rail::-webkit-scrollbar{display:none}
+.yd-solution{display:flex;min-height:325px;flex-direction:column;overflow:hidden;background:#fff;color:var(--yd-ink);scroll-snap-align:start;transition:transform .35s,box-shadow .35s}
+.yd-solution:hover{transform:translateY(-6px);box-shadow:0 20px 45px #0005}
+.yd-solution__image{position:relative;height:160px;overflow:hidden;background:#e9eaf0}
+.yd-solution__image img{width:100%;height:100%;object-fit:cover;transition:transform .75s}
+.yd-solution:hover .yd-solution__image img{transform:scale(1.06)}
+.yd-solution__icon{position:absolute;bottom:-20px;left:17px;display:grid;width:56px;height:56px;place-items:center;border:4px solid #fff;border-radius:50%;background:var(--yd-navy);color:#fff;font-size:22px}
+.yd-solution__body{display:flex;flex:1;flex-direction:column;padding:30px 19px 20px}
+.yd-solution h3{margin:0 0 8px;font-size:16px;font-weight:900}
+.yd-solution p{margin:0 0 16px;color:#626a7b;font-size:11px;line-height:1.8}
+.yd-solution a{display:flex;align-items:center;gap:8px;margin-top:auto;color:var(--yd-navy);font-size:9px;font-weight:950;text-transform:uppercase}
+
+/* TECHNOLOGY */
+.yd-platform{padding:clamp(70px,9vw,110px) 0;overflow:hidden;background:var(--yd-cream)}
+.yd-platform__heading{max-width:850px;margin:0 auto 42px;text-align:center}
+.yd-platform__heading .yd-eyebrow{color:var(--yd-navy)}
+.yd-platform__heading h2{margin:14px 0 0;font-size:clamp(32px,4.4vw,58px);font-weight:950;line-height:1.02;letter-spacing:-.05em;text-transform:uppercase}
+.yd-platform__grid{display:grid;grid-template-columns:.95fr 1.05fr;align-items:center;gap:clamp(28px,5vw,62px)}
+.yd-platform__photo{position:relative;min-height:475px;overflow:hidden;background:#d4d8d6;box-shadow:0 20px 55px #10172f1a}
+.yd-platform__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s}
+.yd-platform__photo:hover img{transform:scale(1.045)}
+.yd-platform__photo:after{position:absolute;inset:55% 0 0;background:linear-gradient(transparent,#080f2766);content:""}
+.yd-platform__tag{position:absolute;z-index:1;bottom:18px;left:20px;color:#fff;font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.yd-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.yd-feature{min-height:150px;padding:19px;border:1px solid transparent;transition:.3s}
+.yd-feature:hover{transform:translateY(-4px);border-color:#fff;background:#fff;box-shadow:0 12px 30px #10172f10}
+.yd-feature__icon{display:grid;width:41px;height:41px;place-items:center;margin-bottom:14px;border-radius:50%;background:var(--yd-navy);color:#fff;font-size:18px}
+.yd-feature:first-child .yd-feature__icon{background:var(--yd-yellow);color:var(--yd-navy)}
+.yd-feature h3{margin:0 0 6px;font-size:14px;font-weight:900}
+.yd-feature p{margin:0;color:#646b78;font-size:10px;line-height:1.75}
+
+/* CLEAN ENERGY */
+.yd-environment{padding:clamp(70px,9vw,110px) 0;background:#fff}
+.yd-environment__grid{display:grid;grid-template-columns:.72fr 1.28fr;align-items:center;gap:clamp(30px,6vw,80px)}
+.yd-environment__copy .yd-eyebrow{color:var(--yd-navy)}
+.yd-environment__copy h2{margin:16px 0;font-size:clamp(36px,5vw,64px);font-weight:950;line-height:.98;letter-spacing:-.06em;text-transform:uppercase}
+.yd-environment__copy h2 span{color:#9ca4b3}
+.yd-environment__copy p{max-width:400px;margin:0 0 24px;color:var(--yd-muted);font-size:12px;line-height:1.95}
+.yd-environment__visual{position:relative;min-height:380px;overflow:hidden;background:#dce4e5}
+.yd-environment__visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s}
+.yd-environment__visual:hover img{transform:scale(1.045)}
+.yd-environment__badge{position:absolute;bottom:0;left:0;padding:15px 20px;background:var(--yd-yellow);color:var(--yd-navy);font-size:9px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}
+
+/* SERVICES */
+.yd-services{padding:0 0 clamp(70px,9vw,105px);background:#fff}
+.yd-services__grid{display:grid;grid-template-columns:1.15fr repeat(3,1fr);border:1px solid var(--yd-line)}
+.yd-services__lead{position:relative;min-height:240px;padding:28px;overflow:hidden;background:var(--yd-navy);color:#fff}
+.yd-services__lead:after{position:absolute;right:-48px;bottom:-75px;width:175px;height:175px;background:var(--yd-yellow);content:"";transform:rotate(35deg)}
+.yd-services__lead h3{position:relative;z-index:1;max-width:230px;margin:0;font-size:23px;font-weight:950;line-height:1.05;text-transform:uppercase}
+.yd-services__lead p{position:relative;z-index:1;max-width:205px;color:#ffffffb8;font-size:10px;line-height:1.8}
+.yd-service{display:flex;min-height:240px;flex-direction:column;justify-content:center;padding:24px 20px;border-right:1px solid var(--yd-line);transition:background .3s}
+.yd-service:last-child{border-right:0}
+.yd-service:hover{background:var(--yd-cream)}
+.yd-service__icon{display:grid;width:38px;height:38px;place-items:center;margin-bottom:21px;border-radius:50%;background:var(--yd-yellow);font-size:17px}
+.yd-service h3{margin:0 0 8px;font-size:13px;font-weight:950}
+.yd-service p{margin:0 0 15px;color:var(--yd-muted);font-size:10px;line-height:1.8}
+.yd-service a{margin-top:auto;color:var(--yd-navy);font-size:9px;font-weight:950;text-transform:uppercase}
+
+/* PRODUCTS */
+.yd-products{padding:clamp(72px,9vw,112px) 0;background:#f4f3eb}
+.yd-products__intro{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:34px}
+.yd-products__intro .yd-eyebrow{color:var(--yd-navy)}
+.yd-products__intro h2{margin:13px 0 0;font-size:clamp(34px,4.8vw,60px);font-weight:950;line-height:.98;letter-spacing:-.055em;text-transform:uppercase}
+.yd-products__intro>p{max-width:360px;margin:0 0 5px;color:var(--yd-muted);font-size:12px;line-height:1.9}
+.yd-products .yd-manufacture{padding:24px 0;background:transparent!important}
+.yd-products .yd-manufacture__container{width:100%!important;max-width:none!important;padding:0!important}
+.yd-products .yd-manufacture__grid{gap:18px!important}
+.yd-products .yd-manufacture__card{height:100%;border:1px solid #10172f12!important;border-radius:2px;background:#fff!important;box-shadow:0 12px 35px #10172f0b;transition:transform .4s,box-shadow .4s!important}
+.yd-products .yd-manufacture__card:hover{transform:translateY(-6px)!important;box-shadow:0 22px 45px #10172f1c!important}
+.yd-products .yd-manufacture__image-link,.yd-products .yd-manufacture__image{background:#eceef0!important}
+.yd-products .yd-manufacture__image img{transition:transform .7s,filter .5s!important}
+.yd-products .yd-manufacture__card:hover .yd-manufacture__image img{transform:scale(1.045);filter:brightness(1.04) saturate(1.06)}
+
+/* APPROACH */
+.yd-approach{padding:clamp(75px,9vw,112px) 0;background:#fff}
+.yd-approach__grid{display:grid;grid-template-columns:.85fr 1.15fr;align-items:start;gap:clamp(35px,7vw,90px)}
+.yd-approach__lead .yd-eyebrow{color:var(--yd-navy)}
+.yd-approach__lead h2{margin:13px 0 0;font-size:clamp(34px,4.8vw,60px);font-weight:950;line-height:.98;letter-spacing:-.055em;text-transform:uppercase}
+.yd-approach__lead p{max-width:410px;margin:20px 0 24px;color:var(--yd-muted);font-size:12px;line-height:1.95}
+.yd-approach__list{border-top:1px solid var(--yd-line)}
+.yd-approach-item{display:grid;grid-template-columns:48px 1fr;gap:17px;padding:23px 0;border-bottom:1px solid var(--yd-line)}
+.yd-approach-item>b{color:#b59b25;font-size:21px;font-weight:950}
+.yd-approach-item h3{margin:0 0 7px;font-size:15px;font-weight:950;text-transform:uppercase}
+.yd-approach-item p{max-width:510px;margin:0;color:var(--yd-muted);font-size:11px;line-height:1.8}
+
+/* GALLERY */
+.yd-gallery{padding:clamp(75px,9vw,112px) 0;overflow:hidden;background:var(--yd-navy);color:#fff}
+.yd-gallery__head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:30px}
+.yd-gallery__head .yd-eyebrow{color:var(--yd-yellow)}
+.yd-gallery__head h2{margin:13px 0 0;font-size:clamp(34px,4.8vw,60px);font-weight:950;line-height:.98;letter-spacing:-.055em;text-transform:uppercase}
+.yd-gallery__head>p{max-width:340px;margin:0 0 5px;color:#ffffffb0;font-size:12px;line-height:1.9}
+.yd-gallery__grid{display:grid;grid-template-columns:1.1fr .9fr 1fr;grid-template-rows:260px 220px;gap:14px}
+.yd-gallery__item{position:relative;overflow:hidden;margin:0;background:#27304b;box-shadow:0 15px 35px #0002}
+.yd-gallery__item:first-child{grid-row:span 2}
+.yd-gallery__item:nth-child(4){grid-column:span 2}
+.yd-gallery__item img{width:100%;height:100%;object-fit:cover;filter:saturate(.88) contrast(1.04);transition:transform .9s,filter .5s}
+.yd-gallery__item:hover img{transform:scale(1.055);filter:saturate(1.05) brightness(1.04)}
+.yd-gallery__item:after{position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#080f27aa);content:"";pointer-events:none}
+.yd-gallery__item figcaption{position:absolute;z-index:1;bottom:16px;left:18px;color:#fff;font-size:9px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}
+
+/* REVIEWS */
+.yd-reviews{padding:clamp(75px,9vw,112px) 0;background:#f7f7f5}
+.yd-reviews__head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:25px}
+.yd-reviews__head .yd-eyebrow{color:var(--yd-navy)}
+.yd-reviews__head h2{margin:12px 0 0;font-size:clamp(34px,4.5vw,56px);font-weight:950;line-height:1;letter-spacing:-.05em;text-transform:uppercase}
+.yd-rating{text-align:right;white-space:nowrap}
+.yd-rating strong{display:block;color:var(--yd-navy);font-size:40px;font-weight:950}
+.yd-rating span{color:var(--yd-muted);font-size:9px}
+.yd-stars{color:#b99a00;letter-spacing:.08em}
+.yd-review-track{display:grid;grid-auto-columns:minmax(255px,1fr);grid-auto-flow:column;gap:13px;overflow-x:auto;padding:3px 2px 17px;scroll-behavior:smooth;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#b6b8b1 transparent;overscroll-behavior-x:contain}
+.yd-review-card{min-height:215px;padding:22px;border:1px solid #10172f12;background:#fff;scroll-snap-align:start;transition:transform .3s,box-shadow .3s}
+.yd-review-card:hover{transform:translateY(-4px);box-shadow:0 16px 35px #10172f12}
+.yd-review-card__top{display:flex;justify-content:space-between;gap:10px;margin-bottom:13px}
+.yd-review-time{color:#9298a4;font-size:9px}
+.yd-review-text{display:-webkit-box;overflow:hidden;color:#5e6676;font-size:10px;line-height:1.8;-webkit-box-orient:vertical;-webkit-line-clamp:5}
+.yd-review-author{display:flex;align-items:center;gap:9px;margin-top:15px;font-size:10px;font-weight:900}
+.yd-review-photo{width:30px;height:30px;flex:0 0 30px;border-radius:50%;background:#e8e9e5;object-fit:cover}
+.yd-review-controls{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:10px}
+.yd-review-links{display:flex;flex-wrap:wrap;gap:15px}
+.yd-review-links a{color:var(--yd-navy);font-size:9px;font-weight:950;text-transform:uppercase}
+.yd-review-links a:hover{text-decoration:underline;text-underline-offset:4px}
+.yd-review-invite{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;margin-top:42px;padding:clamp(22px,4vw,40px);background:var(--yd-navy);color:#fff}
+.yd-review-invite .yd-eyebrow{color:var(--yd-yellow)}
+.yd-review-invite h3{margin:12px 0;font-size:23px;font-weight:950;text-transform:uppercase}
+.yd-review-invite p{max-width:340px;color:#ffffffb8;font-size:10px;line-height:1.8}
+.yd-review-form{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.yd-review-form label{display:block;margin-bottom:6px;color:#ffffffbd;font-size:9px;font-weight:900;text-transform:uppercase}
+.yd-review-form input,.yd-review-form select,.yd-review-form textarea{width:100%;min-height:43px;padding:11px;border:1px solid #ffffff35;border-radius:0;background:#ffffff0d;color:#fff;font-size:11px}
+.yd-review-form input::placeholder,.yd-review-form textarea::placeholder{color:#ffffff70}
+.yd-review-form select option{color:#111}
+.yd-review-form textarea{min-height:85px;resize:vertical}
+.yd-wide,.yd-review-submit{grid-column:1/-1}
+.yd-review-submit{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.yd-review-note{color:#ffffff9e;font-size:9px;line-height:1.5}
+
+/* LOCATION */
+.yd-location{padding:clamp(75px,9vw,112px) 0;background:var(--yd-cream)}
+.yd-location__grid{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(30px,6vw,75px)}
+.yd-location__visual{position:relative;min-height:390px;overflow:hidden;background:#d7d9d1}
+.yd-location__visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s}
+.yd-location__visual:hover img{transform:scale(1.045)}
+.yd-location__stamp{position:absolute;bottom:0;left:0;padding:14px 18px;background:var(--yd-yellow);color:var(--yd-navy);font-size:9px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.yd-location__content .yd-eyebrow{color:var(--yd-navy)}
+.yd-location__content h2{margin:15px 0;font-size:clamp(34px,4.5vw,56px);font-weight:950;line-height:.98;letter-spacing:-.05em;text-transform:uppercase}
+.yd-location__content>p{color:var(--yd-muted);font-size:11px;line-height:1.9}
+.yd-location__details{margin:20px 0;border-top:1px solid var(--yd-line)}
+.yd-location__detail{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid var(--yd-line);font-size:9px}
+.yd-location__detail span:first-child{color:#89909c;font-weight:900;text-transform:uppercase}
+.yd-location__detail span:last-child{text-align:right;font-weight:800}
+.yd-location__actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px}
+.yd-location__actions>a:last-child{color:var(--yd-navy);font-size:9px;font-weight:950;text-transform:uppercase}
+
+/* FINAL CTA */
+.yd-final{position:relative;padding:clamp(60px,8vw,95px) 0;overflow:hidden;background:var(--yd-navy);color:#fff}
+.yd-final:before,.yd-final:after{position:absolute;width:160px;height:18px;background:var(--yd-yellow);content:"";transform:skewX(-35deg)}
+.yd-final:before{top:0;left:8%}.yd-final:after{right:8%;bottom:0}
+.yd-final__inner{display:flex;align-items:center;justify-content:space-between;gap:25px}
+.yd-final .yd-eyebrow{color:var(--yd-yellow)}
+.yd-final h2{max-width:700px;margin:13px 0 0;font-size:clamp(30px,4.5vw,56px);font-weight:950;line-height:1;letter-spacing:-.05em;text-transform:uppercase}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+ .yd-platform__grid{grid-template-columns:1fr}.yd-platform__photo{min-height:410px}
+ .yd-services__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .yd-services__lead{grid-column:1/-1;min-height:180px}
+ .yd-service:nth-child(3){border-right:0}
+ .yd-proof{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .yd-proof__item:nth-child(2){border-right:0}
+ .yd-proof__item:nth-child(-n+2){border-bottom:1px solid #10172f25}
+ .yd-gallery__grid{grid-template-rows:230px 190px}
+}
+@media(max-width:800px){
+ .yd-who__inner{grid-template-columns:1fr;gap:35px;width:calc(100% - 40px)}
+ .yd-who__visual{min-height:430px}.yd-who__content{max-width:680px}
+ .yd-environment__grid,.yd-approach__grid,.yd-location__grid{grid-template-columns:1fr}
+ .yd-environment__visual{min-height:350px}.yd-approach__grid{gap:35px}
+ .yd-location__visual{min-height:350px}.yd-review-invite{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ .yd-wrap,.yd-hero__inner{width:calc(100% - 34px)}
+ .yd-hero{min-height:660px;min-height:min(760px,88svh)}
+ .yd-hero__inner{padding:85px 0 55px}
+ .yd-hero__content{min-height:330px}
+ .yd-hero__minimal h2{font-size:clamp(38px,11vw,62px)}
+ .yd-hero h1{font-size:clamp(46px,13vw,75px)}
+ .yd-hero__text{font-size:12px}
+ .yd-hero__bottom{align-items:flex-start;flex-direction:column;margin-top:65px;font-size:8px}
+ .yd-hero__controls{align-self:flex-end}
+ .yd-who{padding:68px 0}.yd-who__inner{width:calc(100% - 34px)}
+ .yd-who__visual{min-height:360px}.yd-who__illustration{padding:35px 15px 60px}
+ .yd-who__title{font-size:clamp(36px,10vw,48px)}
+ .yd-who__lead{font-size:17px}.yd-who__description{font-size:13px}
+ .yd-who__details{gap:15px}
+ .yd-proof__item{gap:8px;padding:16px 12px}
+ .yd-proof__num{font-size:23px}.yd-proof__label{font-size:8px}
+ .yd-solutions__head,.yd-products__intro,.yd-gallery__head,.yd-reviews__head{align-items:flex-start;flex-direction:column}
+ .yd-arrows{align-self:flex-end}
+ .yd-rail{grid-auto-columns:minmax(245px,82vw)}
+ .yd-platform__photo{min-height:320px}.yd-features{gap:8px}
+ .yd-feature{min-height:145px;padding:14px 11px}
+ .yd-feature h3{font-size:12px}.yd-feature p{font-size:9px}
+ .yd-environment__visual{min-height:270px}
+ .yd-services__grid{grid-template-columns:1fr 1fr}
+ .yd-service{min-height:205px;padding:16px 13px}
+ .yd-service:nth-child(3){border-right:1px solid var(--yd-line)}
+ .yd-service:nth-child(odd){border-right:0}
+ .yd-products__intro>p{max-width:100%}
+ .yd-gallery__grid{grid-template-columns:1fr 1fr;grid-template-rows:195px 145px 145px;gap:9px}
+ .yd-gallery__item:first-child{grid-row:span 2}
+ .yd-gallery__item:nth-child(4){grid-column:1/-1}
+ .yd-gallery__item figcaption{bottom:12px;left:12px;font-size:8px}
+ .yd-rating{text-align:left}.yd-review-track{grid-auto-columns:minmax(250px,84vw)}
+ .yd-review-invite{gap:20px;padding:22px 17px}
+ .yd-review-form{grid-template-columns:1fr}
+ .yd-wide,.yd-review-submit{grid-column:1}
+ .yd-review-controls{align-items:flex-start;flex-direction:column}
+ .yd-location__visual{min-height:285px}
+ .yd-location__detail{align-items:flex-start;font-size:8px}
+ .yd-location__detail span:last-child{max-width:62%}
+ .yd-final__inner{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:380px){
+ .yd-hero__bottom{margin-top:45px}
+ .yd-proof__item{align-items:flex-start;flex-direction:column}
+ .yd-who__details{grid-template-columns:1fr}
+ .yd-services__grid{grid-template-columns:1fr}
+ .yd-services__lead{grid-column:auto}
+ .yd-service,.yd-service:nth-child(3),.yd-service:nth-child(odd){min-height:175px;border-right:0;border-bottom:1px solid var(--yd-line)}
+ .yd-gallery__grid{grid-template-rows:180px 130px 130px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ .yd-home *,.yd-home *:before,.yd-home *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+ .yd-home.yd-js-ready .yd-reveal,.yd-home.yd-js-ready .yd-reveal.is-visible{opacity:1!important;transform:none!important}
 }
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="yd-progress" aria-hidden="true"><span id="ydHomeProgress"></span></div>
 
-<div class="yd-progress" aria-hidden="true">
-    <span id="ydHomeProgress"></span>
-</div>
+<!-- CINEMATIC HERO SLIDESHOW -->
+<section class="yd-hero yd-section" id="ydHero">
+    <div class="yd-hero__slides" aria-hidden="true">
 
-<!-- HERO -->
-<section class="yd-hero yd-section">
-    <div class="yd-hero__media" aria-hidden="true">
-        <video
-            id="ydHeroVideo"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            poster="{% static 'img/video/yunqida.mp4' %}">
-            <source src="{% static 'img/video/yunqida.mp4' %}" type="video/mp4">
-        </video>
+        <!-- Slide 1: Video -->
+        <div class="yd-hero__slide is-active" data-slide="0">
+            <video id="ydHeroVideo" autoplay muted playsinline preload="auto" poster="{% static 'img/video-poster.jpg' %}">
+                <source src="{% static 'video/yunqida.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- Slide 2: Solar image -->
+        <div class="yd-hero__slide" data-slide="1">
+            <img src="{% static 'img/solar.png' %}" alt="" fetchpriority="high">
+        </div>
+
+        <!-- Slide 3: Energy products -->
+        <div class="yd-hero__slide" data-slide="2">
+            <img src="{% static 'img/2.png' %}" alt="" loading="lazy">
+        </div>
+
+        <!-- Slide 4: Solar technology -->
+        <div class="yd-hero__slide" data-slide="3">
+            <img src="{% static 'img/3.png' %}" alt="" loading="lazy">
+        </div>
+
+        <!-- Slide 5: Inverter technology -->
+        <div class="yd-hero__slide" data-slide="4">
+            <img src="{% static 'img/4.png' %}" alt="" loading="lazy">
+        </div>
     </div>
 
-    <button
-        class="yd-video-toggle"
-        id="ydVideoToggle"
-        type="button"
-        aria-label="Pause background video"
-        title="Pause background video">
-        <span id="ydVideoIcon" aria-hidden="true">Ⅱ</span>
-    </button>
-
     <div class="yd-hero__inner">
-        <div class="yd-hero__content yd-reveal">
-            <span class="yd-eyebrow">Smarter power. Better possibilities.</span>
+        <div class="yd-hero__content">
 
-            <h1>Powering a <span>brighter</span> tomorrow.</h1>
+            <!-- Video slide copy: deliberately minimal -->
+            <div class="yd-hero__slide-copy yd-hero__minimal is-current" data-copy="0">
+                <span class="yd-hero__video-label">Yunqida Energy Technology</span>
+                <h2>Powering a <span>brighter</span> tomorrow.</h2>
+                <p>Discover a smarter approach to energy.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'products' %}">Explore products <span>↗</span></a>
+                    <a class="yd-btn yd-btn--outline" href="{% url 'contact' %}">Talk to us <span>↗</span></a>
+                </div>
+            </div>
 
-            <p class="yd-hero__text">
-                Explore solar technology, lithium battery storage and hybrid
-                inverter solutions designed around the way homes and businesses
-                use energy.
-            </p>
+            <!-- Image slide copy -->
+            <div class="yd-hero__slide-copy yd-hero__minimal" data-copy="1">
+                <span class="yd-hero__video-label">Solar energy</span>
+                <h2>Make room for <span>better energy.</span></h2>
+                <p>Solar solutions for modern living.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'solutions' %}">Explore solutions <span>↗</span></a>
+                </div>
+            </div>
 
-            <div class="yd-hero__actions">
-                <a class="yd-btn" href="{% url 'products' %}">
-                    Explore products <span>↗</span>
-                </a>
-                <a class="yd-btn yd-btn--outline" href="{% url 'contact' %}">
-                    Talk to our team <span>↗</span>
-                </a>
+            <div class="yd-hero__slide-copy yd-hero__minimal" data-copy="2">
+                <span class="yd-hero__video-label">Energy storage</span>
+                <h2>Power that <span>stays with you.</span></h2>
+                <p>Explore lithium battery technology.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'products' %}">View products <span>↗</span></a>
+                </div>
+            </div>
+
+            <div class="yd-hero__slide-copy yd-hero__minimal" data-copy="3">
+                <span class="yd-hero__video-label">Solar technology</span>
+                <h2>Turn sunlight into <span>possibility.</span></h2>
+                <p>Discover solar options for your project.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'solutions' %}">Discover more <span>↗</span></a>
+                </div>
+            </div>
+
+            <div class="yd-hero__slide-copy yd-hero__minimal" data-copy="4">
+                <span class="yd-hero__video-label">Hybrid inverter systems</span>
+                <h2>Smarter control. <span>Reliable power.</span></h2>
+                <p>Explore inverter systems for your energy needs.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'products' %}">Explore equipment <span>↗</span></a>
+                </div>
             </div>
         </div>
 
         <div class="yd-hero__bottom">
             <span>Yunqida Energy Technology · Kenya</span>
-            <span class="yd-scroll-cue">Scroll to explore</span>
+            <div class="yd-hero__controls">
+                <div class="yd-hero__dots" aria-label="Choose banner slide">
+                    <button class="yd-hero__dot is-active" type="button" data-go="0" aria-label="Show video slide"></button>
+                    <button class="yd-hero__dot" type="button" data-go="1" aria-label="Show solar slide"></button>
+                    <button class="yd-hero__dot" type="button" data-go="2" aria-label="Show battery slide"></button>
+                    <button class="yd-hero__dot" type="button" data-go="3" aria-label="Show solar technology slide"></button>
+                    <button class="yd-hero__dot" type="button" data-go="4" aria-label="Show inverter slide"></button>
+                </div>
+                <button class="yd-hero__arrow" id="ydHeroPrev" type="button" aria-label="Previous slide">←</button>
+                <button class="yd-hero__arrow" id="ydHeroNext" type="button" aria-label="Next slide">→</button>
+            </div>
         </div>
     </div>
 </section>
 
-
 <!-- WHO WE ARE -->
 <section class="yd-who">
     <div class="yd-who__inner">
+        <div class="yd-who__visual yd-reveal">
+            <div class="yd-who__visual-label">A DIFFERENT WAY TO THINK ABOUT ENERGY</div>
 
-        
-<div class="yd-who__visual yd-reveal">
+            <div class="yd-who__illustration">
+                <svg viewBox="0 0 560 390" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustration of a person exploring an energy-efficient home">
+                    <defs>
+                        <linearGradient id="ydHouse" x1="270" y1="90" x2="450" y2="310" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#E7D8B9"/>
+                            <stop offset="1" stop-color="#C6A979"/>
+                        </linearGradient>
+                        <linearGradient id="ydPerson" x1="80" y1="140" x2="210" y2="350" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#356B55"/>
+                            <stop offset="1" stop-color="#173E33"/>
+                        </linearGradient>
+                    </defs>
 
-    <div class="yd-who__visual-label">
-        OUR TECHNOLOGY
-    </div>
+                    <circle cx="285" cy="183" r="145" fill="#E8EEE5"/>
+                    <circle cx="285" cy="183" r="122" stroke="#D3DFD1" stroke-width="1.5" stroke-dasharray="4 8"/>
 
-    <div class="yd-who__icon-layout">
+                    <!-- House -->
+                    <path d="M250 190L365 95L480 190V310H250V190Z" fill="url(#ydHouse)" stroke="#9F8051" stroke-width="2"/>
+                    <path d="M230 193L365 82L500 193" stroke="#173E33" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M345 310V230C345 213 358 200 375 200C392 200 405 213 405 230V310" fill="#F7F5EC" stroke="#9F8051" stroke-width="2"/>
+                    <rect x="270" y="211" width="48" height="48" rx="2" fill="#F7F5EC" stroke="#9F8051" stroke-width="2"/>
+                    <path d="M294 211V259M270 235H318" stroke="#C5A778" stroke-width="2"/>
+                    <path d="M430 211H462V260H430Z" fill="#F7F5EC" stroke="#9F8051" stroke-width="2"/>
+                    <path d="M446 211V260M430 235H462" stroke="#C5A778" stroke-width="2"/>
 
-        <!-- Solar technology -->
-        <div class="yd-who__icon-card yd-who__icon-card--solar">
-            <div class="yd-who__icon">
-                <svg viewBox="0 0 64 64" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="32" cy="18" r="8"
-                        stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M32 3V6M32 30V33M17 18H14M50 18H47
-                             M21.4 7.4L23.5 9.5M42.5 26.5L44.6 28.6
-                             M44.6 7.4L42.5 9.5M23.5 26.5L21.4 28.6"
-                        stroke="currentColor" stroke-width="1.8"
-                        stroke-linecap="round"/>
-                    <path d="M10 38H54L59 54H5L10 38Z"
-                        stroke="currentColor" stroke-width="1.8"
-                        stroke-linejoin="round"/>
-                    <path d="M19 38L16 54M32 38V54M45 38L48 54
-                             M7 46H57"
-                        stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M22 59H42"
-                        stroke="currentColor" stroke-width="1.8"
-                        stroke-linecap="round"/>
+                    <!-- Solar panels on roof -->
+                    <path d="M303 130L355 91L410 130L358 169L303 130Z" fill="#234C53" stroke="#D9E4D8" stroke-width="2"/>
+                    <path d="M329 111L382 150M354 93L407 132M328 148L381 110" stroke="#A8C5C2" stroke-width="1.5"/>
+
+                    <!-- Person -->
+                    <circle cx="130" cy="147" r="31" fill="#D9A77B"/>
+                    <path d="M100 142C101 113 121 99 145 108C161 114 168 130 160 147C150 132 133 129 116 137L100 142Z" fill="#26332D"/>
+                    <path d="M94 185C103 169 119 162 137 162C159 162 176 176 181 198L203 305H62L80 211C82 199 87 191 94 185Z" fill="url(#ydPerson)"/>
+                    <path d="M99 193L76 247L54 271" stroke="#D9A77B" stroke-width="13" stroke-linecap="round"/>
+                    <path d="M172 194L207 220L238 205" stroke="#D9A77B" stroke-width="13" stroke-linecap="round"/>
+                    <path d="M94 305L83 359M169 305L185 359" stroke="#26332D" stroke-width="17" stroke-linecap="round"/>
+                    <path d="M68 360H100M172 360H201" stroke="#26332D" stroke-width="10" stroke-linecap="round"/>
+
+                    <!-- Question mark -->
+                    <circle cx="214" cy="100" r="31" fill="#fff" stroke="#C69B57" stroke-width="2"/>
+                    <path d="M204 91C204 82 211 76 220 76C229 76 236 82 236 91C236 100 229 104 221 110C216 114 215 117 215 122" stroke="#99713E" stroke-width="5" stroke-linecap="round"/>
+                    <circle cx="215" cy="132" r="3.5" fill="#99713E"/>
+
+                    <!-- Ground and plants -->
+                    <path d="M38 365H510" stroke="#C8D4C7" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M455 310C444 290 447 276 460 263C472 281 471 296 455 310Z" fill="#78977A"/>
+                    <path d="M457 310C461 287 475 280 489 282C483 301 471 309 457 310Z" fill="#456D52"/>
+                    <path d="M455 310V365" stroke="#66836B" stroke-width="3"/>
                 </svg>
             </div>
-            <span class="yd-who__icon-index">01 / SOLAR</span>
-            <h3>Solar Technology</h3>
-            <p>Harnessing sunlight through modern solar solutions.</p>
-        </div>
 
-        <!-- Inverter technology -->
-        <div class="yd-who__icon-card yd-who__icon-card--inverter">
-            <div class="yd-who__icon">
-                <svg viewBox="0 0 64 64" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <rect x="13" y="7" width="38" height="50" rx="5"
-                        stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M23 17H41"
-                        stroke="currentColor" stroke-width="1.6"
-                        stroke-linecap="round"/>
-                    <path d="M34 23L25 36H33L29 45L41 31H33L34 23Z"
-                        stroke="currentColor" stroke-width="1.7"
-                        stroke-linejoin="round"/>
-                    <circle cx="22" cy="48" r="1.5" fill="currentColor"/>
-                    <circle cx="42" cy="48" r="1.5" fill="currentColor"/>
-                </svg>
+            <div class="yd-who__visual-caption">
+                <span class="yd-who__caption-mark">Y</span>
+                <div>
+                    <strong>Technology with purpose.</strong>
+                    <span>Energy solutions for homes and businesses.</span>
+                </div>
             </div>
-            <span class="yd-who__icon-index">02 / INVERTERS</span>
-            <h3>Power Conversion</h3>
-            <p>Intelligent inverter systems for dependable power.</p>
         </div>
 
-        <!-- Battery storage -->
-        <div class="yd-who__icon-card yd-who__icon-card--battery">
-            <div class="yd-who__icon">
-                <svg viewBox="0 0 64 64" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
-                    <rect x="10" y="17" width="44" height="36" rx="4"
-                        stroke="currentColor" stroke-width="1.8"/>
-                    <path d="M23 17V12H41V17"
-                        stroke="currentColor" stroke-width="1.8"
-                        stroke-linejoin="round"/>
-                    <path d="M32 24L24 37H32L29 46L41 32H33L36 24Z"
-                        stroke="currentColor" stroke-width="1.7"
-                        stroke-linejoin="round"/>
-                    <path d="M17 53V57M47 53V57"
-                        stroke="currentColor" stroke-width="1.8"
-                        stroke-linecap="round"/>
-                </svg>
-            </div>
-            <span class="yd-who__icon-index">03 / STORAGE</span>
-            <h3>Energy Storage</h3>
-            <p>Lithium battery solutions for stored energy when needed.</p>
-        </div>
-
-    </div>
-
-    <div class="yd-who__visual-caption">
-        <span class="yd-who__caption-mark">Y</span>
-        <div>
-            <strong>Technology with purpose.</strong>
-            <span>Energy solutions for homes and businesses.</span>
-        </div>
-    </div>
-
-</div>
-
-
-        <!-- Company introduction -->
         <div class="yd-who__content yd-reveal yd-delay-1">
             <span class="yd-who__eyebrow">Getting to know Yunqida</span>
-
-            <h2 class="yd-who__title">
-                More than products.<br>
-                <em>Powering possibilities.</em>
-            </h2>
+            <h2 class="yd-who__title">More than products.<br><em>Powering possibilities.</em></h2>
 
             <p class="yd-who__lead">
-                We believe better energy decisions begin with the right
-                understanding, the right technology and the right people
-                behind the solution.
+                Better energy decisions begin with understanding your needs
+                and finding technology that makes sense for the way you live and work.
             </p>
 
             <div class="yd-who__description">
                 <p>
-                    Yunqida Energy Technology is a Kenya-based energy
-                    solutions company focused on solar technology,
-                    hybrid inverter systems and lithium battery storage.
+                    Yunqida Energy Technology is a Kenya-based energy solutions
+                    company focused on solar technology, hybrid inverter systems
+                    and lithium battery storage.
                 </p>
-
                 <p>
-                    We bring together products and energy technologies
-                    that help homes and businesses explore dependable
-                    power options suited to their individual needs.
+                    We bring together products and energy technologies that help
+                    homes and businesses explore dependable power options suited
+                    to their individual needs.
                 </p>
-
                 <p>
-                    Whether you are considering a solar installation,
-                    looking for backup power or exploring energy storage,
-                    our focus is to help make the process clearer —
-                    from understanding your requirements to exploring
-                    the available solutions.
+                    Whether you are considering a solar installation, looking
+                    for backup power or exploring energy storage, our focus is
+                    to make the process clearer — from understanding your
+                    requirements to exploring available solutions.
                 </p>
             </div>
 
             <div class="yd-who__details">
                 <div class="yd-who__detail">
                     <span class="yd-who__detail-number">01</span>
-                    <div>
-                        <strong>For homes</strong>
-                        <span>
-                            Thoughtful energy options for residential
-                            power and backup requirements.
-                        </span>
-                    </div>
+                    <div><strong>For homes</strong><span>Thoughtful energy options for residential power and backup requirements.</span></div>
                 </div>
-
                 <div class="yd-who__detail">
                     <span class="yd-who__detail-number">02</span>
-                    <div>
-                        <strong>For businesses</strong>
-                        <span>
-                            Solar, inverter and storage technologies
-                            for commercial applications.
-                        </span>
-                    </div>
+                    <div><strong>For businesses</strong><span>Solar, inverter and storage technologies for commercial applications.</span></div>
                 </div>
             </div>
 
-            <a href="{% url 'about' %}" class="yd-who__link">
-                Discover who we are <span>↗</span>
-            </a>
+            <a href="{% url 'about' %}" class="yd-who__link">Discover who we are <span>↗</span></a>
         </div>
-
     </div>
 </section>
 
-
 <!-- ENERGY CATEGORIES -->
 <section class="yd-proof" aria-label="Energy categories">
-    <div class="yd-proof__item yd-reveal">
-        <b class="yd-proof__num">01</b>
-        <span class="yd-proof__label">Solar panel technology</span>
-    </div>
-
-    <div class="yd-proof__item yd-reveal yd-delay-1">
-        <b class="yd-proof__num">02</b>
-        <span class="yd-proof__label">Hybrid inverter systems</span>
-    </div>
-
-    <div class="yd-proof__item yd-reveal yd-delay-2">
-        <b class="yd-proof__num">03</b>
-        <span class="yd-proof__label">Lithium energy storage</span>
-    </div>
-
-    <div class="yd-proof__item yd-reveal yd-delay-3">
-        <b class="yd-proof__num">04</b>
-        <span class="yd-proof__label">Energy solutions</span>
-    </div>
+    <div class="yd-proof__item yd-reveal"><b class="yd-proof__num">01</b><span class="yd-proof__label">Solar panel technology</span></div>
+    <div class="yd-proof__item yd-reveal yd-delay-1"><b class="yd-proof__num">02</b><span class="yd-proof__label">Hybrid inverter systems</span></div>
+    <div class="yd-proof__item yd-reveal yd-delay-2"><b class="yd-proof__num">03</b><span class="yd-proof__label">Lithium energy storage</span></div>
+    <div class="yd-proof__item yd-reveal yd-delay-3"><b class="yd-proof__num">04</b><span class="yd-proof__label">Energy solutions</span></div>
 </section>
 
 <!-- SOLUTIONS -->
 <section class="yd-section yd-solutions" id="solar-solutions">
     <div class="yd-wrap">
         <div class="yd-solutions__head yd-reveal">
-            <div>
-                <span class="yd-eyebrow">Explore what is possible</span>
-                <h2 class="yd-title">Solar solutions</h2>
-            </div>
-
+            <div><span class="yd-eyebrow">Explore what is possible</span><h2 class="yd-title">Solar solutions</h2></div>
             <div class="yd-arrows">
-                <button
-                    class="yd-arrow"
-                    id="ydSolutionPrev"
-                    type="button"
-                    aria-label="Previous solutions">←</button>
-
-                <button
-                    class="yd-arrow yd-arrow--next"
-                    id="ydSolutionNext"
-                    type="button"
-                    aria-label="Next solutions">→</button>
+                <button class="yd-arrow" id="ydSolutionPrev" type="button" aria-label="Previous solutions">←</button>
+                <button class="yd-arrow yd-arrow--next" id="ydSolutionNext" type="button" aria-label="Next solutions">→</button>
             </div>
         </div>
-
         <div class="yd-rail" id="ydSolutionRail">
             <article class="yd-solution yd-reveal">
-                <div class="yd-solution__image">
-                    <img src="{% static 'img/2.png' %}" alt="Lithium battery storage" loading="lazy">
-                    <span class="yd-solution__icon">▣</span>
-                </div>
-                <div class="yd-solution__body">
-                    <h3>Battery storage solution</h3>
-                    <p>
-                        Explore lithium battery options for backup power
-                        and energy storage applications.
-                    </p>
-                    <a href="{% url 'products' %}">Learn more ↗</a>
-                </div>
+                <div class="yd-solution__image"><img src="{% static 'img/2.png' %}" alt="Lithium battery storage" loading="lazy"><span class="yd-solution__icon">▣</span></div>
+                <div class="yd-solution__body"><h3>Battery storage solution</h3><p>Explore lithium battery options for backup power and energy storage applications.</p><a href="{% url 'products' %}">Learn more ↗</a></div>
             </article>
-
             <article class="yd-solution yd-reveal yd-delay-1">
-                <div class="yd-solution__image">
-                    <img src="{% static 'img/3.png' %}" alt="Solar panel installation" loading="lazy">
-                    <span class="yd-solution__icon">☼</span>
-                </div>
-                <div class="yd-solution__body">
-                    <h3>Solar panel installation</h3>
-                    <p>
-                        Discover solar panel options for residential
-                        and commercial energy requirements.
-                    </p>
-                    <a href="{% url 'solutions' %}">Learn more ↗</a>
-                </div>
+                <div class="yd-solution__image"><img src="{% static 'img/3.png' %}" alt="Solar panel installation" loading="lazy"><span class="yd-solution__icon">☼</span></div>
+                <div class="yd-solution__body"><h3>Solar panel installation</h3><p>Discover solar panel options for residential and commercial energy requirements.</p><a href="{% url 'solutions' %}">Learn more ↗</a></div>
             </article>
-
             <article class="yd-solution yd-reveal yd-delay-2">
-                <div class="yd-solution__image">
-                    <img src="{% static 'img/4.png' %}" alt="Hybrid solar inverter" loading="lazy">
-                    <span class="yd-solution__icon">⌁</span>
-                </div>
-                <div class="yd-solution__body">
-                    <h3>Solar inverter systems</h3>
-                    <p>
-                        Bring solar generation, battery storage and power
-                        loads together with suitable inverter technology.
-                    </p>
-                    <a href="{% url 'products' %}">Learn more ↗</a>
-                </div>
+                <div class="yd-solution__image"><img src="{% static 'img/4.png' %}" alt="Hybrid solar inverter" loading="lazy"><span class="yd-solution__icon">⌁</span></div>
+                <div class="yd-solution__body"><h3>Solar inverter systems</h3><p>Bring solar generation, battery storage and power loads together with suitable inverter technology.</p><a href="{% url 'products' %}">Learn more ↗</a></div>
             </article>
-
             <article class="yd-solution yd-reveal yd-delay-3">
-                <div class="yd-solution__image">
-                    <img src="{% static 'img/5.png' %}" alt="Energy system assessment" loading="lazy">
-                    <span class="yd-solution__icon">⌖</span>
-                </div>
-                <div class="yd-solution__body">
-                    <h3>System assessment</h3>
-                    <p>
-                        Discuss your requirements and explore equipment
-                        options for your project.
-                    </p>
-                    <a href="{% url 'contact' %}">Learn more ↗</a>
-                </div>
+                <div class="yd-solution__image"><img src="{% static 'img/5.png' %}" alt="Energy system assessment" loading="lazy"><span class="yd-solution__icon">⌖</span></div>
+                <div class="yd-solution__body"><h3>System assessment</h3><p>Discuss your requirements and explore equipment options for your project.</p><a href="{% url 'contact' %}">Learn more ↗</a></div>
             </article>
         </div>
     </div>
 </section>
+{% load static %}
+{% url 'works' as works_url %}
+{% comment %}
+  COMPLETED WORKS section for the home page.
+  Save as:  core/templates/core/_completed_works.html
+  Use with: {% include 'core/_completed_works.html' %}
+  Optional context: completed_works (any queryset/list). Each item can have
+  .image.url, .title, .location and .category. If it is empty, the four
+  fallback cards below are shown. Only the first 4 items are displayed.
+{% endcomment %}
 
+<style>
+/* COMPLETED WORKS */
+.yd-works{position:relative;padding:clamp(75px,9vw,112px) 0 clamp(68px,8vw,100px);overflow:hidden;background:var(--yd-cream)}
+.yd-works__head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:clamp(34px,5vw,52px)}
+.yd-works__head .yd-eyebrow{color:var(--yd-navy)}
+.yd-works__head h2{margin:13px 0 0;font-size:clamp(34px,4.8vw,60px);font-weight:950;line-height:.98;letter-spacing:-.055em;text-transform:uppercase}
+.yd-works__head h2 span{color:#9a9a8c}
+.yd-works__head>p{max-width:360px;margin:0 0 5px;color:var(--yd-muted);font-size:12px;line-height:1.9}
+
+.yd-works__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:start;gap:clamp(12px,1.8vw,24px)}
+.yd-work{display:block;color:inherit}
+.yd-work:nth-child(even){margin-top:clamp(20px,4vw,56px)}
+.yd-work__media{position:relative;aspect-ratio:3/4;overflow:hidden;background:#d9d8cc}
+.yd-work__zoom{position:absolute;inset:0;transition:transform .9s var(--yd-ease)}
+.yd-work:hover .yd-work__zoom{transform:scale(1.06)}
+.yd-work__zoom img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;transform:translate3d(0,var(--py,0px),0);will-change:transform}
+.yd-work__num{position:absolute;z-index:2;top:0;left:0;padding:8px 12px;background:var(--yd-yellow);color:var(--yd-navy);font-size:10px;font-weight:950;letter-spacing:.1em}
+.yd-work__tag{position:absolute;z-index:2;right:10px;bottom:10px;padding:6px 10px;background:var(--yd-navy);color:#fff;font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.yd-work__info{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 2px 0}
+.yd-work__info h3{margin:0;font-size:13px;font-weight:950;line-height:1.3;text-transform:uppercase}
+.yd-work__info p{margin:5px 0 0;color:var(--yd-muted);font-size:10px;line-height:1.5}
+.yd-work__go{display:grid;flex:0 0 34px;width:34px;height:34px;place-items:center;border:1px solid var(--yd-line);border-radius:50%;color:var(--yd-navy);font-size:14px;transition:background .3s,border-color .3s,transform .4s var(--yd-ease)}
+.yd-work:hover .yd-work__go{background:var(--yd-yellow);border-color:var(--yd-yellow);transform:rotate(-45deg)}
+
+/* scroll reveal: each photo is unveiled from the bottom, one after another */
+.yd-home.yd-js-ready .yd-work .yd-work__media{clip-path:inset(0 0 100% 0);transition:clip-path 1.15s var(--yd-ease)}
+.yd-home.yd-js-ready .yd-work.is-visible .yd-work__media{clip-path:inset(0)}
+.yd-home.yd-js-ready .yd-work:nth-child(2) .yd-work__media{transition-delay:.12s}
+.yd-home.yd-js-ready .yd-work:nth-child(3) .yd-work__media{transition-delay:.24s}
+.yd-home.yd-js-ready .yd-work:nth-child(4) .yd-work__media{transition-delay:.36s}
+
+.yd-works__more{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:clamp(40px,5vw,62px);padding-top:24px;border-top:1px solid var(--yd-line)}
+.yd-works__more p{max-width:420px;margin:0;color:var(--yd-muted);font-size:11px;line-height:1.7}
+
+/* 4 photos on every screen: 4 across on desktop, 2 x 2 on tablet and phone */
+@media(max-width:800px){
+ .yd-works__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .yd-work:nth-child(even){margin-top:24px}
+}
+@media(max-width:600px){
+ .yd-works__head{align-items:flex-start;flex-direction:column}
+ .yd-works__grid{gap:10px}
+ .yd-work__media{aspect-ratio:4/5}
+ .yd-work:nth-child(even){margin-top:20px}
+ .yd-work__num{padding:6px 9px;font-size:9px}
+ .yd-work__tag{right:7px;bottom:7px;padding:5px 7px;font-size:7px}
+ .yd-work__info{padding-top:12px}
+ .yd-work__info h3{font-size:11px}
+ .yd-work__info p{font-size:9px}
+ .yd-work__go{flex-basis:28px;width:28px;height:28px;font-size:12px}
+ .yd-works__more{align-items:stretch;flex-direction:column}
+ .yd-works__more .yd-btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ .yd-home.yd-js-ready .yd-work .yd-work__media{clip-path:none!important}
+ .yd-work__zoom img{transform:none!important}
+}
+</style>
+
+<section class="yd-section yd-works" id="completed-works">
+    <div class="yd-wrap">
+        <div class="yd-works__head yd-reveal">
+            <div>
+                <span class="yd-eyebrow">Completed works</span>
+                <h2>Projects we've <span>powered</span></h2>
+            </div>
+            <p>A look at recent solar, inverter and battery storage installations delivered by our team.</p>
+        </div>
+
+        <div class="yd-works__grid">
+            {% if completed_works %}
+                {% for w in completed_works|slice:":4" %}
+                <a class="yd-work yd-reveal" href="{% firstof works_url '/works-done/' %}" aria-label="View project: {{ w.title }}">
+                    <div class="yd-work__media">
+                        <span class="yd-work__num">{{ forloop.counter|stringformat:"02d" }}</span>
+                        {% if w.category %}<span class="yd-work__tag">{{ w.category }}</span>{% endif %}
+                        <div class="yd-work__zoom"><img src="{{ w.image.url }}" alt="{{ w.title }}" loading="lazy"></div>
+                    </div>
+                    <div class="yd-work__info">
+                        <div><h3>{{ w.title }}</h3>{% if w.location %}<p>{{ w.location }}</p>{% endif %}</div>
+                        <span class="yd-work__go" aria-hidden="true">→</span>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <!-- Fallback cards: replace titles, locations and images with real projects -->
+                <a class="yd-work yd-reveal" href="{% firstof works_url '/works-done/' %}">
+                    <div class="yd-work__media"><span class="yd-work__num">01</span><span class="yd-work__tag">Storage</span><div class="yd-work__zoom"><img src="{% static 'img/2.png' %}" alt="Battery storage installation" loading="lazy"></div></div>
+                    <div class="yd-work__info"><div><h3>Battery storage installation</h3><p>Kenya</p></div><span class="yd-work__go" aria-hidden="true">→</span></div>
+                </a>
+                <a class="yd-work yd-reveal yd-delay-1" href="{% firstof works_url '/works-done/' %}">
+                    <div class="yd-work__media"><span class="yd-work__num">02</span><span class="yd-work__tag">Solar</span><div class="yd-work__zoom"><img src="{% static 'img/solar.png' %}" alt="Solar panel installation" loading="lazy"></div></div>
+                    <div class="yd-work__info"><div><h3>Solar panel installation</h3><p>Kenya</p></div><span class="yd-work__go" aria-hidden="true">→</span></div>
+                </a>
+                <a class="yd-work yd-reveal yd-delay-2" href="{% firstof works_url '/works-done/' %}">
+                    <div class="yd-work__media"><span class="yd-work__num">03</span><span class="yd-work__tag">Inverter</span><div class="yd-work__zoom"><img src="{% static 'img/4.png' %}" alt="Hybrid inverter system" loading="lazy"></div></div>
+                    <div class="yd-work__info"><div><h3>Hybrid inverter system</h3><p>Kenya</p></div><span class="yd-work__go" aria-hidden="true">→</span></div>
+                </a>
+                <a class="yd-work yd-reveal yd-delay-3" href="{% firstof works_url '/works-done/' %}">
+                    <div class="yd-work__media"><span class="yd-work__num">04</span><span class="yd-work__tag">Commercial</span><div class="yd-work__zoom"><img src="{% static 'img/5.png' %}" alt="Commercial energy project" loading="lazy"></div></div>
+                    <div class="yd-work__info"><div><h3>Commercial energy project</h3><p>Kenya</p></div><span class="yd-work__go" aria-hidden="true">→</span></div>
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- SEE MORE BUTTON: move this block, or change its href, wherever you want it -->
+        <div class="yd-works__more yd-reveal">
+            <p>Showing a selection of our recent installations. See the full list of completed projects.</p>
+            <a class="yd-btn yd-btn--dark" href="{% firstof works_url '/works-done/' %}">See more projects <span>↗</span></a>
+        </div>
+    </div>
+</section>
+
+<script>
+(function(){
+ 'use strict';
+ var cards=document.querySelectorAll('.yd-works .yd-work');
+ if(!cards.length)return;
+ if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+ /* gentle parallax: photos drift slightly as you scroll (works with the site's smooth scrolling) */
+ var queued=false;
+ function update(){
+   var vh=window.innerHeight;
+   cards.forEach(function(card){
+     var media=card.querySelector('.yd-work__media');
+     var img=card.querySelector('.yd-work__zoom img');
+     if(!media||!img)return;
+     var r=media.getBoundingClientRect();
+     if(r.bottom<-120||r.top>vh+120)return;
+     var offset=((r.top+r.height/2)-vh/2)/vh;
+     var max=r.height*.07;
+     var y=Math.max(-max,Math.min(max,-offset*max*2));
+     img.style.setProperty('--py',y.toFixed(1)+'px');
+   });
+   queued=false;
+ }
+ function queue(){if(!queued){queued=true;window.requestAnimationFrame(update);}}
+ window.addEventListener('scroll',queue,{passive:true});
+ window.addEventListener('resize',queue,{passive:true});
+ update();
+})();
+</script>
 <!-- TECHNOLOGY -->
 <section class="yd-section yd-platform">
     <div class="yd-wrap">
-        <div class="yd-platform__heading yd-reveal">
-            <span class="yd-eyebrow">Technology for every application</span>
-            <h2>Panels, inverters,<br>and storage solutions</h2>
-        </div>
-
+        <div class="yd-platform__heading yd-reveal"><span class="yd-eyebrow">Technology for every application</span><h2>Panels, inverters,<br>and storage solutions</h2></div>
         <div class="yd-platform__grid">
-            <div class="yd-platform__photo yd-reveal">
-                <img
-                    src="{% static 'img/5.png' %}"
-                    alt="Solar energy professionals reviewing an installation"
-                    loading="lazy">
-                <span class="yd-platform__tag">Designed around your energy needs</span>
-            </div>
-
+            <div class="yd-platform__photo yd-reveal"><img src="{% static 'img/5.png' %}" alt="Solar energy professionals reviewing an installation" loading="lazy"><span class="yd-platform__tag">Designed around your energy needs</span></div>
             <div class="yd-features">
-                <article class="yd-feature yd-reveal">
-                    <span class="yd-feature__icon">☼</span>
-                    <h3>Tailored solutions</h3>
-                    <p>
-                        Explore equipment options based on your energy use,
-                        application and priorities.
-                    </p>
-                </article>
-
-                <article class="yd-feature yd-reveal yd-delay-1">
-                    <span class="yd-feature__icon">⚒</span>
-                    <h3>Expert installation</h3>
-                    <p>
-                        Discuss installation requirements and practical
-                        next steps for your project.
-                    </p>
-                </article>
-
-                <article class="yd-feature yd-reveal">
-                    <span class="yd-feature__icon">▦</span>
-                    <h3>Premium panels</h3>
-                    <p>
-                        Discover solar modules for residential and
-                        commercial applications.
-                    </p>
-                </article>
-
-                <article class="yd-feature yd-reveal yd-delay-1">
-                    <span class="yd-feature__icon">▤</span>
-                    <h3>Site assessment</h3>
-                    <p>
-                        Start by understanding your site, loads and
-                        intended system performance.
-                    </p>
-                </article>
-
-                <article class="yd-feature yd-reveal">
-                    <span class="yd-feature__icon">✧</span>
-                    <h3>Quality assurance</h3>
-                    <p>
-                        Compare product specifications and make informed
-                        equipment selections.
-                    </p>
-                </article>
-
-                <article class="yd-feature yd-reveal yd-delay-1">
-                    <span class="yd-feature__icon">◉</span>
-                    <h3>Reliability focus</h3>
-                    <p>
-                        Consider compatibility, storage needs and
-                        long-term usage requirements.
-                    </p>
-                </article>
+                <article class="yd-feature yd-reveal"><span class="yd-feature__icon">☼</span><h3>Tailored solutions</h3><p>Explore equipment options based on your energy use, application and priorities.</p></article>
+                <article class="yd-feature yd-reveal yd-delay-1"><span class="yd-feature__icon">⚒</span><h3>Expert installation</h3><p>Discuss installation requirements and practical next steps for your project.</p></article>
+                <article class="yd-feature yd-reveal"><span class="yd-feature__icon">▦</span><h3>Premium panels</h3><p>Discover solar modules for residential and commercial applications.</p></article>
+                <article class="yd-feature yd-reveal yd-delay-1"><span class="yd-feature__icon">▤</span><h3>Site assessment</h3><p>Start by understanding your site, loads and intended system performance.</p></article>
+                <article class="yd-feature yd-reveal"><span class="yd-feature__icon">✧</span><h3>Quality assurance</h3><p>Compare product specifications and make informed equipment selections.</p></article>
+                <article class="yd-feature yd-reveal yd-delay-1"><span class="yd-feature__icon">◉</span><h3>Reliability focus</h3><p>Consider compatibility, storage needs and long-term usage requirements.</p></article>
             </div>
         </div>
     </div>
@@ -2756,77 +795,30 @@ body.yd-home {
         <div class="yd-environment__copy yd-reveal">
             <span class="yd-eyebrow">Energy with a wider purpose</span>
             <h2>Clean energy.<br><span>Clearer future.</span></h2>
-
-            <p>
-                Solar technology can be part of a more considered approach
-                to energy. Explore solutions that bring generation, storage
-                and everyday power requirements together.
-            </p>
-
-            <a class="yd-btn" href="{% url 'solutions' %}">
-                Explore solutions <span>↗</span>
-            </a>
+            <p>Solar technology can be part of a more considered approach to energy. Explore solutions that bring generation, storage and everyday power requirements together.</p>
+            <a class="yd-btn" href="{% url 'solutions' %}">Explore solutions <span>↗</span></a>
         </div>
-
-        <div class="yd-environment__visual yd-reveal yd-delay-1">
-            <img
-                src="{% static 'img/solar.png' %}"
-                alt="Solar panels under a clear sky"
-                loading="lazy">
-            <span class="yd-environment__badge">Clean energy for modern living</span>
-        </div>
+        <div class="yd-environment__visual yd-reveal yd-delay-1"><img src="{% static 'img/solar.png' %}" alt="Solar panels under a clear sky" loading="lazy"><span class="yd-environment__badge">Clean energy for modern living</span></div>
     </div>
 </section>
 
 <!-- SERVICES -->
 <section class="yd-section yd-services">
     <div class="yd-wrap yd-services__grid">
-        <div class="yd-services__lead yd-reveal">
-            <h3>Energy services for every stage</h3>
-            <p>
-                From selecting equipment to planning an energy system,
-                start with the right conversation.
-            </p>
-        </div>
-
-        <article class="yd-service yd-reveal">
-            <span class="yd-service__icon">☼</span>
-            <h3>Solar panel services</h3>
-            <p>Explore solar options for homes, businesses and other applications.</p>
-            <a href="{% url 'services' %}">Learn more ↗</a>
-        </article>
-
-        <article class="yd-service yd-reveal yd-delay-1">
-            <span class="yd-service__icon">⌁</span>
-            <h3>Inverter systems</h3>
-            <p>Find inverter technology for backup, solar and hybrid configurations.</p>
-            <a href="{% url 'products' %}">View products ↗</a>
-        </article>
-
-        <article class="yd-service yd-reveal yd-delay-2">
-            <span class="yd-service__icon">▣</span>
-            <h3>Energy storage</h3>
-            <p>Explore battery options to support your energy requirements.</p>
-            <a href="{% url 'solutions' %}">Discover storage ↗</a>
-        </article>
+        <div class="yd-services__lead yd-reveal"><h3>Energy services for every stage</h3><p>From selecting equipment to planning an energy system, start with the right conversation.</p></div>
+        <article class="yd-service yd-reveal"><span class="yd-service__icon">☼</span><h3>Solar panel services</h3><p>Explore solar options for homes, businesses and other applications.</p><a href="{% url 'services' %}">Learn more ↗</a></article>
+        <article class="yd-service yd-reveal yd-delay-1"><span class="yd-service__icon">⌁</span><h3>Inverter systems</h3><p>Find inverter technology for backup, solar and hybrid configurations.</p><a href="{% url 'products' %}">View products ↗</a></article>
+        <article class="yd-service yd-reveal yd-delay-2"><span class="yd-service__icon">▣</span><h3>Energy storage</h3><p>Explore battery options to support your energy requirements.</p><a href="{% url 'solutions' %}">Discover storage ↗</a></article>
     </div>
 </section>
 
-<!-- PRODUCTS: KEEP THE EXISTING DJANGO PRODUCT INTEGRATION -->
+<!-- PRODUCTS -->
 <section class="yd-section yd-products">
     <div class="yd-wrap">
         <div class="yd-products__intro yd-reveal">
-            <div>
-                <span class="yd-eyebrow">The Yunqida collection</span>
-                <h2>Equipment for<br>smarter energy</h2>
-            </div>
-
-            <p>
-                Browse our available products, including lithium batteries,
-                hybrid inverters and solar equipment.
-            </p>
+            <div><span class="yd-eyebrow">The Yunqida collection</span><h2>Equipment for<br>smarter energy</h2></div>
+            <p>Browse our available products, including lithium batteries, hybrid inverters and solar equipment.</p>
         </div>
-
         {% include 'core/_manufacture.html' %}
     </div>
 </section>
@@ -2835,64 +827,15 @@ body.yd-home {
 <section class="yd-section yd-approach">
     <div class="yd-wrap yd-approach__grid">
         <div class="yd-approach__lead yd-reveal">
-            <span class="yd-eyebrow">The Yunqida approach</span>
-            <h2>Make the right energy choice.</h2>
-
-            <p>
-                Choosing an energy system starts with understanding how
-                you use power. Our aim is to make exploring available
-                technology clearer and more straightforward.
-            </p>
-
-            <a class="yd-btn" href="{% url 'about' %}">
-                About Yunqida <span>↗</span>
-            </a>
+            <span class="yd-eyebrow">The Yunqida approach</span><h2>Make the right energy choice.</h2>
+            <p>Choosing an energy system starts with understanding how you use power. Our aim is to make exploring available technology clearer and more straightforward.</p>
+            <a class="yd-btn" href="{% url 'about' %}">About Yunqida <span>↗</span></a>
         </div>
-
         <div class="yd-approach__list">
-            <article class="yd-approach-item yd-reveal">
-                <b>01</b>
-                <div>
-                    <h3>Understand the application</h3>
-                    <p>
-                        Consider appliances, loads, operating patterns and
-                        the outcomes you need from your system.
-                    </p>
-                </div>
-            </article>
-
-            <article class="yd-approach-item yd-reveal">
-                <b>02</b>
-                <div>
-                    <h3>Explore suitable technology</h3>
-                    <p>
-                        Compare solar, inverter and battery options with
-                        your intended use in mind.
-                    </p>
-                </div>
-            </article>
-
-            <article class="yd-approach-item yd-reveal">
-                <b>03</b>
-                <div>
-                    <h3>Review the details</h3>
-                    <p>
-                        Look at product specifications, compatibility
-                        and installation requirements.
-                    </p>
-                </div>
-            </article>
-
-            <article class="yd-approach-item yd-reveal">
-                <b>04</b>
-                <div>
-                    <h3>Move forward with clarity</h3>
-                    <p>
-                        Speak with our team about the equipment and
-                        energy solutions you are considering.
-                    </p>
-                </div>
-            </article>
+            <article class="yd-approach-item yd-reveal"><b>01</b><div><h3>Understand the application</h3><p>Consider appliances, loads, operating patterns and the outcomes you need from your system.</p></div></article>
+            <article class="yd-approach-item yd-reveal"><b>02</b><div><h3>Explore suitable technology</h3><p>Compare solar, inverter and battery options with your intended use in mind.</p></div></article>
+            <article class="yd-approach-item yd-reveal"><b>03</b><div><h3>Review the details</h3><p>Look at product specifications, compatibility and installation requirements.</p></div></article>
+            <article class="yd-approach-item yd-reveal"><b>04</b><div><h3>Move forward with clarity</h3><p>Speak with our team about the equipment and energy solutions you are considering.</p></div></article>
         </div>
     </div>
 </section>
@@ -2901,49 +844,14 @@ body.yd-home {
 <section class="yd-section yd-gallery">
     <div class="yd-wrap">
         <div class="yd-gallery__head yd-reveal">
-            <div>
-                <span class="yd-eyebrow">A closer look at Yunqida</span>
-                <h2>Power in perspective</h2>
-            </div>
-
-            <p>
-                Explore the products, solar technology and energy
-                environments connected to the work we do.
-            </p>
+            <div><span class="yd-eyebrow">A closer look at Yunqida</span><h2>Power in perspective</h2></div>
+            <p>Explore the products, solar technology and energy environments connected to the work we do.</p>
         </div>
-
         <div class="yd-gallery__grid">
-            <figure class="yd-gallery__item yd-reveal">
-                <img
-                    src="{% static 'img/2.png' %}"
-                    alt="Yunqida energy products and storage technology"
-                    loading="lazy">
-                <figcaption>Energy storage</figcaption>
-            </figure>
-
-            <figure class="yd-gallery__item yd-reveal yd-delay-1">
-                <img
-                    src="{% static 'img/3.png' %}"
-                    alt="Solar and inverter technology"
-                    loading="lazy">
-                <figcaption>Solar technology</figcaption>
-            </figure>
-
-            <figure class="yd-gallery__item yd-reveal yd-delay-2">
-                <img
-                    src="{% static 'img/4.png' %}"
-                    alt="Power equipment"
-                    loading="lazy">
-                <figcaption>Power equipment</figcaption>
-            </figure>
-
-            <figure class="yd-gallery__item yd-reveal yd-delay-1">
-                <img
-                    src="{% static 'img/5.png' %}"
-                    alt="Yunqida energy solutions"
-                    loading="lazy">
-                <figcaption>Energy solutions</figcaption>
-            </figure>
+            <figure class="yd-gallery__item yd-reveal"><img src="{% static 'img/2.png' %}" alt="Yunqida energy products and storage technology" loading="lazy"><figcaption>Energy storage</figcaption></figure>
+            <figure class="yd-gallery__item yd-reveal yd-delay-1"><img src="{% static 'img/3.png' %}" alt="Solar and inverter technology" loading="lazy"><figcaption>Solar technology</figcaption></figure>
+            <figure class="yd-gallery__item yd-reveal yd-delay-2"><img src="{% static 'img/4.png' %}" alt="Power equipment" loading="lazy"><figcaption>Power equipment</figcaption></figure>
+            <figure class="yd-gallery__item yd-reveal yd-delay-1"><img src="{% static 'img/5.png' %}" alt="Yunqida energy solutions" loading="lazy"><figcaption>Energy solutions</figcaption></figure>
         </div>
     </div>
 </section>
@@ -2952,22 +860,11 @@ body.yd-home {
 <section class="yd-section yd-reviews">
     <div class="yd-wrap">
         <div class="yd-reviews__head yd-reveal">
-            <div>
-                <span class="yd-eyebrow">Experiences from our customers</span>
-                <h2>Trust is built<br>through experience</h2>
-            </div>
-
+            <div><span class="yd-eyebrow">Experiences from our customers</span><h2>Trust is built<br>through experience</h2></div>
             {% if google_rating %}
             <div class="yd-rating">
-                <strong>{{ google_rating }}</strong>
-                <div class="yd-stars">★★★★★</div>
-                <span>
-                    {% if google_review_count %}
-                        {{ google_review_count }} Google reviews
-                    {% else %}
-                        Google customer reviews
-                    {% endif %}
-                </span>
+                <strong>{{ google_rating }}</strong><div class="yd-stars">★★★★★</div>
+                <span>{% if google_review_count %}{{ google_review_count }} Google reviews{% else %}Google customer reviews{% endif %}</span>
             </div>
             {% endif %}
         </div>
@@ -2977,156 +874,43 @@ body.yd-home {
             {% for r in google_reviews %}
             <article class="yd-review-card">
                 <div class="yd-review-card__top">
-                    <span class="yd-stars" aria-label="{{ r.rating }} out of 5 stars">
-                        {% for star in "12345" %}
-                            {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
-                        {% endfor %}
-                    </span>
-
-                    {% if r.time %}
-                    <span class="yd-review-time">{{ r.time }}</span>
-                    {% endif %}
+                    <span class="yd-stars" aria-label="{{ r.rating }} out of 5 stars">{% for star in "12345" %}{% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+                    {% if r.time %}<span class="yd-review-time">{{ r.time }}</span>{% endif %}
                 </div>
-
-                {% if r.text %}
-                <p class="yd-review-text">{{ r.text }}</p>
-                {% endif %}
-
+                {% if r.text %}<p class="yd-review-text">{{ r.text }}</p>{% endif %}
                 <div class="yd-review-author">
-                    {% if r.photo %}
-                    <img
-                        class="yd-review-photo"
-                        src="{{ r.photo }}"
-                        alt=""
-                        loading="lazy">
-                    {% else %}
-                    <span class="yd-review-photo" aria-hidden="true"></span>
-                    {% endif %}
-
+                    {% if r.photo %}<img class="yd-review-photo" src="{{ r.photo }}" alt="" loading="lazy">{% else %}<span class="yd-review-photo" aria-hidden="true"></span>{% endif %}
                     <span>{{ r.name }}</span>
                 </div>
             </article>
             {% endfor %}
         </div>
-
         <div class="yd-review-controls yd-reveal">
-            <div>
-                <button
-                    class="yd-arrow"
-                    type="button"
-                    id="ydReviewPrev"
-                    aria-label="Previous reviews">←</button>
-
-                <button
-                    class="yd-arrow yd-arrow--next"
-                    type="button"
-                    id="ydReviewNext"
-                    aria-label="Next reviews">→</button>
-            </div>
-
+            <div><button class="yd-arrow" type="button" id="ydReviewPrev" aria-label="Previous reviews">←</button> <button class="yd-arrow yd-arrow--next" type="button" id="ydReviewNext" aria-label="Next reviews">→</button></div>
             <div class="yd-review-links">
-                {% if google_reviews_url %}
-                <a href="{{ google_reviews_url }}" target="_blank" rel="noopener noreferrer">
-                    Read all reviews ↗
-                </a>
-                {% endif %}
-
-                {% if google_write_url %}
-                <a href="{{ google_write_url }}" target="_blank" rel="noopener noreferrer">
-                    Write a Google review ↗
-                </a>
-                {% endif %}
+                {% if google_reviews_url %}<a href="{{ google_reviews_url }}" target="_blank" rel="noopener noreferrer">Read all reviews ↗</a>{% endif %}
+                {% if google_write_url %}<a href="{{ google_write_url }}" target="_blank" rel="noopener noreferrer">Write a Google review ↗</a>{% endif %}
             </div>
         </div>
-
         {% else %}
         <div class="yd-review-links yd-reveal">
-            {% if google_reviews_url %}
-            <a href="{{ google_reviews_url }}" target="_blank" rel="noopener noreferrer">
-                Read customer reviews ↗
-            </a>
-            {% endif %}
-
-            {% if google_write_url %}
-            <a href="{{ google_write_url }}" target="_blank" rel="noopener noreferrer">
-                Write a Google review ↗
-            </a>
-            {% endif %}
+            {% if google_reviews_url %}<a href="{{ google_reviews_url }}" target="_blank" rel="noopener noreferrer">Read customer reviews ↗</a>{% endif %}
+            {% if google_write_url %}<a href="{{ google_write_url }}" target="_blank" rel="noopener noreferrer">Write a Google review ↗</a>{% endif %}
         </div>
         {% endif %}
 
         <div class="yd-review-invite yd-reveal">
             <div>
-                <span class="yd-eyebrow">Your experience matters</span>
-                <h3>Have you worked with Yunqida?</h3>
-
-                <p>
-                    We value honest feedback. Share your experience with
-                    our team and help us improve the way we serve our customers.
-                </p>
-
-                {% if google_write_url %}
-                <a
-                    class="yd-btn"
-                    href="{{ google_write_url }}"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    Leave a Google review <span>↗</span>
-                </a>
-                {% endif %}
+                <span class="yd-eyebrow">Your experience matters</span><h3>Have you worked with Yunqida?</h3>
+                <p>We value honest feedback. Share your experience with our team and help us improve the way we serve our customers.</p>
+                {% if google_write_url %}<a class="yd-btn" href="{{ google_write_url }}" target="_blank" rel="noopener noreferrer">Leave a Google review <span>↗</span></a>{% endif %}
             </div>
-
             <form class="yd-review-form" id="ydReviewForm">
-                <div>
-                    <label for="ydReviewName">Your name</label>
-                    <input
-                        id="ydReviewName"
-                        name="name"
-                        type="text"
-                        placeholder="Enter your name"
-                        required>
-                </div>
-
-                <div>
-                    <label for="ydReviewEmail">Email address</label>
-                    <input
-                        id="ydReviewEmail"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        required>
-                </div>
-
-                <div class="yd-wide">
-                    <label for="ydReviewRating">Your rating</label>
-                    <select id="ydReviewRating" name="rating" required>
-                        <option value="">Choose a rating</option>
-                        <option value="5">★★★★★ — Excellent</option>
-                        <option value="4">★★★★ — Very good</option>
-                        <option value="3">★★★ — Good</option>
-                        <option value="2">★★ — Fair</option>
-                        <option value="1">★ — Needs improvement</option>
-                    </select>
-                </div>
-
-                <div class="yd-wide">
-                    <label for="ydReviewMessage">Your experience</label>
-                    <textarea
-                        id="ydReviewMessage"
-                        name="review"
-                        placeholder="Tell us about your experience..."
-                        required></textarea>
-                </div>
-
-                <div class="yd-review-submit">
-                    <button class="yd-btn" type="submit">
-                        Prepare review <span>↗</span>
-                    </button>
-
-                    <span class="yd-review-note" id="ydReviewFormNote" aria-live="polite">
-                        This form needs a Django review endpoint before submissions can be saved.
-                    </span>
-                </div>
+                <div><label for="ydReviewName">Your name</label><input id="ydReviewName" name="name" type="text" placeholder="Enter your name" required></div>
+                <div><label for="ydReviewEmail">Email address</label><input id="ydReviewEmail" name="email" type="email" placeholder="you@example.com" required></div>
+                <div class="yd-wide"><label for="ydReviewRating">Your rating</label><select id="ydReviewRating" name="rating" required><option value="">Choose a rating</option><option value="5">★★★★★ — Excellent</option><option value="4">★★★★ — Very good</option><option value="3">★★★ — Good</option><option value="2">★★ — Fair</option><option value="1">★ — Needs improvement</option></select></div>
+                <div class="yd-wide"><label for="ydReviewMessage">Your experience</label><textarea id="ydReviewMessage" name="review" placeholder="Tell us about your experience..." required></textarea></div>
+                <div class="yd-review-submit"><button class="yd-btn" type="submit">Prepare review <span>↗</span></button><span class="yd-review-note" id="ydReviewFormNote" aria-live="polite">This form needs a Django review endpoint before submissions can be saved.</span></div>
             </form>
         </div>
     </div>
@@ -3135,52 +919,17 @@ body.yd-home {
 <!-- LOCATION / CONTACT -->
 <section class="yd-section yd-location">
     <div class="yd-wrap yd-location__grid">
-        <div class="yd-location__visual yd-reveal">
-            <img
-                src="{% static 'img/5.png' %}"
-                alt="Yunqida Energy Technology and its customer environment"
-                loading="lazy">
-            <span class="yd-location__stamp">
-                Yunqida Energy Technology · Kenya
-            </span>
-        </div>
-
+        <div class="yd-location__visual yd-reveal"><img src="{% static 'img/5.png' %}" alt="Yunqida Energy Technology and its customer environment" loading="lazy"><span class="yd-location__stamp">Yunqida Energy Technology · Kenya</span></div>
         <div class="yd-location__content yd-reveal yd-delay-1">
-            <span class="yd-eyebrow">Find your way to us</span>
-            <h2>Let's talk about your next project.</h2>
-
-            <p>
-                Have a project in mind, need help choosing equipment or
-                want to speak with our team? Get in touch and we can help
-                you take the next step.
-            </p>
-
+            <span class="yd-eyebrow">Find your way to us</span><h2>Let's talk about your next project.</h2>
+            <p>Have a project in mind, need help choosing equipment or want to speak with our team? Get in touch and we can help you take the next step.</p>
             <div class="yd-location__details">
-                <div class="yd-location__detail">
-                    <span>Company</span>
-                    <span>Yunqida Energy Technology</span>
-                </div>
-
-                <div class="yd-location__detail">
-                    <span>Location</span>
-                    <span>Kenya · Contact our team for directions</span>
-                </div>
-
-                <div class="yd-location__detail">
-                    <span>Visit</span>
-                    <span>Please contact us before planning your visit.</span>
-                </div>
+                <div class="yd-location__detail"><span>Company</span><span>Yunqida Energy Technology</span></div>
+                <div class="yd-location__detail"><span>Location</span><span>Kenya · Contact our team for directions</span></div>
+                <div class="yd-location__detail"><span>Visit</span><span>Please contact us before planning your visit.</span></div>
             </div>
-
             <div class="yd-location__actions">
-                <a
-                    class="yd-btn"
-                    href="https://www.google.com/maps/search/?api=1&amp;query=Yunqida+Energy+Technology+Kenya"
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    Find us on Google Maps <span>↗</span>
-                </a>
-
+                <a class="yd-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Yunqida+Energy+Technology+Kenya" target="_blank" rel="noopener noreferrer">Find us on Google Maps <span>↗</span></a>
                 <a href="{% url 'contact' %}">Contact our team ↗</a>
             </div>
         </div>
@@ -3190,243 +939,187 @@ body.yd-home {
 <!-- FINAL CTA -->
 <section class="yd-section yd-final">
     <div class="yd-wrap yd-final__inner">
-        <div class="yd-reveal">
-            <span class="yd-eyebrow">Start your energy journey</span>
-            <h2>Get your free solar estimate. Let's get started.</h2>
-        </div>
-
-        <div class="yd-reveal yd-delay-2">
-            <a class="yd-btn" href="{% url 'contact' %}">
-                Get in touch <span>↗</span>
-            </a>
-        </div>
+        <div class="yd-reveal"><span class="yd-eyebrow">Start your energy journey</span><h2>Get your free solar estimate. Let's get started.</h2></div>
+        <div class="yd-reveal yd-delay-2"><a class="yd-btn" href="{% url 'contact' %}">Get in touch <span>↗</span></a></div>
     </div>
 </section>
-
 {% endblock %}
 
 {% block extra_js %}
 <script>
-(function () {
-    'use strict';
+(function(){
+ 'use strict';
 
-    var page = document.querySelector('body.yd-home');
-    if (!page) return;
+ var page=document.querySelector('body.yd-home');
+ if(!page)return;
 
-    var reducedMotion = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /*
-     * Reveal elements.
-     * The page starts with content visible. The animation class is only
-     * enabled after this script successfully starts.
-     */
-    var revealItems = page.querySelectorAll('.yd-reveal');
+ /* Reveal animations */
+ var revealItems=page.querySelectorAll('.yd-reveal');
+ if(!reducedMotion&&'IntersectionObserver' in window){
+   page.classList.add('yd-js-ready');
+   var revealObserver=new IntersectionObserver(function(entries,observer){
+     entries.forEach(function(entry){
+       if(entry.isIntersecting){
+         entry.target.classList.add('is-visible');
+         observer.unobserve(entry.target);
+       }
+     });
+   },{threshold:.10,rootMargin:'0px 0px -35px 0px'});
+   revealItems.forEach(function(item){revealObserver.observe(item);});
+ }else{
+   revealItems.forEach(function(item){item.classList.add('is-visible');});
+ }
 
-    if (!reducedMotion && 'IntersectionObserver' in window) {
-        page.classList.add('yd-js-ready');
+ /* HERO SLIDESHOW */
+ var hero=page.querySelector('#ydHero');
+ if(hero){
+   var slides=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__slide'));
+   var copies=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__slide-copy'));
+   var dots=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__dot'));
+   var video=hero.querySelector('#ydHeroVideo');
+   var previous=hero.querySelector('#ydHeroPrev');
+   var next=hero.querySelector('#ydHeroNext');
+   var current=0;
+   var timer=null;
+   var imageDuration=7500;
 
-        var revealObserver = new IntersectionObserver(
-            function (entries, observer) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            {
-                threshold: 0.10,
-                rootMargin: '0px 0px -35px 0px'
-            }
-        );
+   function setSlide(index,manual){
+     if(!slides.length)return;
+     current=(index+slides.length)%slides.length;
 
-        revealItems.forEach(function (item) {
-            revealObserver.observe(item);
-        });
-    } else {
-        revealItems.forEach(function (item) {
-            item.classList.add('is-visible');
-        });
-    }
+     slides.forEach(function(slide,i){
+       slide.classList.toggle('is-active',i===current);
+       slide.setAttribute('aria-hidden',i===current?'false':'true');
+     });
+     copies.forEach(function(copy,i){
+       copy.classList.toggle('is-current',i===current);
+       copy.style.display=i===current?'block':'none';
+     });
+     dots.forEach(function(dot,i){
+       dot.classList.toggle('is-active',i===current);
+       dot.setAttribute('aria-pressed',i===current?'true':'false');
+     });
 
-    /* Reveal hero immediately */
-    var hero = page.querySelector('.yd-hero');
+     if(timer)clearTimeout(timer);
 
-    if (hero) {
-        hero.querySelectorAll('.yd-reveal').forEach(function (item) {
-            item.classList.add('is-visible');
-        });
-    }
+     if(video){
+       if(current===0){
+         video.currentTime=0;
+         var playPromise=video.play();
+         if(playPromise&&typeof playPromise.catch==='function'){
+           playPromise.catch(function(){
+             /* If autoplay is blocked, the video remains available as a normal visual slide. */
+           });
+         }
+       }else{
+         video.pause();
+       }
+     }
 
-    /*
-     * Horizontal rail controls.
-     * Each click advances by one visible card plus its gap.
-     */
-    function bindRail(railId, previousId, nextId, gap) {
-        var rail = document.getElementById(railId);
-        var previous = document.getElementById(previousId);
-        var next = document.getElementById(nextId);
+     if(!reducedMotion&&current!==0){
+       timer=setTimeout(function(){setSlide(current+1,false);},imageDuration);
+     }else if(!reducedMotion&&current===0){
+       /* Fallback timer for browsers that do not fire the video ended event. */
+       timer=setTimeout(function(){setSlide(current+1,false);},18000);
+     }
+   }
 
-        if (!rail || !previous || !next) return;
+   function goNext(){setSlide(current+1,true);}
+   function goPrevious(){setSlide(current-1,true);}
 
-        function getStep() {
-            var firstCard = rail.firstElementChild;
+   if(previous)previous.addEventListener('click',goPrevious);
+   if(next)next.addEventListener('click',goNext);
+   dots.forEach(function(dot){
+     dot.addEventListener('click',function(){
+       var index=parseInt(dot.getAttribute('data-go'),10);
+       if(!isNaN(index))setSlide(index,true);
+     });
+   });
 
-            if (!firstCard) return 290;
+   if(video){
+     video.addEventListener('ended',function(){
+       if(current===0)setSlide(1,false);
+     });
+     video.addEventListener('error',function(){
+       if(current===0)setSlide(1,false);
+     });
+   }
 
-            return firstCard.getBoundingClientRect().width + gap;
-        }
+   if(reducedMotion){
+     if(video){video.pause();video.removeAttribute('autoplay');}
+   }else{
+     setSlide(0,false);
+   }
 
-        previous.addEventListener('click', function () {
-            rail.scrollBy({
-                left: -getStep(),
-                behavior: reducedMotion ? 'auto' : 'smooth'
-            });
-        });
+   /* Pause the slideshow when the browser tab is hidden. */
+   document.addEventListener('visibilitychange',function(){
+     if(document.hidden){
+       if(timer)clearTimeout(timer);
+       if(video)video.pause();
+     }else if(!reducedMotion){
+       if(current===0&&video){
+         video.play().catch(function(){});
+       }else{
+         setSlide(current,false);
+       }
+     }
+   });
+ }
 
-        next.addEventListener('click', function () {
-            rail.scrollBy({
-                left: getStep(),
-                behavior: reducedMotion ? 'auto' : 'smooth'
-            });
-        });
-    }
+ /* Horizontal rail controls */
+ function bindRail(railId,previousId,nextId,gap){
+   var rail=document.getElementById(railId);
+   var previous=document.getElementById(previousId);
+   var next=document.getElementById(nextId);
+   if(!rail||!previous||!next)return;
 
-    bindRail('ydSolutionRail', 'ydSolutionPrev', 'ydSolutionNext', 17);
-    bindRail('ydReviewTrack', 'ydReviewPrev', 'ydReviewNext', 13);
+   function getStep(){
+     var first=rail.firstElementChild;
+     return first?first.getBoundingClientRect().width+gap:290;
+   }
+   previous.addEventListener('click',function(){
+     rail.scrollBy({left:-getStep(),behavior:reducedMotion?'auto':'smooth'});
+   });
+   next.addEventListener('click',function(){
+     rail.scrollBy({left:getStep(),behavior:reducedMotion?'auto':'smooth'});
+   });
+ }
+ bindRail('ydSolutionRail','ydSolutionPrev','ydSolutionNext',17);
+ bindRail('ydReviewTrack','ydReviewPrev','ydReviewNext',13);
 
-    /*
-     * Scroll progress indicator.
-     * Uses document height, not a fixed-height homepage container.
-     */
-    var progressBar = document.getElementById('ydHomeProgress');
-    var progressQueued = false;
+ /* Scroll progress */
+ var progressBar=document.getElementById('ydHomeProgress');
+ var progressQueued=false;
 
-    function updateProgress() {
-        if (!progressBar) return;
+ function updateProgress(){
+   if(!progressBar)return;
+   var available=document.documentElement.scrollHeight-window.innerHeight;
+   var currentScroll=window.scrollY||window.pageYOffset||0;
+   var progress=available>0?Math.min(1,Math.max(0,currentScroll/available)):0;
+   progressBar.style.transform='scaleX('+progress+')';
+   progressQueued=false;
+ }
+ function queueProgressUpdate(){
+   if(progressQueued)return;
+   progressQueued=true;
+   window.requestAnimationFrame(updateProgress);
+ }
+ window.addEventListener('scroll',queueProgressUpdate,{passive:true});
+ window.addEventListener('resize',queueProgressUpdate,{passive:true});
+ updateProgress();
 
-        var documentHeight = document.documentElement.scrollHeight;
-        var availableScroll = documentHeight - window.innerHeight;
-        var currentScroll = window.scrollY || window.pageYOffset || 0;
-
-        var progress = availableScroll > 0
-            ? Math.min(1, Math.max(0, currentScroll / availableScroll))
-            : 0;
-
-        progressBar.style.transform = 'scaleX(' + progress + ')';
-        progressQueued = false;
-    }
-
-    function queueProgressUpdate() {
-        if (progressQueued) return;
-
-        progressQueued = true;
-        window.requestAnimationFrame(updateProgress);
-    }
-
-    window.addEventListener('scroll', queueProgressUpdate, {
-        passive: true
-    });
-
-    window.addEventListener('resize', queueProgressUpdate, {
-        passive: true
-    });
-
-    updateProgress();
-
-    /*
-     * Hero video controls.
-     * Pause the video when the hero is outside the viewport.
-     */
-    var heroVideo = document.getElementById('ydHeroVideo');
-    var videoToggle = document.getElementById('ydVideoToggle');
-    var videoIcon = document.getElementById('ydVideoIcon');
-
-    function setVideoButtonState(isPlaying) {
-        if (!videoToggle) return;
-
-        videoToggle.setAttribute(
-            'aria-label',
-            isPlaying ? 'Pause background video' : 'Play background video'
-        );
-
-        videoToggle.setAttribute(
-            'title',
-            isPlaying ? 'Pause background video' : 'Play background video'
-        );
-
-        if (videoIcon) {
-            videoIcon.textContent = isPlaying ? 'Ⅱ' : '▶';
-        }
-    }
-
-    if (heroVideo) {
-        if (reducedMotion) {
-            heroVideo.pause();
-
-            if (videoToggle) {
-                videoToggle.hidden = true;
-            }
-        } else {
-            if ('IntersectionObserver' in window) {
-                var videoObserver = new IntersectionObserver(
-                    function (entries) {
-                        entries.forEach(function (entry) {
-                            if (entry.isIntersecting) {
-                                heroVideo.play().then(function () {
-                                    setVideoButtonState(true);
-                                }).catch(function () {
-                                    setVideoButtonState(false);
-                                });
-                            } else {
-                                heroVideo.pause();
-                                setVideoButtonState(false);
-                            }
-                        });
-                    },
-                    { threshold: 0.1 }
-                );
-
-                videoObserver.observe(heroVideo);
-            }
-
-            if (videoToggle) {
-                videoToggle.addEventListener('click', function () {
-                    if (heroVideo.paused) {
-                        heroVideo.play().then(function () {
-                            setVideoButtonState(true);
-                        }).catch(function () {
-                            setVideoButtonState(false);
-                        });
-                    } else {
-                        heroVideo.pause();
-                        setVideoButtonState(false);
-                    }
-                });
-            }
-        }
-    }
-
-    /*
-     * Review form.
-     * This does not pretend to submit to a server. A Django endpoint
-     * and CSRF handling are needed before customer reviews can be saved.
-     */
-    var reviewForm = document.getElementById('ydReviewForm');
-    var reviewNote = document.getElementById('ydReviewFormNote');
-
-    if (reviewForm && reviewNote) {
-        reviewForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            if (!reviewForm.reportValidity()) return;
-
-            reviewNote.textContent =
-                'Your review details are ready. A Django review endpoint is needed to receive and save your submission.';
-        });
-    }
-
+ /* Review form: display a notice; saving requires a Django endpoint. */
+ var reviewForm=document.getElementById('ydReviewForm');
+ var reviewNote=document.getElementById('ydReviewFormNote');
+ if(reviewForm&&reviewNote){
+   reviewForm.addEventListener('submit',function(event){
+     event.preventDefault();
+     if(!reviewForm.reportValidity())return;
+     reviewNote.textContent='Your review details are ready. A Django review endpoint is needed to receive and save your submission.';
+   });
+ }
 })();
 </script>
 {% endblock %}

@@ -25,7 +25,7 @@
 <style>
 /* =========================================================
    YUNQIDA ENERGY — PROJECT PORTFOLIO
-   Corporate energy technology / refined editorial layout
+   Premium editorial energy technology design
 ========================================================= */
 
 .yq-works {
@@ -43,8 +43,8 @@
 
   position: relative;
   isolation: isolate;
-  overflow: visible;
   width: 100%;
+  overflow: visible;
   color: var(--yw-ink);
   background: var(--yw-paper);
   font-family: var(--font-body, sans-serif);
@@ -58,6 +58,7 @@
 }
 
 .yq-works img {
+  display: block;
   max-width: 100%;
 }
 
@@ -139,18 +140,19 @@
   background: linear-gradient(90deg, var(--yw-green), var(--yw-lime));
   transform: scaleX(0);
   transform-origin: left;
+  will-change: transform;
 }
 
 /* =========================================================
-   REVEAL ANIMATIONS
+   SCROLL REVEALS
 ========================================================= */
 
 .js .yq-works [data-reveal] {
   opacity: 0;
   transform: translateY(25px);
   transition:
-    opacity .75s var(--yw-ease),
-    transform .75s var(--yw-ease);
+    opacity .8s var(--yw-ease),
+    transform .8s var(--yw-ease);
   transition-delay: var(--yw-delay, 0ms);
 }
 
@@ -160,7 +162,7 @@
 }
 
 .js .yq-works [data-reveal="card"] {
-  transform: translateY(30px);
+  transform: translateY(34px);
 }
 
 .js .yq-works [data-reveal="card"].is-in {
@@ -176,52 +178,37 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  min-height: 550px;
-  padding: 105px 0 100px;
+  min-height: 610px;
+  padding: 100px 0 95px;
   overflow: hidden;
   color: #fff;
   background:
-    radial-gradient(ellipse at 84% 45%, rgba(26,43,184,.45), transparent 38%),
-    linear-gradient(115deg, var(--yw-deep) 0%, var(--yw-navy) 58%, #07136f 100%);
+    linear-gradient(110deg, #00052f 0%, #000a63 62%, #07136f 100%);
 }
 
 .yq-works .hero::before {
   position: absolute;
   z-index: -1;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
-  background-size: 58px 58px;
-  mask-image: linear-gradient(90deg, #000 0%, transparent 85%);
+  background:
+    linear-gradient(90deg,
+      rgba(0,5,38,.98) 0%,
+      rgba(0,8,65,.94) 43%,
+      rgba(0,8,65,.45) 100%);
   content: "";
-}
-
-.yq-works .hero::after {
-  position: absolute;
-  z-index: -1;
-  top: -270px;
-  right: -100px;
-  width: 620px;
-  height: 620px;
-  border: 1px solid rgba(196,241,53,.15);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 55px rgba(196,241,53,.025),
-    0 0 0 115px rgba(196,241,53,.018);
-  content: "";
-  pointer-events: none;
 }
 
 .yq-works .hero-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, .92fr);
   align-items: center;
-  gap: 65px;
+  gap: 58px;
 }
 
 .yq-works .hero-copy-block {
-  max-width: 720px;
+  position: relative;
+  z-index: 2;
+  max-width: 690px;
 }
 
 .yq-works .hero .eyebrow {
@@ -233,9 +220,9 @@
   margin: 0 0 25px;
   color: #fff;
   font-family: var(--font-display, sans-serif);
-  font-size: clamp(3rem, 6.2vw, 5.3rem);
+  font-size: clamp(3.1rem, 6.2vw, 5.25rem);
   font-weight: 650;
-  letter-spacing: -.065em;
+  letter-spacing: -.067em;
   line-height: 1.015;
 }
 
@@ -245,10 +232,10 @@
 }
 
 .yq-works .hero-description {
-  max-width: 610px;
+  max-width: 590px;
   margin: 0;
   color: rgba(255,255,255,.76);
-  font-size: clamp(.98rem, 1.5vw, 1.1rem);
+  font-size: clamp(.98rem, 1.5vw, 1.08rem);
   line-height: 1.9;
 }
 
@@ -256,7 +243,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 25px;
   margin-top: 34px;
 }
 
@@ -268,22 +255,22 @@
   gap: 13px;
   padding: 13px 23px;
   border: 1px solid var(--yw-lime);
-  border-radius: 4px;
+  border-radius: 3px;
   background: var(--yw-lime);
   color: var(--yw-deep);
   font-size: .87rem;
   font-weight: 750;
   text-decoration: none;
   transition:
-    transform .25s ease,
-    background .25s ease,
-    box-shadow .25s ease;
+    transform .3s var(--yw-ease),
+    background .3s ease,
+    box-shadow .3s ease;
 }
 
 .yq-works .button:hover {
   background: var(--yw-lime-dark);
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.2);
+  box-shadow: 0 14px 30px rgba(0,0,0,.2);
 }
 
 .yq-works .button svg {
@@ -293,7 +280,7 @@
 }
 
 .yq-works .button:hover svg {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 .yq-works .text-link {
@@ -313,112 +300,98 @@
 }
 
 .yq-works .text-link:hover svg {
-  transform: translateX(4px);
+  transform: translate(3px, -3px);
 }
 
 .yq-works .hero .text-link {
-  color: rgba(255,255,255,.88);
+  color: rgba(255,255,255,.9);
 }
 
-/* Hero technology illustration */
+/* Photographic hero visual */
 
 .yq-works .hero-visual {
   position: relative;
-  display: flex;
-  min-height: 335px;
-  align-items: center;
-  justify-content: center;
+  min-width: 0;
+  height: 390px;
+  overflow: visible;
 }
 
-.yq-works .energy-orbit {
+.yq-works .hero-photo {
   position: absolute;
-  width: min(100%, 340px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(255,255,255,.13);
-  border-radius: 50%;
+  inset: 0 0 22px 15px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #17233b;
+  box-shadow: 0 28px 65px rgba(0,0,0,.3);
 }
 
-.yq-works .energy-orbit::before,
-.yq-works .energy-orbit::after {
+.yq-works .hero-photo::after {
   position: absolute;
-  inset: 24px;
-  border: 1px solid rgba(196,241,53,.16);
-  border-radius: 50%;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.02) 35%, rgba(0,5,35,.5) 100%),
+    linear-gradient(90deg, rgba(0,5,35,.08), transparent 70%);
   content: "";
+  pointer-events: none;
 }
 
-.yq-works .energy-orbit::after {
-  inset: 50px;
-  border-color: rgba(255,255,255,.09);
+.yq-works .hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.2s cubic-bezier(.2,.65,.25,1);
 }
 
-.yq-works .energy-core {
-  position: relative;
+.yq-works .hero-visual:hover .hero-photo img {
+  transform: scale(1.035);
+}
+
+.yq-works .hero-photo-label {
+  position: absolute;
   z-index: 2;
+  right: -18px;
+  bottom: 0;
   display: flex;
-  width: 155px;
-  height: 155px;
-  flex-direction: column;
+  width: min(255px, 78%);
   align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(196,241,53,.4);
-  border-radius: 50%;
-  background: linear-gradient(145deg, rgba(26,43,184,.8), rgba(0,6,61,.95));
-  box-shadow:
-    0 0 55px rgba(26,43,184,.45),
-    inset 0 0 35px rgba(196,241,53,.06);
+  gap: 15px;
+  padding: 19px 20px;
+  border-left: 3px solid var(--yw-lime);
+  background: #fff;
+  color: var(--yw-deep);
+  box-shadow: 0 15px 35px rgba(0,0,0,.17);
 }
 
-.yq-works .energy-core svg {
-  width: 49px;
-  height: 49px;
-  margin-bottom: 10px;
-  color: var(--yw-lime);
-  stroke: currentColor;
-}
-
-.yq-works .energy-core strong {
-  color: #fff;
-  font-size: .77rem;
-  letter-spacing: .11em;
+.yq-works .hero-photo-label span {
+  display: block;
+  color: var(--yw-muted);
+  font-size: .67rem;
+  font-weight: 750;
+  letter-spacing: .12em;
   text-transform: uppercase;
 }
 
-.yq-works .orbit-label {
-  position: absolute;
-  z-index: 3;
+.yq-works .hero-photo-label strong {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-display, sans-serif);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.yq-works .hero-photo-index {
   display: flex;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
   align-items: center;
-  gap: 9px;
-  padding: 10px 13px;
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 5px;
-  background: rgba(0,6,61,.83);
-  color: rgba(255,255,255,.9);
-  font-size: .73rem;
-  font-weight: 650;
-  backdrop-filter: blur(12px);
-}
-
-.yq-works .orbit-label svg {
-  width: 19px;
-  height: 19px;
-  color: var(--yw-lime);
-}
-
-.yq-works .orbit-label.label-solar {
-  top: 25px;
-  left: 0;
-}
-
-.yq-works .orbit-label.label-storage {
-  right: -4px;
-  bottom: 48px;
-}
-
-.yq-works .orbit-label.label-power {
-  bottom: 4px;
-  left: 32px;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--yw-lime);
+  color: var(--yw-deep);
+  font-size: .75rem;
+  font-weight: 800;
 }
 
 /* =========================================================
@@ -428,7 +401,7 @@
 .yq-works .portfolio-intro {
   position: relative;
   z-index: 2;
-  padding: 37px 0;
+  padding: 36px 0;
   background: #fff;
   box-shadow: 0 -12px 35px rgba(0,0,0,.035);
 }
@@ -463,7 +436,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(196,241,53,.2);
+  background: rgba(196,241,53,.22);
   color: var(--yw-navy);
 }
 
@@ -488,12 +461,13 @@
 
 /* =========================================================
    PROJECT GALLERY
+   IMPORTANT: Existing four-image layout is preserved.
 ========================================================= */
 
 .yq-works .gallery {
   padding: 105px 0 110px;
   background: var(--yw-paper);
-  scroll-margin-top: 25px;
+  scroll-margin-top: 30px;
 }
 
 .yq-works .gallery-heading {
@@ -517,7 +491,7 @@
   line-height: 1.8;
 }
 
-/* Project cards */
+/* Keep the original two-column gallery */
 
 .yq-works .project-grid {
   display: grid;
@@ -534,25 +508,24 @@
   position: relative;
   overflow: hidden;
   aspect-ratio: 1.42 / 1;
-  border-radius: 7px;
+  border-radius: 4px;
   background: #e5e8e9;
   isolation: isolate;
 }
 
 .yq-works .frame img {
-  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 1s cubic-bezier(.2,.65,.25,1);
+  transition: transform 1.1s cubic-bezier(.2,.65,.25,1);
 }
 
 .yq-works .frame::before {
   position: absolute;
   z-index: 1;
   inset: 45% 0 0;
-  background: linear-gradient(transparent, rgba(0,6,35,.25));
+  background: linear-gradient(transparent, rgba(0,6,35,.3));
   content: "";
   pointer-events: none;
 }
@@ -565,10 +538,10 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border: 1px solid rgba(255,255,255,.22);
   border-radius: 3px;
-  background: rgba(0,6,61,.78);
+  background: rgba(0,6,61,.82);
   color: #fff;
   font-size: .68rem;
   font-weight: 700;
@@ -620,7 +593,7 @@
   flex: 0 0 39px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0,10,99,.13);
+  border: 1px solid rgba(0,10,99,.15);
   border-radius: 50%;
   color: var(--yw-navy);
   font-family: var(--font-display, sans-serif);
@@ -645,12 +618,12 @@
 }
 
 /* =========================================================
-   APPLICATIONS / SEO CONTENT
+   APPLICATIONS
 ========================================================= */
 
 .yq-works .applications {
   position: relative;
-  padding: 90px 0 96px;
+  padding: 95px 0 100px;
   background: #fff;
 }
 
@@ -661,8 +634,13 @@
   gap: 75px;
 }
 
+.yq-works .applications-copy {
+  position: sticky;
+  top: 100px;
+}
+
 .yq-works .applications-copy h2 {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   color: var(--yw-deep);
   font-family: var(--font-display, sans-serif);
   font-size: clamp(2rem, 3.8vw, 3.15rem);
@@ -686,23 +664,23 @@
 
 .yq-works .application-item {
   display: flex;
-  min-height: 85px;
+  min-height: 88px;
   align-items: center;
   gap: 13px;
   padding: 17px;
   border: 1px solid var(--yw-line);
-  border-radius: 5px;
+  border-radius: 4px;
   background: #fff;
   transition:
-    border-color .25s ease,
-    transform .25s ease,
-    box-shadow .25s ease;
+    border-color .3s ease,
+    transform .3s var(--yw-ease),
+    box-shadow .3s ease;
 }
 
 .yq-works .application-item:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: rgba(0,10,99,.25);
-  box-shadow: 0 12px 25px rgba(0,10,99,.055);
+  box-shadow: 0 15px 30px rgba(0,10,99,.07);
 }
 
 .yq-works .application-icon {
@@ -712,9 +690,15 @@
   flex: 0 0 39px;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: 4px;
   background: #f0f3ff;
   color: var(--yw-navy);
+  transition: background .3s ease, color .3s ease;
+}
+
+.yq-works .application-item:hover .application-icon {
+  background: var(--yw-lime);
+  color: var(--yw-deep);
 }
 
 .yq-works .application-icon svg {
@@ -734,11 +718,10 @@
 ========================================================= */
 
 .yq-works .approach {
-  padding: 82px 0;
+  position: relative;
+  padding: 92px 0 96px;
   color: #fff;
-  background:
-    radial-gradient(ellipse at 90% 15%, rgba(26,43,184,.38), transparent 38%),
-    var(--yw-deep);
+  background: var(--yw-deep);
 }
 
 .yq-works .approach .section-heading h2 {
@@ -746,7 +729,7 @@
 }
 
 .yq-works .approach .section-heading > p:last-child {
-  color: rgba(255,255,255,.66);
+  color: rgba(255,255,255,.68);
 }
 
 .yq-works .approach .eyebrow {
@@ -761,20 +744,20 @@
 
 .yq-works .approach-step {
   position: relative;
-  min-height: 185px;
-  padding: 23px 20px;
-  border: 1px solid rgba(255,255,255,.13);
-  border-radius: 5px;
+  min-height: 190px;
+  padding: 24px 21px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 4px;
   background: rgba(255,255,255,.045);
   transition:
-    background .25s ease,
-    border-color .25s ease,
-    transform .25s ease;
+    background .3s ease,
+    border-color .3s ease,
+    transform .3s var(--yw-ease);
 }
 
 .yq-works .approach-step:hover {
-  transform: translateY(-4px);
-  border-color: rgba(196,241,53,.42);
+  transform: translateY(-5px);
+  border-color: rgba(196,241,53,.48);
   background: rgba(255,255,255,.075);
 }
 
@@ -799,38 +782,33 @@
 
 .yq-works .approach-step p {
   margin: 0;
-  color: rgba(255,255,255,.65);
+  color: rgba(255,255,255,.66);
   font-size: .83rem;
   line-height: 1.75;
 }
 
 /* =========================================================
-   CLOSING CTA
+   FINAL CTA
 ========================================================= */
 
 .yq-works .cta {
   position: relative;
   isolation: isolate;
-  padding: 90px 0;
+  padding: 92px 0;
   overflow: hidden;
   color: #fff;
   background:
-    radial-gradient(ellipse at 85% 50%, rgba(26,43,184,.4), transparent 40%),
-    linear-gradient(115deg, var(--yw-navy), var(--yw-deep));
+    linear-gradient(110deg, #000a63, #00063d);
 }
 
 .yq-works .cta::before {
   position: absolute;
   z-index: -1;
-  top: -200px;
-  right: -110px;
-  width: 480px;
-  height: 480px;
-  border: 1px solid rgba(196,241,53,.18);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 45px rgba(196,241,53,.025),
-    0 0 0 95px rgba(196,241,53,.018);
+  top: 0;
+  right: 0;
+  width: 38%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(26,43,184,.28));
   content: "";
 }
 
@@ -862,7 +840,7 @@
 .yq-works .cta-copy > p:last-child {
   max-width: 590px;
   margin: 0;
-  color: rgba(255,255,255,.72);
+  color: rgba(255,255,255,.74);
   font-size: .96rem;
   line-height: 1.85;
 }
@@ -876,58 +854,29 @@
 }
 
 .yq-works .cta .text-link {
-  color: rgba(255,255,255,.86);
+  color: rgba(255,255,255,.88);
 }
 
 /* =========================================================
-   SECTION RHYTHM
-========================================================= */
-
-.yq-works > section + section {
-  position: relative;
-  z-index: 1;
-}
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-  .yq-works *,
-  .yq-works *::before,
-  .yq-works *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-  }
-
-  .js .yq-works [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
-
-/* =========================================================
-   TABLET
+   RESPONSIVE TABLET
 ========================================================= */
 
 @media (max-width: 900px) {
   .yq-works .hero-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(230px, .7fr);
-    gap: 25px;
+    grid-template-columns: minmax(0, 1fr) minmax(230px, .8fr);
+    gap: 30px;
   }
 
   .yq-works .hero-visual {
-    min-height: 290px;
-  }
-
-  .yq-works .energy-orbit {
-    width: 270px;
+    height: 330px;
   }
 
   .yq-works .applications-layout {
     gap: 35px;
+  }
+
+  .yq-works .applications-copy {
+    position: static;
   }
 
   .yq-works .approach-grid {
@@ -948,7 +897,7 @@
 }
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE MOBILE
 ========================================================= */
 
 @media (max-width: 650px) {
@@ -958,12 +907,12 @@
 
   .yq-works .hero {
     min-height: auto;
-    padding: 82px 0 66px;
+    padding: 78px 0 65px;
   }
 
   .yq-works .hero-layout {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 36px;
   }
 
   .yq-works .hero h1 {
@@ -981,37 +930,18 @@
   }
 
   .yq-works .hero-visual {
-    min-height: 260px;
-    margin-top: 5px;
+    height: 290px;
+    margin: 0 12px 12px 0;
   }
 
-  .yq-works .energy-orbit {
-    width: 245px;
+  .yq-works .hero-photo {
+    inset: 0 0 18px 0;
   }
 
-  .yq-works .energy-core {
-    width: 125px;
-    height: 125px;
-  }
-
-  .yq-works .energy-core svg {
-    width: 39px;
-    height: 39px;
-  }
-
-  .yq-works .orbit-label.label-solar {
-    top: 12px;
-    left: 0;
-  }
-
-  .yq-works .orbit-label.label-storage {
-    right: 0;
-    bottom: 36px;
-  }
-
-  .yq-works .orbit-label.label-power {
-    bottom: 0;
-    left: 12px;
+  .yq-works .hero-photo-label {
+    right: -10px;
+    width: min(245px, 82%);
+    padding: 15px 16px;
   }
 
   .yq-works .portfolio-intro {
@@ -1044,6 +974,7 @@
     max-width: 100%;
   }
 
+  /* Original gallery arrangement: one column on mobile */
   .yq-works .project-grid {
     grid-template-columns: 1fr;
     gap: 38px;
@@ -1138,6 +1069,30 @@
   .yq-works .approach-step {
     min-height: 0;
   }
+
+  .yq-works .hero-visual {
+    height: 245px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .yq-works *,
+  .yq-works *::before,
+  .yq-works *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .js .yq-works [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 </style>
 {% endblock %}
@@ -1151,9 +1106,7 @@
 
 <main class="yq-works">
 
-  <!-- =====================================================
-       HERO
-  ====================================================== -->
+  <!-- HERO -->
 
   <section class="hero">
     <div class="yq-wrap">
@@ -1197,49 +1150,25 @@
           </div>
         </div>
 
-        <!-- Decorative energy technology illustration -->
-        <div class="hero-visual" aria-hidden="true" data-reveal style="--yw-delay:200ms">
+        <!-- Real project image instead of the previous orbit illustration -->
 
-          <div class="energy-orbit"></div>
-
-          <div class="energy-core">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor"
-                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="24" cy="24" r="8"/>
-              <path d="M24 3v6M24 39v6M3 24h6M39 24h6"/>
-              <path d="m9.15 9.15 4.25 4.25m21.2 21.2 4.25 4.25m0-29.7-4.25 4.25m-21.2 21.2-4.25 4.25"/>
-              <path d="m25 17-6 9h5l-1 6 7-10h-5l1-5z"/>
-            </svg>
-            <strong>Energy</strong>
+        <div class="hero-visual" data-reveal style="--yw-delay:200ms">
+          <div class="hero-photo">
+            <img
+              src="{% static 'img/w4.png' %}"
+              alt="Solar and energy storage technology showcased by Yunqida Energy Kenya"
+              fetchpriority="high"
+              decoding="async"
+            >
           </div>
 
-          <div class="orbit-label label-solar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="4"/>
-              <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>
-            </svg>
-            Solar power
+          <div class="hero-photo-label">
+            <span class="hero-photo-index">01</span>
+            <div>
+              <span>Energy technology</span>
+              <strong>Powering better possibilities</strong>
+            </div>
           </div>
-
-          <div class="orbit-label label-storage">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="7" width="17" height="10" rx="2"/>
-              <path d="M20 10h2v4h-2M10 9l-2 3h3l-1 3 4-5h-3l1-1"/>
-            </svg>
-            Battery storage
-          </div>
-
-          <div class="orbit-label label-power">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v10"/>
-              <path d="M6.2 5.8a8 8 0 1 0 11.6 0"/>
-            </svg>
-            Power systems
-          </div>
-
         </div>
 
       </div>
@@ -1247,9 +1176,7 @@
   </section>
 
 
-  <!-- =====================================================
-       INTRODUCTION STRIP
-  ====================================================== -->
+  <!-- INTRODUCTION STRIP -->
 
   <section class="portfolio-intro" aria-label="Portfolio overview">
     <div class="yq-wrap">
@@ -1305,9 +1232,7 @@
   </section>
 
 
-  <!-- =====================================================
-       PROJECT GALLERY
-  ====================================================== -->
+  <!-- PROJECT GALLERY -->
 
   <section class="gallery" id="project-gallery">
     <div class="yq-wrap">
@@ -1334,6 +1259,7 @@
       <div class="project-grid">
 
         <!-- PROJECT 01 -->
+
         <figure class="work" data-reveal="card">
           <div class="frame">
             <img
@@ -1369,6 +1295,7 @@
 
 
         <!-- PROJECT 02 -->
+
         <figure class="work" data-reveal="card" style="--yw-delay:100ms">
           <div class="frame">
             <img
@@ -1404,6 +1331,7 @@
 
 
         <!-- PROJECT 03 -->
+
         <figure class="work" data-reveal="card">
           <div class="frame">
             <img
@@ -1438,6 +1366,7 @@
 
 
         <!-- PROJECT 04 -->
+
         <figure class="work" data-reveal="card" style="--yw-delay:100ms">
           <div class="frame">
             <img
@@ -1477,9 +1406,7 @@
   </section>
 
 
-  <!-- =====================================================
-       APPLICATIONS
-  ====================================================== -->
+  <!-- APPLICATIONS -->
 
   <section class="applications">
     <div class="yq-wrap">
@@ -1592,9 +1519,7 @@
   </section>
 
 
-  <!-- =====================================================
-       HOW WE APPROACH YOUR REQUIREMENTS
-  ====================================================== -->
+  <!-- HOW WE APPROACH YOUR REQUIREMENTS -->
 
   <section class="approach">
     <div class="yq-wrap">
@@ -1652,9 +1577,7 @@
   </section>
 
 
-  <!-- =====================================================
-       FINAL CTA
-  ====================================================== -->
+  <!-- FINAL CTA -->
 
   <section class="cta">
     <div class="yq-wrap">
@@ -1717,9 +1640,11 @@
   var progressBar = document.getElementById('yqProgressBar');
 
   /*
-   * Reveal content progressively as it enters the viewport.
-   * If IntersectionObserver is unavailable, all content stays visible.
+   * Reveal content as it enters the viewport.
+   * Content remains visible if the browser does not support
+   * IntersectionObserver or the visitor prefers reduced motion.
    */
+
   if (reduceMotion || !('IntersectionObserver' in window)) {
     revealItems.forEach(function (item) {
       item.classList.add('is-in');
@@ -1733,8 +1658,8 @@
         observer.unobserve(entry.target);
       });
     }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -45px 0px'
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
     });
 
     revealItems.forEach(function (item) {
@@ -1743,11 +1668,14 @@
   }
 
   /*
-   * Smooth anchor navigation without locking page scrolling.
+   * Smooth anchor navigation.
+   * This does not disable or lock normal page scrolling.
    */
+
   page.querySelectorAll('a[href^="#"]').forEach(function (link) {
     link.addEventListener('click', function (event) {
       var targetId = link.getAttribute('href');
+
       if (!targetId || targetId === '#') return;
 
       var target = document.querySelector(targetId);
@@ -1765,6 +1693,7 @@
   /*
    * Scroll progress indicator.
    */
+
   var queued = false;
 
   function updateProgress() {

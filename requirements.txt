@@ -5,3 +5,4 @@ whitenoise>=6.9,<7.0
 dj-database-url>=2.3,<4.0
 psycopg[binary]>=3.2,<4.0
 requests
+beautifulsoup4

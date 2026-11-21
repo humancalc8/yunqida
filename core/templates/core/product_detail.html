@@ -111,6 +111,65 @@
     mix-blend-mode: normal;
 }
 
+/* PRODUCT IMAGE GALLERY */
+
+.yq-product-detail .product-gallery {
+    margin-top: 12px;
+}
+
+.yq-product-detail .product-gallery-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    color: var(--c-muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.yq-product-detail .product-gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.yq-product-detail .gallery-thumbnail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    padding: 5px;
+    overflow: hidden;
+    border: 1px solid var(--c-line);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .2s ease;
+}
+
+.yq-product-detail .gallery-thumbnail:hover,
+.yq-product-detail .gallery-thumbnail.is-active {
+    border-color: var(--c-emerald);
+}
+
+.yq-product-detail .gallery-thumbnail img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 650px) {
+    .yq-product-detail .product-gallery-thumbnails {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+    }
+}
+
+
 /* SMALL IMAGE CAPTION */
 
 .yq-product-detail .image-caption {
@@ -654,32 +713,78 @@
             <!-- PRODUCT CONTENT -->
             <div class="detail-layout">
 
-                <!-- PRODUCT IMAGE -->
-                <div class="detail-image-column"
-                     data-reveal="main-image">
+               
+<!-- PRODUCT IMAGE GALLERY -->
+<div class="detail-image-column"
+     data-reveal="main-image">
 
-                    <figure class="detail-image">
+    <figure class="detail-image">
 
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}"
-                                 alt="{{ product.name }}"
-                                 fetchpriority="high"
-                                 decoding="async">
-                        {% elif product.fallback_image %}
-                            <img src="{% static product.fallback_image %}"
-                                 alt="{{ product.name }}"
-                                 fetchpriority="high"
-                                 decoding="async">
-                        {% endif %}
+        {% if product.image %}
+            <img
+                id="product-main-image"
+                src="{{ product.image.url }}"
+                alt="{{ product.name }}"
+                fetchpriority="high"
+                decoding="async">
+        {% elif product.fallback_image %}
+            <img
+                id="product-main-image"
+                src="{% static product.fallback_image %}"
+                alt="{{ product.name }}"
+                fetchpriority="high"
+                decoding="async">
+        {% elif gallery_images %}
+            <img
+                id="product-main-image"
+                src="{{ gallery_images.0.image.url }}"
+                alt="{{ gallery_images.0.alt_text|default:product.name }}"
+                fetchpriority="high"
+                decoding="async">
+        {% endif %}
 
-                    </figure>
+    </figure>
 
-                    <div class="image-caption">
-                        <span>{{ product.get_category_display }}</span>
-                        <span>Yunqida Energy Kenya</span>
-                    </div>
+    {% if gallery_images %}
+        <div class="product-gallery"
+             aria-label="Product image gallery">
 
-                </div>
+            <div class="product-gallery-heading">
+                <span>Product images</span>
+                <span>{{ gallery_images|length }} images</span>
+            </div>
+
+            <div class="product-gallery-thumbnails">
+
+                {% for gallery_image in gallery_images %}
+                    <button
+                        type="button"
+                        class="gallery-thumbnail"
+                        data-gallery-image="{{ gallery_image.image.url }}"
+                        data-gallery-alt="{{ gallery_image.alt_text|default:product.name }}"
+                        aria-label="View product image {{ forloop.counter }}"
+                        aria-pressed="false">
+
+                        <img
+                            src="{{ gallery_image.image.url }}"
+                            alt="{{ gallery_image.alt_text|default:product.name }} — image {{ forloop.counter }}"
+                            loading="lazy"
+                            decoding="async">
+
+                    </button>
+                {% endfor %}
+
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="image-caption">
+        <span>{{ product.get_category_display }}</span>
+        <span>Yunqida Energy Kenya</span>
+    </div>
+
+</div>
+
 
                 <!-- PRODUCT INFORMATION -->
                 <div class="detail-information">
@@ -837,6 +942,33 @@
 document.addEventListener('DOMContentLoaded', function () {
     const page = document.querySelector('.yq-product-detail');
     if (!page) return;
+
+    // PRODUCT IMAGE GALLERY
+    const mainImage = page.querySelector('#product-main-image');
+    const thumbnails = page.querySelectorAll('.gallery-thumbnail');
+
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener('click', function () {
+            if (!mainImage) return;
+
+            mainImage.src = this.dataset.galleryImage;
+            mainImage.alt = this.dataset.galleryAlt;
+
+            thumbnails.forEach(item => {
+                item.classList.remove('is-active');
+                item.setAttribute('aria-pressed', 'false');
+            });
+
+            this.classList.add('is-active');
+            this.setAttribute('aria-pressed', 'true');
+        });
+
+        if (index === 0 && mainImage) {
+            thumbnail.classList.add('is-active');
+            thumbnail.setAttribute('aria-pressed', 'true');
+        }
+    });
+
 
     const elements = page.querySelectorAll('[data-reveal]');
 

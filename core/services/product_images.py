@@ -53,7 +53,7 @@ def _validate_image_url(url):
 
 
 def _read_image_response(response):
-    """Read an image response without exceeding the configured size limit."""
+    """Validate an image and return its bytes, format and dimensions."""
 
     content_type = response.headers.get(
         "Content-Type", ""
@@ -94,11 +94,16 @@ def _read_image_response(response):
     content = b"".join(chunks)
 
     if not content:
-        raise ProductImageDownloadError("The downloaded image is empty.")
+        raise ProductImageDownloadError(
+            "The downloaded image is empty."
+        )
 
     try:
         image = Image.open(BytesIO(content))
+
         image_format = image.format
+        width, height = image.size
+
         image.verify()
 
     except (
@@ -117,7 +122,7 @@ def _read_image_response(response):
             "Unsupported image format. JPEG, PNG and WEBP are supported."
         )
 
-    return content, extension
+    return content, extension, width, height
 
 
 def _download_one(session, original_url):
@@ -159,12 +164,16 @@ def _download_one(session, original_url):
 
             response.raise_for_status()
 
-            content, extension = _read_image_response(response)
+            content, extension, width, height = (
+                _read_image_response(response)
+            )
 
             return {
                 "content": content,
                 "extension": extension,
                 "source_url": original_url,
+                "width": width,
+                "height": height,
             }
 
         except requests.RequestException as exc:
@@ -183,10 +192,12 @@ def download_product_images(image_urls):
     """
     Download valid product images from approved manufacturer storage.
 
+    Preserves the exact order supplied by the manufacturer extractor.
+    Rejects obvious wide banners and duplicate URLs.
+
     Returns:
-        downloaded: List of dictionaries containing image bytes,
-                    extension and original source URL.
-        errors: List of failed image URL messages.
+        downloaded: Valid image dictionaries in manufacturer order.
+        errors: Failed or skipped image messages.
     """
 
     downloaded = []
@@ -194,9 +205,12 @@ def download_product_images(image_urls):
     seen = set()
 
     if not isinstance(image_urls, list):
-        return downloaded, ["No valid image URL list was supplied."]
+        return downloaded, [
+            "No valid image URL list was supplied."
+        ]
 
     session = requests.Session()
+
     session.headers.update({
         "User-Agent": USER_AGENT,
         "Accept": "image/avif,image/webp,image/png,image/jpeg,*/*",
@@ -217,10 +231,16 @@ def download_product_images(image_urls):
 
             try:
                 result = _download_one(session, url)
-                result["filename"] = (
-                    f"yunqida-product-{len(downloaded) + 1}."
-                    f"{result['extension']}"
-                )
+
+                width = result["width"]
+                height = result["height"]
+
+                if width >= height * 2:
+                    errors.append(
+                        f"Skipped wide banner/logo image: {url}"
+                    )
+                    continue
+
                 downloaded.append(result)
 
             except ProductImageDownloadError as exc:
@@ -228,5 +248,11 @@ def download_product_images(image_urls):
 
     finally:
         session.close()
+
+    # Do not sort: preserve the manufacturer's gallery order.
+    for index, image in enumerate(downloaded, start=1):
+        image["filename"] = (
+            f"yunqida-product-{index}.{image['extension']}"
+        )
 
     return downloaded, errors

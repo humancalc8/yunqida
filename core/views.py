@@ -56,8 +56,13 @@ def products(request):
     })
 
 
+
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug)
+    product = get_object_or_404(
+        Product.objects.prefetch_related('gallery_images'),
+        slug=slug
+    )
+
     related = Product.objects.filter(
         category=product.category
     ).exclude(pk=product.pk)[:3]
@@ -65,6 +70,7 @@ def product_detail(request, slug):
     return render(request, 'core/product_detail.html', {
         'product': product,
         'related': related,
+        'gallery_images': product.gallery_images.all(),
     })
 
 

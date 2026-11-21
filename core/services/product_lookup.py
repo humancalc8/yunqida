@@ -533,37 +533,23 @@ def _extract_features(soup):
 
 def _extract_images(soup, page_url):
     """
-    Collect product image URLs.
+    Extract images belonging to the current product only.
 
-    These URLs are returned for review. This function does not
-    download images or copy them into media storage.
+    Sources:
+    1. Main product image slider.
+    2. Product detail image section.
+
+    Excludes:
+    - Header and footer images.
+    - Logos and contact icons.
+    - Related product recommendations.
+    - Thumbnail duplicates.
     """
 
     candidates = []
     seen = set()
 
-    # Prefer social preview image where available.
-    for selector in (
-        'meta[property="og:image"]',
-        'meta[name="twitter:image"]',
-    ):
-
-        meta = soup.select_one(selector)
-
-        if meta and meta.get("content"):
-
-            image_url = urljoin(
-                page_url,
-                meta["content"],
-            )
-
-            if image_url not in seen:
-                seen.add(image_url)
-                candidates.append(image_url)
-
-    # Collect gallery and product images.
-    for image in soup.find_all("img"):
-
+    def add_image(image):
         source = (
             image.get("data-original")
             or image.get("data-src")
@@ -575,21 +561,19 @@ def _extract_images(soup, page_url):
         source = clean_text(source)
 
         if not source or source.startswith("data:"):
-            continue
+            return
 
         image_url = urljoin(page_url, source)
         parsed = urlsplit(image_url)
 
         if parsed.scheme not in ("http", "https"):
-            continue
+            return
 
         if image_url in seen:
-            continue
+            return
 
         description = (
-            image.get("alt", "")
-            + " "
-            + source
+            image.get("alt", "") + " " + source
         ).lower()
 
         excluded_terms = (
@@ -598,18 +582,40 @@ def _extract_images(soup, page_url):
             "whatsapp",
             "telephone",
             "favicon",
-            "icon",
             "captcha",
         )
 
-        if any(
-            term in description
-            for term in excluded_terms
-        ):
-            continue
+        if any(term in description for term in excluded_terms):
+            return
 
         seen.add(image_url)
         candidates.append(image_url)
+
+    # -------------------------------------------------
+    # 1. MAIN PRODUCT IMAGE SLIDER
+    # -------------------------------------------------
+
+    main_gallery = soup.select_one(
+        ".swiper-container.bigImgWidth .swiper-wrapper"
+    )
+
+    if main_gallery:
+        for image in main_gallery.select(
+            ".swiper-slide img"
+        ):
+            add_image(image)
+
+    # -------------------------------------------------
+    # 2. PRODUCT DETAIL IMAGES
+    # -------------------------------------------------
+
+    detail_gallery = soup.select_one(
+        ".con-tbody-img"
+    )
+
+    if detail_gallery:
+        for image in detail_gallery.find_all("img"):
+            add_image(image)
 
     return candidates[:10]
 

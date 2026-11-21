@@ -705,7 +705,7 @@
                     {% endif %}
 
                     <!-- TECHNICAL SPECIFICATIONS -->
-                    {% if product.capacity or product.power or product.warranty %}
+                    {% if product.capacity or product.power or product.warranty or product.technical_specifications %}
                         <section class="specification-section"
                                  aria-labelledby="specification-title"
                                  data-reveal>
@@ -742,6 +742,23 @@
                                         <dt>Warranty</dt>
                                         <dd>{{ product.warranty }}</dd>
                                     </div>
+                                {% endif %}
+
+                                                                {% if product.technical_specifications %}
+                                    {% for specification in product.technical_specifications %}
+                                        {% if specification.name and specification.value %}
+                                            <div>
+                                                <dt>{{ specification.name }}</dt>
+                                                <dd>
+                                                    {% if specification.all_values|length > 1 %}
+                                                        {{ specification.all_values|join:", " }}
+                                                    {% else %}
+                                                        {{ specification.value }}
+                                                    {% endif %}
+                                                </dd>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endif %}
 
                             </dl>

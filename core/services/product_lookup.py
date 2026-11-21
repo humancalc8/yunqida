@@ -83,14 +83,30 @@ def _check_official_url(url):
     return url
 
 
+
 def _fetch_page(session, url):
-    """Fetch one approved official HTML page."""
+    """Fetch one approved official HTML page using browser-style headers."""
 
     _check_official_url(url)
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        "Accept": (
+            "text/html,application/xhtml+xml,application/xml;"
+            "q=0.9,image/avif,image/webp,*/*;q=0.8"
+        ),
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.google.com/",
+    }
 
     try:
         response = session.get(
             url,
+            headers=headers,
             timeout=REQUEST_TIMEOUT,
             allow_redirects=False,
         )
@@ -110,6 +126,7 @@ def _fetch_page(session, url):
 
             response = session.get(
                 redirect_url,
+                headers=headers,
                 timeout=REQUEST_TIMEOUT,
                 allow_redirects=False,
             )
@@ -192,14 +209,77 @@ def _get_product_links(soup):
     return links[:MAX_PRODUCT_PAGES]
 
 
+
 def _page_model_matches(soup, requested_model):
-    """Check whether the requested model exists in page content."""
+    """
+    Verify the requested model against the actual product content.
 
-    page_text = normalize_model(
-        soup.get_text(" ", strip=True)
-    )
+    Prefer an exact match in a model-labelled specification row.
+    Related-product links must never count as product matches.
+    """
 
-    return normalize_model(requested_model) in page_text
+    model_key = normalize_model(requested_model)
+
+    has_model_specification = False
+
+    # First, inspect technical specification tables.
+    for row in soup.find_all("tr"):
+
+        cells = [
+            clean_text(cell.get_text(" ", strip=True))
+            for cell in row.find_all(["th", "td"])
+        ]
+
+        if not cells:
+            continue
+
+        normalized_cells = [
+            normalize_model(cell)
+            for cell in cells
+        ]
+
+        if "MODEL" in normalized_cells:
+            has_model_specification = True
+
+        for index, cell in enumerate(normalized_cells):
+
+            if cell != model_key:
+                continue
+
+            preceding_cells = normalized_cells[:index]
+
+            if "MODEL" in preceding_cells:
+                return True
+
+    # If the page has a model specification but it identifies
+    # another model, do not accept a mention elsewhere.
+    if has_model_specification:
+        return False
+
+    # Fallback for manufacturer pages without specification tables.
+    # Exclude links so related products cannot produce false matches.
+    page_parts = []
+
+    for element in soup.find_all(string=True):
+
+        if element.find_parent([
+            "a",
+            "script",
+            "style",
+            "noscript",
+            "nav",
+            "header",
+            "footer",
+            "aside",
+        ]):
+            continue
+
+        page_parts.append(str(element))
+
+    page_text = normalize_model(" ".join(page_parts))
+
+    return model_key in page_text
+
 
 
 def _get_page_title(soup):
@@ -221,42 +301,77 @@ def _get_page_title(soup):
     return "YUNQIDA Product"
 
 
+
 def _get_description(soup):
-    """Extract the published product description."""
+    """
+    Extract the manufacturer's product introduction.
 
-    for selector in (
-        'meta[property="og:description"]',
-        'meta[name="description"]',
-    ):
+    The product title and model are separated from the
+    description by a line break. Incomplete final sentences
+    are removed rather than published as finished copy.
+    """
 
-        meta = soup.select_one(selector)
+    intro = soup.select_one(".product-intro")
 
-        if meta and meta.get("content"):
-            return clean_text(meta["content"])
+    if intro:
+        text_container = intro.select_one(".textWrap2")
 
-    # Fall back to the first meaningful product paragraph.
-    for paragraph in soup.find_all("p"):
+        if text_container:
+            parts = []
 
-        text = clean_text(
-            paragraph.get_text(" ", strip=True)
-        )
+            for content in text_container.contents:
+                if getattr(content, "name", None) == "br":
+                    break
 
-        if (
-            len(text) >= 60
-            and not any(
-                word in text.lower()
-                for word in (
-                    "inquire now",
-                    "contact us",
-                    "copyright",
-                    "get in touch",
-                )
+                if isinstance(content, str):
+                    parts.append(content)
+
+            # The first text before the line break is the title.
+            # Extract the description after the line break.
+            description_parts = []
+            after_break = False
+
+            for content in text_container.contents:
+
+                if getattr(content, "name", None) == "br":
+                    after_break = True
+                    continue
+
+                if after_break:
+                    if isinstance(content, str):
+                        description_parts.append(content)
+                    else:
+                        description_parts.append(
+                            content.get_text(" ", strip=True)
+                        )
+
+            description = clean_text(
+                " ".join(description_parts)
             )
-        ):
-            return text
 
+            if description:
+                # Remove an unfinished final sentence.
+                if description.rstrip().endswith(
+                    ("It", "it", "and", "or", "with", "the", "a")
+                ):
+                    last_sentence = max(
+                        description.rfind("."),
+                        description.rfind("!"),
+                        description.rfind("?"),
+                    )
+
+                    description = (
+                        description[:last_sentence + 1]
+                        if last_sentence >= 0
+                        else ""
+                    )
+
+                if len(description) >= 60:
+                    return description
+
+    # Do not fall back to page-wide paragraphs: they may contain
+    # unrelated service, navigation or footer content.
     return ""
-
 
 def _extract_specification_tables(soup, requested_model):
     """
@@ -363,42 +478,57 @@ def _extract_specification_tables(soup, requested_model):
 
 
 def _extract_features(soup):
-    """Collect published product feature statements."""
+    """
+    Extract only genuine manufacturer product features.
+
+    Features are read from the product's dedicated feature
+    content block. Navigation, footer links, contact details,
+    related products and technical tables are excluded.
+    """
 
     features = []
     seen = set()
 
-    for item in soup.find_all("li"):
+    product_content = soup.select_one(
+        ".product_detailWrap"
+    )
+
+    if not product_content:
+        return features
+
+    feature_container = product_content.select_one(
+        ".con-tbody-text"
+    )
+
+    if not feature_container:
+        return features
+
+    for paragraph in feature_container.find_all("p"):
 
         value = clean_text(
-            item.get_text(" ", strip=True)
+            paragraph.get_text(" ", strip=True)
         )
+
+        # Remove manufacturer numbering, e.g. 01.
+        value = re.sub(
+            r"^\s*\d{1,2}\s*[.、)]\s*",
+            "",
+            value,
+        ).strip()
 
         if not 15 <= len(value) <= 300:
             continue
 
-        key = value.lower()
+        key = value.casefold()
 
         if key in seen:
-            continue
-
-        if any(
-            word in key
-            for word in (
-                "home",
-                "about us",
-                "contact us",
-                "products",
-                "sitemap",
-                "inquire now",
-            )
-        ):
             continue
 
         seen.add(key)
         features.append(value)
 
-    return features[:30]
+    return features
+
 
 
 def _extract_images(soup, page_url):
@@ -623,13 +753,30 @@ def _build_product_data(soup, requested_model, page_url):
         f"{title}. Manufacturer specifications are available "
         "in the technical details."
     )
+        # Keep the tagline within 200 characters without
+    # cutting off an incomplete sentence.
+    tagline = description
+
+    if len(tagline) > 200:
+        sentence_ends = [
+            match.end()
+            for match in re.finditer(
+                r"[.!?](?=\s|$)",
+                tagline[:200],
+            )
+        ]
+
+        if sentence_ends:
+            tagline = tagline[:sentence_ends[-1]]
+        else:
+            tagline = title[:200]
 
     return {
         "manufacturer": MANUFACTURER,
         "name": title[:120],
         "model_number": requested_model,
         "category": _guess_category(title),
-        "tagline": description[:200],
+        "tagline": tagline,
         "description": description,
         "capacity": capacity[:60],
         "power": power[:60],

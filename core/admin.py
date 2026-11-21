@@ -1,9 +1,9 @@
-
 import json
 from urllib.parse import urlsplit
 
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -17,7 +17,9 @@ from .models import (
     BuildProject,
     ProductImportDraft,
 )
+
 from .services.product_lookup import lookup_yunqida_model
+from .services.product_images import download_product_images
 
 
 # =====================================================
@@ -25,14 +27,17 @@ from .services.product_lookup import lookup_yunqida_model
 # =====================================================
 
 class ProductImageInline(admin.TabularInline):
+
     model = ProductImage
     extra = 1
+
     fields = (
         'image',
         'alt_text',
         'source_url',
         'order',
     )
+
     ordering = ('order', 'id')
 
 
@@ -90,6 +95,7 @@ class ProductAdmin(admin.ModelAdmin):
                 'capacity',
                 'power',
                 'warranty',
+                'technical_specifications',
             )
         }),
         ('Product Images', {
@@ -107,6 +113,7 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     def get_urls(self):
+
         urls = super().get_urls()
 
         custom_urls = [
@@ -125,6 +132,7 @@ class ProductAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def product_scanner(self, request):
+
         if not self.has_add_permission(request):
             raise PermissionDenied
 
@@ -149,7 +157,10 @@ class ProductAdmin(admin.ModelAdmin):
 
         if request.method != 'POST':
             return JsonResponse(
-                {'ok': False, 'error': 'POST requests only.'},
+                {
+                    'ok': False,
+                    'error': 'POST requests only.',
+                },
                 status=405,
             )
 
@@ -158,21 +169,33 @@ class ProductAdmin(admin.ModelAdmin):
 
         if len(request.body) > 8192:
             return JsonResponse(
-                {'ok': False, 'error': 'Submitted information is too large.'},
+                {
+                    'ok': False,
+                    'error': 'Submitted information is too large.',
+                },
                 status=413,
             )
 
         try:
-            payload = json.loads(request.body.decode('utf-8'))
+            payload = json.loads(
+                request.body.decode('utf-8')
+            )
+
         except (UnicodeDecodeError, json.JSONDecodeError):
             return JsonResponse(
-                {'ok': False, 'error': 'Invalid JSON request.'},
+                {
+                    'ok': False,
+                    'error': 'Invalid JSON request.',
+                },
                 status=400,
             )
 
         if not isinstance(payload, dict):
             return JsonResponse(
-                {'ok': False, 'error': 'Invalid request format.'},
+                {
+                    'ok': False,
+                    'error': 'Invalid request format.',
+                },
                 status=400,
             )
 
@@ -180,7 +203,10 @@ class ProductAdmin(admin.ModelAdmin):
 
         if not isinstance(value, str):
             return JsonResponse(
-                {'ok': False, 'error': 'A valid product identifier is required.'},
+                {
+                    'ok': False,
+                    'error': 'A valid product identifier is required.',
+                },
                 status=400,
             )
 
@@ -188,7 +214,10 @@ class ProductAdmin(admin.ModelAdmin):
 
         if not value or len(value) > 4096:
             return JsonResponse(
-                {'ok': False, 'error': 'Invalid or excessively long identifier.'},
+                {
+                    'ok': False,
+                    'error': 'Invalid or excessively long identifier.',
+                },
                 status=400,
             )
 
@@ -198,6 +227,7 @@ class ProductAdmin(admin.ModelAdmin):
             parsed_url = urlsplit(value)
 
             if parsed_url.scheme:
+
                 if (
                     parsed_url.scheme.lower() not in ('http', 'https')
                     or not parsed_url.netloc
@@ -205,7 +235,10 @@ class ProductAdmin(admin.ModelAdmin):
                     or parsed_url.password
                 ):
                     return JsonResponse(
-                        {'ok': False, 'error': 'Unsupported URL.'},
+                        {
+                            'ok': False,
+                            'error': 'Unsupported URL.',
+                        },
                         status=400,
                     )
 
@@ -219,7 +252,10 @@ class ProductAdmin(admin.ModelAdmin):
 
         except ValueError:
             return JsonResponse(
-                {'ok': False, 'error': 'Invalid URL.'},
+                {
+                    'ok': False,
+                    'error': 'Invalid URL.',
+                },
                 status=400,
             )
 
@@ -233,6 +269,7 @@ class ProductAdmin(admin.ModelAdmin):
         )
 
         if source_url:
+
             return JsonResponse({
                 'ok': True,
                 'draft_id': draft.pk,
@@ -248,17 +285,22 @@ class ProductAdmin(admin.ModelAdmin):
             })
 
         try:
+
             result = lookup_yunqida_model(value)
 
             if (
                 not isinstance(result, dict)
                 or not result.get('match_verified')
             ):
+
                 draft.notes = (
                     'No verified exact model match was found. '
                     'Check the identifier and try again.'
                 )
-                draft.save(update_fields=['notes', 'updated_at'])
+
+                draft.save(
+                    update_fields=['notes', 'updated_at']
+                )
 
                 return JsonResponse({
                     'ok': False,
@@ -319,7 +361,10 @@ class ProductAdmin(admin.ModelAdmin):
             draft.notes = (
                 f'Manufacturer lookup failed: {str(exc)[:500]}'
             )
-            draft.save(update_fields=['notes', 'updated_at'])
+
+            draft.save(
+                update_fields=['notes', 'updated_at']
+            )
 
             return JsonResponse({
                 'ok': False,
@@ -414,36 +459,56 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
             model_number = draft.raw_code.strip()
 
-            if model_number.lower().startswith(('http://', 'https://')):
+            if model_number.lower().startswith(
+                ('http://', 'https://')
+            ):
+
                 draft.notes = (
                     'Lookup not performed: this draft contains a URL. '
                     'Enter the product model number to perform the lookup.'
                 )
-                draft.save(update_fields=['notes', 'updated_at'])
+
+                draft.save(
+                    update_fields=['notes', 'updated_at']
+                )
+
                 failed += 1
                 continue
 
             try:
+
                 result = lookup_yunqida_model(model_number)
 
                 if not isinstance(result, dict):
-                    raise ValueError('The lookup returned an invalid result.')
+                    raise ValueError(
+                        'The lookup returned an invalid result.'
+                    )
 
                 if not result.get('match_verified'):
+
                     draft.notes = (
                         'No verified exact model match was returned. '
                         'Review the model number and try again.'
                     )
-                    draft.save(update_fields=['notes', 'updated_at'])
+
+                    draft.save(
+                        update_fields=['notes', 'updated_at']
+                    )
+
                     failed += 1
                     continue
 
                 if not result.get('name') or not result.get('description'):
+
                     draft.notes = (
                         'A model match was found, but the product name '
                         'or description is missing.'
                     )
-                    draft.save(update_fields=['notes', 'updated_at'])
+
+                    draft.save(
+                        update_fields=['notes', 'updated_at']
+                    )
+
                     failed += 1
                     continue
 
@@ -475,10 +540,15 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 fetched += 1
 
             except Exception as exc:
+
                 draft.notes = (
                     f'Manufacturer lookup failed: {str(exc)[:500]}'
                 )
-                draft.save(update_fields=['notes', 'updated_at'])
+
+                draft.save(
+                    update_fields=['notes', 'updated_at']
+                )
+
                 failed += 1
 
         if fetched:
@@ -551,6 +621,7 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 failed += 1
                 continue
 
+            # Prevent duplicate products.
             if (
                 Product.objects.filter(name__iexact=name).exists()
                 or (
@@ -563,6 +634,7 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 skipped += 1
                 continue
 
+            # Generate a unique slug.
             base_slug = slugify(name)[:45] or 'product'
             slug = base_slug
             counter = 1
@@ -571,7 +643,50 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 counter += 1
                 slug = f'{base_slug}-{counter}'
 
+            # -------------------------------------------------
+            # PREPARE MANUFACTURER IMAGE URLS
+            # -------------------------------------------------
+
+            image_urls = data.get('image_urls') or []
+
+            if not isinstance(image_urls, list):
+                image_urls = []
+
+            else:
+                # Work on a copy; do not modify the draft JSON data.
+                image_urls = list(image_urls)
+
+            primary_url = data.get('image_url')
+
+            if (
+                isinstance(primary_url, str)
+                and primary_url.strip()
+                and primary_url.strip() not in image_urls
+            ):
+                image_urls.insert(0, primary_url.strip())
+
+            # -------------------------------------------------
+            # DOWNLOAD PRODUCT IMAGES
+            # -------------------------------------------------
+
             try:
+                downloaded_images, image_errors = (
+                    download_product_images(image_urls)
+                )
+
+            except Exception as exc:
+
+                downloaded_images = []
+                image_errors = [
+                    f'Image downloader error: {str(exc)[:300]}'
+                ]
+
+            # -------------------------------------------------
+            # CREATE PRODUCT AND SAVE ITS IMAGES
+            # -------------------------------------------------
+
+            try:
+
                 with transaction.atomic():
 
                     product = Product.objects.create(
@@ -580,22 +695,98 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                         category=category,
                         tagline=(tagline or name)[:200],
                         description=description,
-                        capacity=str(data.get('capacity') or '')[:60],
-                        power=str(data.get('power') or '')[:60],
-                        warranty=str(data.get('warranty') or '')[:60],
+                        capacity=str(
+                            data.get('capacity') or ''
+                        )[:60],
+                        power=str(
+                            data.get('power') or ''
+                        )[:60],
+                        warranty=str(
+                            data.get('warranty') or ''
+                        )[:60],
+                        technical_specifications=(
+                            data.get('technical_specifications')
+                            if isinstance(
+                                data.get('technical_specifications'),
+                                list,
+                            )
+                            else []
+                        ),
                         manufacturer_model=model_number[:120],
                         manufacturer_url=str(
                             data.get('source_url') or draft.source_url
                         )[:200],
                     )
 
+                    # First downloaded image becomes the main image.
+                    if downloaded_images:
+
+                        main_image = downloaded_images[0]
+
+                        product.image.save(
+                            main_image['filename'],
+                            ContentFile(main_image['content']),
+                            save=True,
+                        )
+
+                    # Remaining downloaded images become gallery images.
+                    for index, image_data in enumerate(
+                        downloaded_images[1:],
+                        start=1,
+                    ):
+
+                        gallery_image = ProductImage(
+                            product=product,
+                            alt_text=(
+                                f'{product.name} product image {index + 1}'
+                            ),
+                            source_url=image_data['source_url'],
+                            order=index,
+                        )
+
+                        gallery_image.image.save(
+                            image_data['filename'],
+                            ContentFile(image_data['content']),
+                            save=True,
+                        )
+
+                    # Update import draft.
                     draft.product = product
                     draft.status = 'imported'
-                    draft.notes = (
+
+                    notes = (
                         f'Imported successfully as Product #{product.pk}. '
-                        f'Source: {draft.source_url or "Not provided"}. '
-                        'Add the product images in the product gallery.'
+                        f'{len(downloaded_images)} manufacturer image(s) '
+                        'downloaded and saved. '
                     )
+
+                    if downloaded_images:
+
+                        notes += (
+                            'The first successfully downloaded image '
+                            'is the main product image. '
+                            'The remaining images are in the gallery. '
+                        )
+
+                    else:
+
+                        notes += (
+                            'No manufacturer images could be downloaded. '
+                            'You can upload images manually. '
+                        )
+
+                    if image_errors:
+
+                        notes += (
+                            f'{len(image_errors)} image download(s) failed. '
+                            + ' '.join(image_errors[:3])
+                        )
+
+                    notes += (
+                        f' Source: {draft.source_url or "Not provided"}.'
+                    )
+
+                    draft.notes = notes[:5000]
 
                     draft.save(update_fields=[
                         'product',
@@ -607,21 +798,33 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 imported += 1
 
             except Exception as exc:
+
                 failed += 1
-                draft.notes = f'Import failed: {str(exc)[:500]}'
-                draft.save(update_fields=['notes', 'updated_at'])
+
+                draft.notes = (
+                    f'Import failed: {str(exc)[:500]}'
+                )
+
+                draft.save(
+                    update_fields=['notes', 'updated_at']
+                )
+
+        # -------------------------------------------------
+        # ADMIN RESULTS
+        # -------------------------------------------------
 
         if imported:
             self.message_user(
                 request,
-                f'{imported} product(s) imported successfully.',
+                f'{imported} product(s) imported successfully, '
+                'including their available manufacturer images.',
                 messages.SUCCESS,
             )
 
         if skipped:
             self.message_user(
                 request,
-                f'{skipped} draft(s) skipped because they were already '
+                f'{skipped} product(s) skipped because they were already '
                 'processed or a matching product exists.',
                 messages.WARNING,
             )
@@ -629,8 +832,8 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         if failed:
             self.message_user(
                 request,
-                f'{failed} draft(s) could not be imported. '
-                'Check their extracted information.',
+                f'{failed} product(s) could not be imported. '
+                'Check their draft notes.',
                 messages.ERROR,
             )
 

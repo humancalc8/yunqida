@@ -36,6 +36,11 @@ class Product(models.Model):
     )
 
     warranty = models.CharField(max_length=60, blank=True)
+    technical_specifications = models.JSONField(
+    default=list,
+    blank=True,
+    help_text='Structured technical specifications supplied by the manufacturer.'
+)
 
     # Manufacturer identification
     manufacturer_model = models.CharField(

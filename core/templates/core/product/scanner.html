@@ -1,0 +1,560 @@
+
+{% extends "admin/base_site.html" %}
+
+{% block title %}YUNQIDA Product Scanner{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.scanner-page {
+    max-width: 1050px;
+    margin: 25px auto;
+}
+
+.scanner-heading {
+    margin-bottom: 25px;
+}
+
+.scanner-heading h1 {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.scanner-heading p,
+.scanner-note {
+    color: var(--body-quiet-color);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.scanner-panel {
+    background: var(--body-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.scanner-panel h2 {
+    font-size: 17px;
+    margin-top: 0;
+}
+
+.scanner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+#qr-reader {
+    width: 100%;
+    max-width: 520px;
+    margin-top: 15px;
+}
+
+#qr-reader video {
+    border-radius: 7px;
+}
+
+.scanner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.scanner-button {
+    border: 0;
+    border-radius: 6px;
+    padding: 11px 17px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    background: var(--primary);
+    color: white;
+}
+
+.scanner-button.secondary {
+    background: var(--darkened-bg);
+    color: var(--body-fg);
+    border: 1px solid var(--border-color);
+}
+
+.scanner-button:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+.scanner-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--body-bg);
+    color: var(--body-fg);
+}
+
+.scanner-status {
+    padding: 13px;
+    border-radius: 6px;
+    background: var(--darkened-bg);
+    margin-top: 15px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.scanner-result {
+    display: none;
+    margin-top: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    background: var(--body-bg);
+}
+
+.scanner-result img {
+    max-width: 260px;
+    max-height: 260px;
+    object-fit: contain;
+    display: block;
+    margin-top: 15px;
+}
+
+#draft-admin-link a {
+    color: var(--link-fg);
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .scanner-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .scanner-panel {
+        padding: 16px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="scanner-page" data-submit-url="{{ submit_url }}">
+
+    <div id="scanner-csrf" hidden>
+        {% csrf_token %}
+    </div>
+
+    <div class="scanner-heading">
+        <h1>YUNQIDA Product Scanner</h1>
+        <p>
+            Scan a product QR code or enter a model number
+            to retrieve manufacturer information.
+        </p>
+    </div>
+
+    <div class="scanner-grid">
+
+        <section class="scanner-panel">
+            <h2>01. Scan using camera</h2>
+            <p>Use your phone camera or computer webcam.</p>
+
+            <div id="qr-reader"></div>
+
+            <div class="scanner-actions">
+                <button type="button" class="scanner-button"
+                        id="start-camera">
+                    Start camera
+                </button>
+
+                <button type="button"
+                        class="scanner-button secondary"
+                        id="stop-camera"
+                        disabled>
+                    Stop camera
+                </button>
+            </div>
+        </section>
+
+        <section class="scanner-panel">
+            <h2>02. Upload QR photograph</h2>
+            <p>Select a photograph containing a product QR code.</p>
+
+            <input type="file"
+                   id="qr-image"
+                   class="scanner-input"
+                   accept="image/*">
+
+            <div class="scanner-actions">
+                <button type="button"
+                        class="scanner-button"
+                        id="scan-image">
+                    Read QR photograph
+                </button>
+            </div>
+        </section>
+
+    </div>
+
+    <section class="scanner-panel">
+        <h2>03. Enter product model number</h2>
+
+        <p>
+            Enter the manufacturer's model number to fetch product details.
+        </p>
+
+        <input type="text"
+               id="manual-code"
+               class="scanner-input"
+               maxlength="4096"
+               placeholder="Example: YQD-256200-LFO">
+
+        <div class="scanner-actions">
+            <button type="button"
+                    class="scanner-button"
+                    id="submit-manual">
+                Fetch product details
+            </button>
+        </div>
+    </section>
+
+    <div id="scanner-status"
+         class="scanner-status"
+         role="status"
+         aria-live="polite">
+        Scanner ready.
+    </div>
+
+    <section id="scanner-result" class="scanner-result">
+        <h2>Product lookup result</h2>
+
+        <p id="decoded-value"></p>
+
+        <div id="product-details"></div>
+
+        <p id="draft-admin-link"></p>
+    </section>
+
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+<script>
+(function () {
+    "use strict";
+
+    const page = document.querySelector(".scanner-page");
+
+    if (!page) return;
+
+    const submitUrl = page.dataset.submitUrl;
+
+    const statusBox = document.getElementById("scanner-status");
+    const resultBox = document.getElementById("scanner-result");
+    const decodedValue = document.getElementById("decoded-value");
+    const productDetails = document.getElementById("product-details");
+    const draftLink = document.getElementById("draft-admin-link");
+
+    const startButton = document.getElementById("start-camera");
+    const stopButton = document.getElementById("stop-camera");
+    const imageButton = document.getElementById("scan-image");
+    const manualButton = document.getElementById("submit-manual");
+
+    const imageInput = document.getElementById("qr-image");
+    const manualInput = document.getElementById("manual-code");
+
+    const csrfInput = document.querySelector(
+        '#scanner-csrf input[name="csrfmiddlewaretoken"]'
+    );
+
+    const csrfToken = csrfInput ? csrfInput.value : "";
+
+    let qrScanner = null;
+    let cameraRunning = false;
+    let submitting = false;
+
+    function setStatus(message) {
+        statusBox.textContent = message;
+    }
+
+    function setBusy(busy) {
+        submitting = busy;
+
+        manualButton.disabled = busy;
+        imageButton.disabled = busy;
+        startButton.disabled = busy || cameraRunning;
+    }
+
+    function addDetail(label, value) {
+        if (!value) return;
+
+        const paragraph = document.createElement("p");
+        const strong = document.createElement("strong");
+
+        strong.textContent = label + ": ";
+
+        paragraph.appendChild(strong);
+        paragraph.appendChild(document.createTextNode(String(value)));
+
+        productDetails.appendChild(paragraph);
+    }
+
+    function showProduct(data, originalValue) {
+        resultBox.style.display = "block";
+
+        decodedValue.textContent = originalValue;
+
+        productDetails.replaceChildren();
+        draftLink.replaceChildren();
+
+        if (data.lookup_completed) {
+            addDetail("Manufacturer", data.manufacturer);
+            addDetail("Product", data.product_name);
+            addDetail("Model number", data.model_number);
+            addDetail("Category", data.category);
+            addDetail("Capacity", data.capacity);
+            addDetail("Power", data.power);
+            addDetail("Warranty", data.warranty);
+            addDetail("Description", data.description);
+
+            if (data.image_url) {
+                try {
+                    const imageUrl = new URL(data.image_url);
+
+                    if (imageUrl.protocol === "https:") {
+                        const image = document.createElement("img");
+                        image.src = imageUrl.href;
+                        image.alt = data.product_name || "Product image";
+                        image.loading = "lazy";
+                        productDetails.appendChild(image);
+                    }
+                } catch (error) {
+                    console.warn("Invalid product image URL.");
+                }
+            }
+        } else {
+            addDetail("Message", data.message);
+        }
+
+        if (data.source_url) {
+            try {
+                const sourceUrl = new URL(data.source_url);
+
+                if (sourceUrl.protocol === "https:") {
+                    const source = document.createElement("a");
+                    source.href = sourceUrl.href;
+                    source.target = "_blank";
+                    source.rel = "noopener noreferrer";
+                    source.textContent = "View manufacturer source";
+                    draftLink.appendChild(source);
+                }
+            } catch (error) {
+                console.warn("Invalid manufacturer source URL.");
+            }
+        }
+
+        if (data.draft_url) {
+            const link = document.createElement("a");
+
+            link.href = data.draft_url;
+            link.textContent = "Open pending product import #" + data.draft_id;
+
+            if (draftLink.childNodes.length) {
+                draftLink.appendChild(document.createTextNode(" | "));
+            }
+
+            draftLink.appendChild(link);
+        }
+    }
+
+    async function stopCamera() {
+        if (!cameraRunning || !qrScanner) return;
+
+        try {
+            await qrScanner.stop();
+        } catch (error) {
+            console.error("Camera stop error:", error);
+        }
+
+        cameraRunning = false;
+        stopButton.disabled = true;
+        startButton.disabled = submitting;
+    }
+
+    async function submitIdentifier(value) {
+        value = String(value || "").trim();
+
+        if (!value) {
+            setStatus("Please enter a product model number.");
+            return;
+        }
+
+        if (submitting) return;
+
+        setBusy(true);
+        resultBox.style.display = "none";
+
+        setStatus("Fetching manufacturer product details...");
+
+        try {
+            await stopCamera();
+
+            if (!csrfToken) {
+                throw new Error("Security token missing. Reload the page.");
+            }
+
+            const response = await fetch(submitUrl, {
+                method: "POST",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: JSON.stringify({value: value})
+            });
+
+            const data = await response.json().catch(function () {
+                return {};
+            });
+
+            if (!response.ok || !data.ok) {
+                throw new Error(
+                    data.error || "Lookup failed. HTTP " + response.status
+                );
+            }
+
+            showProduct(data, value);
+
+            setStatus(
+                data.message || "Product information retrieved successfully."
+            );
+
+        } catch (error) {
+            console.error("Product lookup error:", error);
+            setStatus("Lookup failed: " + error.message);
+
+        } finally {
+            setBusy(false);
+        }
+    }
+
+    async function startCamera() {
+        if (cameraRunning || submitting) return;
+
+        if (typeof Html5Qrcode === "undefined") {
+            setStatus(
+                "QR library failed to load. Check your internet connection."
+            );
+            return;
+        }
+
+        startButton.disabled = true;
+        setStatus("Requesting camera permission...");
+
+        try {
+            if (!qrScanner) {
+                qrScanner = new Html5Qrcode("qr-reader");
+            }
+
+            await qrScanner.start(
+                {facingMode: "environment"},
+                {
+                    fps: 10,
+                    qrbox: {width: 250, height: 250}
+                },
+                async function (decodedText) {
+                    if (!submitting) {
+                        await stopCamera();
+                        await submitIdentifier(decodedText);
+                    }
+                },
+                function () {}
+            );
+
+            cameraRunning = true;
+            stopButton.disabled = false;
+            startButton.disabled = true;
+
+            setStatus("Camera active. Scan a product QR code.");
+
+        } catch (error) {
+            console.error("Camera error:", error);
+
+            cameraRunning = false;
+            startButton.disabled = false;
+            stopButton.disabled = true;
+
+            setStatus("Camera error: " + error.message);
+        }
+    }
+
+    async function scanImage() {
+        const file = imageInput.files[0];
+
+        if (!file) {
+            setStatus("Select a QR photograph first.");
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            setStatus("Please select a valid image.");
+            return;
+        }
+
+        if (submitting) return;
+
+        if (typeof Html5Qrcode === "undefined") {
+            setStatus("QR library failed to load. Check your internet connection.");
+            return;
+        }
+
+        imageButton.disabled = true;
+        setStatus("Reading QR photograph...");
+
+        try {
+            await stopCamera();
+
+            if (!qrScanner) {
+                qrScanner = new Html5Qrcode("qr-reader");
+            }
+
+            const decodedText = await qrScanner.scanFile(file, false);
+
+            await submitIdentifier(decodedText);
+
+        } catch (error) {
+            console.error("Image scan error:", error);
+            setStatus("Could not read a QR code from this photograph.");
+
+        } finally {
+            imageButton.disabled = submitting;
+        }
+    }
+
+    startButton.addEventListener("click", startCamera);
+    stopButton.addEventListener("click", stopCamera);
+
+    imageButton.addEventListener("click", scanImage);
+
+    manualButton.addEventListener("click", function () {
+        submitIdentifier(manualInput.value);
+    });
+
+    manualInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submitIdentifier(manualInput.value);
+        }
+    });
+
+    window.addEventListener("beforeunload", function () {
+        if (cameraRunning && qrScanner) {
+            qrScanner.stop().catch(function () {});
+        }
+    });
+
+})();
+</script>
+{% endblock %}

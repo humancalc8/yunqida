@@ -1,5 +1,6 @@
+
 from django.urls import path
-from . import views
+from . import views, ai_views
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -8,8 +9,15 @@ urlpatterns = [
     path('products/', views.products, name='products'),
     path('products/<slug:slug>/', views.product_detail, name='product_detail'),
     path('contact/', views.contact, name='contact'),
-    path("services/", views.services, name="services"),
-     path("works-done/", views.works_done, name="works_done"),
-    
+    path('services/', views.services, name='services'),
+    path('works-done/', views.works_done, name='works_done'),
 
+    # AI engineer assistant
+    path(
+        'api/engineer-chat/',
+        ai_views.engineer_chat,
+        name='engineer_chat'
+    ),
+    path('news/', views.blog_list, name='blog_list'),
+path('news/<slug:slug>/', views.blog_detail, name='blog_detail'),
 ]

@@ -9,7 +9,7 @@
 <meta name="keywords" content="{% block meta_keywords %}solar power systems Kenya, lithium batteries Kenya, hybrid inverter Kenya, LiFePO4 battery, solar energy storage Nairobi, home battery backup, commercial solar storage, off-grid solar, Yunqida Energy Kenya{% endblock %}">
 <meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1{% endblock %}">
 <meta name="author" content="Yunqida Energy Technology Kenya">
-<meta name="theme-color" content="#000a63">
+<meta name="theme-color" content="#0d1430">
 <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 <link rel="alternate" hreflang="en-ke" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
@@ -63,45 +63,49 @@
 {% block schema_page %}{% endblock %}
 
 <style>
+/* =========================================================
+   YUNQIDA BASE  ·  v2
+   Palette is shared with the home page:
+   Ink #0d1430 · Signal #ffe000 · Paper #fff · Mist #f2f3f5
+========================================================= */
 :root {
-  /* Navy + lime palette (matches the reference "Earthly" interface) */
-  --c-forest:#000a63;
-  --c-forest-2:#00063d;
-  --c-forest-3:#1a2bb8;
-  --c-sun:#c4f135;
-  --c-sun-deep:#a8d81f;
-  --c-mist:#f7f7f5;
-  --c-paper:#f7f7f5;
-  --c-muted:#666b66;
-  --c-line:#e4e4df;
-  --c-dark-navy:#00063d;
-  --c-surface-dark:#00063d;
+  --c-forest:#0d1430;
+  --c-forest-2:#080d20;
+  --c-forest-3:#2a3a8f;
+  --c-sun:#ffe000;
+  --c-sun-deep:#e6c800;
+  --c-mist:#f2f3f5;
+  --c-paper:#ffffff;
+  --c-muted:#5d6577;
+  --c-line:#dfe2e8;
+  --c-dark-navy:#080d20;
+  --c-surface-dark:#080d20;
   --c-emerald:#0A806B;
   --c-emerald-glow:#20A78C;
   --c-amber:var(--c-sun);
   --c-amber-hover:var(--c-sun-deep);
-  --c-amber-light:#f3fbd0;
+  --c-amber-light:#fff8c2;
   --c-slate-bg:var(--c-mist);
   --c-slate-surface:#FFFFFF;
-  --c-text-main:#121512;
+  --c-text-main:#121733;
   --c-text-muted:var(--c-muted);
   --c-border:var(--c-line);
-  --c-border-subtle:#eeeeea;
+  --c-border-subtle:#eceef2;
   --font-display:'Hanken Grotesk',sans-serif;
   --font-heading:'Hanken Grotesk',sans-serif;
   --font-body:'Hanken Grotesk',sans-serif;
   --ease:cubic-bezier(.16,1,.3,1);
-  --header-h:82px;
+  --header-h:92px;
   --radius-sm:2px;
   --radius-md:8px;
   --radius-lg:16px;
   --radius-full:999px;
-  --shadow-subtle:0 8px 30px rgba(0,10,60,.06);
-  --shadow-float:0 24px 65px rgba(0,10,60,.14);
+  --shadow-subtle:0 8px 30px rgba(13,20,48,.07);
+  --shadow-float:0 24px 65px rgba(13,20,48,.16);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:calc(var(--header-h) + 24px);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-/* Lenis smooth scroll must own scrolling, so turn native smoothing off while it runs */
+/* Lenis smooth scroll must own scrolling, so native smoothing is turned off while it runs */
 html.lenis,html.lenis body{height:auto}
 html.lenis,.lenis.lenis-smooth{scroll-behavior:auto!important}
 .lenis.lenis-stopped{overflow:hidden}
@@ -115,105 +119,124 @@ button{color:inherit}
 :focus-visible{outline:3px solid var(--c-sun);outline-offset:4px}
 .container{width:min(1320px,calc(100% - 64px));margin-inline:auto}
 @media(max-width:640px){.container{width:calc(100% - 36px)}}
+@media(min-width:1700px){.container{width:min(1480px,calc(100% - 96px))}}
+@media(min-width:2200px){.container{width:min(1760px,calc(100% - 128px))}}
 .skip-link{position:absolute;left:-999px;top:12px;z-index:2000;padding:12px 18px;background:var(--c-sun);color:var(--c-forest-2);font-weight:700}
 .skip-link:focus{left:16px}
 .ico{width:18px;height:18px;flex-shrink:0;fill:currentColor}
 .ico-stroke{width:18px;height:18px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
-/* Slim information rail */
-.top-bar{background:var(--c-forest-2);color:rgba(255,255,255,.78);font-size:11px;letter-spacing:.025em;padding:8px 0}
+/* ---------- Slim information rail ---------- */
+.top-bar{background:var(--c-forest-2);color:rgba(255,255,255,.9);font-size:12px;letter-spacing:.02em;padding:9px 0}
 .top-bar-inner{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.top-bar-contact,.top-bar-social{display:flex;align-items:center;gap:25px}
+.top-bar-contact,.top-bar-social{display:flex;align-items:center;gap:26px}
 .top-bar-contact a,.top-bar-contact span{display:inline-flex;align-items:center;gap:8px}
 .top-bar-contact a:hover,.top-bar-social a:hover{color:var(--c-sun)}
 .top-bar-social{gap:7px}
-.top-bar-social>span{margin-right:8px;opacity:.6}
-.top-bar-social a{display:grid;place-items:center;width:25px;height:25px;transition:color .2s,transform .25s}
+.top-bar-social>span{margin-right:8px;color:rgba(255,255,255,.7)}
+.top-bar-social a{display:grid;place-items:center;width:26px;height:26px;transition:color .2s,transform .25s}
 .top-bar-social a:hover{transform:translateY(-2px)}
 @media(max-width:900px){.top-bar{display:none}}
 
-/* Navigation */
-.site-header{position:sticky;top:0;z-index:120;height:var(--header-h);background:rgba(247,247,245,.82);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid rgba(0,10,99,.08);transition:box-shadow .3s,background .3s}
-.site-header.is-scrolled{background:rgba(255,255,255,.94);box-shadow:0 8px 30px rgba(0,10,60,.07)}
-.header-inner{height:100%;display:flex;align-items:center;gap:clamp(18px,2.4vw,38px)}
-.brand{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}
-.brand img{width:auto;height:43px;max-width:190px;object-fit:contain}
-.brand-badge{padding:4px 8px;border-left:1px solid var(--c-line);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c-muted)}
-.nav-desktop-links{display:flex;align-items:center;justify-content:center;gap:clamp(2px,.55vw,10px);flex:1}
-.nav-link{position:relative;padding:12px 9px;color:#555a55;font-size:13px;font-weight:600;letter-spacing:.01em;white-space:nowrap;transition:color .2s}
-.nav-link::after{content:"";position:absolute;left:9px;right:9px;bottom:5px;height:2px;background:var(--c-forest);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
-.nav-link:hover,.nav-link.is-active{color:var(--c-forest)}
-.nav-link:hover::after,.nav-link.is-active::after{transform:scaleX(1)}
-.header-search{width:174px;flex-shrink:0}
+/* ---------- Header / navigation ---------- */
+.site-header{position:sticky;top:0;z-index:120;height:var(--header-h);background:rgba(255,255,255,.9);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid rgba(13,20,48,.08);transition:box-shadow .3s,background .3s}
+.site-header.is-scrolled{background:rgba(255,255,255,.97);box-shadow:0 10px 34px rgba(13,20,48,.09)}
+.header-inner{height:100%;display:flex;align-items:center;gap:clamp(16px,2vw,34px)}
+
+/* Bigger, clearer logo */
+.brand{display:inline-flex;align-items:center;gap:12px;flex-shrink:0}
+.brand img{width:auto;height:62px;max-width:260px;object-fit:contain;filter:drop-shadow(0 1px 0 rgba(13,20,48,.06))}
+.brand-badge{padding:2px 0 2px 14px;border-left:1px solid var(--c-line);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--c-muted);line-height:1.2}
+@media(max-width:1300px){.brand-badge{display:none}}
+
+/* Desktop nav: quiet text links with a refined underline.
+   Hover  : a thin ink line draws in from the left (and leaves to the right).
+   Active : a thicker signal-yellow line stays under the current page.
+   Focus  : while one link is hovered, its siblings soften. */
+.nav-desktop-links{display:flex;align-items:center;justify-content:center;gap:clamp(16px,1.9vw,36px);flex:1}
+.nav-link{position:relative;padding:12px 2px;color:#3b4258;font-size:14px;font-weight:600;letter-spacing:.02em;white-space:nowrap;transition:color .3s,opacity .3s}
+.nav-link::after{content:"";position:absolute;left:0;right:0;bottom:3px;height:2px;background:var(--c-forest);transform:scaleX(0);transform-origin:right center;transition:transform .5s var(--ease)}
+.nav-link:hover,.nav-link:focus-visible{color:var(--c-forest)}
+.nav-link:hover::after,.nav-link:focus-visible::after{transform:scaleX(1);transform-origin:left center}
+.nav-link.is-active{color:var(--c-forest);font-weight:700}
+.nav-link.is-active::after{height:3px;background:var(--c-sun);transform:scaleX(1);transform-origin:left center}
+.nav-desktop-links:hover .nav-link:not(:hover){opacity:.5}
+
+.header-search{width:176px;flex-shrink:0}
+@media(max-width:1399px){.header-search{display:none}}
 .search-form{position:relative;display:flex;align-items:center;width:100%}
-.search-input{width:100%;height:42px;padding:0 15px 0 40px;background:#ececE8;border:1px solid transparent;border-radius:var(--radius-full);outline:none;color:var(--c-text-main);font-size:12px;transition:background .2s,border-color .2s,box-shadow .2s}
-.search-input::placeholder{color:#8B8F8B}
-.search-input:focus{background:#fff;border-color:var(--c-forest-3);box-shadow:0 0 0 4px rgba(26,43,184,.1)}
-.search-btn-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);display:flex;color:#777c77;pointer-events:none}
-.btn-contact{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:0 22px;background:#0a0a0c;color:#fff;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.01em;border:1px solid #0a0a0c;border-radius:10px;transition:background .25s,border-color .25s,color .25s,transform .25s}
-.btn-contact span{color:var(--c-sun)}
-.btn-contact:hover{background:var(--c-forest);border-color:var(--c-forest);color:#fff;transform:translateY(-2px)}
+.search-input{width:100%;height:46px;padding:0 15px 0 42px;background:var(--c-mist);border:1px solid var(--c-line);border-radius:10px;outline:none;color:var(--c-text-main);font-size:13px;transition:background .2s,border-color .2s,box-shadow .2s}
+.search-input::placeholder{color:#7b8294}
+.search-input:focus{background:#fff;border-color:var(--c-forest);box-shadow:0 0 0 4px rgba(255,224,0,.4)}
+.search-btn-icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);display:flex;color:#6b7284;pointer-events:none}
+.btn-contact{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:50px;padding:0 9px 0 22px;background:var(--c-forest);color:#fff;font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.015em;white-space:nowrap;border:1px solid var(--c-forest);border-radius:10px;transition:background .3s,border-color .3s,transform .3s var(--ease),box-shadow .3s}
+.btn-contact span{display:grid;place-items:center;width:32px;height:32px;border-radius:7px;background:var(--c-sun);color:var(--c-forest-2);font-size:15px;line-height:1;transition:transform .4s var(--ease),background .3s}
+.btn-contact:hover{background:#1c2652;border-color:#1c2652;transform:translateY(-2px);box-shadow:0 12px 26px -10px rgba(13,20,48,.55)}
+.btn-contact:hover span{transform:rotate(45deg);background:#fff}
 .mobile-actions{display:none;align-items:center;gap:8px;margin-left:auto}
-.btn-mobile-search-toggle,.nav-toggle{display:grid;place-items:center;width:43px;height:43px;border:1px solid var(--c-line);border-radius:10px;background:transparent;color:var(--c-forest);cursor:pointer}
-.btn-mobile-search-toggle:hover,.nav-toggle:hover{background:#ececE8}
-@media(max-width:1190px){.nav-desktop-links,.header-search,.header-inner>.btn-contact{display:none}.mobile-actions{display:flex}}
-@media(max-width:480px){:root{--header-h:70px}.brand img{height:36px;max-width:160px}.brand-badge{display:none}}
+.btn-mobile-search-toggle,.nav-toggle{display:grid;place-items:center;width:46px;height:46px;border:1px solid var(--c-line);border-radius:12px;background:#fff;color:var(--c-forest);cursor:pointer;transition:background .2s,border-color .2s}
+.nav-toggle{background:var(--c-forest);border-color:var(--c-forest);color:#fff}
+.btn-mobile-search-toggle:hover{background:var(--c-mist)}
+.nav-toggle:hover{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2)}
+@media(max-width:1190px){:root{--header-h:80px}.nav-desktop-links,.header-search,.header-inner>.btn-contact{display:none}.mobile-actions{display:flex}.brand img{height:54px}}
+@media(max-width:480px){:root{--header-h:72px}.brand img{height:46px;max-width:190px}.brand-badge{display:none}}
 .mobile-search-tray{position:absolute;top:100%;left:0;right:0;z-index:110;padding:14px 20px;background:#fff;border-bottom:1px solid var(--c-line);box-shadow:var(--shadow-subtle);transform:translateY(-8px);opacity:0;visibility:hidden;transition:transform .3s var(--ease),opacity .25s,visibility .25s}
 .mobile-search-tray.is-open{transform:none;opacity:1;visibility:visible}
 @media(min-width:1191px){.mobile-search-tray{display:none}}
 
-/* Mobile navigation drawer */
-.nav-backdrop{position:fixed;inset:0;z-index:150;background:rgba(0,6,61,.6);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+/* ---------- Mobile navigation drawer ---------- */
+.nav-backdrop{position:fixed;inset:0;z-index:150;background:rgba(8,13,32,.65);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .nav-backdrop.is-visible{opacity:1;visibility:visible}
-.mobile-nav-drawer{position:fixed;top:0;right:0;bottom:0;z-index:160;width:min(88vw,390px);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--c-forest-2);color:#fff;transform:translateX(100%);visibility:hidden;transition:transform .4s var(--ease),visibility 0s linear .4s}
+.mobile-nav-drawer{position:fixed;top:0;right:0;bottom:0;z-index:160;width:min(88vw,400px);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;background:var(--c-forest-2);color:#fff;transform:translateX(100%);visibility:hidden;transition:transform .4s var(--ease),visibility 0s linear .4s}
 .nav-open .mobile-nav-drawer{transform:none;visibility:visible;transition:transform .4s var(--ease)}
-.drawer-header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.12)}
-.drawer-header .brand{padding:7px 12px;background:#fff;border-radius:10px}
-.drawer-header img{height:30px;width:auto}
-.drawer-close{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.3);border-radius:50%;background:transparent;color:#fff;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.drawer-header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,.16)}
+.drawer-header .brand{padding:8px 14px;background:#fff;border-radius:12px}
+.drawer-header img{height:42px;width:auto;max-width:190px;filter:none}
+.drawer-close{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.4);border-radius:50%;background:transparent;color:#fff;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
 .drawer-close:hover{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2)}
 .drawer-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:18px 22px 10px}
-.drawer-search-wrap .search-input{height:44px;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);color:#fff}
-.drawer-search-wrap .search-input::placeholder{color:rgba(255,255,255,.5)}
-.drawer-search-wrap .search-input:focus{background:rgba(255,255,255,.12);border-color:var(--c-sun);box-shadow:none}
-.drawer-search-wrap .search-btn-icon{color:rgba(255,255,255,.55)}
-.drawer-label{margin:22px 0 6px;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.drawer-search-wrap .search-input{height:46px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22);color:#fff}
+.drawer-search-wrap .search-input::placeholder{color:rgba(255,255,255,.65)}
+.drawer-search-wrap .search-input:focus{background:rgba(255,255,255,.14);border-color:var(--c-sun);box-shadow:none}
+.drawer-search-wrap .search-btn-icon{color:rgba(255,255,255,.7)}
+.drawer-label{margin:22px 0 6px;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--c-sun)}
 .drawer-nav-list{display:flex;flex-direction:column}
-.drawer-nav-item{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12)}
-.drawer-nav-icon{display:grid;place-items:center;flex-shrink:0;width:44px;height:44px;border:1px solid rgba(255,255,255,.28);border-radius:50%;color:var(--c-sun);transition:background .25s,color .25s,border-color .25s}
+.drawer-nav-item{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.drawer-nav-icon{display:grid;place-items:center;flex-shrink:0;width:44px;height:44px;border:1px solid rgba(255,255,255,.34);border-radius:50%;color:var(--c-sun);transition:background .25s,color .25s,border-color .25s}
 .drawer-nav-icon .ico-stroke{width:19px;height:19px}
 .drawer-nav-text{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
-.drawer-nav-text strong{font-family:var(--font-display);font-size:16px;font-weight:700}
-.drawer-nav-text small{margin-top:1px;font-size:12px;color:rgba(255,255,255,.55)}
-.drawer-nav-arrow{color:rgba(255,255,255,.45);transition:transform .25s var(--ease),color .2s}
+.drawer-nav-text strong{font-family:var(--font-display);font-size:16px;font-weight:700;color:#fff}
+.drawer-nav-text small{margin-top:1px;font-size:12px;color:rgba(255,255,255,.7)}
+.drawer-nav-arrow{color:rgba(255,255,255,.6);transition:transform .25s var(--ease),color .2s}
 .drawer-nav-item:hover .drawer-nav-icon,.drawer-nav-item.is-active .drawer-nav-icon{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2)}
 .drawer-nav-item:hover .drawer-nav-arrow{transform:translateX(4px);color:#fff}
 .drawer-nav-item.is-active .drawer-nav-text strong,.drawer-nav-item.is-active .drawer-nav-arrow{color:var(--c-sun)}
 .drawer-contact{display:grid;gap:10px;margin:2px 0 0}
-.drawer-contact a{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.78)}
+.drawer-contact a{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.9)}
 .drawer-contact .ico-stroke{width:16px;height:16px;color:var(--c-sun)}
 .drawer-social{display:flex;align-items:center;gap:14px;margin:2px 0 14px}
-.drawer-social a{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:#fff;transition:background .2s,color .2s,border-color .2s}
+.drawer-social a{display:grid;place-items:center;width:48px;height:48px;border:1px solid rgba(255,255,255,.4);border-radius:50%;color:#fff;transition:background .2s,color .2s,border-color .2s}
 .drawer-social a .ico{width:20px;height:20px}
 .drawer-social a:hover{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2)}
-.drawer-footer{flex-shrink:0;padding:14px 22px calc(18px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.12)}
-.drawer-footer .btn-contact{display:flex;width:100%;min-height:50px;background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2);font-weight:700;border-radius:12px}
-.drawer-footer .btn-contact span{color:inherit}
-.drawer-footer .btn-contact:hover{background:#fff;border-color:#fff;color:var(--c-forest-2);transform:none}
+.drawer-footer{flex-shrink:0;padding:14px 22px calc(18px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.16)}
+.drawer-footer .btn-contact{display:flex;width:100%;min-height:52px;padding:0 22px;background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2);font-weight:800;border-radius:12px}
+.drawer-footer .btn-contact span{width:auto;height:auto;background:none;border-radius:0;color:inherit}
+.drawer-footer .btn-contact:hover{background:#fff;border-color:#fff;color:var(--c-forest-2);transform:none;box-shadow:none}
+.drawer-footer .btn-contact:hover span{transform:none;background:none}
 
-/* Django messages */
+/* ---------- Django messages ---------- */
 .messages{position:fixed;top:calc(var(--header-h) + 14px);right:20px;z-index:180;display:grid;gap:10px;width:min(400px,calc(100% - 32px))}
 .message{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--c-forest-2);color:#fff;font-size:13px;border-left:3px solid var(--c-sun);border-radius:10px;box-shadow:var(--shadow-float)}
 .message.error{background:#8F2929;border-left-color:#F2A09A}
 .message.success{background:#075E49;border-left-color:#7ED8B4}
 
-/* Product partial (core/_manufacture.html) */
+/* ---------- Product partial (core/_manufacture.html) ---------- */
 .yd-manufacture{--yd-cols-mobile:2;--yd-cols-tablet:3;--yd-cols-desktop:4;--yd-gap:18px;--yd-pad:18px;padding:76px 0 90px}
 .yd-manufacture__heading{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 32px;margin-bottom:38px}
 .yd-manufacture__intro{max-width:650px}
-.yd-manufacture__eyebrow{display:inline-block;margin-bottom:11px;padding:6px 11px;background:#e8e8e4;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--c-text-main)}
+.yd-manufacture__eyebrow{display:inline-block;margin-bottom:11px;padding:6px 11px;background:#e8eaef;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.03em;color:var(--c-text-main)}
 .yd-manufacture__intro h2{margin:0 0 12px;font-family:var(--font-heading);font-size:clamp(2rem,3.8vw,3.2rem);line-height:1.05;font-weight:500;letter-spacing:-.045em}
-.yd-manufacture__intro h2 span{color:#8a8f8a}
+.yd-manufacture__intro h2 span{color:#8a90a0}
 .yd-manufacture__intro p{margin:0;color:var(--c-muted);font-size:15px;line-height:1.8}
 .yd-manufacture__view-all{display:inline-flex;align-items:center;gap:8px;padding:12px 19px;border:1px solid var(--c-forest);border-radius:10px;font-size:12px;font-weight:700;transition:background .2s,color .2s}
 .yd-manufacture__view-all:hover{background:var(--c-forest);color:#fff}
@@ -224,7 +247,7 @@ button{color:inherit}
 .yd-manufacture__content h3{margin:0;padding-bottom:12px;border-bottom:1px solid var(--c-line);font-family:var(--font-display);font-size:15px;line-height:1.35;font-weight:700}
 .yd-manufacture__tagline{margin:12px 0 0;font-size:12px;font-weight:700}
 .yd-manufacture__description{margin:5px 0 0;color:var(--c-muted);font-size:12px;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.yd-manufacture__image{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;margin-top:15px;padding:12px;background:#efefec;border-radius:14px;overflow:hidden}
+.yd-manufacture__image{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;margin-top:15px;padding:12px;background:#f2f3f5;border-radius:14px;overflow:hidden}
 .yd-manufacture__image img{width:100%;height:100%;object-fit:contain;transition:transform .6s var(--ease)}
 .yd-manufacture__card:hover .yd-manufacture__image img{transform:scale(1.055)}
 .yd-manufacture__specs{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;padding-top:13px;border-top:1px solid var(--c-line)}
@@ -238,64 +261,66 @@ button{color:inherit}
 @media(min-width:1100px){.yd-manufacture__grid{grid-template-columns:repeat(var(--yd-cols-desktop),minmax(0,1fr))}}
 @media(max-width:420px){.yd-manufacture{--yd-gap:10px;--yd-pad:11px}.yd-manufacture__description{font-size:11px}}
 
-/* Footer */
-.site-footer{position:relative;background:var(--c-forest-2);color:rgba(255,255,255,.7);padding:78px 0 0;overflow:hidden}
-.site-footer:before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--c-sun),var(--c-forest-3))}
-.footer-grid{display:grid;grid-template-columns:1.55fr 1fr 1.15fr 1.25fr;gap:48px;padding-bottom:58px}
-.footer-logo{display:inline-flex;margin-bottom:18px;padding:10px 13px;background:#fff;border-radius:10px}
-.footer-logo img{height:31px;width:auto}
-.footer-about{max-width:350px;margin:0 0 21px;color:rgba(255,255,255,.62);font-size:13px;line-height:1.85}
-.footer-social-tray{display:flex;align-items:center;gap:8px}
-.footer-social-tray a{display:grid;place-items:center;width:37px;height:37px;border:1px solid rgba(255,255,255,.17);border-radius:10px;color:#fff;transition:background .2s,color .2s,border-color .2s}
-.footer-social-tray a:hover{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2)}
-.site-footer h4{margin:0 0 19px;color:#fff;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
-.site-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:11px}
-.site-footer li a{display:inline-block;color:rgba(255,255,255,.62);font-size:13px;transition:color .2s,transform .2s}
-.site-footer li a:hover{color:var(--c-sun);transform:translateX(4px)}
-.footer-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:0 20px;background:var(--c-sun);color:var(--c-forest-2);border-radius:10px;font-size:13px;font-weight:700;transition:background .2s,transform .2s}
+/* ---------- Footer: high-contrast white text ---------- */
+.site-footer{position:relative;background:var(--c-forest-2);color:#fff;padding:84px 0 0;overflow:hidden}
+.site-footer:before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--c-sun)}
+.footer-grid{display:grid;grid-template-columns:1.55fr 1fr 1.15fr 1.25fr;gap:52px;padding-bottom:62px}
+.footer-logo{display:inline-flex;margin-bottom:20px;padding:12px 16px;background:#fff;border-radius:12px}
+.footer-logo img{height:52px;width:auto;max-width:230px}
+.footer-about{max-width:360px;margin:0 0 22px;color:rgba(255,255,255,.92);font-size:14.5px;line-height:1.85}
+.footer-social-tray{display:flex;align-items:center;gap:10px}
+.footer-social-tray a{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.45);border-radius:12px;color:#fff;transition:background .2s,color .2s,border-color .2s,transform .25s}
+.footer-social-tray a:hover{background:var(--c-sun);border-color:var(--c-sun);color:var(--c-forest-2);transform:translateY(-3px)}
+.site-footer h4{position:relative;margin:0 0 24px;padding-bottom:14px;color:#fff;font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+.site-footer h4:after{content:"";position:absolute;left:0;bottom:0;width:34px;height:3px;background:var(--c-sun)}
+.site-footer ul{list-style:none;margin:0;padding:0;display:grid;gap:13px}
+.site-footer li a{display:inline-block;color:rgba(255,255,255,.94);font-size:14.5px;font-weight:500;transition:color .2s,transform .25s var(--ease)}
+.site-footer li a:hover{color:var(--c-sun);transform:translateX(5px)}
+.footer-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:50px;padding:0 22px;background:var(--c-sun);color:var(--c-forest-2);border-radius:12px;font-size:14px;font-weight:800;transition:background .2s,transform .2s}
 .footer-cta:hover{background:#fff;transform:translateY(-2px)}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:23px 0 calc(23px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.12);font-size:11px;color:rgba(255,255,255,.43)}
-@media(max-width:1000px){.footer-grid{grid-template-columns:1fr 1fr;gap:38px}.footer-grid>div:first-child{grid-column:1/-1}}
-@media(max-width:560px){.footer-grid{grid-template-columns:1fr;gap:32px}.footer-grid>div:first-child{grid-column:auto}.site-footer{padding-top:58px}.footer-bottom{align-items:flex-start;flex-direction:column}}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;padding:24px 0 calc(24px + env(safe-area-inset-bottom,0px));border-top:1px solid rgba(255,255,255,.22);font-size:13px;color:rgba(255,255,255,.82)}
+@media(max-width:1000px){.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.footer-grid>div:first-child{grid-column:1/-1}}
+@media(max-width:560px){.footer-grid{grid-template-columns:1fr;gap:34px}.footer-grid>div:first-child{grid-column:auto}.site-footer{padding-top:60px}.footer-bottom{align-items:flex-start;flex-direction:column}}
 
-/* Intro loader: navy screen, white circle mark, slides up when the page is ready */
+/* Footer scroll reveal */
+.footer-reveal{opacity:1;transform:none}
+.js-footer .footer-reveal{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--d,0)*90ms)}
+.js-footer .footer-reveal.is-visible{opacity:1;transform:none}
+
+/* ---------- Intro loader ---------- */
 .loader{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;background:var(--c-forest);border-radius:0 0 50% 50%/0 0 7vh 7vh;transform:translateY(-100%);visibility:hidden;transition:transform .9s cubic-bezier(.76,0,.24,1),visibility 0s linear .9s}
 .loader.is-active{transform:none;visibility:visible;transition:none}
-.loader-mark{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:#fff}
+.loader-mark{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:var(--c-sun)}
 .loader-mark svg{width:46px;height:46px}
 .loader.is-active .loader-mark{animation:ld-pulse 1.4s ease-in-out infinite}
 @keyframes ld-pulse{50%{transform:scale(1.09)}}
 
 /* =====================================================================
    Engineer chat (bottom-left) and WhatsApp button (bottom-right)
-   Flat styling: solid colours, 1px borders, no gradients or glows.
-   ===================================================================== */
+===================================================================== */
 .yd-assistant{position:fixed;left:max(18px,env(safe-area-inset-left,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:140}
-
-/* Round badge: engineer in the centre, "Chat with an engineer" running around the edge */
-.yd-badge{display:block;width:114px;height:114px;padding:0;border:0;border-radius:50%;background:var(--c-forest);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.22);transition:transform .3s var(--ease)}
+.yd-badge{display:block;width:114px;height:114px;padding:0;border:0;border-radius:50%;background:var(--c-forest);cursor:pointer;box-shadow:0 6px 20px rgba(13,20,48,.32);transition:transform .3s var(--ease)}
 .yd-badge:hover{transform:scale(1.05)}
 .yd-badge svg{display:block;width:100%;height:100%;overflow:hidden;border-radius:50%}
 .yd-badge text{font-family:var(--font-display);font-size:13px;font-weight:800;letter-spacing:.07em;fill:#fff}
 .yd-badge .dot{fill:var(--c-sun)}
 
-/* Chat panel */
-.yd-assistant-panel{position:absolute;left:0;bottom:calc(100% + 12px);width:min(360px,calc(100vw - 32px));overflow:hidden;background:#fff;border:1px solid var(--c-line);border-radius:18px;box-shadow:0 6px 24px rgba(0,0,0,.14);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .25s,visibility 0s linear .25s}
+.yd-assistant-panel{position:absolute;left:0;bottom:calc(100% + 12px);width:min(360px,calc(100vw - 32px));overflow:hidden;background:#fff;border:1px solid var(--c-line);border-radius:18px;box-shadow:0 14px 44px rgba(13,20,48,.22);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .25s,visibility 0s linear .25s}
 .yd-assistant.is-open .yd-assistant-panel{opacity:1;visibility:visible;transform:none;transition:opacity .2s,transform .25s}
 .yd-assistant-panel-top{position:relative;display:flex;align-items:center;gap:14px;padding:18px 54px 18px 18px;background:var(--c-forest);color:#fff}
 .yd-pavatar{position:relative;flex-shrink:0;width:62px;height:62px;border-radius:50%;background:#f1f1f1;border:3px solid var(--c-sun)}
 .yd-pavatar svg{display:block;width:100%;height:100%;border-radius:50%}
 .yd-assistant-panel-heading strong{display:block;font-size:16px;font-weight:800;line-height:1.25}
-.yd-assistant-panel-heading span{display:block;margin-top:3px;font-size:12px;color:rgba(255,255,255,.75)}
-.yd-assistant-close{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;cursor:pointer;transition:background .2s}
-.yd-assistant-close:hover{background:rgba(255,255,255,.22)}
-.yd-assistant-body{padding:18px}
+.yd-assistant-panel-heading span{display:block;margin-top:3px;font-size:12px;color:rgba(255,255,255,.85)}
+.yd-assistant-close{position:absolute;top:14px;right:14px;display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;transition:background .2s}
+.yd-assistant-close:hover{background:rgba(255,255,255,.26)}
+.yd-assistant-body{max-height:min(62vh,470px);overflow-y:auto;overscroll-behavior:contain;padding:18px}
 .yd-assistant-message{padding:13px 15px;background:var(--c-mist);border-radius:4px 14px 14px 14px;font-size:14px;line-height:1.6;color:var(--c-text-main)}
 .yd-assistant-message strong{color:var(--c-forest)}
 .yd-assistant-label{margin:18px 0 8px;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--c-muted)}
 .yd-assistant-list{display:grid;gap:7px}
 .yd-assistant-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border:1px solid var(--c-line);border-radius:10px;font-size:14px;font-weight:600;color:var(--c-text-main);transition:border-color .2s,background .2s}
-.yd-assistant-row span:last-child{color:var(--c-forest-3);transition:transform .2s}
+.yd-assistant-row span:last-child{color:var(--c-forest);transition:transform .2s}
 .yd-assistant-row:hover{border-color:var(--c-forest);background:var(--c-mist)}
 .yd-assistant-row:hover span:last-child{transform:translate(2px,-2px)}
 .yd-assistant-cta{display:flex;align-items:center;justify-content:center;gap:9px;min-height:50px;margin-top:16px;padding:0 18px;border-radius:12px;background:var(--c-sun);color:var(--c-forest-2);font-size:14px;font-weight:800;transition:background .2s}
@@ -303,9 +328,403 @@ button{color:inherit}
 .yd-assistant-cta:hover{background:var(--c-sun-deep)}
 .yd-assistant-note{margin:10px 0 0;text-align:center;font-size:12px;color:var(--c-muted)}
 
-.yd-wa{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:140;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:background .2s}
-.yd-wa:hover{background:#1ebe5a}
+/* ---------- YUNQIDA AI chat interface ---------- */
+
+.yd-ai-status{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  margin-right:4px;
+  border-radius:50%;
+  background:#67d391;
+}
+
+.yd-chat-body{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  max-height:min(55vh,420px);
+  min-height:240px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:17px;
+  background:#fff;
+}
+
+.yd-chat-message{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  max-width:94%;
+}
+
+.yd-chat-message.user{
+  align-self:flex-end;
+  flex-direction:row-reverse;
+}
+
+.yd-chat-avatar{
+  flex:0 0 30px;
+  width:30px;
+  height:30px;
+  overflow:hidden;
+  border-radius:50%;
+  background:#f1f1f1;
+}
+
+.yd-chat-avatar svg{
+  width:100%;
+  height:100%;
+}
+
+.yd-chat-bubble{
+  padding:11px 13px;
+  border-radius:4px 13px 13px 13px;
+  background:var(--c-mist);
+  color:var(--c-text-main);
+  font-size:13px;
+  line-height:1.65;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+
+.yd-chat-message.user .yd-chat-bubble{
+  background:var(--c-forest);
+  color:#fff;
+  border-radius:13px 4px 13px 13px;
+}
+
+.yd-chat-suggestions{
+  display:grid;
+  gap:7px;
+  padding-left:39px;
+}
+
+.yd-chat-suggestions>span{
+  color:var(--c-muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.1em;
+}
+
+.yd-chat-suggestions button{
+  padding:9px 12px;
+  text-align:left;
+  border:1px solid var(--c-line);
+  border-radius:9px;
+  background:#fff;
+  color:var(--c-forest);
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+
+.yd-chat-suggestions button:hover{
+  border-color:var(--c-forest);
+  background:var(--c-mist);
+}
+
+/* ==========================================
+   AI RESPONSE MARKDOWN
+========================================== */
+
+.yd-chat-message.assistant{
+  max-width:100%;
+  width:100%;
+}
+
+.yd-chat-message.assistant .yd-chat-bubble{
+  min-width:0;
+  max-width:calc(100% - 39px);
+  overflow-x:auto;
+  overflow-wrap:anywhere;
+}
+
+/* Headings */
+
+.yd-chat-bubble h1,
+.yd-chat-bubble h2,
+.yd-chat-bubble h3,
+.yd-chat-bubble h4{
+  margin:15px 0 8px;
+  color:var(--c-forest);
+  font-size:14px;
+  font-weight:800;
+  line-height:1.4;
+}
+
+.yd-chat-bubble h1:first-child,
+.yd-chat-bubble h2:first-child,
+.yd-chat-bubble h3:first-child{
+  margin-top:0;
+}
+
+/* Paragraphs */
+
+.yd-chat-bubble p{
+  margin:7px 0;
+}
+
+.yd-chat-bubble p:last-child{
+  margin-bottom:0;
+}
+
+/* Lists */
+
+.yd-chat-bubble ul,
+.yd-chat-bubble ol{
+  margin:8px 0;
+  padding-left:21px;
+}
+
+.yd-chat-bubble li{
+  margin:5px 0;
+}
+
+/* Bold text */
+
+.yd-chat-bubble strong{
+  color:var(--c-forest);
+  font-weight:800;
+}
+
+/* Clickable product links */
+
+.yd-chat-bubble a{
+  color:var(--c-forest);
+  font-weight:700;
+  text-decoration:underline;
+  text-decoration-color:var(--c-sun);
+  text-underline-offset:3px;
+  overflow-wrap:anywhere;
+}
+
+.yd-chat-bubble a:hover{
+  color:var(--c-forest-2);
+}
+
+/* Product specification tables */
+
+.yd-chat-bubble table{
+  display:table;
+  width:100%;
+  min-width:230px;
+  margin:12px 0;
+  border-collapse:collapse;
+  border-spacing:0;
+  background:#fff;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.yd-chat-bubble th,
+.yd-chat-bubble td{
+  padding:9px 8px;
+  border:1px solid var(--c-line);
+  text-align:left;
+  vertical-align:top;
+  overflow-wrap:anywhere;
+}
+
+.yd-chat-bubble th{
+  background:var(--c-forest);
+  color:#fff;
+  font-weight:800;
+}
+
+.yd-chat-bubble td:first-child{
+  width:40%;
+  color:var(--c-forest);
+  font-weight:700;
+  background:#f7f8f8;
+}
+
+/* Product thumbnails */
+
+.yd-chat-bubble img{
+  display:block;
+  width:auto;
+  max-width:150px;
+  max-height:125px;
+  object-fit:contain;
+  margin:10px 0;
+  padding:5px;
+  border:1px solid var(--c-line);
+  border-radius:9px;
+  background:#fff;
+}
+
+.yd-chat-bubble a:has(img){
+  display:inline-block;
+  text-decoration:none;
+}
+
+.yd-chat-bubble a:has(img):hover img{
+  border-color:var(--c-forest);
+}
+
+/* Product detail links */
+
+.yd-chat-bubble a:not(:has(img)){
+  display:inline;
+}
+
+/* Code and separators */
+
+.yd-chat-bubble code{
+  padding:2px 5px;
+  border-radius:4px;
+  background:#e9edef;
+  font-size:11px;
+}
+
+.yd-chat-bubble hr{
+  margin:12px 0;
+  border:0;
+  border-top:1px solid var(--c-line);
+}
+
+@media(max-width:600px){
+  .yd-chat-message.assistant .yd-chat-bubble{
+    max-width:calc(100% - 39px);
+  }
+
+  .yd-chat-bubble table{
+    font-size:11px;
+  }
+
+  .yd-chat-bubble th,
+  .yd-chat-bubble td{
+    padding:7px 6px;
+  }
+}
+
+.yd-chat-disclaimer{
+  padding:8px 14px;
+  border-top:1px solid var(--c-line);
+  color:var(--c-muted);
+  font-size:10px;
+  line-height:1.5;
+  text-align:center;
+}
+
+.yd-chat-form{
+  display:flex;
+  align-items:flex-end;
+  gap:9px;
+  padding:11px 13px;
+  border-top:1px solid var(--c-line);
+  background:#fff;
+}
+
+.yd-chat-form textarea{
+  flex:1;
+  min-width:0;
+  max-height:100px;
+  resize:none;
+  padding:10px 12px;
+  border:1px solid var(--c-line);
+  border-radius:10px;
+  outline:none;
+  color:var(--c-text-main);
+  background:#fafafa;
+  font:inherit;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.yd-chat-form textarea:focus{
+  border-color:var(--c-forest);
+}
+
+.yd-chat-form button{
+  display:grid;
+  place-items:center;
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:11px;
+  background:var(--c-sun);
+  color:var(--c-forest-2);
+  cursor:pointer;
+  transition:background .2s,opacity .2s;
+}
+
+.yd-chat-form button:hover{
+  background:var(--c-sun-deep);
+}
+
+.yd-chat-form button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.yd-chat-form button svg{
+  width:19px;
+  height:19px;
+}
+
+.yd-chat-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:9px 14px;
+  background:#fafafa;
+  color:var(--c-muted);
+  font-size:10px;
+}
+
+.yd-chat-footer button{
+  border:0;
+  background:none;
+  color:var(--c-forest);
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.yd-chat-typing{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:12px;
+}
+
+.yd-chat-typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--c-muted);
+  animation:ydTyping .9s infinite alternate;
+}
+
+.yd-chat-typing span:nth-child(2){animation-delay:.2s}
+.yd-chat-typing span:nth-child(3){animation-delay:.4s}
+
+@keyframes ydTyping{
+  to{opacity:.25;transform:translateY(-3px)}
+}
+
+@media(max-width:600px){
+  .yd-assistant-panel{
+    max-height:calc(100dvh - 120px);
+  }
+
+  .yd-chat-body{
+    max-height:calc(100dvh - 330px);
+    min-height:200px;
+  }
+}
+
+.yd-wa{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:max(20px,env(safe-area-inset-bottom,0px));z-index:140;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.24);transition:background .2s,transform .25s var(--ease)}
+.yd-wa:hover{background:#1ebe5a;transform:scale(1.06)}
 .yd-wa svg{width:30px;height:30px;fill:currentColor}
+
+/* Keep the home page's back-to-top button clear of the WhatsApp button */
+body .yd-top{right:max(20px,env(safe-area-inset-right,0px))!important;bottom:92px!important}
 
 @media(max-width:600px){
   .yd-assistant{left:max(12px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px))}
@@ -313,14 +732,18 @@ button{color:inherit}
   .yd-assistant-panel{width:calc(100vw - 24px)}
   .yd-wa{right:max(14px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));width:54px;height:54px}
   .yd-wa svg{width:28px;height:28px}
+  body .yd-top{right:max(14px,env(safe-area-inset-right,0px))!important;bottom:84px!important}
 }
 
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .js-footer .footer-reveal{opacity:1;transform:none}
+}
 </style>
 
-
 {% block extra_head %}{% endblock %}
-<noscript><style>.loader{display:none!important}</style></noscript>
+<noscript><style>.loader{display:none!important}.js-footer .footer-reveal{opacity:1!important;transform:none!important}</style></noscript>
 </head>
 <body class="{% block body_class %}{% endblock %}">
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -344,7 +767,7 @@ button{color:inherit}
 
 <div class="loader is-active" id="pageLoader" role="status" aria-label="Loading">
   <div class="loader-mark">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><path transform="translate(50 50) scale(.9) translate(-50 -48.5)" fill="#000a63" fill-rule="evenodd" d="M31 21H69a12 12 0 0 1 12 12V64a12 12 0 0 1-12 12H31a12 12 0 0 1-12-12V33a12 12 0 0 1 12-12ZM42 36H81V49H66V55a8 8 0 0 1-8 8H42a8 8 0 0 1-8-8V44a8 8 0 0 1 8-8Z"/></svg>
+    <svg viewBox="0 0 100 100" aria-hidden="true"><path transform="translate(50 50) scale(.9) translate(-50 -48.5)" fill="#0d1430" fill-rule="evenodd" d="M31 21H69a12 12 0 0 1 12 12V64a12 12 0 0 1-12 12H31a12 12 0 0 1-12-12V33a12 12 0 0 1 12-12ZM42 36H81V49H66V55a8 8 0 0 1-8 8H42a8 8 0 0 1-8-8V44a8 8 0 0 1 8-8Z"/></svg>
   </div>
 </div>
 
@@ -370,29 +793,22 @@ button{color:inherit}
   <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M24 12.07C24 5.45 18.63.07 12 .07S0 5.45 0 12.07c0 5.99 4.39 10.96 10.13 11.85v-8.38H7.08v-3.47h3.05V9.43c0-3.01 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.95h-1.51c-1.49 0-1.96.93-1.96 1.88v2.25h3.33l-.53 3.47h-2.8v8.38C19.61 23.03 24 18.06 24 12.07z"/></symbol>
 
-  <!-- Site engineer (faceless): orange hard hat, hi-vis vest with reflective strips. Flat colours, dark outlines. -->
+  <!-- Site engineer (faceless): orange hard hat, hi-vis vest with reflective strips. -->
   <symbol id="i-engineer" viewBox="0 0 100 100">
     <g stroke="#111" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round">
-      <!-- sleeves / shirt -->
       <path d="M6 100V88C6 76 16 69 31 65H69C84 69 94 76 94 88V100Z" fill="#fff"/>
-      <!-- neck -->
       <path d="M42 56H58V68L50 75L42 68Z" fill="#fff"/>
-      <!-- vest panels -->
       <path d="M25 100L27 70L40 65L48 85V100Z" fill="#f08a24"/>
       <path d="M75 100L73 70L60 65L52 85V100Z" fill="#f08a24"/>
-      <!-- reflective strips -->
       <path d="M31 68L36 66L38 100H31Z" fill="#f4d935" stroke-width="1.8"/>
       <path d="M69 68L64 66L62 100H69Z" fill="#f4d935" stroke-width="1.8"/>
       <rect x="25.5" y="85" width="22.5" height="5.5" fill="#f4d935" stroke-width="1.8"/>
       <rect x="52" y="85" width="22.5" height="5.5" fill="#f4d935" stroke-width="1.8"/>
       <rect x="25" y="93.5" width="23" height="5.5" fill="#f4d935" stroke-width="1.8"/>
       <rect x="52" y="93.5" width="23" height="5.5" fill="#f4d935" stroke-width="1.8"/>
-      <!-- blank face -->
       <path d="M32 36C32 29 38 25 50 25C62 25 68 29 68 36V50C68 60.500 60 68 50 68C40 68 32 60.500 32 50Z" fill="#fff"/>
-      <!-- hair at the sides -->
       <path d="M31 38C28.500 44 29.500 50 33 53L34 40Z" fill="#111" stroke-width="1.2"/>
       <path d="M69 38C71.500 44 70.500 50 67 53L66 40Z" fill="#111" stroke-width="1.2"/>
-      <!-- hard hat -->
       <path d="M26 41C26 21 36 9 50 9C64 9 74 21 74 41Z" fill="#f08a24"/>
       <path d="M19 41H81Q85 41 85 44.500Q85 48 81 48H19Q15 48 15 44.500Q15 41 19 41Z" fill="#f08a24"/>
       <path d="M38 15L40 33M50 11V32M62 15L60 33" fill="none" stroke-width="3.2"/>
@@ -408,8 +824,8 @@ button{color:inherit}
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
     <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home">
-      <img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="43" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
-      <span style="display:none;font-weight:800;color:var(--c-forest)">YUNQIDA</span>
+      <img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="62" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+      <span style="display:none;font-weight:800;font-size:22px;color:var(--c-forest)">YUNQIDA</span>
       <span class="brand-badge">Kenya</span>
     </a>
 
@@ -420,6 +836,7 @@ button{color:inherit}
       <a class="nav-link {% if current == 'products' %}is-active{% endif %}" href="{% url 'products' %}">Products</a>
       <a class="nav-link {% if current == 'solutions' %}is-active{% endif %}" href="{% url 'solutions' %}">Solutions</a>
       <a class="nav-link {% if current == 'services' %}is-active{% endif %}" href="{% firstof services_url '/services/' %}">Services</a>
+      <a href="{% url 'blog_list' %}">Blog</a>
       <a class="nav-link {% if current == 'works' %}is-active{% endif %}" href="{% firstof works_url '/works-done/' %}">Projects</a>
       <a class="nav-link {% if current == 'faq' %}is-active{% endif %}" href="{% firstof faq_url '/faq/' %}">FAQ</a>
       {% endwith %}
@@ -449,7 +866,7 @@ button{color:inherit}
 <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobile navigation" aria-hidden="true" inert>
   <div class="drawer-header">
-    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="30" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span style="display:none;font-weight:800;color:var(--c-forest)">YUNQIDA</span></a>
+    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="42" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span style="display:none;font-weight:800;color:var(--c-forest)">YUNQIDA</span></a>
     <button class="drawer-close" id="navClose" type="button" aria-label="Close menu"><svg class="ico-stroke"><use href="#i-close"></use></svg></button>
   </div>
 
@@ -471,6 +888,7 @@ button{color:inherit}
       <a class="drawer-nav-item {% if current == 'services' %}is-active{% endif %}" href="{% firstof services_url '/services/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-services"></use></svg></span><span class="drawer-nav-text"><strong>Services</strong><small>Design, sizing &amp; support</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'works' %}is-active{% endif %}" href="{% firstof works_url '/works-done/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-works"></use></svg></span><span class="drawer-nav-text"><strong>Projects</strong><small>Installations across Kenya</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'news' %}is-active{% endif %}" href="{% firstof news_url '/news/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-news"></use></svg></span><span class="drawer-nav-text"><strong>News</strong><small>Updates &amp; insights</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
+      <a class="drawer-nav-item {% if current == 'blog_list' or current == 'blog_detail' %}is-active{% endif %}" href="{% url 'blog_list' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-news"></use></svg></span><span class="drawer-nav-text"><strong>Insights</strong><small>Energy knowledge &amp; articles</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'faq' %}is-active{% endif %}" href="{% firstof faq_url '/faq/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-faq"></use></svg></span><span class="drawer-nav-text"><strong>FAQ</strong><small>Warranty &amp; support</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'contact' %}is-active{% endif %}" href="{% url 'contact' %}"><span class="drawer-nav-icon"><svg class="ico-stroke"><use href="#i-mail"></use></svg></span><span class="drawer-nav-text"><strong>Contact</strong><small>Talk to our team</small></span><svg class="ico-stroke drawer-nav-arrow"><use href="#i-arrow-right"></use></svg></a>
       {% endwith %}
@@ -504,10 +922,10 @@ button{color:inherit}
   {% block content %}{% endblock %}
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer" id="siteFooter">
   <div class="container footer-grid">
-    <div>
-      <a class="footer-logo" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="31"></a>
+    <div class="footer-reveal" style="--d:0">
+      <a class="footer-logo" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="52"></a>
       <p class="footer-about">Yunqida Energy Technology Kenya delivers manufacturer-backed lithium storage, solar modules and hybrid inverters for homes, businesses and industry across Kenya.</p>
       <div class="footer-social-tray" aria-label="Social media links">
         <a href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg class="ico"><use href="#i-whatsapp"></use></svg></a>
@@ -516,7 +934,7 @@ button{color:inherit}
         <a href="https://facebook.com/yunqidaenergy" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="ico"><use href="#i-facebook"></use></svg></a>
       </div>
     </div>
-    <div>
+    <div class="footer-reveal" style="--d:1">
       <h4>Discover Yunqida</h4>
       <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
@@ -526,7 +944,7 @@ button{color:inherit}
         <li><a href="{% url 'contact' %}">Contact</a></li>
       </ul>
     </div>
-    <div>
+    <div class="footer-reveal" style="--d:2">
       <h4>Power solutions</h4>
       <ul>
         <li><a href="{% url 'products' %}">Lithium batteries</a></li>
@@ -536,7 +954,7 @@ button{color:inherit}
         <li><a href="{% firstof works_url '/works-done/' %}">Projects &amp; installations</a></li>
       </ul>
     </div>
-    <div>
+    <div class="footer-reveal" style="--d:3">
       <h4>Speak with an engineer</h4>
       <p class="footer-about">Planning a power-backup, solar or off-grid project? Talk to our Nairobi team about the right system for your needs.</p>
       <a class="footer-cta" href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer"><svg class="ico"><use href="#i-whatsapp"></use></svg> WhatsApp our team <span aria-hidden="true">↗</span></a>
@@ -548,68 +966,135 @@ button{color:inherit}
   </div>
 </footer>
 
-<!-- Engineer chat: bottom-left -->
+<!-- YUNQIDA AI ENGINEER ASSISTANT -->
 <div class="yd-assistant" id="ydAssistant">
 
-  <div class="yd-assistant-panel" id="ydAssistantPanel" role="dialog" aria-label="Chat with a Yunqida engineer" aria-hidden="true">
+  <div class="yd-assistant-panel" id="ydAssistantPanel"
+       role="dialog" aria-label="YUNQIDA AI Engineer Assistant"
+       aria-hidden="true" inert>
+
     <div class="yd-assistant-panel-top">
-      <span class="yd-pavatar"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-engineer"></use></svg></span>
+      <span class="yd-pavatar">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <use href="#i-engineer"></use>
+        </svg>
+      </span>
+
       <div class="yd-assistant-panel-heading">
-        <strong>Yunqida Energy</strong>
-        <span>Technical support · Kenya</span>
+        <strong>YUNQIDA Engineer</strong>
+        <span><span class="yd-ai-status"></span> AI technical assistant · Kenya</span>
       </div>
-      <button class="yd-assistant-close" id="ydAssistantClose" type="button" aria-label="Close chat">
-        <svg class="ico-stroke" style="width:16px;height:16px"><use href="#i-close"></use></svg>
+
+      <button class="yd-assistant-close" id="ydAssistantClose"
+              type="button" aria-label="Close chat">
+        <svg class="ico-stroke" style="width:16px;height:16px">
+          <use href="#i-close"></use>
+        </svg>
       </button>
     </div>
 
-    <div class="yd-assistant-body">
-      <div class="yd-assistant-message">
-        Hello! Welcome to <strong>Yunqida Energy</strong>. Have a question about solar systems, hybrid inverters, lithium batteries or a power-backup project? Our team is ready to help.
+    <div class="yd-chat-body" id="ydChatMessages"
+         aria-live="polite" aria-relevant="additions">
+
+      <div class="yd-chat-message assistant">
+        <div class="yd-chat-avatar">
+          <svg viewBox="0 0 100 100"><use href="#i-engineer"></use></svg>
+        </div>
+        <div class="yd-chat-bubble">
+          Welcome to YUNQIDA Energy Kenya. I'm your AI technical assistant.
+          Ask me about our batteries, solar systems, hybrid inverters or
+          energy storage solutions.
+        </div>
       </div>
 
-      <div class="yd-assistant-label">How can we help?</div>
-      <div class="yd-assistant-list">
-        <a class="yd-assistant-row" href="https://wa.me/254700000000?text=Hello%20Yunqida%2C%20I%20need%20help%20sizing%20a%20solar%20system." target="_blank" rel="noopener noreferrer"><span>Solar system sizing</span><span aria-hidden="true">↗</span></a>
-        <a class="yd-assistant-row" href="https://wa.me/254700000000?text=Hello%20Yunqida%2C%20I%20would%20like%20to%20know%20more%20about%20hybrid%20inverters." target="_blank" rel="noopener noreferrer"><span>Hybrid inverters</span><span aria-hidden="true">↗</span></a>
-        <a class="yd-assistant-row" href="https://wa.me/254700000000?text=Hello%20Yunqida%2C%20I%20am%20interested%20in%20lithium%20batteries." target="_blank" rel="noopener noreferrer"><span>Lithium batteries</span><span aria-hidden="true">↗</span></a>
-        <a class="yd-assistant-row" href="{% url 'contact' %}"><span>Request a quote</span><span aria-hidden="true">↗</span></a>
+      <div class="yd-chat-suggestions" id="ydChatSuggestions">
+        <span>QUICK QUESTIONS</span>
+        <button type="button" data-question="What lithium battery products are available?">
+          Available batteries
+        </button>
+        <button type="button" data-question="Help me understand how to size a solar backup system.">
+          Solar system sizing
+        </button>
+        <button type="button" data-question="What should I consider when choosing a hybrid inverter?">
+          Hybrid inverters
+        </button>
       </div>
 
-      <a class="yd-assistant-cta" href="https://wa.me/254700000000?text=Hello%20Yunqida%2C%20I%20would%20like%20to%20speak%20with%20an%20engineer." target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Chat with an engineer
-      </a>
-      <p class="yd-assistant-note">Speak directly with our engineering team.</p>
     </div>
+
+    <div class="yd-chat-disclaimer">
+      AI-generated guidance. Confirm final technical specifications with our team.
+    </div>
+
+    <form class="yd-chat-form" id="ydChatForm">
+      {% csrf_token %}
+      <textarea id="ydChatInput" name="message"
+                placeholder="Ask an engineering question..."
+                rows="1" maxlength="2000"
+                aria-label="Your message" required></textarea>
+
+      <button type="submit" id="ydChatSend" aria-label="Send message">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 2 15 22l-4-9-9-4Z"
+                fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M22 2 11 13"
+                fill="none" stroke="currentColor"
+                stroke-width="1.8"/>
+        </svg>
+      </button>
+    </form>
+
+    <div class="yd-chat-footer">
+      <span>Powered by YUNQIDA AI</span>
+      <button type="button" id="ydChatClear">New conversation</button>
+    </div>
+
   </div>
 
-  <button class="yd-badge" id="ydAssistantToggle" type="button" aria-expanded="false" aria-controls="ydAssistantPanel" aria-label="Chat with an engineer">
+  <button class="yd-badge" id="ydAssistantToggle"
+          type="button" aria-expanded="false"
+          aria-controls="ydAssistantPanel"
+          aria-label="Chat with a YUNQIDA engineer">
+
     <svg viewBox="0 0 120 120" aria-hidden="true">
       <defs>
         <path id="ydArcTop" d="M16 60a44 44 0 0 1 88 0"/>
         <path id="ydArcBottom" d="M6 60a54 54 0 0 0 108 0"/>
-        <clipPath id="ydAvatarClip"><circle cx="60" cy="60" r="34"/></clipPath>
+        <clipPath id="ydAvatarClip">
+          <circle cx="60" cy="60" r="34"/>
+        </clipPath>
       </defs>
-      <circle cx="60" cy="60" r="60" fill="#000a63"/>
-      <text text-anchor="middle"><textPath href="#ydArcTop" startOffset="50%">CHAT WITH</textPath></text>
-      <text text-anchor="middle"><textPath href="#ydArcBottom" startOffset="50%">AN ENGINEER</textPath></text>
-      <circle cx="10.500" cy="60" r="2.600" fill="#c4f135"/>
-      <circle cx="109.500" cy="60" r="2.600" fill="#c4f135"/>
-      <circle cx="60" cy="60" r="37" fill="#c4f135"/>
+
+      <circle cx="60" cy="60" r="60" fill="#0d1430"/>
+
+      <text text-anchor="middle">
+        <textPath href="#ydArcTop" startOffset="50%">CHAT WITH</textPath>
+      </text>
+
+      <text text-anchor="middle">
+        <textPath href="#ydArcBottom" startOffset="50%">AN ENGINEER</textPath>
+      </text>
+
+      <circle cx="10.5" cy="60" r="2.6" fill="#ffe000"/>
+      <circle cx="109.5" cy="60" r="2.6" fill="#ffe000"/>
+      <circle cx="60" cy="60" r="37" fill="#ffe000"/>
+
       <g clip-path="url(#ydAvatarClip)">
         <rect x="26" y="26" width="68" height="68" fill="#f1f1f1"/>
-        <svg x="26" y="26" width="68" height="68" viewBox="0 0 100 100"><use href="#i-engineer"></use></svg>
+        <svg x="26" y="26" width="68" height="68" viewBox="0 0 100 100">
+          <use href="#i-engineer"/>
+        </svg>
       </g>
     </svg>
   </button>
+
 </div>
 
 <!-- WhatsApp button: bottom-right -->
 <a class="yd-wa" href="https://wa.me/254700000000?text=Hello%20Yunqida%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
 </a>
-
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>
@@ -677,7 +1162,7 @@ button{color:inherit}
     if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
       event.preventDefault();
       var desktopSearch=document.querySelector('.header-search .search-input');
-      if(window.innerWidth>=1191&&desktopSearch)desktopSearch.focus();
+      if(desktopSearch&&desktopSearch.offsetParent!==null)desktopSearch.focus();
       else if(searchTray&&searchBtn){searchTray.classList.add('is-open');searchBtn.setAttribute('aria-expanded','true');if(searchInput)searchInput.focus();}
     }
   });
@@ -690,23 +1175,40 @@ button{color:inherit}
     },6500);
   });
 
+  /* Smooth scrolling (Lenis) */
   if(!reduceMotion&&window.Lenis){
-    window.yunqidaLenis=new Lenis({lerp:.1,smoothWheel:true});
+    window.yunqidaLenis=new Lenis({lerp:.09,smoothWheel:true});
     function raf(time){window.yunqidaLenis.raf(time);window.requestAnimationFrame(raf);}
     window.requestAnimationFrame(raf);
-    document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+
+    /* One capture-phase handler owns all in-page anchors, so page scripts
+       cannot start a second, competing scroll animation. */
+    document.addEventListener('click',function(event){
+      var anchor=event.target.closest&&event.target.closest('a[href^="#"]');
+      if(!anchor)return;
       var targetId=anchor.getAttribute('href');
       if(!targetId||targetId.length<2)return;
-      anchor.addEventListener('click',function(event){
-        var target=document.querySelector(targetId);
-        if(!target)return;
-        event.preventDefault();
-        window.yunqidaLenis.scrollTo(target,{offset:-100,duration:1.2});
-      });
-    });
+      var target=document.querySelector(targetId);
+      if(!target)return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      window.yunqidaLenis.scrollTo(target,{offset:-(header?header.offsetHeight:90)-16,duration:1.2});
+    },true);
   }
 
-  /* Intro loader: stays up at least ~1.1s so the navy intro is seen, then slides away */
+  /* Footer scroll reveal */
+  var footerItems=document.querySelectorAll('.footer-reveal');
+  if(footerItems.length&&!reduceMotion&&'IntersectionObserver' in window){
+    document.documentElement.classList.add('js-footer');
+    var footerObserver=new IntersectionObserver(function(entries,observer){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}
+      });
+    },{threshold:.12});
+    footerItems.forEach(function(item){footerObserver.observe(item);});
+  }
+
+  /* Intro loader: stays up ~1.1s so the intro is seen, then slides away */
   var loader=document.getElementById('pageLoader');
   if(loader){
     var t0=Date.now();
@@ -719,35 +1221,318 @@ button{color:inherit}
   }
 })();
 
-/* Engineer chat */
+</script>
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/lib/marked.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+<script>
 (function(){
   'use strict';
+
   var assistant = document.getElementById('ydAssistant');
   var toggleBtn = document.getElementById('ydAssistantToggle');
   var panel = document.getElementById('ydAssistantPanel');
   var closeBtn = document.getElementById('ydAssistantClose');
-  if(!assistant||!toggleBtn||!panel)return;
+
+  var form = document.getElementById('ydChatForm');
+  var input = document.getElementById('ydChatInput');
+  var sendBtn = document.getElementById('ydChatSend');
+  var messagesBox = document.getElementById('ydChatMessages');
+  var suggestions = document.getElementById('ydChatSuggestions');
+  var clearBtn = document.getElementById('ydChatClear');
+
+  if(!assistant || !toggleBtn || !panel || !form ||
+     !input || !sendBtn || !messagesBox) return;
+
+  var history = [];
+  var busy = false;
+  var endpoint = "{% url 'engineer_chat' %}";
 
   function setAssistant(open){
     assistant.classList.toggle('is-open',open);
-    toggleBtn.setAttribute('aria-expanded',open?'true':'false');
-    panel.setAttribute('aria-hidden',open?'false':'true');
-    if('inert' in panel)panel.inert=!open;
+    toggleBtn.setAttribute('aria-expanded',open ? 'true' : 'false');
+    panel.setAttribute('aria-hidden',open ? 'false' : 'true');
+
+    if('inert' in panel){
+      panel.inert = !open;
+    }
+
+    if(open){
+      setTimeout(function(){input.focus();},200);
+    }
   }
-  setAssistant(false);
+
+  function scrollToBottom(){
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
+
+  
+function addMessage(role,text){
+  var wrapper = document.createElement('div');
+  wrapper.className = 'yd-chat-message ' + role;
+
+  if(role === 'assistant'){
+    var avatar = document.createElement('div');
+    avatar.className = 'yd-chat-avatar';
+
+    var svg = document.createElementNS(
+      'http://www.w3.org/2000/svg','svg'
+    );
+    svg.setAttribute('viewBox','0 0 100 100');
+
+    var use = document.createElementNS(
+      'http://www.w3.org/2000/svg','use'
+    );
+    use.setAttribute('href','#i-engineer');
+
+    svg.appendChild(use);
+    avatar.appendChild(svg);
+    wrapper.appendChild(avatar);
+  }
+
+  var bubble = document.createElement('div');
+  bubble.className = 'yd-chat-bubble';
+
+  if(role === 'assistant' &&
+     typeof marked !== 'undefined' &&
+     typeof DOMPurify !== 'undefined'){
+
+    // Convert Markdown into HTML.
+    var rawHTML = marked.parse(String(text),{
+      gfm:true,
+      breaks:true
+    });
+
+    // Sanitize before inserting into the page.
+    bubble.innerHTML = DOMPurify.sanitize(rawHTML,{
+      USE_PROFILES:{html:true}
+    });
+
+    // Make product links open safely in a new tab.
+    bubble.querySelectorAll('a').forEach(function(link){
+      var href = link.getAttribute('href') || '';
+
+      try{
+        var url = new URL(href,window.location.origin);
+
+        if(url.protocol !== 'http:' && url.protocol !== 'https:'){
+          link.removeAttribute('href');
+          return;
+        }
+
+        link.href = url.href;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+      }catch(error){
+        link.removeAttribute('href');
+      }
+    });
+
+    // Improve product image loading and accessibility.
+    bubble.querySelectorAll('img').forEach(function(img){
+      img.loading = 'lazy';
+      img.alt = img.alt || 'YUNQIDA product image';
+      img.decoding = 'async';
+    });
+
+  }else{
+    // Safe fallback if the Markdown libraries fail to load.
+    bubble.textContent = text;
+  }
+
+  wrapper.appendChild(bubble);
+  messagesBox.appendChild(wrapper);
+
+  scrollToBottom();
+
+  return wrapper;
+}
+
+
+  function showTyping(){
+    var wrapper = document.createElement('div');
+    wrapper.className = 'yd-chat-message assistant';
+    wrapper.id = 'ydChatTyping';
+
+    var bubble = document.createElement('div');
+    bubble.className = 'yd-chat-bubble yd-chat-typing';
+
+    for(var i=0;i<3;i++){
+      var dot = document.createElement('span');
+      bubble.appendChild(dot);
+    }
+
+    wrapper.appendChild(bubble);
+    messagesBox.appendChild(wrapper);
+    scrollToBottom();
+  }
+
+  function removeTyping(){
+    var typing = document.getElementById('ydChatTyping');
+    if(typing) typing.remove();
+  }
+
+  function getCsrfToken(){
+    var field = form.querySelector(
+      'input[name="csrfmiddlewaretoken"]'
+    );
+
+    return field ? field.value : '';
+  }
+
+  async function sendMessage(message){
+    message = message.trim();
+
+    if(!message || busy) return;
+
+    if(message.length > 2000){
+      addMessage('assistant','Please keep your message under 2,000 characters.');
+      return;
+    }
+
+    busy = true;
+    sendBtn.disabled = true;
+    input.disabled = true;
+
+    if(suggestions) suggestions.style.display = 'none';
+
+    addMessage('user',message);
+    showTyping();
+
+    try{
+      var response = await fetch(endpoint,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'X-CSRFToken':getCsrfToken(),
+          'X-Requested-With':'XMLHttpRequest'
+        },
+        credentials:'same-origin',
+        body:JSON.stringify({
+          message:message,
+          history:history
+        })
+      });
+
+      var data = await response.json();
+
+      removeTyping();
+
+      if(!response.ok){
+        throw new Error(
+          data.error || 'The assistant could not respond. Please try again.'
+        );
+      }
+
+      if(!data.reply){
+        throw new Error('The assistant returned an empty response.');
+      }
+
+      addMessage('assistant',data.reply);
+
+      history.push(
+        {role:'user',content:message},
+        {role:'assistant',content:data.reply}
+      );
+
+      // Keep only the latest eight messages.
+      history = history.slice(-8);
+
+    }catch(error){
+      removeTyping();
+
+      addMessage(
+        'assistant',
+        error.message || 'Connection error. Please try again shortly.'
+      );
+
+    }finally{
+      busy = false;
+      sendBtn.disabled = false;
+      input.disabled = false;
+      input.focus();
+    }
+  }
 
   toggleBtn.addEventListener('click',function(e){
     e.stopPropagation();
     setAssistant(!assistant.classList.contains('is-open'));
   });
-  if(closeBtn)closeBtn.addEventListener('click',function(){setAssistant(false);toggleBtn.focus();});
+
+  if(closeBtn){
+    closeBtn.addEventListener('click',function(){
+      setAssistant(false);
+      toggleBtn.focus();
+    });
+  }
+
   document.addEventListener('click',function(e){
-    if(!assistant.contains(e.target))setAssistant(false);
+    if(!assistant.contains(e.target)){
+      setAssistant(false);
+    }
   });
+
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&assistant.classList.contains('is-open')){setAssistant(false);toggleBtn.focus();}
+    if(e.key === 'Escape' &&
+       assistant.classList.contains('is-open')){
+      setAssistant(false);
+      toggleBtn.focus();
+    }
   });
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+
+    var message = input.value.trim();
+    if(!message || busy) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+
+    sendMessage(message);
+  });
+
+  input.addEventListener('input',function(){
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight,100) + 'px';
+  });
+
+  if(suggestions){
+    suggestions.addEventListener('click',function(e){
+      var button = e.target.closest('[data-question]');
+
+      if(!button || busy) return;
+
+      sendMessage(button.getAttribute('data-question'));
+    });
+  }
+
+  if(clearBtn){
+    clearBtn.addEventListener('click',function(){
+      if(busy) return;
+
+      history = [];
+
+      messagesBox.innerHTML = '';
+
+      addMessage(
+        'assistant',
+        "Welcome back to YUNQIDA Energy Kenya. What would you like to know about our products or energy solutions?"
+      );
+
+      if(suggestions){
+        suggestions.style.display = 'grid';
+      }
+
+      input.focus();
+    });
+  }
+
+  setAssistant(false);
+
 })();
+
+
 </script>
 {% block extra_js %}{% endblock %}
 </body>

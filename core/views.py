@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
-
+from django.core.paginator import Paginator
+from .models import Product, BuildProject, BlogPost
 from .forms import EnquiryForm
 from .models import Product, BuildProject
 from .google_reviews import get_google_reviews
@@ -175,4 +176,69 @@ from django.shortcuts import render
 def works_done(request):
     return render(request, "works_done.html")
 
-  
+
+def blog_list(request):
+    """
+    Public blog homepage.
+    Only published articles are displayed.
+    """
+
+    articles = BlogPost.objects.filter(
+        status='published'
+    ).order_by('-published_at', '-created_at')
+
+    active_category = request.GET.get('category', '').strip()
+
+    if active_category:
+        articles = articles.filter(category=active_category)
+
+    categories = (
+        BlogPost.objects.filter(status='published')
+        .values_list('category', flat=True)
+        .distinct()
+    )
+
+    paginator = Paginator(articles, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    posts = page_obj.object_list
+
+    featured_post = posts[0] if posts else None
+
+    context = {
+        'posts': posts,
+        'articles': posts,
+        'featured_post': featured_post,
+        'categories': categories,
+        'active_category': active_category,
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+    }
+
+    return render(request, 'core/blog/blog_list.html', context)
+
+
+
+def blog_detail(request, slug):
+    """
+    Individual published blog article.
+    """
+    article = get_object_or_404(
+        BlogPost.objects.filter(status='published'),
+        slug=slug
+    )
+
+    related_articles = (
+        BlogPost.objects.filter(
+            status='published',
+            category=article.category
+        )
+        .exclude(pk=article.pk)
+        .order_by('-published_at', '-created_at')[:3]
+    )
+
+    return render(request, 'core/blog/blog_detail.html', {
+        'article': article,
+        'related_articles': related_articles,
+    })

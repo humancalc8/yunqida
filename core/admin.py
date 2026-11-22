@@ -7,9 +7,12 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import (
+    get_object_or_404,
+    render,
+    redirect,
+)
 from django.urls import path, reverse
-from django.utils import timezone
 from django.utils.text import slugify
 
 from .models import (
@@ -18,9 +21,18 @@ from .models import (
     ProductImage,
     BuildProject,
     ProductImportDraft,
+    BlogPost,
+    BlogImage,
 )
 
 from .services.product_images import download_product_images
+
+from .services.blog_writer import (
+    generate_blog_article,
+    save_generated_blog_article,
+)
+
+from .services.groq_ai import GroqAIError
 
 
 # =====================================================
@@ -28,7 +40,6 @@ from .services.product_images import download_product_images
 # =====================================================
 
 class ProductImageInline(admin.TabularInline):
-
     model = ProductImage
     extra = 1
 
@@ -118,7 +129,6 @@ class ProductAdmin(admin.ModelAdmin):
     # -------------------------------------------------
 
     def get_urls(self):
-
         urls = super().get_urls()
 
         custom_urls = [
@@ -146,26 +156,23 @@ class ProductAdmin(admin.ModelAdmin):
     # -------------------------------------------------
 
     def product_scanner(self, request):
-
         if not self.has_add_permission(request):
             raise PermissionDenied
 
         request.current_app = self.admin_site.name
 
         context = {
-    **self.admin_site.each_context(request),
-    'opts': self.model._meta,
-    'title': 'YUNQIDA Product Scanner',
-
-    'submit_url': reverse(
-        f'{self.admin_site.name}:core_product_scanner_submit'
-    ),
-
-    'status_url_template': reverse(
-        f'{self.admin_site.name}:core_product_scanner_status',
-        args=[0],
-    ),
-}
+            **self.admin_site.each_context(request),
+            'opts': self.model._meta,
+            'title': 'YUNQIDA Product Scanner',
+            'submit_url': reverse(
+                f'{self.admin_site.name}:core_product_scanner_submit'
+            ),
+            'status_url_template': reverse(
+                f'{self.admin_site.name}:core_product_scanner_status',
+                args=[0],
+            ),
+        }
 
         return render(
             request,
@@ -178,7 +185,6 @@ class ProductAdmin(admin.ModelAdmin):
     # -------------------------------------------------
 
     def submit_scan(self, request):
-
         if request.method != 'POST':
             return JsonResponse(
                 {
@@ -204,7 +210,6 @@ class ProductAdmin(admin.ModelAdmin):
             payload = json.loads(
                 request.body.decode('utf-8')
             )
-
         except (UnicodeDecodeError, json.JSONDecodeError):
             return JsonResponse(
                 {
@@ -245,17 +250,13 @@ class ProductAdmin(admin.ModelAdmin):
                 status=400,
             )
 
-        # -------------------------------------------------
-        # DETECT URL INPUT
-        # -------------------------------------------------
-
+        # Detect URL input.
         source_url = ''
 
         try:
             parsed_url = urlsplit(value)
 
             if parsed_url.scheme:
-
                 if (
                     parsed_url.scheme.lower() not in ('http', 'https')
                     or not parsed_url.netloc
@@ -287,10 +288,7 @@ class ProductAdmin(admin.ModelAdmin):
                 status=400,
             )
 
-        # -------------------------------------------------
-        # CREATE OR RETRIEVE DRAFT
-        # -------------------------------------------------
-
+        # Create or retrieve draft.
         draft, created = ProductImportDraft.objects.get_or_create(
             raw_code=value,
             status='pending',
@@ -300,12 +298,8 @@ class ProductAdmin(admin.ModelAdmin):
             },
         )
 
-        # -------------------------------------------------
-        # URL INPUT: SAVE WITHOUT LOOKUP
-        # -------------------------------------------------
-
+        # URL input: save without lookup.
         if source_url:
-
             if not draft.source_url:
                 draft.source_url = source_url
                 draft.save(
@@ -327,10 +321,7 @@ class ProductAdmin(admin.ModelAdmin):
                 ),
             })
 
-        # -------------------------------------------------
-        # QUEUE MODEL LOOKUP
-        # -------------------------------------------------
-
+        # Queue model lookup.
         if draft.status != 'pending':
             return JsonResponse({
                 'ok': False,
@@ -385,7 +376,6 @@ class ProductAdmin(admin.ModelAdmin):
     # -------------------------------------------------
 
     def scan_status(self, request, draft_id):
-
         if request.method != 'GET':
             return JsonResponse(
                 {
@@ -437,7 +427,6 @@ class ProductAdmin(admin.ModelAdmin):
             )
 
         elif draft.lookup_status == 'completed':
-
             response_data.update({
                 'manufacturer': data.get('manufacturer', ''),
                 'product_name': data.get('name', ''),
@@ -553,14 +542,12 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
     @admin.action(description='1. Fetch product details from Yunqida')
     def fetch_product_details(self, request, queryset):
-
         queued = 0
         skipped = 0
 
         selected = list(queryset[:5])
 
         for draft in selected:
-
             if draft.status != 'pending':
                 skipped += 1
                 continue
@@ -635,7 +622,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
     @admin.action(description='2. Import reviewed products into catalogue')
     def import_selected_products(self, request, queryset):
-
         imported = 0
         skipped = 0
         failed = 0
@@ -643,7 +629,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         valid_categories = dict(Product.CATEGORY_CHOICES)
 
         for draft in queryset:
-
             if draft.status != 'pending':
                 skipped += 1
                 continue
@@ -698,15 +683,11 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 counter += 1
                 slug = f'{base_slug}-{counter}'
 
-            # -------------------------------------------------
-            # PREPARE MANUFACTURER IMAGE URLS
-            # -------------------------------------------------
-
+            # Prepare manufacturer image URLs.
             image_urls = data.get('image_urls') or []
 
             if not isinstance(image_urls, list):
                 image_urls = []
-
             else:
                 image_urls = list(image_urls)
 
@@ -719,30 +700,20 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
             ):
                 image_urls.insert(0, primary_url.strip())
 
-            # -------------------------------------------------
-            # DOWNLOAD PRODUCT IMAGES
-            # -------------------------------------------------
-
+            # Download product images.
             try:
                 downloaded_images, image_errors = (
                     download_product_images(image_urls)
                 )
-
             except Exception as exc:
-
                 downloaded_images = []
                 image_errors = [
                     f'Image downloader error: {str(exc)[:300]}'
                 ]
 
-            # -------------------------------------------------
-            # CREATE PRODUCT AND SAVE ITS IMAGES
-            # -------------------------------------------------
-
+            # Create product and save its images.
             try:
-
                 with transaction.atomic():
-
                     product = Product.objects.create(
                         name=name[:120],
                         slug=slug,
@@ -774,7 +745,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
                     # First downloaded image becomes the main image.
                     if downloaded_images:
-
                         main_image = downloaded_images[0]
 
                         product.image.save(
@@ -783,13 +753,12 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                             save=True,
                         )
 
-                    # Remaining downloaded images become gallery images.
+                    # Remaining images become gallery images.
                     for index, image_data in enumerate(
                         downloaded_images[1:],
                         start=1,
                     ):
-
-                        gallery_image = ProductImage(
+                        gallery_image = BlogImage if False else ProductImage(
                             product=product,
                             alt_text=(
                                 f'{product.name} product image {index + 1}'
@@ -815,22 +784,18 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                     )
 
                     if downloaded_images:
-
                         notes += (
                             'The first successfully downloaded image '
                             'is the main product image. '
                             'The remaining images are in the gallery. '
                         )
-
                     else:
-
                         notes += (
                             'No manufacturer images could be downloaded. '
                             'You can upload images manually. '
                         )
 
                     if image_errors:
-
                         notes += (
                             f'{len(image_errors)} image download(s) failed. '
                             + ' '.join(image_errors[:3])
@@ -852,7 +817,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 imported += 1
 
             except Exception as exc:
-
                 failed += 1
 
                 draft.notes = (
@@ -863,10 +827,7 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                     update_fields=['notes', 'updated_at']
                 )
 
-        # -------------------------------------------------
-        # ADMIN RESULTS
-        # -------------------------------------------------
-
+        # Admin results.
         if imported:
             self.message_user(
                 request,
@@ -988,3 +949,180 @@ class EnquiryAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = ('created',)
+
+
+# =====================================================
+# BLOG IMAGE GALLERY
+# =====================================================
+
+class BlogImageInline(admin.TabularInline):
+
+    model = BlogImage
+    extra = 1
+
+    fields = (
+        'image',
+        'alt_text',
+        'caption',
+        'order',
+    )
+
+    ordering = ('order', 'id')
+
+
+# =====================================================
+# BLOG POSTS
+# =====================================================
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+
+    change_list_template = 'admin/core/blogpost/change_list.html'
+
+    inlines = [BlogImageInline]
+
+    list_display = (
+        'title',
+        'category',
+        'status',
+        'ai_generated',
+        'published_at',
+        'updated_at',
+    )
+
+    list_filter = (
+        'status',
+        'category',
+        'ai_generated',
+        'created_at',
+    )
+
+    search_fields = (
+        'title',
+        'excerpt',
+        'content',
+        'focus_keyword',
+    )
+
+    readonly_fields = (
+        'created_at',
+        'updated_at',
+        'published_at',
+    )
+
+    fieldsets = (
+        ('Article Information', {
+            'fields': (
+                'title',
+                'slug',
+                'category',
+                'excerpt',
+                'content',
+            )
+        }),
+        ('Featured Image', {
+            'fields': (
+                'featured_image',
+                'featured_image_alt',
+            )
+        }),
+        ('Search Engine Optimisation', {
+            'fields': (
+                'seo_title',
+                'meta_description',
+                'focus_keyword',
+                'secondary_keywords',
+                'seo_analysis',
+            )
+        }),
+        ('AI Generation Information', {
+            'fields': (
+                'ai_generated',
+                'original_prompt',
+            )
+        }),
+        ('Publishing', {
+            'fields': (
+                'status',
+                'published_at',
+                'created_at',
+                'updated_at',
+            )
+        }),
+    )
+
+    ordering = ('-created_at',)
+
+    # -------------------------------------------------
+    # CUSTOM ADMIN URLS
+    # -------------------------------------------------
+
+    def get_urls(self):
+        urls = super().get_urls()
+
+        custom_urls = [
+            path(
+                'ai-writer/',
+                self.admin_site.admin_view(self.ai_writer),
+                name='core_blogpost_ai_writer',
+            ),
+        ]
+
+        return custom_urls + urls
+
+    # -------------------------------------------------
+    # AI BLOG WRITER
+    # -------------------------------------------------
+
+    def ai_writer(self, request):
+        if not self.has_add_permission(request):
+            raise PermissionDenied
+
+        request.current_app = self.admin_site.name
+
+        if request.method == 'POST':
+            topic = request.POST.get('topic', '').strip()
+
+            try:
+                article_data = generate_blog_article(
+                    topic=topic,
+                )
+
+                post = save_generated_blog_article(article_data)
+
+                messages.success(
+                    request,
+                    'Your AI-generated article has been saved as a draft. '
+                    'Review the article, SEO information and images before '
+                    'publishing.',
+                )
+
+                return redirect(
+                    reverse(
+                        f'{self.admin_site.name}:core_blogpost_change',
+                        args=[post.pk],
+                    )
+                )
+
+            except GroqAIError as exc:
+                messages.error(request, str(exc))
+
+            except Exception:
+                messages.error(
+                    request,
+                    'The article could not be generated or saved. '
+                    'Please try again. If the problem continues, '
+                    'check the application logs.',
+                )
+
+        context = {
+            **self.admin_site.each_context(request),
+            'opts': self.model._meta,
+            'title': 'YUNQIDA AI Blog Writer',
+        }
+
+        return render(
+            request,
+            'admin/core/blogpost/ai_writer.html',
+            context,
+        )

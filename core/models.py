@@ -3,6 +3,9 @@ from django.db import models
 from django.urls import reverse
 
 
+from django.utils import timezone
+from django.utils.text import slugify
+
 # =====================================================
 # PRODUCTS
 # =====================================================
@@ -334,3 +337,155 @@ class BuildProject(models.Model):
 
     def __str__(self):
         return self.title
+
+# =====================================================
+# BLOG POSTS — AI-GENERATED CONTENT
+# =====================================================
+
+class BlogPost(models.Model):
+
+    CATEGORY_CHOICES = [
+        ('energy_storage', 'Energy Storage'),
+        ('solar', 'Solar Energy'),
+        ('batteries', 'Lithium Batteries'),
+        ('commercial', 'Commercial & Industrial'),
+        ('guides', 'Energy Guides'),
+        ('news', 'Industry News'),
+    ]
+
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('published', 'Published'),
+    ]
+
+    # Article information
+    title = models.CharField(max_length=220)
+    slug = models.SlugField(max_length=240, unique=True, blank=True)
+
+    category = models.CharField(
+        max_length=30,
+        choices=CATEGORY_CHOICES,
+        default='guides',
+    )
+
+    excerpt = models.CharField(max_length=350, blank=True)
+
+    content = models.TextField(
+        help_text='Article body in Markdown format.'
+    )
+
+    # AI generation information
+    original_prompt = models.TextField(blank=True)
+
+    ai_generated = models.BooleanField(default=False)
+
+    seo_analysis = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text='AI-generated SEO assessment and recommendations.'
+    )
+
+    # SEO metadata
+    seo_title = models.CharField(max_length=70, blank=True)
+
+    meta_description = models.CharField(max_length=170, blank=True)
+
+    focus_keyword = models.CharField(max_length=120, blank=True)
+
+    secondary_keywords = models.JSONField(
+        default=list,
+        blank=True,
+    )
+
+    # Main article image
+    featured_image = models.ImageField(
+        upload_to='blog/featured/',
+        blank=True,
+    )
+
+    featured_image_alt = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+
+    # Publishing
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default='draft',
+        db_index=True,
+    )
+
+    published_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-published_at', '-created_at']
+        verbose_name = 'Blog Post'
+        verbose_name_plural = 'Blog Posts'
+
+    def save(self, *args, **kwargs):
+
+        if not self.slug and self.title:
+            base_slug = slugify(self.title)[:220] or 'article'
+            slug = base_slug
+            counter = 1
+
+            while BlogPost.objects.exclude(pk=self.pk).filter(
+                slug=slug
+            ).exists():
+                counter += 1
+                slug = f'{base_slug[:210]}-{counter}'
+
+            self.slug = slug
+
+        if self.status == 'published' and not self.published_at:
+            self.published_at = timezone.now()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
+
+# =====================================================
+# BLOG GALLERY IMAGES
+# =====================================================
+
+class BlogImage(models.Model):
+
+    post = models.ForeignKey(
+        BlogPost,
+        on_delete=models.CASCADE,
+        related_name='images',
+    )
+
+    image = models.ImageField(
+        upload_to='blog/gallery/',
+    )
+
+    alt_text = models.CharField(
+        max_length=200,
+        blank=True,
+    )
+
+    caption = models.CharField(
+        max_length=250,
+        blank=True,
+    )
+
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Blog Image'
+        verbose_name_plural = 'Blog Images'
+
+    def __str__(self):
+        return f'{self.post.title} - Image {self.pk}'

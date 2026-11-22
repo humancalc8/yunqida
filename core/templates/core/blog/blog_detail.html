@@ -1,0 +1,1035 @@
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ article.seo_title|default:article.title }} | YUNQIDA Kenya{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --article-navy: #0d1430;
+        --article-navy-deep: #080d20;
+        --article-blue: #2a3a8f;
+        --article-yellow: #ffe000;
+        --article-yellow-deep: #e6c800;
+        --article-mist: #f2f3f5;
+        --article-white: #ffffff;
+        --article-muted: #5d6577;
+        --article-line: #dfe2e8;
+        --article-text: #121733;
+        --article-emerald: #0A806B;
+        --article-radius: 8px;
+        --article-ease: cubic-bezier(.16,1,.3,1);
+    }
+
+    .yk-article-page {
+        background: #fff;
+        color: var(--article-text);
+        font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+        overflow: hidden;
+    }
+
+    .yk-article-page,
+    .yk-article-page * {
+        box-sizing: border-box;
+    }
+
+    .yk-article-container {
+        width: min(1160px, calc(100% - 64px));
+        margin-inline: auto;
+    }
+
+    /* Breadcrumb */
+    .yk-article-breadcrumb-wrap {
+        padding: 22px 0;
+        border-bottom: 1px solid var(--article-line);
+        background: #fff;
+    }
+
+    .yk-article-breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        color: var(--article-muted);
+        font-size: 11px;
+    }
+
+    .yk-article-breadcrumb a {
+        color: var(--article-navy);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .yk-article-breadcrumb a:hover {
+        color: var(--article-emerald);
+    }
+
+    .yk-article-breadcrumb .separator {
+        color: #aeb4c0;
+    }
+
+    .yk-article-breadcrumb .current {
+        max-width: 360px;
+        overflow: hidden;
+        color: var(--article-muted);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Article heading */
+    .yk-article-header {
+        padding: 76px 0 50px;
+        background:
+            linear-gradient(180deg, #f2f3f5 0%, #ffffff 100%);
+    }
+
+    .yk-article-header-inner {
+        max-width: 930px;
+        margin-inline: auto;
+    }
+
+    .yk-article-kicker {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 24px;
+        color: var(--article-emerald);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .17em;
+        text-transform: uppercase;
+    }
+
+    .yk-article-kicker::before {
+        content: "";
+        width: 25px;
+        height: 3px;
+        background: var(--article-yellow-deep);
+    }
+
+    .yk-article-header h1 {
+        margin: 0;
+        color: var(--article-navy);
+        font-family: var(--font-heading, 'Hanken Grotesk', sans-serif);
+        font-size: clamp(36px, 5.5vw, 64px);
+        line-height: 1.06;
+        font-weight: 700;
+        letter-spacing: -.06em;
+        overflow-wrap: anywhere;
+    }
+
+    .yk-article-excerpt {
+        max-width: 760px;
+        margin: 25px 0 0;
+        color: var(--article-muted);
+        font-size: clamp(15px, 1.6vw, 18px);
+        line-height: 1.8;
+    }
+
+    .yk-article-byline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 22px;
+        margin-top: 32px;
+        padding-top: 23px;
+        border-top: 1px solid var(--article-line);
+        color: var(--article-muted);
+        font-size: 11px;
+    }
+
+    .yk-article-byline strong {
+        color: var(--article-navy);
+        font-weight: 800;
+    }
+
+    .yk-byline-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .yk-byline-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--article-yellow-deep);
+    }
+
+    /* Cover image */
+    .yk-article-cover {
+        width: min(1160px, calc(100% - 64px));
+        margin: 0 auto 70px;
+        overflow: hidden;
+        border-radius: var(--article-radius);
+        background: var(--article-mist);
+    }
+
+    .yk-article-cover img {
+        display: block;
+        width: 100%;
+        max-height: 650px;
+        aspect-ratio: 16 / 8.5;
+        object-fit: cover;
+    }
+
+    .yk-article-cover-placeholder {
+        display: flex;
+        min-height: 350px;
+        align-items: center;
+        justify-content: center;
+        background:
+            linear-gradient(135deg, #e9ebf0, #f5f6f8 55%, #e4e7ed);
+        color: var(--article-navy);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: .2em;
+    }
+
+    .yk-article-cover-placeholder span {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .yk-article-cover-placeholder span::before {
+        content: "";
+        width: 23px;
+        height: 3px;
+        background: var(--article-yellow-deep);
+    }
+
+    /* Reading layout */
+    .yk-article-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 790px) minmax(220px, 280px);
+        align-items: start;
+        gap: 76px;
+        padding-bottom: 95px;
+    }
+
+    .yk-article-main {
+        min-width: 0;
+    }
+
+    .yk-article-body {
+        color: #30384f;
+        font-size: 16px;
+        line-height: 1.95;
+        overflow-wrap: anywhere;
+    }
+
+    .yk-article-body > *:first-child {
+        margin-top: 0;
+    }
+
+    .yk-article-body p {
+        margin: 0 0 24px;
+    }
+
+    .yk-article-body h1,
+    .yk-article-body h2,
+    .yk-article-body h3,
+    .yk-article-body h4 {
+        color: var(--article-navy);
+        font-family: var(--font-heading, 'Hanken Grotesk', sans-serif);
+        font-weight: 700;
+        letter-spacing: -.045em;
+        line-height: 1.25;
+    }
+
+    .yk-article-body h1 {
+        margin: 48px 0 20px;
+        font-size: 36px;
+    }
+
+    .yk-article-body h2 {
+        margin: 48px 0 19px;
+        padding-bottom: 13px;
+        border-bottom: 1px solid var(--article-line);
+        font-size: 29px;
+    }
+
+    .yk-article-body h3 {
+        margin: 35px 0 14px;
+        font-size: 22px;
+    }
+
+    .yk-article-body h4 {
+        margin: 28px 0 12px;
+        font-size: 18px;
+    }
+
+    .yk-article-body strong {
+        color: var(--article-navy);
+        font-weight: 800;
+    }
+
+    .yk-article-body a {
+        color: var(--article-emerald);
+        font-weight: 700;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+    }
+
+    .yk-article-body a:hover {
+        color: var(--article-navy);
+    }
+
+    .yk-article-body ul,
+    .yk-article-body ol {
+        margin: 0 0 27px;
+        padding-left: 25px;
+    }
+
+    .yk-article-body li {
+        margin-bottom: 10px;
+        padding-left: 5px;
+    }
+
+    .yk-article-body li::marker {
+        color: var(--article-emerald);
+        font-weight: 800;
+    }
+
+    .yk-article-body blockquote {
+        margin: 35px 0;
+        padding: 25px 30px;
+        border-left: 4px solid var(--article-yellow-deep);
+        background: var(--article-mist);
+        color: var(--article-navy);
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.75;
+    }
+
+    .yk-article-body blockquote p:last-child {
+        margin-bottom: 0;
+    }
+
+    .yk-article-body hr {
+        height: 1px;
+        margin: 42px 0;
+        border: 0;
+        background: var(--article-line);
+    }
+
+    .yk-article-body img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 32px auto;
+        border-radius: 5px;
+    }
+
+    /* Tables generated by the AI writer */
+    .yk-article-table-wrap {
+        width: 100%;
+        margin: 32px 0;
+        overflow-x: auto;
+        border: 1px solid var(--article-line);
+        border-radius: 5px;
+    }
+
+    .yk-article-body table {
+        width: 100%;
+        min-width: 520px;
+        border-collapse: collapse;
+        background: #fff;
+        font-size: 13px;
+        line-height: 1.65;
+    }
+
+    .yk-article-body th {
+        padding: 15px 17px;
+        background: var(--article-navy);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+        text-align: left;
+    }
+
+    .yk-article-body td {
+        padding: 14px 17px;
+        border-bottom: 1px solid var(--article-line);
+        color: #424a60;
+        vertical-align: top;
+    }
+
+    .yk-article-body tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .yk-article-body tbody tr:nth-child(even) {
+        background: #f7f8fa;
+    }
+
+    .yk-article-body pre {
+        max-width: 100%;
+        padding: 20px;
+        overflow-x: auto;
+        border-radius: 5px;
+        background: var(--article-navy-deep);
+        color: #fff;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .yk-article-body code {
+        padding: 2px 5px;
+        border-radius: 3px;
+        background: var(--article-mist);
+        color: var(--article-navy);
+        font-size: .88em;
+    }
+
+    .yk-article-body pre code {
+        padding: 0;
+        background: transparent;
+        color: inherit;
+    }
+
+    /* Gallery */
+    .yk-article-gallery {
+        margin: 65px 0 0;
+        padding-top: 35px;
+        border-top: 1px solid var(--article-line);
+    }
+
+    .yk-gallery-heading {
+        margin-bottom: 25px;
+    }
+
+    .yk-gallery-heading span {
+        display: block;
+        margin-bottom: 9px;
+        color: var(--article-emerald);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .yk-gallery-heading h2 {
+        margin: 0;
+        color: var(--article-navy);
+        font-size: 27px;
+        letter-spacing: -.045em;
+    }
+
+    .yk-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .yk-gallery-item {
+        min-width: 0;
+        margin: 0;
+    }
+
+    .yk-gallery-item img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 5px;
+        background: var(--article-mist);
+    }
+
+    .yk-gallery-item figcaption {
+        margin-top: 10px;
+        color: var(--article-muted);
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    /* Sidebar */
+    .yk-article-sidebar {
+        position: sticky;
+        top: 35px;
+    }
+
+    .yk-sidebar-panel {
+        padding: 27px 25px;
+        border: 1px solid var(--article-line);
+        border-radius: 5px;
+        background: #fff;
+    }
+
+    .yk-sidebar-kicker {
+        display: block;
+        margin-bottom: 13px;
+        color: var(--article-emerald);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .yk-sidebar-panel h3 {
+        margin: 0 0 13px;
+        color: var(--article-navy);
+        font-size: 22px;
+        line-height: 1.25;
+        letter-spacing: -.04em;
+    }
+
+    .yk-sidebar-panel p {
+        margin: 0;
+        color: var(--article-muted);
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .yk-sidebar-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 22px;
+        padding-bottom: 7px;
+        border-bottom: 1px solid var(--article-navy);
+        color: var(--article-navy);
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .yk-sidebar-link span {
+        color: var(--article-emerald);
+        font-size: 16px;
+    }
+
+    .yk-sidebar-divider {
+        height: 1px;
+        margin: 25px 0;
+        background: var(--article-line);
+    }
+
+    .yk-sidebar-note {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .yk-sidebar-note-mark {
+        flex: 0 0 5px;
+        height: 32px;
+        background: var(--article-yellow-deep);
+    }
+
+    .yk-sidebar-note p {
+        font-size: 12px;
+    }
+
+    /* Related articles */
+    .yk-related-section {
+        padding: 75px 0 90px;
+        background: var(--article-mist);
+        border-top: 1px solid var(--article-line);
+    }
+
+    .yk-related-inner {
+        width: min(1160px, calc(100% - 64px));
+        margin-inline: auto;
+    }
+
+    .yk-related-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .yk-related-heading span {
+        display: block;
+        margin-bottom: 10px;
+        color: var(--article-emerald);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .yk-related-heading h2 {
+        margin: 0;
+        color: var(--article-navy);
+        font-size: clamp(25px, 3vw, 34px);
+        letter-spacing: -.05em;
+    }
+
+    .yk-related-heading a {
+        color: var(--article-navy);
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+        border-bottom: 1px solid var(--article-navy);
+        padding-bottom: 7px;
+    }
+
+    .yk-related-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 25px;
+    }
+
+    .yk-related-card {
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--article-line);
+        border-radius: 5px;
+        background: #fff;
+        transition: transform .3s var(--article-ease), box-shadow .3s ease;
+    }
+
+    .yk-related-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 35px rgba(13,20,48,.09);
+    }
+
+    .yk-related-image {
+        display: block;
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+        background: #e9ebf0;
+    }
+
+    .yk-related-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .6s var(--article-ease);
+    }
+
+    .yk-related-card:hover .yk-related-image img {
+        transform: scale(1.04);
+    }
+
+    .yk-related-placeholder {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        min-height: 150px;
+        align-items: center;
+        justify-content: center;
+        color: var(--article-navy);
+        background: linear-gradient(135deg, #e9ebf0, #f5f6f8);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .16em;
+    }
+
+    .yk-related-copy {
+        padding: 22px;
+    }
+
+    .yk-related-category {
+        color: var(--article-emerald);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+    }
+
+    .yk-related-copy h3 {
+        margin: 11px 0 13px;
+        color: var(--article-navy);
+        font-size: 19px;
+        line-height: 1.35;
+        letter-spacing: -.035em;
+    }
+
+    .yk-related-copy h3 a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .yk-related-copy h3 a:hover {
+        color: var(--article-emerald);
+    }
+
+    .yk-related-date {
+        color: var(--article-muted);
+        font-size: 10px;
+    }
+
+    .yk-related-read {
+        display: inline-flex;
+        gap: 9px;
+        align-items: center;
+        margin-top: 18px;
+        color: var(--article-navy);
+        font-size: 10px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .yk-related-read span {
+        color: var(--article-emerald);
+    }
+
+    @media (max-width: 900px) {
+        .yk-article-layout {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 45px;
+        }
+
+        .yk-article-sidebar {
+            position: static;
+        }
+
+        .yk-sidebar-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 25px;
+        }
+
+        .yk-sidebar-divider {
+            display: none;
+        }
+
+        .yk-sidebar-note {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .yk-article-container,
+        .yk-related-inner {
+            width: calc(100% - 40px);
+        }
+
+        .yk-article-header {
+            padding: 55px 0 38px;
+        }
+
+        .yk-article-header h1 {
+            font-size: clamp(35px, 10vw, 48px);
+        }
+
+        .yk-article-excerpt {
+            font-size: 15px;
+        }
+
+        .yk-article-cover {
+            width: calc(100% - 40px);
+            margin-bottom: 45px;
+            border-radius: 5px;
+        }
+
+        .yk-article-cover img {
+            aspect-ratio: 4 / 3;
+        }
+
+        .yk-article-cover-placeholder {
+            min-height: 220px;
+        }
+
+        .yk-article-layout {
+            padding-bottom: 65px;
+        }
+
+        .yk-article-body {
+            font-size: 15px;
+            line-height: 1.85;
+        }
+
+        .yk-article-body h1 {
+            font-size: 30px;
+        }
+
+        .yk-article-body h2 {
+            margin-top: 38px;
+            font-size: 25px;
+        }
+
+        .yk-article-body h3 {
+            font-size: 20px;
+        }
+
+        .yk-article-body blockquote {
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .yk-gallery-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .yk-sidebar-panel {
+            display: block;
+        }
+
+        .yk-sidebar-note {
+            margin-top: 20px;
+        }
+
+        .yk-related-section {
+            padding: 60px 0;
+        }
+
+        .yk-related-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .yk-related-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .yk-article-page *,
+        .yk-article-page *::before,
+        .yk-article-page *::after {
+            transition-duration: .01ms !important;
+            animation-duration: .01ms !important;
+        }
+    }
+</style>
+
+<div class="yk-article-page">
+
+    <div class="yk-article-breadcrumb-wrap">
+        <div class="yk-article-container">
+            <nav class="yk-article-breadcrumb" aria-label="Breadcrumb">
+                <a href="{% url 'home' %}">Home</a>
+                <span class="separator">/</span>
+                <a href="{% url 'blog_list' %}">Insights</a>
+                <span class="separator">/</span>
+                <span class="current">{{ article.title }}</span>
+            </nav>
+        </div>
+    </div>
+
+    <header class="yk-article-header">
+        <div class="yk-article-container">
+            <div class="yk-article-header-inner">
+
+                <div class="yk-article-kicker">
+                    {{ article.get_category_display }}
+                </div>
+
+                <h1>{{ article.title }}</h1>
+
+                {% if article.excerpt %}
+                    <p class="yk-article-excerpt">
+                        {{ article.excerpt }}
+                    </p>
+                {% endif %}
+
+                <div class="yk-article-byline">
+                    <span class="yk-byline-item">
+                        <strong>YUNQIDA Editorial</strong>
+                    </span>
+
+                    {% if article.published_at %}
+                        <span class="yk-byline-item">
+                            <span class="yk-byline-dot"></span>
+                            {{ article.published_at|date:"F j, Y" }}
+                        </span>
+                    {% endif %}
+
+                    <span class="yk-byline-item">
+                        <span class="yk-byline-dot"></span>
+                        YUNQIDA Kenya
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    {% with gallery_cover=article.images.first %}
+        {% if article.featured_image %}
+            <figure class="yk-article-cover">
+                <img
+                    src="{{ article.featured_image.url }}"
+                    alt="{{ article.featured_image_alt|default:article.title }}"
+                    fetchpriority="high">
+            </figure>
+        {% elif gallery_cover and gallery_cover.image %}
+            <figure class="yk-article-cover">
+                <img
+                    src="{{ gallery_cover.image.url }}"
+                    alt="{{ gallery_cover.alt_text|default:article.title }}"
+                    fetchpriority="high">
+            </figure>
+        {% else %}
+            <div class="yk-article-cover">
+                <div class="yk-article-cover-placeholder">
+                    <span>YUNQIDA ENERGY</span>
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="yk-article-container">
+        <div class="yk-article-layout">
+
+            <article class="yk-article-main">
+
+                <div class="yk-article-body">
+                    {{ content_html|safe }}
+                </div>
+
+                {% with gallery_images=article.images.all %}
+                    {% if gallery_images %}
+                        <section class="yk-article-gallery"
+                                 aria-labelledby="yk-gallery-title">
+
+                            <div class="yk-gallery-heading">
+                                <span>Visual story</span>
+                                <h2 id="yk-gallery-title">In pictures</h2>
+                            </div>
+
+                            <div class="yk-gallery-grid">
+                                {% for image in gallery_images %}
+                                    {% if image.image %}
+                                        <figure class="yk-gallery-item">
+                                            <img
+                                                src="{{ image.image.url }}"
+                                                alt="{{ image.alt_text|default:article.title }}"
+                                                loading="lazy">
+
+                                            {% if image.caption %}
+                                                <figcaption>
+                                                    {{ image.caption }}
+                                                </figcaption>
+                                            {% endif %}
+                                        </figure>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </section>
+                    {% endif %}
+                {% endwith %}
+
+            </article>
+
+            <aside class="yk-article-sidebar">
+                <div class="yk-sidebar-panel">
+
+                    <div>
+                        <span class="yk-sidebar-kicker">About YUNQIDA</span>
+                        <h3>Powering a more dependable energy future.</h3>
+                        <p>
+                            Discover energy storage, solar and power solutions
+                            designed for the needs of homes and businesses.
+                        </p>
+
+                        <a class="yk-sidebar-link"
+                           href="{% url 'products' %}">
+                            Explore our solutions <span>→</span>
+                        </a>
+                    </div>
+
+                    <div>
+                        <span class="yk-sidebar-kicker">Keep exploring</span>
+                        <h3>More energy knowledge.</h3>
+                        <p>
+                            Browse practical guides and perspectives from
+                            the YUNQIDA Kenya editorial team.
+                        </p>
+
+                        <a class="yk-sidebar-link"
+                           href="{% url 'blog_list' %}">
+                            View all insights <span>→</span>
+                        </a>
+                    </div>
+
+                    <div class="yk-sidebar-divider"></div>
+
+                    <div class="yk-sidebar-note">
+                        <span class="yk-sidebar-note-mark"></span>
+                        <p>
+                            Clear information helps people make better
+                            decisions about energy.
+                        </p>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    {% if related_articles %}
+        <section class="yk-related-section">
+            <div class="yk-related-inner">
+
+                <div class="yk-related-heading">
+                    <div>
+                        <span>Continue reading</span>
+                        <h2>Related insights</h2>
+                    </div>
+
+                    <a href="{% url 'blog_list' %}">
+                        All insights →
+                    </a>
+                </div>
+
+                <div class="yk-related-grid">
+                    {% for related in related_articles %}
+                        <article class="yk-related-card">
+
+                            <a class="yk-related-image"
+                               href="{% url 'blog_detail' related.slug %}"
+                               aria-label="Read {{ related.title }}">
+
+                                {% with related_gallery=related.images.first %}
+                                    {% if related.featured_image %}
+                                        <img
+                                            src="{{ related.featured_image.url }}"
+                                            alt="{{ related.featured_image_alt|default:related.title }}"
+                                            loading="lazy">
+                                    {% elif related_gallery and related_gallery.image %}
+                                        <img
+                                            src="{{ related_gallery.image.url }}"
+                                            alt="{{ related_gallery.alt_text|default:related.title }}"
+                                            loading="lazy">
+                                    {% else %}
+                                        <div class="yk-related-placeholder">
+                                            YUNQIDA ENERGY
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            </a>
+
+                            <div class="yk-related-copy">
+                                <div class="yk-related-category">
+                                    {{ related.get_category_display }}
+                                </div>
+
+                                <h3>
+                                    <a href="{% url 'blog_detail' related.slug %}">
+                                        {{ related.title }}
+                                    </a>
+                                </h3>
+
+                                {% if related.published_at %}
+                                    <div class="yk-related-date">
+                                        {{ related.published_at|date:"F j, Y" }}
+                                    </div>
+                                {% endif %}
+
+                                <a class="yk-related-read"
+                                   href="{% url 'blog_detail' related.slug %}">
+                                    Read article <span>→</span>
+                                </a>
+                            </div>
+
+                        </article>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section>
+    {% endif %}
+
+</div>
+{% endblock %}

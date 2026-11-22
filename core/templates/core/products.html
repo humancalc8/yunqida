@@ -1,4 +1,3 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
 
@@ -14,17 +13,14 @@
 {% block extra_head %}
 <style>
 /* =========================================================
-   YUNQIDA — PREMIUM ENERGY PRODUCT CATALOGUE
-   Photography-led editorial design
+   YUNQIDA — PRODUCT CATALOGUE
 ========================================================= */
 
 .yq-products {
     --yp-navy: #071a3a;
-    --yp-navy-deep: #041128;
     --yp-lime: #c4ed38;
     --yp-green: #16735e;
     --yp-paper: #f4f5f1;
-    --yp-white: #fff;
     --yp-ink: #17221e;
     --yp-muted: #707a73;
     --yp-line: #e3e7e0;
@@ -41,26 +37,17 @@
 
 .yq-products *,
 .yq-products *::before,
-.yq-products *::after {
-    box-sizing: border-box;
-}
+.yq-products *::after { box-sizing: border-box; }
 
-.yq-products img {
-    max-width: 100%;
-}
-
-.yq-products a {
-    -webkit-tap-highlight-color: transparent;
-}
+.yq-products img { max-width: 100%; }
+.yq-products a { -webkit-tap-highlight-color: transparent; }
 
 .yq-products .products-container {
     width: min(1240px, calc(100% - 64px));
     margin-inline: auto;
 }
 
-/* =========================================================
-   HERO
-========================================================= */
+/* HERO */
 
 .yq-products .products-intro {
     position: relative;
@@ -77,10 +64,7 @@
     gap: clamp(35px, 6vw, 85px);
 }
 
-.yq-products .intro-copy {
-    position: relative;
-    z-index: 2;
-}
+.yq-products .intro-copy { position: relative; z-index: 2; }
 
 .yq-products .intro-label {
     display: flex;
@@ -147,10 +131,7 @@
     font-size: 11px;
     font-weight: 700;
     text-decoration: none;
-    transition:
-        background .3s ease,
-        border-color .3s ease,
-        transform .4s var(--yp-ease);
+    transition: background .3s ease, border-color .3s ease, transform .4s var(--yp-ease);
 }
 
 .yq-products .intro-cta:hover {
@@ -165,9 +146,7 @@
     transition: transform .3s ease;
 }
 
-.yq-products .intro-cta:hover span {
-    transform: translateX(5px);
-}
+.yq-products .intro-cta:hover span { transform: translateX(5px); }
 
 .yq-products .intro-secondary {
     color: #69756e;
@@ -177,9 +156,7 @@
     transition: color .25s ease;
 }
 
-.yq-products .intro-secondary:hover {
-    color: var(--yp-green);
-}
+.yq-products .intro-secondary:hover { color: var(--yp-green); }
 
 .yq-products .intro-footnote {
     display: flex;
@@ -201,14 +178,9 @@
     content: "";
 }
 
-/* =========================================================
-   HERO PHOTOGRAPH
-========================================================= */
+/* HERO PHOTO */
 
-.yq-products .intro-visual {
-    position: relative;
-    min-width: 0;
-}
+.yq-products .intro-visual { position: relative; min-width: 0; }
 
 .yq-products .hero-photo-frame {
     position: relative;
@@ -222,11 +194,7 @@
 .yq-products .hero-photo-frame::after {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        180deg,
-        rgba(4, 17, 40, .02) 40%,
-        rgba(4, 17, 40, .45) 100%
-    );
+    background: linear-gradient(180deg, rgba(4,17,40,.02) 40%, rgba(4,17,40,.45) 100%);
     content: "";
     pointer-events: none;
 }
@@ -241,9 +209,7 @@
     transition: transform 1.5s var(--yp-ease);
 }
 
-.yq-products .hero-photo-frame:hover .hero-photo {
-    transform: scale(1.075);
-}
+.yq-products .hero-photo-frame:hover .hero-photo { transform: scale(1.075); }
 
 .yq-products .photo-caption {
     position: absolute;
@@ -286,9 +252,7 @@
     letter-spacing: .12em;
 }
 
-/* =========================================================
-   CATALOGUE
-========================================================= */
+/* CATALOGUE */
 
 .yq-products .catalogue {
     position: relative;
@@ -332,16 +296,14 @@
     text-transform: uppercase;
 }
 
-/* =========================================================
-   CATEGORY FILTERS
-========================================================= */
+/* FILTERS */
 
 .yq-products .filters {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 9px;
-    margin: 30px 0 48px;
+    margin: 30px 0 52px;
 }
 
 .yq-products .filter-link {
@@ -357,11 +319,7 @@
     font-size: 11px;
     font-weight: 700;
     text-decoration: none;
-    transition:
-        color .25s ease,
-        background .25s ease,
-        border-color .25s ease,
-        transform .25s ease;
+    transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
 }
 
 .yq-products .filter-link:hover {
@@ -386,96 +344,40 @@
 }
 
 /* =========================================================
-   PRODUCT GRID AND CARDS
+   PRODUCT GRID + CARDS (name + large photo only)
 ========================================================= */
 
 .yq-products .product-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
-    column-gap: 32px;
-    row-gap: 60px;
+    column-gap: 40px;
+    row-gap: 64px;
 }
 
+/* Card: same colour as the section, so photo backdrops disappear */
 .yq-products .product-card {
     position: relative;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding-bottom: 25px;
+    padding-bottom: 22px;
     border-bottom: 1px solid var(--yp-line);
-    background: transparent;
+    background: #fff;
     transition: border-color .35s ease;
 }
 
-.yq-products .product-card:hover {
-    border-color: #9dbd3b;
-}
-
-.yq-products .product-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    min-height: 24px;
-}
-
-.yq-products .product-card .tag {
-    color: var(--yp-green);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-}
-
-.yq-products .product-number {
-    color: #9ba19b;
-    font-size: 10px;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
-.yq-products .product-card h3 {
-    margin: 13px 0 0;
-    color: var(--yp-ink);
-    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
-    font-size: clamp(20px, 2.1vw, 26px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -.04em;
-    overflow-wrap: anywhere;
-}
-
-.yq-products .product-card h3 a {
-    color: inherit;
-    text-decoration: none;
-    transition: color .25s ease;
-}
-
-.yq-products .product-card h3 a:hover {
-    color: var(--yp-green);
-}
-
-.yq-products .product-tagline {
-    min-height: 43px;
-    margin: 10px 0 0;
-    color: var(--yp-muted);
-    font-size: 12px;
-    line-height: 1.75;
-}
-
-/* Product image area */
+.yq-products .product-card:hover { border-color: #9dbd3b; }
 
 .yq-products .product-media {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: clamp(210px, 24vw, 285px);
-    margin: 20px 0 25px;
+    height: clamp(280px, 29vw, 380px);
+    margin: 0 0 24px;
     overflow: hidden;
-    background: #f6f7f4;
+    background: transparent;
     text-decoration: none;
 }
 
@@ -483,85 +385,51 @@
     display: block;
     width: 100%;
     height: 100%;
+    padding: 6px;
     object-fit: contain;
     object-position: center;
     background: transparent;
-    transform: scale(1);
+    border: 0;
+    box-shadow: none;
+    filter: none;
+    mix-blend-mode: multiply;
     transition: transform 1s var(--yp-ease);
 }
 
-.yq-products .product-card:hover .product-media img {
-    transform: scale(1.055);
-}
+.yq-products .product-card:hover .product-media img { transform: scale(1.06); }
 
-.yq-products .product-media::after {
-    position: absolute;
-    z-index: 0;
-    right: 18%;
-    bottom: 8%;
-    left: 18%;
-    height: 18px;
-    border-radius: 50%;
-    background: rgba(7, 27, 59, .07);
-    filter: blur(16px);
-    content: "";
-    pointer-events: none;
-}
-
-/* Product specifications */
-
-.yq-products .specification-heading {
-    margin: 0 0 13px;
+.yq-products .product-media-empty {
     color: var(--yp-muted);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .15em;
-    text-transform: uppercase;
+    font-size: 13px;
 }
 
-.yq-products .specs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 18px;
-    margin: 0;
-    padding: 0;
-}
-
-.yq-products .specs div {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-    padding: 12px 0;
-    border-top: 1px solid var(--yp-line);
-}
-
-.yq-products .specs dt {
-    color: var(--yp-muted);
-    font-size: 10px;
-    line-height: 1.5;
-}
-
-.yq-products .specs dd {
+.yq-products .product-card .product-name {
     margin: 0;
     color: var(--yp-ink);
-    font-size: 13px;
+    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
+    font-size: clamp(21px, 2.2vw, 28px);
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.22;
+    letter-spacing: -.04em;
     overflow-wrap: anywhere;
 }
 
-/* Product details link */
+.yq-products .product-card .product-name a {
+    color: inherit;
+    text-decoration: none;
+    transition: color .25s ease;
+}
+
+.yq-products .product-card .product-name a:hover { color: var(--yp-green); }
 
 .yq-products .product-more {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    align-self: flex-start;
     width: 100%;
     margin-top: auto;
-    padding: 20px 0 0;
+    padding: 22px 0 0;
     color: var(--yp-ink);
     font-size: 11px;
     font-weight: 700;
@@ -569,16 +437,14 @@
     transition: color .25s ease;
 }
 
-.yq-products .product-more:hover {
-    color: var(--yp-green);
-}
+.yq-products .product-more:hover { color: var(--yp-green); }
 
-.yq-products .product-more span {
+.yq-products .product-more-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--yp-line);
     border-radius: 50%;
     color: var(--yp-navy);
@@ -586,7 +452,7 @@
     transition: all .3s var(--yp-ease);
 }
 
-.yq-products .product-more:hover span {
+.yq-products .product-more:hover .product-more-icon {
     border-color: var(--yp-lime);
     background: var(--yp-lime);
     transform: translateX(4px);
@@ -602,11 +468,7 @@
     text-align: center;
 }
 
-.yq-products .empty p {
-    margin: 0 0 15px;
-    font-size: 14px;
-    line-height: 1.8;
-}
+.yq-products .empty p { margin: 0 0 15px; font-size: 14px; line-height: 1.8; }
 
 .yq-products .empty a {
     color: var(--yp-navy);
@@ -615,10 +477,6 @@
     text-decoration-color: #9dbd3b;
     text-underline-offset: 5px;
 }
-
-/* =========================================================
-   ADDITIONAL EDITORIAL DETAILS
-========================================================= */
 
 .yq-products .catalogue-bottom {
     display: flex;
@@ -630,12 +488,7 @@
     border-top: 1px solid var(--yp-line);
 }
 
-.yq-products .catalogue-bottom p {
-    margin: 0;
-    color: #7b857e;
-    font-size: 10px;
-    line-height: 1.7;
-}
+.yq-products .catalogue-bottom p { margin: 0; color: #7b857e; font-size: 10px; line-height: 1.7; }
 
 .yq-products .catalogue-bottom a {
     color: var(--yp-green);
@@ -645,22 +498,15 @@
     white-space: nowrap;
 }
 
-.yq-products .catalogue-bottom a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
+.yq-products .catalogue-bottom a:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-/* =========================================================
-   SCROLL REVEALS
-========================================================= */
+/* SCROLL REVEALS */
 
 .js .yq-products [data-reveal],
 .js .yq-products .product-card {
     opacity: 0;
     transform: translate3d(0, 28px, 0);
-    transition:
-        opacity .8s ease,
-        transform .9s var(--yp-ease);
+    transition: opacity .8s ease, transform .9s var(--yp-ease), border-color .35s ease;
 }
 
 .js .yq-products [data-reveal].is-in,
@@ -669,153 +515,42 @@
     transform: translate3d(0, 0, 0);
 }
 
-/* Image reveal */
+.js .yq-products .hero-photo-frame img { transform: scale(1.09); transition: transform 1.5s var(--yp-ease); }
+.js .yq-products .hero-photo-frame.is-in img { transform: scale(1); }
 
-.js .yq-products [data-reveal="product-image"] {
-    opacity: 1;
-    transform: none;
-}
+.js .yq-products .product-card:nth-child(3n + 2) { transition-delay: .08s; }
+.js .yq-products .product-card:nth-child(3n + 3) { transition-delay: .16s; }
 
-.js .yq-products [data-reveal="product-image"] img {
-    clip-path: inset(0 0 100% 0);
-    transform: scale(1.07);
-    transition:
-        clip-path 1s var(--yp-ease),
-        transform 1.2s var(--yp-ease);
-}
-
-.js .yq-products [data-reveal="product-image"].is-in img {
-    clip-path: inset(0);
-    transform: scale(1);
-}
-
-/* Hero photo entrance */
-
-.js .yq-products .hero-photo-frame img {
-    transform: scale(1.09);
-    transition: transform 1.5s var(--yp-ease);
-}
-
-.js .yq-products .hero-photo-frame.is-in img {
-    transform: scale(1);
-}
-
-/* Staggered card entrance */
-
-.js .yq-products .product-card:nth-child(3n + 2) {
-    transition-delay: .08s;
-}
-
-.js .yq-products .product-card:nth-child(3n + 3) {
-    transition-delay: .16s;
-}
-
-/* =========================================================
-   TABLET
-========================================================= */
+/* TABLET */
 
 @media (max-width: 1000px) {
-    .yq-products .intro-layout {
-        grid-template-columns: .9fr 1.1fr;
-        gap: 30px;
-    }
-
-    .yq-products .hero-photo-frame {
-        height: 380px;
-    }
-
-    .yq-products .product-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 28px;
-        row-gap: 50px;
-    }
-
-    .yq-products .product-media {
-        height: 250px;
-    }
+    .yq-products .intro-layout { grid-template-columns: .9fr 1.1fr; gap: 30px; }
+    .yq-products .hero-photo-frame { height: 380px; }
+    .yq-products .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; row-gap: 52px; }
+    .yq-products .product-media { height: 300px; }
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* MOBILE */
 
 @media (max-width: 700px) {
-    .yq-products .products-container {
-        width: calc(100% - 38px);
-    }
+    .yq-products .products-container { width: calc(100% - 38px); }
+    .yq-products .products-intro { padding: 65px 0 48px; }
+    .yq-products .intro-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .yq-products .intro-label { margin-bottom: 20px; font-size: 9px; }
+    .yq-products .intro-heading { font-size: clamp(43px, 11.5vw, 62px); line-height: 1.02; }
+    .yq-products .intro-description { margin-top: 20px; font-size: 13px; line-height: 1.85; }
+    .yq-products .intro-actions { margin-top: 24px; }
+    .yq-products .intro-footnote { margin-top: 20px; font-size: 8px; }
+    .yq-products .hero-photo-frame { height: clamp(260px, 75vw, 420px); }
+    .yq-products .photo-caption { right: 16px; bottom: 17px; left: 16px; }
+    .yq-products .photo-caption strong { font-size: 17px; }
+    .yq-products .photo-caption .photo-index { font-size: 8px; padding: 7px 9px; }
 
-    .yq-products .products-intro {
-        padding: 65px 0 48px;
-    }
-
-    .yq-products .intro-layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 32px;
-    }
-
-    .yq-products .intro-label {
-        margin-bottom: 20px;
-        font-size: 9px;
-    }
-
-    .yq-products .intro-heading {
-        font-size: clamp(43px, 11.5vw, 62px);
-        line-height: 1.02;
-    }
-
-    .yq-products .intro-description {
-        margin-top: 20px;
-        font-size: 13px;
-        line-height: 1.85;
-    }
-
-    .yq-products .intro-actions {
-        margin-top: 24px;
-    }
-
-    .yq-products .intro-footnote {
-        margin-top: 20px;
-        font-size: 8px;
-    }
-
-    .yq-products .hero-photo-frame {
-        height: clamp(260px, 75vw, 420px);
-    }
-
-    .yq-products .photo-caption {
-        right: 16px;
-        bottom: 17px;
-        left: 16px;
-    }
-
-    .yq-products .photo-caption strong {
-        font-size: 17px;
-    }
-
-    .yq-products .photo-caption .photo-index {
-        font-size: 8px;
-        padding: 7px 9px;
-    }
-
-    .yq-products .catalogue {
-        padding: 45px 0 75px;
-    }
-
-    .yq-products .catalogue-top {
-        align-items: flex-start;
-    }
-
-    .yq-products .catalogue-heading {
-        font-size: 27px;
-    }
-
-    .yq-products .catalogue-caption {
-        font-size: 11px;
-    }
-
-    .yq-products .catalogue-index {
-        display: none;
-    }
+    .yq-products .catalogue { padding: 45px 0 75px; }
+    .yq-products .catalogue-top { align-items: flex-start; }
+    .yq-products .catalogue-heading { font-size: 27px; }
+    .yq-products .catalogue-caption { font-size: 11px; }
+    .yq-products .catalogue-index { display: none; }
 
     .yq-products .filters {
         flex-wrap: nowrap;
@@ -828,70 +563,30 @@
         scrollbar-color: #c8ccc4 transparent;
     }
 
-    .yq-products .filter-link {
-        flex-shrink: 0;
-        min-height: 37px;
-        padding-inline: 13px;
-        font-size: 10px;
-    }
+    .yq-products .filter-link { flex-shrink: 0; min-height: 37px; padding-inline: 13px; font-size: 10px; }
 
-    .yq-products .product-grid {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 43px;
-    }
+    .yq-products .product-grid { grid-template-columns: minmax(0, 1fr); row-gap: 46px; }
+    .yq-products .product-media { height: 300px; margin-bottom: 18px; }
+    .yq-products .product-card .product-name { font-size: 24px; }
 
-    .yq-products .product-card h3 {
-        font-size: 24px;
-    }
-
-    .yq-products .product-tagline {
-        min-height: 0;
-    }
-
-    .yq-products .product-media {
-        height: 270px;
-        margin: 12px 0 20px;
-    }
-
-    .yq-products .catalogue-bottom {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 45px;
-    }
+    .yq-products .catalogue-bottom { align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 45px; }
 }
 
 @media (max-width: 380px) {
-    .yq-products .intro-heading {
-        font-size: 41px;
-    }
-
-    .yq-products .product-media {
-        height: 235px;
-    }
-
-    .yq-products .intro-cta {
-        gap: 12px;
-        padding-inline: 15px;
-    }
+    .yq-products .intro-heading { font-size: 41px; }
+    .yq-products .product-media { height: 255px; }
+    .yq-products .intro-cta { gap: 12px; padding-inline: 15px; }
 }
 
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
+/* ACCESSIBILITY */
 
-.yq-products a:focus-visible {
-    outline: 3px solid #a5ca35;
-    outline-offset: 4px;
-}
+.yq-products a:focus-visible { outline: 3px solid #a5ca35; outline-offset: 4px; }
 
 @media (prefers-reduced-motion: reduce) {
     .js .yq-products [data-reveal],
-    .js .yq-products .product-card,
-    .js .yq-products [data-reveal="product-image"] img {
+    .js .yq-products .product-card {
         opacity: 1;
         transform: none;
-        clip-path: none;
         transition: none;
     }
 
@@ -911,13 +606,9 @@
 
 <main class="yq-products">
 
-    <!-- =====================================================
-         PHOTOGRAPHY-LED HERO
-    ====================================================== -->
-
+    <!-- HERO -->
     <section class="products-intro">
         <div class="products-container">
-
             <div class="intro-layout">
 
                 <div class="intro-copy">
@@ -938,16 +629,13 @@
                     </p>
 
                     <div class="intro-actions" data-reveal>
-
                         <a href="#product-collection" class="intro-cta">
                             Explore our collection
                             <span aria-hidden="true">↗</span>
                         </a>
-
                         <a href="{% url 'contact' %}" class="intro-secondary">
                             Speak to our team
                         </a>
-
                     </div>
 
                     <div class="intro-footnote" data-reveal>
@@ -956,154 +644,91 @@
 
                 </div>
 
-
-                <!-- =================================================
-                     REPLACE THIS IMAGE WITH YOUR OWN PHOTOGRAPH
-                     Image location:
-                     static/core/images/products-hero.jpg
-                ================================================== -->
-
+                <!-- Image location: static/core/images/products-hero.jpg -->
                 <div class="intro-visual" data-reveal>
-
                     <div class="hero-photo-frame">
 
-                        <img
-                            class="hero-photo"
-                            src="{% static 'core/images/products-hero.jpg' %}"
-                            alt="Solar energy and battery storage solutions from Yunqida Energy"
-                            fetchpriority="high"
-                        >
+                        <img class="hero-photo"
+                             src="{% static 'core/images/products-hero.jpg' %}"
+                             alt="Solar energy and battery storage solutions from Yunqida Energy"
+                             fetchpriority="high">
 
                         <div class="photo-caption">
-
                             <div>
                                 <small>Energy technology</small>
                                 <strong>Powering everyday possibilities.</strong>
                             </div>
-
                             <span class="photo-index">YQ / 01</span>
-
                         </div>
 
                     </div>
-
                 </div>
 
             </div>
-
         </div>
     </section>
 
 
-    <!-- =====================================================
-         PRODUCT CATALOGUE
-    ====================================================== -->
-
+    <!-- CATALOGUE -->
     <section class="catalogue" id="product-collection">
-
         <div class="products-container">
 
             <div class="catalogue-top" data-reveal>
-
                 <div>
                     <h2 class="catalogue-heading">Our products</h2>
-
                     <p class="catalogue-caption">
                         Carefully selected energy equipment for homes,
                         businesses and large-scale projects.
                     </p>
                 </div>
-
-                <span class="catalogue-index">
-                    The collection / 01
-                </span>
-
+                <span class="catalogue-index">The collection / 01</span>
             </div>
 
+            <nav class="filters" aria-label="Filter products by category" data-reveal>
 
-            <!-- CATEGORY FILTERS -->
-
-            <nav
-                class="filters"
-                aria-label="Filter products by category"
-                data-reveal
-            >
-
-                <a
-                    href="{% url 'products' %}"
-                    class="filter-link {% if not active_category %}active{% endif %}"
-                    {% if not active_category %}aria-current="page"{% endif %}
-                >
+                <a href="{% url 'products' %}"
+                   class="filter-link {% if not active_category %}active{% endif %}"
+                   {% if not active_category %}aria-current="page"{% endif %}>
                     All products
                 </a>
 
                 {% for value, label in categories %}
-
-                    <a
-                        href="?category={{ value|urlencode }}"
-                        class="filter-link {% if active_category == value %}active{% endif %}"
-                        {% if active_category == value %}aria-current="page"{% endif %}
-                    >
+                    <a href="?category={{ value|urlencode }}"
+                       class="filter-link {% if active_category == value %}active{% endif %}"
+                       {% if active_category == value %}aria-current="page"{% endif %}>
                         {{ label }}
                     </a>
-
                 {% endfor %}
 
             </nav>
 
-
-            <!-- PRODUCT CARDS -->
-
             {% if products %}
 
                 <div class="product-grid">
-
                     {% for p in products %}
                         {% include 'core/_product_card.html' %}
                     {% endfor %}
-
                 </div>
 
             {% else %}
 
                 <div class="empty" data-reveal>
-
-                    <p>
-                        No products are currently listed in this category.
-                    </p>
-
-                    <a href="{% url 'contact' %}">
-                        Contact us about product availability
-                    </a>
-
+                    <p>No products are currently listed in this category.</p>
+                    <a href="{% url 'contact' %}">Contact us about product availability</a>
                 </div>
 
             {% endif %}
 
-
             <div class="catalogue-bottom" data-reveal>
-
-                <p>
-                    Need assistance identifying the right equipment
-                    for your application?
-                </p>
-
-                <a href="{% url 'contact' %}">
-                    Talk to our team ↗
-                </a>
-
+                <p>Need assistance identifying the right equipment for your application?</p>
+                <a href="{% url 'contact' %}">Talk to our team ↗</a>
             </div>
 
         </div>
-
     </section>
 
 </main>
 
-
-<!-- =========================================================
-     SCROLL REVEALS AND SMOOTH SECTION NAVIGATION
-========================================================== -->
 
 <script>
 (function () {
@@ -1112,91 +737,38 @@
     function initYunqidaProducts() {
 
         const page = document.querySelector('.yq-products');
-
         if (!page) return;
 
         const reducedMotion = window.matchMedia &&
             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const revealItems = page.querySelectorAll(
-            '[data-reveal], .product-card'
-        );
+        const revealItems = page.querySelectorAll('[data-reveal], .product-card');
 
         const showAll = function () {
-            revealItems.forEach(function (item) {
-                item.classList.add('is-in');
-            });
+            revealItems.forEach(function (item) { item.classList.add('is-in'); });
         };
-
-        /*
-         * Keep the page visible if motion is disabled
-         * or the browser does not support IntersectionObserver.
-         */
 
         if (reducedMotion || !('IntersectionObserver' in window)) {
             showAll();
             return;
         }
 
-        /*
-         * Observe sections and cards as they enter the viewport.
-         */
+        const revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.07, rootMargin: '0px 0px -35px 0px' });
 
-        const revealObserver = new IntersectionObserver(
-            function (entries, observer) {
+        revealItems.forEach(function (item) { revealObserver.observe(item); });
 
-                entries.forEach(function (entry) {
-
-                    if (entry.isIntersecting) {
-
-                        entry.target.classList.add('is-in');
-
-                        observer.unobserve(entry.target);
-                    }
-
-                });
-
-            },
-            {
-                threshold: 0.07,
-                rootMargin: '0px 0px -35px 0px'
-            }
-        );
-
-        revealItems.forEach(function (item) {
-            revealObserver.observe(item);
-        });
-
-
-        /*
-         * Product image reveal.
-         */
-
-        const productImages = page.querySelectorAll(
-            '[data-reveal="product-image"]'
-        );
-
-        productImages.forEach(function (item) {
-            revealObserver.observe(item);
-        });
-
-
-        /*
-         * Smooth movement to the product collection.
-         * Uses native scrolling so it does not replace
-         * or disable the site's existing Lenis setup.
-         */
-
-        const collectionLink = page.querySelector(
-            'a[href="#product-collection"]'
-        );
-
+        const collectionLink = page.querySelector('a[href="#product-collection"]');
         const collection = page.querySelector('#product-collection');
 
         if (collectionLink && collection) {
-
             collectionLink.addEventListener('click', function (event) {
-
                 event.preventDefault();
 
                 collection.scrollIntoView({
@@ -1207,26 +779,14 @@
                 if (history.replaceState) {
                     history.replaceState(null, '', '#product-collection');
                 }
-
             });
-
         }
-
     }
 
-
     if (document.readyState === 'loading') {
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            initYunqidaProducts,
-            { once: true }
-        );
-
+        document.addEventListener('DOMContentLoaded', initYunqidaProducts, { once: true });
     } else {
-
         initYunqidaProducts();
-
     }
 
 })();

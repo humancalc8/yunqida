@@ -1,73 +1,35 @@
 {% load static %}
-<article class="product-card" data-reveal>
+<article class="product-card">
 
-    <div class="product-card-top">
-        <span class="tag">{{ p.get_category_display }}</span>
-    </div>
-
-    <h3>
-        <a href="{{ p.get_absolute_url }}">
-            {{ p.name }}
-        </a>
-    </h3>
-
-    {% if p.tagline %}
-        <p class="product-tagline">{{ p.tagline }}</p>
-    {% endif %}
-
-    <a href="{{ p.get_absolute_url }}"
-       class="product-media"
-       aria-label="View {{ p.name }}"
-       data-reveal="product-image">
+    <a class="product-media"
+       href="{{ p.get_absolute_url }}"
+       aria-label="View {{ p.name }}">
 
         {% if p.image %}
             <img src="{{ p.image.url }}"
                  alt="{{ p.name }}"
                  loading="lazy"
                  decoding="async">
+
         {% elif p.fallback_image %}
-            <img src="{% static p.fallback_image %}"
+            <img src="{% if p.fallback_image|slice:':1' == '/' or p.fallback_image|slice:':4' == 'http' %}{{ p.fallback_image }}{% else %}{% static p.fallback_image %}{% endif %}"
                  alt="{{ p.name }}"
                  loading="lazy"
                  decoding="async">
+
+        {% else %}
+            <span class="product-media-empty">Image unavailable</span>
         {% endif %}
 
     </a>
 
-    {% if p.capacity or p.power or p.warranty %}
-        <div class="specification-heading">
-            Key specifications
-        </div>
+    <h3 class="product-name">
+        <a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+    </h3>
 
-        <dl class="specs">
-
-            {% if p.capacity %}
-                <div>
-                    <dt>Capacity</dt>
-                    <dd>{{ p.capacity }}</dd>
-                </div>
-            {% endif %}
-
-            {% if p.power %}
-                <div>
-                    <dt>Power</dt>
-                    <dd>{{ p.power }}</dd>
-                </div>
-            {% endif %}
-
-            {% if p.warranty %}
-                <div>
-                    <dt>Warranty</dt>
-                    <dd>{{ p.warranty }}</dd>
-                </div>
-            {% endif %}
-
-        </dl>
-    {% endif %}
-
-    <a href="{{ p.get_absolute_url }}" class="product-more">
-        <span>View product details</span>
-        <span aria-hidden="true">→</span>
+    <a class="product-more" href="{{ p.get_absolute_url }}">
+        <span class="product-more-text">View product</span>
+        <span class="product-more-icon" aria-hidden="true">→</span>
     </a>
 
 </article>

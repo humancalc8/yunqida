@@ -2,10 +2,11 @@
 import os
 from pathlib import Path
 
-import dj_database_url
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 # =====================================================
 # SECURITY
 # =====================================================
@@ -206,6 +207,18 @@ GOOGLE_PLACE_ID = os.environ.get(
     "GOOGLE_PLACE_ID",
     "",
 )
+
+# =====================================================
+# GROQCLOUD AI
+# =====================================================
+
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+
+GROQ_MODEL = os.environ.get(
+    "GROQ_MODEL",
+    "llama-3.3-70b-versatile",
+)
+
 
 # =====================================================
 # RENDER SECURITY

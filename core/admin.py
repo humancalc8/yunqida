@@ -1,3 +1,4 @@
+
 import json
 from urllib.parse import urlsplit
 
@@ -6,8 +7,9 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import path, reverse
+from django.utils import timezone
 from django.utils.text import slugify
 
 from .models import (
@@ -18,7 +20,6 @@ from .models import (
     ProductImportDraft,
 )
 
-from .services.product_lookup import lookup_yunqida_model
 from .services.product_images import download_product_images
 
 
@@ -112,6 +113,10 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     )
 
+    # -------------------------------------------------
+    # CUSTOM ADMIN URLS
+    # -------------------------------------------------
+
     def get_urls(self):
 
         urls = super().get_urls()
@@ -123,6 +128,11 @@ class ProductAdmin(admin.ModelAdmin):
                 name='core_product_scanner_submit',
             ),
             path(
+                'scanner/status/<int:draft_id>/',
+                self.admin_site.admin_view(self.scan_status),
+                name='core_product_scanner_status',
+            ),
+            path(
                 'scanner/',
                 self.admin_site.admin_view(self.product_scanner),
                 name='core_product_scanner',
@@ -130,6 +140,10 @@ class ProductAdmin(admin.ModelAdmin):
         ]
 
         return custom_urls + urls
+
+    # -------------------------------------------------
+    # SCANNER PAGE
+    # -------------------------------------------------
 
     def product_scanner(self, request):
 
@@ -139,19 +153,29 @@ class ProductAdmin(admin.ModelAdmin):
         request.current_app = self.admin_site.name
 
         context = {
-            **self.admin_site.each_context(request),
-            'opts': self.model._meta,
-            'title': 'YUNQIDA Product Scanner',
-            'submit_url': reverse(
-                f'{self.admin_site.name}:core_product_scanner_submit'
-            ),
-        }
+    **self.admin_site.each_context(request),
+    'opts': self.model._meta,
+    'title': 'YUNQIDA Product Scanner',
+
+    'submit_url': reverse(
+        f'{self.admin_site.name}:core_product_scanner_submit'
+    ),
+
+    'status_url_template': reverse(
+        f'{self.admin_site.name}:core_product_scanner_status',
+        args=[0],
+    ),
+}
 
         return render(
             request,
             'admin/core/product/scanner.html',
             context,
         )
+
+    # -------------------------------------------------
+    # SUBMIT SCANNER LOOKUP
+    # -------------------------------------------------
 
     def submit_scan(self, request):
 
@@ -221,6 +245,10 @@ class ProductAdmin(admin.ModelAdmin):
                 status=400,
             )
 
+        # -------------------------------------------------
+        # DETECT URL INPUT
+        # -------------------------------------------------
+
         source_url = ''
 
         try:
@@ -259,6 +287,10 @@ class ProductAdmin(admin.ModelAdmin):
                 status=400,
             )
 
+        # -------------------------------------------------
+        # CREATE OR RETRIEVE DRAFT
+        # -------------------------------------------------
+
         draft, created = ProductImportDraft.objects.get_or_create(
             raw_code=value,
             status='pending',
@@ -268,7 +300,17 @@ class ProductAdmin(admin.ModelAdmin):
             },
         )
 
+        # -------------------------------------------------
+        # URL INPUT: SAVE WITHOUT LOOKUP
+        # -------------------------------------------------
+
         if source_url:
+
+            if not draft.source_url:
+                draft.source_url = source_url
+                draft.save(
+                    update_fields=['source_url', 'updated_at']
+                )
 
             return JsonResponse({
                 'ok': True,
@@ -278,106 +320,145 @@ class ProductAdmin(admin.ModelAdmin):
                     args=[draft.pk],
                 ),
                 'lookup_completed': False,
+                'lookup_status': draft.lookup_status,
                 'message': (
                     'URL saved. Enter the actual product model number '
                     'to fetch specifications.'
                 ),
             })
 
-        try:
+        # -------------------------------------------------
+        # QUEUE MODEL LOOKUP
+        # -------------------------------------------------
 
-            result = lookup_yunqida_model(value)
+        if draft.status != 'pending':
+            return JsonResponse({
+                'ok': False,
+                'error': (
+                    'This draft has already been imported or marked '
+                    'for attention. Open the draft in the admin.'
+                ),
+            }, status=409)
 
-            if (
-                not isinstance(result, dict)
-                or not result.get('match_verified')
-            ):
+        draft.lookup_status = 'queued'
+        draft.lookup_started_at = None
+        draft.lookup_finished_at = None
+        draft.lookup_error = ''
+        draft.extracted_data = {}
 
-                draft.notes = (
-                    'No verified exact model match was found. '
-                    'Check the identifier and try again.'
-                )
+        draft.notes = (
+            'Manufacturer lookup queued. '
+            'Waiting for the background worker.'
+        )
 
-                draft.save(
-                    update_fields=['notes', 'updated_at']
-                )
+        draft.save(update_fields=[
+            'lookup_status',
+            'lookup_started_at',
+            'lookup_finished_at',
+            'lookup_error',
+            'extracted_data',
+            'notes',
+            'updated_at',
+        ])
 
-                return JsonResponse({
+        return JsonResponse({
+            'ok': True,
+            'draft_id': draft.pk,
+            'draft_url': reverse(
+                f'{self.admin_site.name}:core_productimportdraft_change',
+                args=[draft.pk],
+            ),
+            'status_url': reverse(
+                f'{self.admin_site.name}:core_product_scanner_status',
+                args=[draft.pk],
+            ),
+            'lookup_completed': False,
+            'lookup_status': 'queued',
+            'message': (
+                'Product model saved. Manufacturer lookup has been '
+                'queued and will begin shortly.'
+            ),
+        }, status=202)
+
+    # -------------------------------------------------
+    # SCANNER STATUS ENDPOINT
+    # -------------------------------------------------
+
+    def scan_status(self, request, draft_id):
+
+        if request.method != 'GET':
+            return JsonResponse(
+                {
                     'ok': False,
-                    'draft_id': draft.pk,
-                    'draft_url': reverse(
-                        f'{self.admin_site.name}:core_productimportdraft_change',
-                        args=[draft.pk],
-                    ),
-                    'error': 'No verified product match was found.',
-                }, status=422)
-
-            if not result.get('name') or not result.get('description'):
-                raise ValueError(
-                    'The manufacturer result is missing product information.'
-                )
-
-            draft.extracted_data = result
-
-            if result.get('source_url'):
-                draft.source_url = result['source_url']
-
-            draft.notes = (
-                'Manufacturer lookup completed successfully. '
-                'Review specifications before importing into the catalogue.'
+                    'error': 'GET requests only.',
+                },
+                status=405,
             )
 
-            draft.save(update_fields=[
-                'extracted_data',
-                'source_url',
-                'notes',
-                'updated_at',
-            ])
+        if not self.has_view_permission(request):
+            raise PermissionDenied
 
-            return JsonResponse({
-                'ok': True,
-                'draft_id': draft.pk,
-                'draft_url': reverse(
-                    f'{self.admin_site.name}:core_productimportdraft_change',
-                    args=[draft.pk],
-                ),
-                'lookup_completed': True,
-                'manufacturer': result.get('manufacturer', ''),
-                'product_name': result.get('name', ''),
-                'model_number': result.get('model_number', ''),
-                'category': result.get('category', ''),
-                'tagline': result.get('tagline', ''),
-                'description': result.get('description', ''),
-                'capacity': result.get('capacity', ''),
-                'power': result.get('power', ''),
-                'warranty': result.get('warranty', ''),
-                'image_url': result.get('image_url', ''),
-                'source_url': result.get('source_url', ''),
+        draft = get_object_or_404(
+            ProductImportDraft,
+            pk=draft_id,
+        )
+
+        if not self.has_view_permission(request, draft):
+            raise PermissionDenied
+
+        data = draft.extracted_data or {}
+
+        response_data = {
+            'ok': True,
+            'draft_id': draft.pk,
+            'lookup_status': draft.lookup_status,
+            'lookup_completed': draft.lookup_status == 'completed',
+            'error': draft.lookup_error,
+            'message': '',
+            'draft_url': reverse(
+                f'{self.admin_site.name}:core_productimportdraft_change',
+                args=[draft.pk],
+            ),
+        }
+
+        if draft.lookup_status == 'queued':
+            response_data['message'] = (
+                'Your product lookup is queued and waiting for the worker.'
+            )
+
+        elif draft.lookup_status == 'processing':
+            response_data['message'] = (
+                'Searching the official YUNQIDA manufacturer catalogue...'
+            )
+
+        elif draft.lookup_status == 'failed':
+            response_data['message'] = (
+                draft.lookup_error or 'Manufacturer lookup failed.'
+            )
+
+        elif draft.lookup_status == 'completed':
+
+            response_data.update({
+                'manufacturer': data.get('manufacturer', ''),
+                'product_name': data.get('name', ''),
+                'model_number': data.get('model_number', ''),
+                'category': data.get('category', ''),
+                'tagline': data.get('tagline', ''),
+                'description': data.get('description', ''),
+                'capacity': data.get('capacity', ''),
+                'power': data.get('power', ''),
+                'warranty': data.get('warranty', ''),
+                'image_url': data.get('image_url', ''),
+                'source_url': data.get('source_url') or draft.source_url,
                 'message': 'Product details fetched successfully.',
             })
 
-        except Exception as exc:
-
-            draft.notes = (
-                f'Manufacturer lookup failed: {str(exc)[:500]}'
+        else:
+            response_data['message'] = (
+                'No manufacturer lookup has been started for this draft.'
             )
 
-            draft.save(
-                update_fields=['notes', 'updated_at']
-            )
-
-            return JsonResponse({
-                'ok': False,
-                'draft_id': draft.pk,
-                'draft_url': reverse(
-                    f'{self.admin_site.name}:core_productimportdraft_change',
-                    args=[draft.pk],
-                ),
-                'error': (
-                    'The identifier was saved, but manufacturer lookup failed: '
-                    + str(exc)[:300]
-                ),
-            }, status=502)
+        return JsonResponse(response_data)
 
 
 # =====================================================
@@ -391,22 +472,32 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         'id',
         'short_identifier',
         'status',
+        'lookup_status',
         'created_at',
         'updated_at',
     )
 
-    list_filter = ('status', 'created_at')
+    list_filter = (
+        'status',
+        'lookup_status',
+        'created_at',
+    )
 
     search_fields = (
         'raw_code',
         'source_url',
         'notes',
+        'lookup_error',
     )
 
     readonly_fields = (
         'raw_code',
         'source_url',
         'product',
+        'lookup_status',
+        'lookup_started_at',
+        'lookup_finished_at',
+        'lookup_error',
         'created_at',
         'updated_at',
     )
@@ -418,10 +509,24 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Scanned Information', {
-            'fields': ('raw_code', 'source_url')
+            'fields': (
+                'raw_code',
+                'source_url',
+            )
+        }),
+        ('Manufacturer Lookup', {
+            'fields': (
+                'lookup_status',
+                'lookup_started_at',
+                'lookup_finished_at',
+                'lookup_error',
+            )
         }),
         ('Extracted Product Information', {
-            'fields': ('extracted_data', 'notes')
+            'fields': (
+                'extracted_data',
+                'notes',
+            )
         }),
         ('Import Status', {
             'fields': (
@@ -442,12 +547,15 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+    # -------------------------------------------------
+    # QUEUE PRODUCT LOOKUPS
+    # -------------------------------------------------
+
     @admin.action(description='1. Fetch product details from Yunqida')
     def fetch_product_details(self, request, queryset):
 
-        fetched = 0
+        queued = 0
         skipped = 0
-        failed = 0
 
         selected = list(queryset[:5])
 
@@ -462,7 +570,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
             if model_number.lower().startswith(
                 ('http://', 'https://')
             ):
-
                 draft.notes = (
                     'Lookup not performed: this draft contains a URL. '
                     'Enter the product model number to perform the lookup.'
@@ -472,115 +579,59 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                     update_fields=['notes', 'updated_at']
                 )
 
-                failed += 1
+                skipped += 1
                 continue
 
-            try:
+            draft.lookup_status = 'queued'
+            draft.lookup_started_at = None
+            draft.lookup_finished_at = None
+            draft.lookup_error = ''
+            draft.extracted_data = {}
 
-                result = lookup_yunqida_model(model_number)
+            draft.notes = (
+                'Manufacturer lookup queued from the admin action. '
+                'Waiting for the background worker.'
+            )
 
-                if not isinstance(result, dict):
-                    raise ValueError(
-                        'The lookup returned an invalid result.'
-                    )
+            draft.save(update_fields=[
+                'lookup_status',
+                'lookup_started_at',
+                'lookup_finished_at',
+                'lookup_error',
+                'extracted_data',
+                'notes',
+                'updated_at',
+            ])
 
-                if not result.get('match_verified'):
+            queued += 1
 
-                    draft.notes = (
-                        'No verified exact model match was returned. '
-                        'Review the model number and try again.'
-                    )
-
-                    draft.save(
-                        update_fields=['notes', 'updated_at']
-                    )
-
-                    failed += 1
-                    continue
-
-                if not result.get('name') or not result.get('description'):
-
-                    draft.notes = (
-                        'A model match was found, but the product name '
-                        'or description is missing.'
-                    )
-
-                    draft.save(
-                        update_fields=['notes', 'updated_at']
-                    )
-
-                    failed += 1
-                    continue
-
-                draft.extracted_data = result
-
-                if result.get('source_url'):
-                    draft.source_url = result['source_url']
-
-                warnings = result.get('warnings') or []
-
-                draft.notes = (
-                    'Manufacturer lookup completed. '
-                    'Exact model match verified. '
-                    'Review the extracted specifications before importing.'
-                )
-
-                if warnings:
-                    draft.notes += ' Warnings: ' + '; '.join(
-                        str(item) for item in warnings
-                    )
-
-                draft.save(update_fields=[
-                    'extracted_data',
-                    'source_url',
-                    'notes',
-                    'updated_at',
-                ])
-
-                fetched += 1
-
-            except Exception as exc:
-
-                draft.notes = (
-                    f'Manufacturer lookup failed: {str(exc)[:500]}'
-                )
-
-                draft.save(
-                    update_fields=['notes', 'updated_at']
-                )
-
-                failed += 1
-
-        if fetched:
+        if queued:
             self.message_user(
                 request,
-                f'{fetched} product detail lookup(s) completed. '
-                'Open the drafts to review the results.',
+                f'{queued} manufacturer lookup(s) queued successfully. '
+                'The background worker must be running to process them.',
                 messages.SUCCESS,
             )
 
         if skipped:
             self.message_user(
                 request,
-                f'{skipped} draft(s) skipped because they were not pending.',
+                f'{skipped} draft(s) skipped because they were not pending '
+                'or contained a URL.',
                 messages.WARNING,
-            )
-
-        if failed:
-            self.message_user(
-                request,
-                f'{failed} lookup(s) failed or need attention. '
-                'Open the affected drafts to see the reason.',
-                messages.ERROR,
             )
 
         if len(queryset) > 5:
             self.message_user(
                 request,
-                'Only the first five selected drafts were processed. '
+                'Only the first five selected drafts were queued. '
                 'Run the action again for the remaining drafts.',
                 messages.WARNING,
             )
+
+    # -------------------------------------------------
+    # IMPORT REVIEWED PRODUCTS
+    # -------------------------------------------------
 
     @admin.action(description='2. Import reviewed products into catalogue')
     def import_selected_products(self, request, queryset):
@@ -594,6 +645,10 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         for draft in queryset:
 
             if draft.status != 'pending':
+                skipped += 1
+                continue
+
+            if draft.lookup_status != 'completed':
                 skipped += 1
                 continue
 
@@ -653,7 +708,6 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
                 image_urls = []
 
             else:
-                # Work on a copy; do not modify the draft JSON data.
                 image_urls = list(image_urls)
 
             primary_url = data.get('image_url')
@@ -824,8 +878,8 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         if skipped:
             self.message_user(
                 request,
-                f'{skipped} product(s) skipped because they were already '
-                'processed or a matching product exists.',
+                f'{skipped} product(s) skipped because they are not ready, '
+                'were already processed, or a matching product exists.',
                 messages.WARNING,
             )
 

@@ -120,9 +120,6 @@ class ProductImage(models.Model):
         return f'{self.product.name} - Image {self.pk}'
 
 
-# =====================================================
-# PRODUCT IMPORT DRAFT
-# =====================================================
 
 class ProductImportDraft(models.Model):
 
@@ -132,39 +129,78 @@ class ProductImportDraft(models.Model):
         ('failed', 'Needs Attention'),
     ]
 
+    LOOKUP_STATUS_CHOICES = [
+        ('idle', 'Not Started'),
+        ('queued', 'Queued'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+
     raw_code = models.TextField(
-        help_text='Original QR code contents or manually entered identifier.'
+        help_text="Scanned QR content or manually entered model number."
     )
 
     source_url = models.URLField(
         blank=True,
-        help_text='Manufacturer product page, when available.'
+        help_text="Official manufacturer product page."
     )
 
     extracted_data = models.JSONField(
         default=dict,
         blank=True,
-        help_text='Product information extracted from the source.'
+        help_text="Verified product information extracted from the manufacturer."
     )
 
+    # Existing product import status. Keep separate from lookup status.
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        default='pending'
+        default='pending',
+        db_index=True,
     )
 
-    notes = models.TextField(blank=True)
+    # Manufacturer lookup tracking.
+    lookup_status = models.CharField(
+        max_length=20,
+        choices=LOOKUP_STATUS_CHOICES,
+        default='idle',
+        db_index=True,
+    )
+
+    lookup_started_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    lookup_finished_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    lookup_error = models.TextField(
+        blank=True,
+    )
+
+    notes = models.TextField(
+        blank=True,
+    )
 
     product = models.ForeignKey(
         Product,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='import_drafts'
+        related_name='import_drafts',
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -172,8 +208,7 @@ class ProductImportDraft(models.Model):
         verbose_name_plural = 'Product Import Drafts'
 
     def __str__(self):
-        return f'Import {self.pk} - {self.get_status_display()}'
-
+        return f"Draft #{self.pk} - {self.raw_code[:80]}"
 
 # =====================================================
 # CUSTOMER ENQUIRIES

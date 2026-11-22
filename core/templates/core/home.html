@@ -8,12 +8,12 @@
 {% block extra_head %}
 <style>
 /* =========================================================
-   YUNQIDA HOME  ·  v3
+   YUNQIDA HOME  ·  v4
    Palette : Ink #0d1430 · Signal #ffe000 · Cream #f1f0e0 · Paper #fff · Mist #f2f3f5
    Buttons : yellow by default (no dark buttons)
-   Order   : Hero > Categories > Products > Solutions > Projects > About >
+   Order   : Hero (videos) > Categories > Products > Solutions > Projects > About >
              Technology (cream) > Services (staggered) > Approach >
-             Clean energy (slider) > Reviews (photo + button) > Contact > CTA
+             Clean energy (slider) > Reviews (photo + button) > Contact > CTA (call us)
 ========================================================= */
 html{height:auto!important;overflow-x:clip!important;overflow-y:auto!important;scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
 body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;overflow-y:visible!important}
@@ -71,7 +71,7 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-section--mist .yd-frame,.yd-section--ink .yd-frame{background:#fff}
 .yd-frame--shadow{box-shadow:0 30px 70px -34px rgba(13,20,48,.35)}
 
-/* ---------- slanted accents (from the reference style) ---------- */
+/* ---------- slanted accents ---------- */
 .yd-slant{position:absolute;right:0;width:clamp(70px,9vw,140px);height:clamp(40px,4.6vw,70px);background:var(--signal);clip-path:polygon(0 0,100% 55%,100% 100%,0 45%);pointer-events:none}
 
 /* ---------- scroll reveal (staggered) ---------- */
@@ -90,19 +90,14 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-top:hover{background:#fff}
 
 /* =========================================================
-   1. HERO  (clean video: no tint, with sound + controls)
+   1. HERO  (two clear videos: no tint, no progress line, sound + controls)
 ========================================================= */
 .yd-hero{position:relative;isolation:isolate;display:flex;min-height:min(820px,calc(100svh - 70px));align-items:center;overflow:hidden;background:#000;color:#fff}
-.yd-hero__slides{position:absolute;z-index:-2;inset:0;background:#000}
+.yd-hero__slides{position:absolute;z-index:-1;inset:0;background:#000}
 .yd-hero__slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 1.2s ease}
 .yd-hero__slide.is-active{opacity:1;visibility:visible}
-.yd-hero__slide img,.yd-hero__slide video{width:100%;height:100%;object-fit:cover;object-position:center}
-.yd-hero__slide.is-active img{animation:ydZoom 10s ease-out both}
-@keyframes ydZoom{from{transform:scale(1.07)}to{transform:scale(1)}}
-/* readability overlay for the photo slides only; the video stays completely untinted */
-.yd-hero:before{position:absolute;z-index:-1;inset:0;content:"";background:linear-gradient(90deg,rgba(8,13,32,.86),rgba(8,13,32,.42) 58%,rgba(8,13,32,.08)),linear-gradient(0deg,rgba(8,13,32,.6),transparent 55%);opacity:1;transition:opacity .8s ease;pointer-events:none}
-.yd-hero.is-video:before{opacity:0}
-.yd-hero.is-video h1,.yd-hero.is-video .yd-hero__label,.yd-hero.is-video p,.yd-hero.is-video .yd-hero__bottom{text-shadow:0 2px 22px rgba(0,0,0,.55)}
+.yd-hero__slide video{width:100%;height:100%;object-fit:cover;object-position:center}
+.yd-hero h1,.yd-hero h2,.yd-hero__label,.yd-hero p,.yd-hero__bottom{text-shadow:0 2px 22px rgba(0,0,0,.55)}
 .yd-hero__inner{width:min(1280px,calc(100% - var(--gutter)*2));margin-inline:auto;padding:clamp(80px,12vh,130px) 0 52px}
 .yd-hero__content{max-width:700px;min-height:320px}
 .yd-hero__slide-copy{display:none}
@@ -117,9 +112,7 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-hero h1 span,.yd-hero h2 span{color:var(--signal)}
 .yd-hero p{max-width:450px;margin:22px 0 30px;color:#ffffffe6;font-size:clamp(15px,1.3vw,18px);line-height:1.7}
 .yd-hero__actions{display:flex;flex-wrap:wrap;gap:12px}
-.yd-hero__bottom{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:clamp(44px,9vh,92px);padding-top:18px;border-top:1px solid #ffffff59;color:#ffffffd9;font-size:13px}
-.yd-hero__bar{position:absolute;top:-1px;left:0;width:100%;height:2px;background:var(--signal);transform:scaleX(0);transform-origin:left}
-@keyframes ydBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.yd-hero__bottom{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:clamp(44px,9vh,92px);color:#ffffffd9;font-size:13px}
 .yd-hero__controls{display:flex;align-items:center;gap:12px}
 .yd-hero__dots{display:flex;gap:7px}
 .yd-hero__dot{width:22px;height:3px;padding:0;border:0;background:#ffffff80;cursor:pointer;transition:width .3s,background .3s}
@@ -127,10 +120,8 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-hero__arrow{display:grid;width:40px;height:38px;place-items:center;border:1px solid #ffffff90;background:#ffffff1f;color:#fff;font-size:18px;cursor:pointer;transition:.25s}
 .yd-hero__arrow:hover{background:var(--signal);border-color:var(--signal);color:var(--ink)}
 
-/* video controls (visible only while the video slide is showing) */
-.yd-vctrl{display:none;align-items:center;gap:10px}
-.yd-hero.is-video .yd-vctrl{display:flex}
-.yd-hero.is-video .yd-hero__brand{display:none}
+/* video controls */
+.yd-vctrl{display:flex;align-items:center;gap:10px}
 .yd-vbtn{position:relative;display:grid;width:42px;height:42px;place-items:center;padding:0;border:1px solid #ffffffa6;background:#ffffff24;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
 .yd-vbtn:hover{background:var(--signal);border-color:var(--signal);color:var(--ink)}
 .yd-vbtn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -307,7 +298,7 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-details span:last-child{text-align:right;font-weight:600}
 
 /* =========================================================
-   12. FINAL CTA
+   12. FINAL CTA  (call us)
 ========================================================= */
 .yd-final{position:relative;overflow:hidden;padding:clamp(64px,8vw,112px) 0;background:var(--ink);color:#fff}
 .yd-final__tab{position:absolute;top:0;height:clamp(14px,1.8vw,24px);background:var(--signal);clip-path:polygon(0 0,100% 0,94% 100%,6% 100%)}
@@ -316,11 +307,14 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
 .yd-final__inner{display:flex;align-items:center;justify-content:space-between;gap:clamp(24px,5vw,64px)}
 .yd-final h2{max-width:640px;margin:0;font-family:var(--display);font-size:clamp(26px,3.8vw,50px);font-weight:800;line-height:1.08;letter-spacing:-.03em;text-transform:uppercase}
 .yd-final h2 span{color:var(--signal)}
-.yd-final__form{display:flex;align-items:center;flex:0 1 420px;width:100%;padding:6px;border-radius:999px;background:#fff}
-.yd-final__form input{flex:1;min-width:0;height:48px;padding:0 20px;border:0;border-radius:999px;background:transparent;color:var(--ink);font-size:14px}
-.yd-final__form input:focus{outline:none}
-.yd-final__form button{display:grid;flex:0 0 48px;width:48px;height:48px;place-items:center;border:0;border-radius:50%;background:var(--signal);color:var(--ink);font-size:20px;font-weight:800;cursor:pointer;transition:transform .3s var(--ease),background .25s}
-.yd-final__form button:hover{transform:rotate(-45deg);background:var(--signal-deep)}
+.yd-call{display:inline-flex;align-items:center;gap:16px;flex:0 0 auto;min-height:72px;padding:10px 30px 10px 12px;border-radius:999px;background:var(--signal);color:var(--ink);transition:background .25s,transform .3s var(--ease),box-shadow .3s}
+.yd-call:hover{background:#fff;transform:translateY(-3px);box-shadow:0 18px 34px -16px rgba(0,0,0,.6)}
+.yd-call__icon{display:grid;flex:0 0 52px;width:52px;height:52px;place-items:center;border-radius:50%;background:var(--ink);color:var(--signal);transition:transform .4s var(--ease)}
+.yd-call:hover .yd-call__icon{transform:rotate(-12deg) scale(1.06)}
+.yd-call__icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.yd-call__text{display:flex;flex-direction:column;line-height:1.2}
+.yd-call__text small{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;opacity:.75}
+.yd-call__text strong{margin-top:3px;font-family:var(--display);font-size:clamp(18px,1.6vw,22px);font-weight:800;letter-spacing:-.01em;white-space:nowrap}
 
 /* =========================================================
    SCALING
@@ -345,7 +339,6 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
  .yd-offer__col--top{grid-column:1/-1;min-height:220px;border-left:0}
  .yd-tech__grid{grid-template-columns:1fr;padding-inline:0}
  .yd-final__inner{flex-direction:column;align-items:flex-start}
- .yd-final__form{flex:none}
 }
 @media(max-width:860px){
  .yd-split,.yd-split--wide-text,.yd-clean__body{grid-template-columns:1fr}
@@ -376,6 +369,7 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
  .yd-details div{flex-direction:column;gap:4px}
  .yd-details span:last-child{text-align:left}
  .yd-actions .yd-btn{width:100%}
+ .yd-call{width:100%}
 }
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto!important}
@@ -396,23 +390,25 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
   <symbol id="yd-clip" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 14l2 2 4-4"/></symbol>
   <symbol id="yd-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
   <symbol id="yd-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="yd-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
 </svg>
 
 <div class="yd-progress" aria-hidden="true"><span id="ydHomeProgress"></span></div>
 <button class="yd-top" id="ydTop" type="button" aria-label="Back to top">↑</button>
 
-<!-- 1. HERO -->
-<section class="yd-hero is-video" id="ydHero">
-    <div class="yd-hero__slides" aria-hidden="true">
+<!-- 1. HERO: two videos -->
+<section class="yd-hero" id="ydHero">
+    <div class="yd-hero__slides">
         <div class="yd-hero__slide is-active" data-slide="0">
             <video id="ydHeroVideo" autoplay muted playsinline preload="auto" poster="{% static 'img/video-poster.jpg' %}">
                 <source src="{% static 'video/yunqida.mp4' %}" type="video/mp4">
             </video>
         </div>
-        <div class="yd-hero__slide" data-slide="1"><img src="{% static 'img/solar.png' %}" alt="" fetchpriority="high"></div>
-        <div class="yd-hero__slide" data-slide="2"><img src="{% static 'img/2.png' %}" alt="" loading="lazy"></div>
-        <div class="yd-hero__slide" data-slide="3"><img src="{% static 'img/3.png' %}" alt="" loading="lazy"></div>
-        <div class="yd-hero__slide" data-slide="4"><img src="{% static 'img/4.png' %}" alt="" loading="lazy"></div>
+        <div class="yd-hero__slide" data-slide="1">
+            <video id="ydHeroVideo2" muted playsinline preload="metadata">
+                <source src="{% static 'video/yunqida2.mp4' %}" type="video/mp4">
+            </video>
+        </div>
     </div>
 
     <div class="yd-hero__inner">
@@ -429,39 +425,17 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
             </div>
 
             <div class="yd-hero__slide-copy" data-copy="1">
-                <span class="yd-hero__label">Solar energy</span>
-                <h2>Make room for <span>better energy.</span></h2>
-                <p>Solar solutions for modern living.</p>
-                <div class="yd-hero__actions"><a class="yd-btn" href="{% url 'solutions' %}">Explore solutions</a></div>
-            </div>
-
-            <div class="yd-hero__slide-copy" data-copy="2">
                 <span class="yd-hero__label">Energy storage</span>
                 <h2>Power that <span>stays with you.</span></h2>
-                <p>Explore lithium battery technology.</p>
-                <div class="yd-hero__actions"><a class="yd-btn" href="{% url 'products' %}">View products</a></div>
-            </div>
-
-            <div class="yd-hero__slide-copy" data-copy="3">
-                <span class="yd-hero__label">Solar technology</span>
-                <h2>Turn sunlight into <span>possibility.</span></h2>
-                <p>Discover solar options for your project.</p>
-                <div class="yd-hero__actions"><a class="yd-btn" href="{% url 'solutions' %}">Discover more</a></div>
-            </div>
-
-            <div class="yd-hero__slide-copy" data-copy="4">
-                <span class="yd-hero__label">Hybrid inverter systems</span>
-                <h2>Smarter control. <span>Reliable power.</span></h2>
-                <p>Explore inverter systems for your energy needs.</p>
-                <div class="yd-hero__actions"><a class="yd-btn" href="{% url 'products' %}">Explore equipment</a></div>
+                <p>Explore hybrid inverters, lithium batteries and solar equipment for your project.</p>
+                <div class="yd-hero__actions">
+                    <a class="yd-btn" href="{% url 'solutions' %}">Explore solutions</a>
+                    <a class="yd-btn yd-btn--ghost" href="{% url 'contact' %}">Talk to us</a>
+                </div>
             </div>
         </div>
 
         <div class="yd-hero__bottom">
-            <i class="yd-hero__bar" id="ydHeroBar" aria-hidden="true"></i>
-
-            <span class="yd-hero__brand">Yunqida Energy Technology, Kenya</span>
-
             <!-- video controls -->
             <div class="yd-vctrl" id="ydVideoControls" role="group" aria-label="Video controls">
                 <button class="yd-vbtn" id="ydPlay" type="button" aria-label="Pause video">
@@ -481,15 +455,12 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
             </div>
 
             <div class="yd-hero__controls">
-                <div class="yd-hero__dots" aria-label="Choose banner slide">
-                    <button class="yd-hero__dot is-active" type="button" data-go="0" aria-label="Show video slide"></button>
-                    <button class="yd-hero__dot" type="button" data-go="1" aria-label="Show solar slide"></button>
-                    <button class="yd-hero__dot" type="button" data-go="2" aria-label="Show battery slide"></button>
-                    <button class="yd-hero__dot" type="button" data-go="3" aria-label="Show solar technology slide"></button>
-                    <button class="yd-hero__dot" type="button" data-go="4" aria-label="Show inverter slide"></button>
+                <div class="yd-hero__dots" aria-label="Choose video">
+                    <button class="yd-hero__dot is-active" type="button" data-go="0" aria-label="Show first video"></button>
+                    <button class="yd-hero__dot" type="button" data-go="1" aria-label="Show second video"></button>
                 </div>
-                <button class="yd-hero__arrow" id="ydHeroPrev" type="button" aria-label="Previous slide">←</button>
-                <button class="yd-hero__arrow" id="ydHeroNext" type="button" aria-label="Next slide">→</button>
+                <button class="yd-hero__arrow" id="ydHeroPrev" type="button" aria-label="Previous video">←</button>
+                <button class="yd-hero__arrow" id="ydHeroNext" type="button" aria-label="Next video">→</button>
             </div>
         </div>
     </div>
@@ -814,17 +785,16 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
     </div>
 </section>
 
-<!-- 13. FINAL CTA -->
+<!-- 13. FINAL CTA: call us -->
 <section class="yd-final">
     <i class="yd-final__tab yd-final__tab--1" aria-hidden="true"></i>
     <i class="yd-final__tab yd-final__tab--2" aria-hidden="true"></i>
     <div class="yd-wrap yd-final__inner yd-reveal">
-        <h2>Get your free solar estimate. <span>Contact us below</span> to get started.</h2>
-        <form class="yd-final__form" action="{% url 'contact' %}" method="get">
-            <label class="yd-sr" for="ydFinalEmail">Your email address</label>
-            <input id="ydFinalEmail" name="email" type="email" placeholder="Enter your email" autocomplete="email">
-            <button type="submit" aria-label="Get started">→</button>
-        </form>
+        <h2>Get your free solar estimate. <span>Call us</span> to get started.</h2>
+        <a class="yd-call" href="tel:+254700000000" aria-label="Call us on +254 700 000 000">
+            <span class="yd-call__icon"><svg aria-hidden="true"><use href="#yd-phone"></use></svg></span>
+            <span class="yd-call__text"><small>Call us</small><strong>+254 700 000 000</strong></span>
+        </a>
     </div>
 </section>
 {% endblock %}
@@ -853,14 +823,13 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
    revealItems.forEach(function(item){item.classList.add('is-visible');});
  }
 
- /* ---------- Hero: slideshow + clean video with sound/controls ---------- */
+ /* ---------- Hero: two videos, one shared set of controls ---------- */
  var hero=page.querySelector('#ydHero');
  if(hero){
    var slides=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__slide'));
    var copies=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__slide-copy'));
    var dots=Array.prototype.slice.call(hero.querySelectorAll('.yd-hero__dot'));
-   var video=hero.querySelector('#ydHeroVideo');
-   var bar=hero.querySelector('#ydHeroBar');
+   var videos=slides.map(function(slide){return slide.querySelector('video');});
    var previous=hero.querySelector('#ydHeroPrev');
    var next=hero.querySelector('#ydHeroNext');
    var playBtn=hero.querySelector('#ydPlay');
@@ -869,26 +838,41 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
    var fullBtn=hero.querySelector('#ydFull');
    var hint=hero.querySelector('#ydSoundHint');
    var current=0;
-   var timer=null;
    var userPaused=false;
-   var imageDuration=7500;
+   var failures=0;
+   var sound={muted:true,volume:.8};
 
-   function safePlay(){
+   function activeVideo(){return videos[current];}
+
+   function applyAudio(video){
      if(!video)return;
-     var p=video.play();
-     if(p&&typeof p.catch==='function')p.catch(function(){syncPlay();});
+     video.volume=sound.volume;
+     video.muted=sound.muted;
    }
 
-   function runBar(ms){
-     if(!bar)return;
-     bar.style.animation='none';
-     bar.style.transform='';
-     void bar.offsetWidth;
-     if(!reducedMotion)bar.style.animation='ydBar '+ms+'ms linear forwards';
+   function syncPlay(){
+     var video=activeVideo();
+     if(!playBtn||!video)return;
+     playBtn.classList.toggle('is-paused',video.paused);
+     playBtn.setAttribute('aria-label',video.paused?'Play video':'Pause video');
+   }
+
+   function syncSound(){
+     if(!muteBtn)return;
+     var off=sound.muted||sound.volume===0;
+     muteBtn.classList.toggle('is-muted',off);
+     muteBtn.setAttribute('aria-label',off?'Turn sound on':'Turn sound off');
+     if(volume)volume.value=off?0:sound.volume;
+     if(hint)hint.textContent=off?'Sound off':'Sound on';
+   }
+
+   function safePlay(video){
+     if(!video)return;
+     var promise=video.play();
+     if(promise&&typeof promise.catch==='function')promise.catch(syncPlay);
    }
 
    function setSlide(index){
-     if(!slides.length)return;
      current=(index+slides.length)%slides.length;
 
      slides.forEach(function(slide,i){
@@ -900,25 +884,46 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
        dot.classList.toggle('is-active',i===current);
        dot.setAttribute('aria-pressed',i===current?'true':'false');
      });
-     hero.classList.toggle('is-video',current===0);
 
-     if(timer)clearTimeout(timer);
-
-     if(current===0){
-       if(bar){bar.style.animation='none';bar.style.transform='scaleX(0)';}
-       if(video){
-         video.currentTime=0;
+     videos.forEach(function(video,i){
+       if(!video)return;
+       if(i===current){
+         applyAudio(video);
+         try{video.currentTime=0;}catch(e){}
          userPaused=false;
-         if(!reducedMotion)safePlay();
+         if(!reducedMotion)safePlay(video);
+       }else{
+         video.pause();
        }
-     }else{
-       if(video)video.pause();
-       if(!reducedMotion){
-         runBar(imageDuration);
-         timer=setTimeout(function(){setSlide(current+1);},imageDuration);
-       }
-     }
+     });
+     syncPlay();
+     syncSound();
    }
+
+   videos.forEach(function(video){
+     if(!video)return;
+     applyAudio(video);
+
+     /* when a video finishes, move on to the next one (the two videos alternate) */
+     video.addEventListener('ended',function(){if(activeVideo()===video)setSlide(current+1);});
+
+     function failed(){
+       failures++;
+       if(activeVideo()===video&&failures<videos.length)setSlide(current+1);
+     }
+     video.addEventListener('error',failed);
+     var source=video.querySelector('source');
+     if(source)source.addEventListener('error',failed);
+
+     video.addEventListener('play',function(){if(activeVideo()===video)syncPlay();});
+     video.addEventListener('pause',function(){if(activeVideo()===video)syncPlay();});
+     video.addEventListener('volumechange',function(){
+       if(activeVideo()!==video)return;
+       sound.muted=video.muted;
+       sound.volume=video.volume;
+       syncSound();
+     });
+   });
 
    if(previous)previous.addEventListener('click',function(){setSlide(current-1);});
    if(next)next.addEventListener('click',function(){setSlide(current+1);});
@@ -929,89 +934,67 @@ body.yd-home{height:auto!important;min-height:100%;overflow-x:clip!important;ove
      });
    });
 
-   /* video: advance only when it finishes (or fails) */
-   if(video){
-     video.addEventListener('ended',function(){if(current===0)setSlide(1);});
-     video.addEventListener('error',function(){if(current===0)setSlide(1);});
-     video.addEventListener('timeupdate',function(){
-       if(current!==0||!bar||!video.duration)return;
-       bar.style.animation='none';
-       bar.style.transform='scaleX('+Math.min(1,video.currentTime/video.duration)+')';
-     });
-   }
-
-   /* custom controls */
-   function syncPlay(){
-     if(!playBtn||!video)return;
-     playBtn.classList.toggle('is-paused',video.paused);
-     playBtn.setAttribute('aria-label',video.paused?'Play video':'Pause video');
-   }
-   function syncSound(){
-     if(!muteBtn||!video)return;
-     var off=video.muted||video.volume===0;
-     muteBtn.classList.toggle('is-muted',off);
-     muteBtn.setAttribute('aria-label',off?'Turn sound on':'Turn sound off');
-     if(volume)volume.value=off?0:video.volume;
-     if(hint)hint.textContent=off?'Sound off':'Sound on';
-   }
-   if(video){
-     video.volume=.8;
-     video.addEventListener('play',syncPlay);
-     video.addEventListener('pause',syncPlay);
-     video.addEventListener('volumechange',syncSound);
-     syncPlay();syncSound();
-   }
-   if(playBtn&&video)playBtn.addEventListener('click',function(){
-     if(video.paused){userPaused=false;safePlay();}
+   if(playBtn)playBtn.addEventListener('click',function(){
+     var video=activeVideo();
+     if(!video)return;
+     if(video.paused){userPaused=false;safePlay(video);}
      else{userPaused=true;video.pause();}
    });
-   if(muteBtn&&video)muteBtn.addEventListener('click',function(){
-     if(video.muted||video.volume===0){
-       video.muted=false;
-       if(video.volume===0)video.volume=.6;
+
+   if(muteBtn)muteBtn.addEventListener('click',function(){
+     if(sound.muted||sound.volume===0){
+       sound.muted=false;
+       if(sound.volume===0)sound.volume=.6;
      }else{
-       video.muted=true;
+       sound.muted=true;
      }
+     applyAudio(activeVideo());
+     syncSound();
    });
-   if(volume&&video)volume.addEventListener('input',function(){
+
+   if(volume)volume.addEventListener('input',function(){
      var v=parseFloat(volume.value);
-     video.volume=v;
-     video.muted=(v===0);
+     sound.volume=v;
+     sound.muted=(v===0);
+     applyAudio(activeVideo());
+     syncSound();
    });
-   if(fullBtn&&video)fullBtn.addEventListener('click',function(){
+
+   if(fullBtn)fullBtn.addEventListener('click',function(){
      if(document.fullscreenElement||document.webkitFullscreenElement){
        (document.exitFullscreen||document.webkitExitFullscreen).call(document);
        return;
      }
+     var video=activeVideo();
+     if(!video)return;
      var request=video.requestFullscreen||video.webkitRequestFullscreen||video.webkitEnterFullscreen;
      if(request)request.call(video);
    });
    document.addEventListener('fullscreenchange',function(){
-     if(video)video.controls=(document.fullscreenElement===video);
+     videos.forEach(function(video){if(video)video.controls=(document.fullscreenElement===video);});
    });
 
    if(reducedMotion){
-     if(video){video.pause();video.removeAttribute('autoplay');syncPlay();}
+     videos.forEach(function(video){if(video){video.pause();video.removeAttribute('autoplay');}});
+     syncPlay();syncSound();
    }else{
      setSlide(0);
    }
 
    /* pause when the tab is hidden or the hero is off screen */
    document.addEventListener('visibilitychange',function(){
-     if(document.hidden){
-       if(timer)clearTimeout(timer);
-       if(video)video.pause();
-     }else if(!reducedMotion){
-       if(current===0){if(video&&!userPaused)safePlay();}
-       else setSlide(current);
-     }
+     var video=activeVideo();
+     if(!video)return;
+     if(document.hidden)video.pause();
+     else if(!userPaused&&!reducedMotion)safePlay(video);
    });
-   if('IntersectionObserver' in window&&video){
+   if('IntersectionObserver' in window){
      new IntersectionObserver(function(entries){
+       var video=activeVideo();
+       if(!video)return;
        entries.forEach(function(entry){
-         if(current!==0)return;
          if(!entry.isIntersecting)video.pause();
-         else if(!userPaused&&!reducedMotion&&!document.hidden)safePlay();
+         else if(!userPaused&&!reducedMotion&&!document.hidden)safePlay(video);
        });
      },{threshold:.25}).observe(hero);
    }

@@ -9,22 +9,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{% block title %}Yunqida Energy Kenya | Solar, Lithium Batteries &amp; Hybrid Inverters{% endblock %}</title>
-<meta name="description" content="{% block meta_description %}Solar power systems, LiFePO4 lithium batteries and hybrid inverters for homes, businesses and industry in Kenya. Manufacturer-backed, based in Nairobi.{% endblock %}">
-<meta name="keywords" content="{% block meta_keywords %}solar power systems Kenya, lithium batteries Kenya, hybrid inverter Kenya, LiFePO4 battery, solar energy storage Nairobi, home battery backup, commercial solar storage, off-grid solar, Yunqida Energy Kenya{% endblock %}">
+<title>{% block title %}Yunqida Kenya | Inverter Installation, Power Backup &amp; Lithium Battery Solutions{% endblock %}</title>
+<meta name="description" content="{% block meta_description %}Yunqida Solar Energy Ltd, Kenya: inverter installation, power backup solutions, LiFePO4 lithium batteries, hybrid inverters and solar power for homes, businesses and industry in Nairobi and across Kenya.{% endblock %}">
+<meta name="keywords" content="{% block meta_keywords %}Yunqida Kenya, Yunqida Kenya branch, Yunqida Solar Energy Ltd, inverter installation Kenya, power backup solutions Kenya, Kenya power solutions, lithium batteries Kenya, hybrid inverter Kenya, LiFePO4 battery, solar power Nairobi{% endblock %}">
 <meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1{% endblock %}">
-<meta name="author" content="Yunqida Energy Technology Kenya">
+<meta name="author" content="Yunqida Solar Energy Ltd">
 <meta name="theme-color" content="#0d1430">
+<meta name="geo.region" content="KE-110">
+<meta name="geo.placename" content="Nairobi">
+<meta name="ICBM" content="-1.2998439, 36.6818743">
 <link rel="canonical" href="{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 <link rel="alternate" hreflang="en-ke" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <link rel="icon" href="{% static 'img/favicon.png' %}">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Yunqida Energy Technology Kenya">
+<meta property="og:site_name" content="Yunqida Solar Energy Ltd Kenya">
 <meta property="og:locale" content="en_KE">
-<meta property="og:title" content="{% block og_title %}Yunqida Energy Kenya | Solar, Lithium Batteries &amp; Hybrid Inverters{% endblock %}">
-<meta property="og:description" content="{% block og_description %}Solar power systems, lithium batteries and hybrid inverters for homes, businesses and industry in Kenya.{% endblock %}">
+<meta property="og:title" content="{% block og_title %}Yunqida Kenya | Inverter Installation, Power Backup &amp; Lithium Battery Solutions{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Inverter installation, power backup, lithium batteries and hybrid inverters for homes, businesses and industry in Kenya.{% endblock %}">
 <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% block og_image %}{% static 'img/video-poster.jpg' %}{% endblock %}">
 <meta name="twitter:card" content="summary_large_image">
@@ -52,21 +55,47 @@
     {
       "@type": "Organization",
       "@id": "{{ request.scheme }}://{{ request.get_host }}/#organization",
-      "name": "Yunqida Energy Technology Kenya",
-      "alternateName": "Yunqida Energy Kenya",
+      "name": "Yunqida Solar Energy Ltd",
+      "alternateName": ["Yunqida Energy Technology Kenya", "Yunqida Kenya"],
       "url": "{{ request.scheme }}://{{ request.get_host }}/",
       "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/logo.png' %}",
-      "description": "Supplier of solar power systems, LiFePO4 lithium batteries, hybrid inverters and all-in-one energy storage in Kenya.",
+      "description": "Inverter installation, power backup solutions, LiFePO4 lithium batteries, hybrid inverters and solar power systems in Kenya.",
       "parentOrganization": {"@type": "Organization", "name": "Guangdong Yunqida New Energy Technology Co., Ltd."},
-      "address": {"@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE"},
       "areaServed": {"@type": "Country", "name": "Kenya"},
-      "knowsAbout": ["Solar power systems", "Lithium batteries", "LiFePO4 batteries", "Hybrid inverters", "Home battery backup", "Commercial and industrial energy storage", "Off-grid solar"]
+      "sameAs": [
+        "https://g.page/r/CWaBbSHilkd4EAI/review",
+        "https://www.google.com/maps/place/YUNQIDA+SOLAR+ENERGY+LTD/@-1.2998439,36.6792994,17z/data=!3m1!4b1!4m6!3m5!1s0x182f1d15555fa911:0x784796e2216d8166!8m2!3d-1.2998439!4d36.6818743!16s%2Fg%2F11p2kgp993",
+        "https://tiktok.com/@yunqidaenergy",
+        "https://instagram.com/yunqidaenergy",
+        "https://facebook.com/yunqidaenergy"
+      ],
+      "knowsAbout": ["Inverter installation", "Power backup solutions", "Lithium batteries", "LiFePO4 batteries", "Hybrid inverters", "Solar power systems", "Commercial and industrial energy storage"]
+    },
+    {
+      "@type": "LocalBusiness",
+      "@id": "{{ request.scheme }}://{{ request.get_host }}/#localbusiness",
+      "name": "Yunqida Solar Energy Ltd",
+      "alternateName": "Yunqida Kenya branch",
+      "parentOrganization": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"},
+      "url": "{{ request.scheme }}://{{ request.get_host }}/",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'img/video-poster.jpg' %}",
+      "telephone": "+254700000000",
+      "email": "info@yunqida-energy.co.ke",
+      "address": {"@type": "PostalAddress", "addressLocality": "Nairobi", "addressCountry": "KE"},
+      "geo": {"@type": "GeoCoordinates", "latitude": -1.2998439, "longitude": 36.6818743},
+      "hasMap": "https://www.google.com/maps/place/YUNQIDA+SOLAR+ENERGY+LTD/@-1.2998439,36.6792994,17z/data=!3m1!4b1!4m6!3m5!1s0x182f1d15555fa911:0x784796e2216d8166!8m2!3d-1.2998439!4d36.6818743!16s%2Fg%2F11p2kgp993",
+      "areaServed": {"@type": "Country", "name": "Kenya"},
+      "makesOffer": [
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Inverter installation"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Power backup solutions"}},
+        {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Lithium battery storage"}}
+      ]
     },
     {
       "@type": "WebSite",
       "@id": "{{ request.scheme }}://{{ request.get_host }}/#website",
       "url": "{{ request.scheme }}://{{ request.get_host }}/",
-      "name": "Yunqida Energy Technology Kenya",
+      "name": "Yunqida Kenya",
       "inLanguage": "en-KE",
       "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"},
       "potentialAction": {
@@ -629,7 +658,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 <aside class="top-bar" aria-label="Quick contact and social links">
   <div class="container top-bar-inner">
     <div class="top-bar-contact">
-      <span>Industrial Area, Nairobi, Kenya</span>
+      <span>Nairobi, Kenya</span>
       <a href="tel:+254700000000">+254 700 000 000</a>
       <a href="mailto:info@yunqida-energy.co.ke">info@yunqida-energy.co.ke</a>
     </div>
@@ -696,8 +725,8 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 
 <header class="site-header" id="siteHeader">
   <div class="container header-inner">
-    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home">
-      <img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="62" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
+    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Solar Energy Ltd Kenya home">
+      <img src="{% static 'img/logo.png' %}" alt="Yunqida Solar Energy Ltd Kenya" height="62" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'">
       <span style="display:none;font-weight:800;font-size:22px;color:var(--c-forest)">YUNQIDA</span>
       <span class="brand-badge">Kenya</span>
     </a>
@@ -733,7 +762,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     <div class="container">
       <form class="search-form" action="{% url 'products' %}" method="get" role="search">
         <span class="search-btn-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg></span>
-        <input class="search-input" id="trayInput" type="search" name="q" placeholder="Search batteries, inverters, solar systems" aria-label="Search products" autocomplete="off">
+        <input class="search-input" id="trayInput" type="search" name="q" placeholder="Search inverters, lithium batteries, solar systems" aria-label="Search products" autocomplete="off">
       </form>
     </div>
   </div>
@@ -742,7 +771,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobile navigation" aria-hidden="true" inert>
   <div class="drawer-header">
-    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="42" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span style="display:none;font-weight:800;color:var(--c-forest)">YUNQIDA</span></a>
+    <a class="brand" href="{% url 'home' %}" aria-label="Yunqida Solar Energy Ltd Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Solar Energy Ltd Kenya" height="42" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span style="display:none;font-weight:800;color:var(--c-forest)">YUNQIDA</span></a>
     <button class="drawer-close" id="navClose" type="button" aria-label="Close menu"><svg class="ico-stroke" aria-hidden="true"><use href="#i-close"></use></svg></button>
   </div>
 
@@ -757,10 +786,10 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     <div class="drawer-label">Menu</div>
     <nav class="drawer-nav-list" aria-label="Mobile menu links">
       {% with current=request.resolver_match.url_name %}
-      <a class="drawer-nav-item {% if current == 'home' %}is-active{% endif %}" href="{% url 'home' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-home"></use></svg></span><span class="drawer-nav-text"><strong>Home</strong><small>Yunqida Energy Kenya</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      <a class="drawer-nav-item {% if current == 'products' or current == 'product_detail' %}is-active{% endif %}" href="{% url 'products' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-products"></use></svg></span><span class="drawer-nav-text"><strong>Products</strong><small>Batteries, inverters &amp; solar</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      <a class="drawer-nav-item {% if current == 'solutions' %}is-active{% endif %}" href="{% url 'solutions' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-solutions"></use></svg></span><span class="drawer-nav-text"><strong>Solutions</strong><small>Home, business &amp; industry</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
-      <a class="drawer-nav-item {% if current == 'services' %}is-active{% endif %}" href="{% firstof services_url '/services/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-services"></use></svg></span><span class="drawer-nav-text"><strong>Services</strong><small>Design, sizing &amp; support</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      <a class="drawer-nav-item {% if current == 'home' %}is-active{% endif %}" href="{% url 'home' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-home"></use></svg></span><span class="drawer-nav-text"><strong>Home</strong><small>Yunqida Kenya</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      <a class="drawer-nav-item {% if current == 'products' or current == 'product_detail' %}is-active{% endif %}" href="{% url 'products' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-products"></use></svg></span><span class="drawer-nav-text"><strong>Products</strong><small>Inverters, lithium batteries &amp; solar</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      <a class="drawer-nav-item {% if current == 'solutions' %}is-active{% endif %}" href="{% url 'solutions' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-solutions"></use></svg></span><span class="drawer-nav-text"><strong>Solutions</strong><small>Power backup &amp; inverter solutions</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      <a class="drawer-nav-item {% if current == 'services' %}is-active{% endif %}" href="{% firstof services_url '/services/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-services"></use></svg></span><span class="drawer-nav-text"><strong>Services</strong><small>Installation, sizing &amp; support</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'works' %}is-active{% endif %}" href="{% firstof works_url '/works-done/' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-works"></use></svg></span><span class="drawer-nav-text"><strong>Projects</strong><small>Installations across Kenya</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'about' %}is-active{% endif %}" href="{% url 'about' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-about"></use></svg></span><span class="drawer-nav-text"><strong>About</strong><small>Who we are</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
       <a class="drawer-nav-item {% if current == 'blog_list' or current == 'blog_detail' %}is-active{% endif %}" href="{% url 'blog_list' %}"><span class="drawer-nav-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-news"></use></svg></span><span class="drawer-nav-text"><strong>Insights</strong><small>Energy knowledge &amp; articles</small></span><svg class="ico-stroke drawer-nav-arrow" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
@@ -804,8 +833,8 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 
     <div class="footer-main">
       <div class="footer-brand">
-        <a class="footer-logo" href="{% url 'home' %}" aria-label="Yunqida Energy Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Energy" height="44"></a>
-        <p class="footer-about">Manufacturer-backed lithium storage, solar modules and hybrid inverters for homes, businesses and industry across Kenya.</p>
+        <a class="footer-logo" href="{% url 'home' %}" aria-label="Yunqida Solar Energy Ltd Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Solar Energy Ltd Kenya" height="44"></a>
+        <p class="footer-about">Inverter installation, power backup, lithium storage and solar power for homes, businesses and industry across Kenya.</p>
         <div class="footer-social-tray">
           <a href="https://wa.me/254700000000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg></a>
           <a href="https://tiktok.com/@yunqidaenergy" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><svg class="ico" aria-hidden="true"><use href="#i-tiktok"></use></svg></a>
@@ -825,10 +854,10 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
       </nav>
 
       <nav class="footer-col footer-col--solutions" aria-labelledby="fh-solutions">
-        <h3 id="fh-solutions">Solutions &amp; services</h3>
+        <h3 id="fh-solutions">Power solutions</h3>
         <ul class="footer-links">
-          <li><a href="{% url 'solutions' %}">Home backup</a></li>
-          <li><a href="{% url 'solutions' %}">Commercial storage</a></li>
+          <li><a href="{% url 'solutions' %}">Power backup solutions</a></li>
+          <li><a href="{% url 'solutions' %}">Inverter installation</a></li>
           <li><a href="{% firstof services_url '/services/' %}">Design &amp; sizing</a></li>
           <li><a href="{% firstof works_url '/works-done/' %}">Projects</a></li>
         </ul>
@@ -845,19 +874,21 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
       </nav>
 
       <div class="footer-col footer-col--contact">
-        <h3 id="fh-contact">Get in touch</h3>
+        <h3 id="fh-contact">Yunqida Kenya branch</h3>
         <ul class="footer-links">
           <li><a href="{% url 'contact' %}">Request a quote</a></li>
           <li><a href="mailto:info@yunqida-energy.co.ke">Email us</a></li>
+          <li><a href="https://www.google.com/maps/place/YUNQIDA+SOLAR+ENERGY+LTD/@-1.2998439,36.6792994,17z/data=!3m1!4b1!4m6!3m5!1s0x182f1d15555fa911:0x784796e2216d8166!8m2!3d-1.2998439!4d36.6818743!16s%2Fg%2F11p2kgp993" target="_blank" rel="noopener noreferrer">Find us on Google</a></li>
+          <li><a href="https://g.page/r/CWaBbSHilkd4EAI/review" target="_blank" rel="noopener noreferrer">Leave a Google review</a></li>
         </ul>
         <address class="footer-address">
-          <a href="https://www.google.com/maps/search/?api=1&amp;query=Yunqida+Energy+Technology+Kenya+Nairobi" target="_blank" rel="noopener noreferrer">Industrial Area,<br>Nairobi, Kenya</a>
+          Yunqida Solar Energy Ltd,<br>Nairobi, Kenya
         </address>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© {% now "Y" %} Yunqida Energy Technology Kenya Ltd. All rights reserved.</span>
+      <span>© {% now "Y" %} Yunqida Solar Energy Ltd. All rights reserved.</span>
       <div class="footer-legal">
         <a href="{% firstof privacy_url '/privacy-policy/' %}">Privacy &amp; cookie policy</a>
         <button type="button" id="cookieReopen">Cookie settings</button>
@@ -911,12 +942,12 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     <div class="yd-chat-body" id="ydChatMessages" aria-live="polite" aria-relevant="additions" data-lenis-prevent>
       <div class="yd-chat-message assistant">
         <div class="yd-chat-avatar"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#i-engineer"></use></svg></div>
-        <div class="yd-chat-bubble is-plain">Welcome to Yunqida Energy Kenya. I can help with our batteries, solar systems, hybrid inverters and energy storage. What are you planning?</div>
+        <div class="yd-chat-bubble is-plain">Welcome to Yunqida Kenya. I can help with inverter installation, power backup, lithium batteries, solar systems and energy storage. What are you planning?</div>
       </div>
       <div class="yd-chat-suggestions" id="ydChatSuggestions">
         <span>QUICK QUESTIONS</span>
         <button type="button" data-question="What lithium battery products are available?">Available batteries</button>
-        <button type="button" data-question="Help me understand how to size a solar backup system.">Solar system sizing</button>
+        <button type="button" data-question="Help me understand how to size a power backup system.">Power backup sizing</button>
         <button type="button" data-question="What should I consider when choosing a hybrid inverter?">Choosing a hybrid inverter</button>
       </div>
     </div>

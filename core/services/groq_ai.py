@@ -99,17 +99,21 @@ def groq_chat(
             "Could not connect to the Groq AI service. Check your internet connection."
         ) from exc
 
+
     except APIStatusError as exc:
+        print("\n========== GROQ API DIAGNOSTIC ==========")
+        print("HTTP STATUS:", exc.status_code)
+
+        try:
+            print("ERROR BODY:", exc.response.text[:3000])
+        except Exception:
+            print("ERROR BODY: Could not read response body.")
+
+        print("=========================================\n")
+
         raise GroqAIError(
             f"Groq API returned an error (HTTP {exc.status_code})."
         ) from exc
-
-    except Exception as exc:
-        raise GroqAIError(
-            "An unexpected error occurred while contacting the AI service."
-        ) from exc
-
-
 def groq_chat_json(messages, max_completion_tokens=4000):
     """
     Request a JSON response from Groq and return the parsed Python object.

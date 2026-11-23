@@ -16,7 +16,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-local-development-only-change-before-deployment"
 )
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "localhost",

@@ -68,24 +68,58 @@ directions, delivery arrangements or contact details.
 # LIVE PRODUCT CATALOGUE
 # ============================================================
 
-def get_product_catalogue_context(request):
+
+def get_product_catalogue_context(request, message):
     """
-    Build factual product information from the live Django database.
-    Product links and image links are made absolute for the AI response.
+    Select relevant live products instead of sending the entire
+    technical catalogue with every chatbot request.
     """
 
-    products = Product.objects.all().order_by("order", "name")[:12]
+    import re
 
-    catalogue = []
+    products = list(
+        Product.objects.all().order_by("order", "name")[:12]
+    )
 
-    for product in products:
+    if not products:
+        return "No products are currently listed in the catalogue."
 
-        specifications = json.dumps(
-            product.technical_specifications or {},
-            ensure_ascii=False,
-            default=str,
-        )
+    message_lower = message.lower()
 
+    product_keywords = {
+        "product", "products", "battery", "batteries", "lithium",
+        "inverter", "inverters", "solar", "panel", "panels",
+        "storage", "energy", "capacity", "power", "backup",
+        "kwh", "kw", "technical", "specification", "specifications",
+        "specs", "model", "models", "warranty", "recommend",
+        "recommendation", "compare", "comparison", "price",
+        "residential", "commercial", "industrial",
+    }
+
+    stopwords = {
+        "what", "which", "where", "when", "how", "does", "do",
+        "the", "and", "for", "with", "from", "that", "this",
+        "are", "you", "your", "can", "could", "would", "should",
+        "have", "has", "about", "please", "tell", "me", "their",
+        "they", "our", "its", "into", "want", "need", "looking",
+        "give", "show", "explain", "some", "any",
+    }
+
+    def tokenize(value):
+        return {
+            word for word in re.findall(
+                r"[a-z0-9]+",
+                str(value).lower()
+            )
+            if len(word) > 1 and word not in stopwords
+        }
+
+    question_words = tokenize(message)
+    product_question = bool(
+        question_words & product_keywords
+    )
+
+    def build_product_item(product, full_details=True):
         product_path = reverse(
             "product_detail",
             kwargs={"slug": product.slug},
@@ -97,7 +131,6 @@ def get_product_catalogue_context(request):
 
         if product.image:
             image_url = request.build_absolute_uri(product.image.url)
-
         elif product.fallback_image:
             image_url = request.build_absolute_uri(
                 product.fallback_image.url
@@ -109,26 +142,109 @@ def get_product_catalogue_context(request):
             "image_url": image_url,
             "category": product.get_category_display(),
             "tagline": (product.tagline or "")[:180],
-            "description": (product.description or "")[:500],
             "capacity": product.capacity or "",
             "power": product.power or "",
-            "warranty": product.warranty or "",
             "manufacturer_model": product.manufacturer_model or "",
-            "technical_specifications": specifications[:1200],
         }
 
-        catalogue.append(item)
+        if full_details:
+            item.update({
+                "description": (product.description or "")[:500],
+                "warranty": product.warranty or "",
+                "technical_specifications": json.dumps(
+                    product.technical_specifications or {},
+                    ensure_ascii=False,
+                    default=str,
+                )[:1200],
+            })
+
+        return item
+
+    # Do not send product information for unrelated questions.
+    if not product_question:
+        matching_products = []
+
+        for product in products:
+            searchable = " ".join([
+                product.name or "",
+                product.get_category_display() or "",
+                product.tagline or "",
+                product.manufacturer_model or "",
+            ])
+
+            if tokenize(searchable) & question_words:
+                matching_products.append(product)
+
+        if not matching_products:
+            return "No product catalogue information is needed for this question."
+
+    else:
+        matching_products = []
+
+    # Score products against the customer's actual question.
+    scored_products = []
+
+    for product in products:
+        searchable_name = tokenize(product.name)
+        searchable_category = tokenize(
+            product.get_category_display()
+        )
+
+        searchable_details = tokenize(" ".join([
+            product.tagline or "",
+            product.description or "",
+            product.capacity or "",
+            product.power or "",
+            product.manufacturer_model or "",
+            json.dumps(
+                product.technical_specifications or {},
+                ensure_ascii=False,
+                default=str,
+            ),
+        ]))
+
+        score = (
+            len(question_words & searchable_name) * 5
+            + len(question_words & searchable_category) * 3
+            + len(question_words & searchable_details)
+        )
+
+        if score > 0:
+            scored_products.append((score, product))
+
+    scored_products.sort(
+        key=lambda item: item[0],
+        reverse=True,
+    )
+
+    # Specific matches receive complete technical information.
+    if scored_products:
+        selected = [
+            product
+            for score, product in scored_products[:3]
+        ]
+
+        catalogue = [
+            build_product_item(product, full_details=True)
+            for product in selected
+        ]
+
+    # If the question is about products but no exact match exists,
+    # provide a compact catalogue index without full specifications.
+    elif product_question:
+        catalogue = [
+            build_product_item(product, full_details=False)
+            for product in products
+        ]
+
+    else:
+        catalogue = []
 
     return json.dumps(
         catalogue,
         ensure_ascii=False,
         default=str,
     )
-
-
-# ============================================================
-# ENGINEER AI CHAT
-# ============================================================
 
 @require_POST
 def engineer_chat(request):
@@ -186,9 +302,12 @@ def engineer_chat(request):
     # --------------------------------------------------------
 
     try:
-        catalogue_context = get_product_catalogue_context(request)
-
-    except Exception:
+        catalogue_context = get_product_catalogue_context(
+            request,
+            message.strip(),
+        )
+    except Exception as exc:
+        print("YUNQIDA CATALOGUE ERROR:", repr(exc))
         return JsonResponse(
             {
                 "error": (
@@ -198,7 +317,6 @@ def engineer_chat(request):
             },
             status=503,
         )
-
     # --------------------------------------------------------
     # AI SYSTEM INSTRUCTIONS
     # --------------------------------------------------------
@@ -375,7 +493,7 @@ Use the company knowledge and product catalogue together when needed.
 
     if isinstance(history, list):
 
-        for item in history[-6:]:
+        for item in history[-4:]:
 
             if not isinstance(item, dict):
                 continue
@@ -392,7 +510,7 @@ Use the company knowledge and product catalogue together when needed.
             messages.append(
                 {
                     "role": role,
-                    "content": content[:1000],
+                    "content": content[:600],
                 }
             )
 

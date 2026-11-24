@@ -1,3 +1,4 @@
+
 import os
 import dj_database_url
 
@@ -7,17 +8,14 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
+
 # =====================================================
 # SECURITY
 # =====================================================
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY",
-    "django-insecure-local-development-only-change-before-deployment"
-)
+SECRET_KEY = "46f7d08db4ab411616933b9df7d383fa7a74204b45300a543ac62dfc33109820a857e15b1252f98b5d37630073c42161"
 
-DEBUG = False
-
+DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -162,7 +160,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # =====================================================
-# MEDIA FILES - RENDER LOCAL STORAGE
+# MEDIA FILES
 # =====================================================
 
 MEDIA_URL = "/media/"
@@ -209,7 +207,7 @@ GOOGLE_PLACE_ID = os.environ.get(
 )
 
 # =====================================================
-# GROQCLOUD AI
+# GROQ CLOUD AI
 # =====================================================
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
@@ -219,9 +217,8 @@ GROQ_MODEL = os.environ.get(
     "llama-3.3-70b-versatile",
 )
 
-
 # =====================================================
-# RENDER SECURITY
+# PROXY AND HTTPS SECURITY
 # =====================================================
 
 SECURE_PROXY_SSL_HEADER = (
@@ -233,6 +230,10 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # =====================================================
 # CSRF TRUSTED ORIGINS

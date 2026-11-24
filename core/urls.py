@@ -11,13 +11,15 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('services/', views.services, name='services'),
     path('works-done/', views.works_done, name='works_done'),
-
+    path('api/product-search/', views.product_search, name='product_search'),
     # AI engineer assistant
     path(
         'api/engineer-chat/',
         ai_views.engineer_chat,
         name='engineer_chat'
     ),
+    path('search/', views.search_results, name='search_results'),
+    #path('search/', views.search_results, name='search_results'),
     path('news/', views.blog_list, name='blog_list'),
 path('news/<slug:slug>/', views.blog_detail, name='blog_detail'),
 ]

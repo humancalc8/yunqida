@@ -489,3 +489,16 @@ class BlogImage(models.Model):
 
     def __str__(self):
         return f'{self.post.title} - Image {self.pk}'
+
+
+
+class ImportedCatalogueProduct(Product):
+
+    class Meta:
+        proxy = True
+        verbose_name = 'From Catalogue'
+        verbose_name_plural = 'From Catalogue'
+
+    def __str__(self):
+        return self.name
+

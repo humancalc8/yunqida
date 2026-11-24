@@ -21,6 +21,7 @@ from .models import (
     ProductImage,
     BuildProject,
     ProductImportDraft,
+    ImportedCatalogueProduct,
     BlogPost,
     BlogImage,
 )
@@ -535,6 +536,9 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.exclude(status='imported')
 
     # -------------------------------------------------
     # QUEUE PRODUCT LOOKUPS
@@ -1126,3 +1130,27 @@ class BlogPostAdmin(admin.ModelAdmin):
             'admin/core/blogpost/ai_writer.html',
             context,
         )
+
+@admin.register(ImportedCatalogueProduct)
+class ImportedCatalogueProductAdmin(ProductAdmin):
+
+    # Use the standard admin list page, without the product scanner button.
+    change_list_template = 'admin/change_list.html'
+
+    # Do not inherit the scanner URLs from ProductAdmin.
+    def get_urls(self):
+        return admin.ModelAdmin.get_urls(self)
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .filter(import_drafts__status='imported')
+            .distinct()
+        )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False

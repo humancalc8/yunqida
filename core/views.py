@@ -1,4 +1,8 @@
 from django.conf import settings
+from django.db.models import Q
+from django.http import JsonResponse
+from django.urls import reverse
+from django.views.decorators.http import require_GET
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,7 +13,8 @@ from .forms import EnquiryForm
 from .models import Product, BuildProject
 from .google_reviews import get_google_reviews
 
-
+from django.db.models import TextField
+from django.db.models.functions import Cast
 def home(request):
     featured = Product.objects.filter(featured=True)[:3]
 
@@ -241,4 +246,143 @@ def blog_detail(request, slug):
     return render(request, 'core/blog/blog_detail.html', {
         'article': article,
         'related_articles': related_articles,
+    })
+
+@require_GET
+def product_search(request):
+    query = request.GET.get('q', '').strip()
+
+    # Do not search for empty or extremely short queries.
+    if len(query) < 1:
+        return JsonResponse({
+            'query': query,
+            'results': [],
+            'count': 0,
+        })
+
+    # Normalise common capacity and power formats.
+    normalised_query = (
+        query.lower()
+        .replace(' ', '')
+        .replace('kilowatt', 'kw')
+        .replace('kilowatt-hour', 'kwh')
+        .replace('kilowatt hour', 'kwh')
+    )
+
+    products = Product.objects.all()
+
+    # Search all important product fields.
+    filters = (
+        Q(name__icontains=query)
+        | Q(manufacturer_model__icontains=query)
+        | Q(category__icontains=query)
+        | Q(tagline__icontains=query)
+        | Q(description__icontains=query)
+        | Q(capacity__icontains=query)
+        | Q(power__icontains=query)
+        | Q(warranty__icontains=query)
+        | Q(technical_specifications__icontains=query)
+    )
+
+    if normalised_query != query.lower():
+        filters |= (
+            Q(name__icontains=normalised_query)
+            | Q(capacity__icontains=normalised_query)
+            | Q(power__icontains=normalised_query)
+            | Q(technical_specifications__icontains=normalised_query)
+        )
+
+    matches = products.filter(filters).distinct().order_by(
+        'order', 'name'
+    )
+
+    results = []
+
+    for product in matches[:8]:
+        image_url = ''
+
+        if product.image:
+            image_url = product.image.url
+        elif product.fallback_image:
+            image_url = (
+                '/static/' + product.fallback_image
+            )
+
+        results.append({
+            'name': product.name,
+            'category': product.get_category_display(),
+            'capacity': product.capacity,
+            'power': product.power,
+            'image': image_url,
+            'url': reverse(
+                'product_detail',
+                kwargs={'slug': product.slug}
+            ),
+        })
+
+    return JsonResponse({
+        'query': query,
+        'results': results,
+        'count': len(results),
+    })
+
+
+def search_results(request):
+    query = request.GET.get('q', '').strip()
+
+    products = Product.objects.none()
+
+    if query:
+        searchable_products = Product.objects.annotate(
+            specifications_text=Cast(
+                'technical_specifications',
+                output_field=TextField()
+            )
+        )
+
+        filters = (
+            Q(name__icontains=query)
+            | Q(manufacturer_model__icontains=query)
+            | Q(category__icontains=query)
+            | Q(tagline__icontains=query)
+            | Q(description__icontains=query)
+            | Q(capacity__icontains=query)
+            | Q(power__icontains=query)
+            | Q(warranty__icontains=query)
+            | Q(specifications_text__icontains=query)
+        )
+
+        # Also search the human-readable category names.
+        for value, label in Product.CATEGORY_CHOICES:
+            if query.lower() in label.lower():
+                filters |= Q(category=value)
+
+        # Common category synonyms.
+        category_aliases = {
+            'lithium': 'battery',
+            'batteries': 'battery',
+            'battery': 'battery',
+            'solar': 'solar',
+            'residential': 'residential',
+            'home': 'residential',
+            'commercial': 'commercial',
+            'industrial': 'commercial',
+        }
+
+        alias = category_aliases.get(query.lower())
+        if alias:
+            filters |= Q(category=alias)
+
+        products = searchable_products.filter(
+            filters
+        ).distinct().order_by('order', 'name')
+
+    paginator = Paginator(products, 12)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    return render(request, 'core/search_results.html', {
+        'query': query,
+        'page_obj': page_obj,
+        'products': page_obj.object_list,
+        'result_count': paginator.count,
     })

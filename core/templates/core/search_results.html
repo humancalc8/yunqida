@@ -1,4 +1,3 @@
-
 {% extends 'core/base.html' %}
 {% load static %}
 
@@ -6,608 +5,578 @@
 
 {% block meta_description %}Search Yunqida Energy Kenya's catalogue of lithium batteries, solar panels, hybrid inverters and energy storage systems.{% endblock %}
 
+{% block robots %}noindex, follow{% endblock %}
+
 {% block extra_head %}
 <style>
-.yq-search {
-    --navy: #071a3a;
-    --green: #16735e;
-    --lime: #c4ed38;
-    --ink: #17221e;
-    --muted: #707a73;
-    --line: #e3e7e0;
+/* =====================================================================
+   SEARCH RESULTS · built on the Yunqida base tokens
+   Ink + Signal yellow, Hanken Grotesk. Everything is scoped to .sr.
+===================================================================== */
+.sr { background: var(--c-mist); color: var(--c-text-main); }
+.sr *, .sr *::before, .sr *::after { box-sizing: border-box; }
+.sr-wrap { width: min(1320px, calc(100% - 64px)); margin-inline: auto; }
+@media (max-width: 640px)  { .sr-wrap { width: calc(100% - 36px); } }
+@media (min-width: 1700px) { .sr-wrap { width: min(1480px, calc(100% - 96px)); } }
 
-    min-height: 75vh;
-    background: #f5f6f2;
-    color: var(--ink);
+.sr button { cursor: pointer; }
+.sr-field-input:focus-visible, .sr-query:focus-visible { outline: none; }
+
+/* ---------- Hero ---------- */
+.sr-hero {
+  position: relative; overflow: hidden;
+  padding: clamp(56px, 7vw, 96px) 0 clamp(112px, 12vw, 150px);
+  background: var(--c-forest-2);
+  color: #fff;
 }
-
-.yq-search *,
-.yq-search *::before,
-.yq-search *::after {
-    box-sizing: border-box;
+/* Signal tab, the same slanted shape as the footer */
+.sr-hero::after {
+  content: ""; position: absolute; left: max(18px, 6vw); bottom: 0;
+  width: clamp(120px, 20vw, 300px); height: clamp(10px, 1.2vw, 16px);
+  background: var(--c-sun);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
 }
+.sr-hero .sr-wrap { position: relative; z-index: 1; }
 
-.yq-search .search-container {
-    width: min(1160px, calc(100% - 48px));
-    margin: 0 auto;
+.sr-kicker { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 22px; color: rgba(255, 255, 255, .78); font-size: 14px; font-weight: 600; }
+.sr-kicker::before { content: ""; width: 34px; height: 4px; background: var(--c-sun); }
+.sr-title { max-width: 14em; margin: 0; font-size: clamp(36px, 5.6vw, 68px); font-weight: 800; line-height: 1.02; letter-spacing: -.048em; }
+.sr-lede { max-width: 560px; margin: 20px 0 34px; color: rgba(255, 255, 255, .7); font-size: 16px; line-height: 1.75; }
+
+/* The search field: the one memorable element on the page */
+.sr-search {
+  position: relative; display: flex; align-items: center; gap: 6px;
+  width: min(820px, 100%); min-height: 72px; padding: 8px 8px 8px 22px;
+  background: #fff; border: 2px solid transparent; border-radius: 18px;
+  box-shadow: 0 26px 60px -18px rgba(0, 0, 0, .55);
+  transition: border-color .25s, box-shadow .25s;
 }
+.sr-search:focus-within { border-color: var(--c-sun); box-shadow: 0 0 0 6px rgba(255, 224, 0, .22), 0 26px 60px -18px rgba(0, 0, 0, .55); }
+.sr-search-icon { flex-shrink: 0; width: 24px; height: 24px; color: var(--c-forest); fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sr-query { flex: 1; min-width: 0; height: 54px; padding: 0 10px; border: 0; outline: none; background: transparent; color: var(--c-forest); font-family: var(--font-display); font-size: clamp(17px, 2.2vw, 21px); font-weight: 600; letter-spacing: -.015em; -webkit-appearance: none; appearance: none; }
+.sr-query::placeholder { color: #8a91a3; font-weight: 500; }
+.sr-query::-webkit-search-cancel-button, .sr-query::-webkit-search-decoration { -webkit-appearance: none; display: none; }
+.sr-erase { display: none; flex-shrink: 0; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--c-mist); color: var(--c-muted); transition: background .2s, color .2s; }
+.sr-erase.is-on { display: grid; }
+.sr-erase:hover { background: var(--c-forest); color: #fff; }
+.sr-erase svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.sr-submit { flex-shrink: 0; display: inline-flex; align-items: center; gap: 10px; height: 54px; padding: 0 24px; border: 0; border-radius: 12px; background: var(--c-forest); color: #fff; font-size: 15px; font-weight: 700; transition: background .25s, color .25s, transform .3s var(--ease); }
+.sr-submit svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s var(--ease); }
+.sr-submit:hover { background: var(--c-sun); color: var(--c-forest-2); }
+.sr-submit:hover svg { transform: translateX(3px); }
+.sr-busy { position: absolute; left: 22px; right: 22px; bottom: -2px; height: 3px; overflow: hidden; border-radius: 3px; opacity: 0; transition: opacity .2s; }
+.sr-busy::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 35%; background: var(--c-sun); border-radius: 3px; transform: translateX(-100%); }
+.sr.is-busy .sr-busy { opacity: 1; }
+.sr.is-busy .sr-busy::after { animation: srSweep 1s linear infinite; }
+@keyframes srSweep { to { transform: translateX(300%); } }
 
-/* Search introduction */
+.sr-popular { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+.sr-popular > span { margin-right: 4px; color: rgba(255, 255, 255, .6); font-size: 14px; font-weight: 500; }
+.sr-popular button { padding: 8px 15px; border: 1px solid rgba(255, 255, 255, .26); border-radius: 999px; background: transparent; color: rgba(255, 255, 255, .92); font-size: 14px; font-weight: 600; transition: background .2s, color .2s, border-color .2s, transform .25s var(--ease); }
+.sr-popular button:hover { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); transform: translateY(-2px); }
 
-.yq-search .search-header {
-    padding: 85px 0 55px;
-    background: #f3f4ef;
+/* ---------- Body ---------- */
+.sr-body { position: relative; z-index: 2; padding-bottom: clamp(70px, 8vw, 110px); }
+
+/* Filter panel overlaps the hero */
+.sr-panel {
+  position: relative; margin-top: -60px; padding: 26px 28px 28px;
+  background: #fff; border: 1px solid var(--c-line); border-radius: 22px;
+  box-shadow: var(--shadow-float);
 }
+.sr-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.sr-panel-head h2 { margin: 0; color: var(--c-forest); font-size: 17px; font-weight: 800; letter-spacing: -.02em; }
+.sr-clear { padding: 0; border: 0; background: none; color: var(--c-forest); font-size: 14px; font-weight: 700; text-decoration: underline; text-decoration-color: var(--c-sun); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.sr-clear:hover { color: var(--c-forest-3); }
 
-.yq-search .eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    margin-bottom: 20px;
-    color: var(--green);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .15em;
-    text-transform: uppercase;
+.sr-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
+.sr-pill { display: inline-flex; align-items: center; gap: 9px; min-height: 42px; padding: 0 17px; border: 1px solid var(--c-line); border-radius: 999px; background: #fff; color: #3b4258; font-size: 14px; font-weight: 600; transition: background .2s, color .2s, border-color .2s; }
+.sr-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c-line); transition: background .2s; }
+.sr-pill:hover { border-color: var(--c-forest); color: var(--c-forest); }
+.sr-pill.is-active { background: var(--c-forest); border-color: var(--c-forest); color: #fff; }
+.sr-pill.is-active::before { background: var(--c-sun); }
+
+.sr-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 14px; align-items: end; }
+.sr-field label { display: block; margin-bottom: 8px; color: var(--c-muted); font-size: 13px; font-weight: 600; }
+.sr-field-input { width: 100%; height: 50px; padding: 0 15px; border: 1px solid var(--c-line); border-radius: 12px; outline: none; background: var(--c-mist); color: var(--c-forest); font-size: 15px; font-weight: 500; transition: background .2s, border-color .2s, box-shadow .2s; }
+.sr-field-input::placeholder { color: #8a91a3; }
+.sr-field-input:focus { background: #fff; border-color: var(--c-forest); box-shadow: 0 0 0 4px rgba(255, 224, 0, .4); }
+.sr-apply { height: 50px; padding: 0 26px; border: 0; border-radius: 12px; background: var(--c-sun); color: var(--c-forest-2); font-size: 15px; font-weight: 800; transition: background .25s, transform .25s var(--ease); }
+.sr-apply:hover { background: var(--c-forest); color: #fff; transform: translateY(-2px); }
+.sr-hint { grid-column: 1 / -1; margin: 2px 0 0; color: var(--c-muted); font-size: 13px; }
+
+/* ---------- Results ---------- */
+.sr-results { padding-top: 54px; transition: opacity .2s; }
+.sr.is-busy .sr-results { opacity: .55; }
+.sr-bar { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 32px; margin-bottom: 32px; }
+.sr-bar h2 { margin: 0; color: var(--c-forest); font-size: clamp(26px, 3.2vw, 38px); font-weight: 800; line-height: 1.1; letter-spacing: -.04em; }
+.sr-bar h2 em { font-style: normal; color: var(--c-forest-3); }
+.sr-count { margin: 8px 0 0; color: var(--c-muted); font-size: 15px; }
+.sr-count strong { color: var(--c-forest); font-weight: 800; }
+
+.sr-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sr-chip { display: inline-flex; align-items: center; gap: 9px; max-width: 100%; padding: 7px 8px 7px 14px; border: 1px solid var(--c-line); border-radius: 999px; background: #fff; color: var(--c-forest); font-size: 13px; font-weight: 600; transition: border-color .2s, background .2s; }
+.sr-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-chip i { display: grid; place-items: center; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--c-mist); transition: background .2s, color .2s; }
+.sr-chip i svg { width: 11px; height: 11px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.sr-chip:hover { border-color: var(--c-forest); }
+.sr-chip:hover i { background: var(--c-forest); color: #fff; }
+
+.sr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 24px; }
+
+.sr .result-card {
+  display: flex; flex-direction: column; min-width: 0; padding: 16px;
+  background: #fff; border: 1px solid var(--c-line); border-radius: 22px;
+  animation: srIn .6s var(--ease) both; animation-delay: calc(var(--i, 0) * 40ms);
+  transition: transform .4s var(--ease), box-shadow .4s, border-color .3s;
 }
+@keyframes srIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.sr .result-card:hover { transform: translateY(-6px); border-color: var(--c-forest); box-shadow: var(--shadow-float); }
 
-.yq-search .eyebrow::before {
-    width: 27px;
-    height: 2px;
-    background: var(--green);
-    content: "";
+.sr .result-image { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; padding: 16px; overflow: hidden; border-radius: 15px; background: var(--c-mist); }
+.sr .result-image img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .7s var(--ease); }
+.sr .result-card:hover .result-image img { transform: scale(1.06); }
+.sr .image-unavailable { color: var(--c-muted); font-size: 13px; }
+
+.sr .result-category { display: flex; align-items: center; gap: 8px; margin: 18px 0 8px; color: var(--c-muted); font-size: 13px; font-weight: 600; }
+.sr .result-category::before { content: ""; width: 14px; height: 4px; background: var(--c-sun); }
+.sr .result-name { margin: 0 0 16px; color: var(--c-forest); font-size: 20px; font-weight: 800; line-height: 1.25; letter-spacing: -.03em; overflow-wrap: anywhere; }
+.sr .result-name a { background: linear-gradient(var(--c-sun), var(--c-sun)) 0 100% / 0 3px no-repeat; transition: background-size .4s var(--ease); }
+.sr .result-card:hover .result-name a { background-size: 100% 3px; }
+
+.sr .result-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 0; margin: 0 0 18px; border-top: 1px solid var(--c-line); }
+.sr .spec-item { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 12px 10px 0 0; color: var(--c-forest); font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+.sr .spec-item small { color: var(--c-muted); font-size: 12px; font-weight: 500; }
+
+.sr .result-link { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--c-line); color: var(--c-forest); font-size: 14px; font-weight: 700; }
+.sr .result-link-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--c-sun); color: var(--c-forest-2); transition: transform .45s var(--ease), background .3s, color .3s; }
+.sr .result-link-icon svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sr .result-card:hover .result-link-icon { transform: rotate(-45deg); background: var(--c-forest); color: #fff; }
+
+/* ---------- Empty and idle ---------- */
+.sr-empty { display: grid; justify-items: center; gap: 12px; padding: clamp(48px, 7vw, 84px) 24px; border: 1px dashed #c3c8d4; border-radius: 22px; background: #fff; text-align: center; }
+.sr-empty-mark { display: grid; place-items: center; width: 84px; height: 84px; margin-bottom: 8px; border-radius: 50%; background: var(--c-forest); color: var(--c-sun); }
+.sr-empty-mark svg { width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sr-empty h3 { margin: 0; color: var(--c-forest); font-size: clamp(22px, 3vw, 30px); font-weight: 800; letter-spacing: -.035em; }
+.sr-empty p { max-width: 480px; margin: 0; color: var(--c-muted); font-size: 15px; line-height: 1.75; }
+.sr-empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
+.sr-empty-actions a, .sr-empty-actions button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border: 1px solid var(--c-forest); border-radius: 10px; background: #fff; color: var(--c-forest); font-size: 14px; font-weight: 700; transition: background .2s, color .2s; }
+.sr-empty-actions a:hover, .sr-empty-actions button:hover { background: var(--c-forest); color: #fff; }
+.sr-empty-actions .is-primary { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); }
+.sr-empty-actions .is-primary:hover { background: var(--c-forest); border-color: var(--c-forest); color: #fff; }
+
+.sr-paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.sr-path { display: flex; flex-direction: column; gap: 10px; min-height: 210px; padding: 26px; border: 1px solid var(--c-line); border-radius: 22px; background: #fff; text-align: left; transition: transform .4s var(--ease), border-color .3s, box-shadow .4s; }
+.sr-path:hover { transform: translateY(-6px); border-color: var(--c-forest); box-shadow: var(--shadow-float); }
+.sr-path h3 { margin: 0; color: var(--c-forest); font-size: 24px; font-weight: 800; letter-spacing: -.035em; }
+.sr-path p { margin: 0; color: var(--c-muted); font-size: 14.5px; line-height: 1.7; }
+.sr-path-go { display: inline-flex; align-items: center; gap: 10px; margin-top: auto; color: var(--c-forest); font-size: 14px; font-weight: 700; }
+.sr-path-go svg { width: 34px; height: 34px; padding: 8px; border-radius: 10px; background: var(--c-sun); fill: none; stroke: var(--c-forest-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .45s var(--ease); }
+.sr-path:hover .sr-path-go svg { transform: rotate(-45deg); }
+
+/* ---------- Pagination ---------- */
+.sr-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 56px; }
+.sr-pagination a, .sr-pagination span { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 20px; border: 1px solid var(--c-line); border-radius: 12px; background: #fff; color: var(--c-forest); font-size: 14px; font-weight: 700; transition: background .2s, color .2s, border-color .2s; }
+.sr-pagination a:hover { background: var(--c-forest); border-color: var(--c-forest); color: #fff; }
+.sr-pagination .is-current { background: var(--c-forest); border-color: var(--c-forest); color: var(--c-sun); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .sr-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sr-apply { grid-column: 1 / -1; }
+  .sr-paths { grid-template-columns: 1fr; }
+  .sr-path { min-height: 0; }
 }
-
-.yq-search h1 {
-    max-width: 760px;
-    margin: 0;
-    color: var(--navy);
-    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
-    font-size: clamp(38px, 5.5vw, 62px);
-    font-weight: 700;
-    line-height: 1.04;
-    letter-spacing: -.055em;
+@media (max-width: 700px) {
+  .sr-panel { margin-top: -48px; padding: 20px 16px 22px; border-radius: 18px; }
+  .sr-fields { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sr-field:first-child { grid-column: 1 / -1; }
+  .sr-search { min-height: 62px; padding: 6px 6px 6px 16px; border-radius: 16px; }
+  .sr-query { height: 48px; padding: 0 6px; }
+  .sr-submit { height: 48px; padding: 0 16px; }
+  .sr-submit span { display: none; }
+  .sr-search-icon { width: 21px; height: 21px; }
+  .sr-pills { flex-wrap: nowrap; margin-inline: -16px; padding: 0 16px 4px; overflow-x: auto; scrollbar-width: none; }
+  .sr-pills::-webkit-scrollbar { display: none; }
+  .sr-pill { flex-shrink: 0; }
+  .sr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .sr .result-card { padding: 10px; border-radius: 18px; }
+  .sr .result-image { padding: 8px; border-radius: 12px; }
+  .sr .result-category { margin: 12px 0 6px; font-size: 12px; }
+  .sr .result-name { margin-bottom: 12px; font-size: 15px; }
+  .sr .result-specs { margin-bottom: 12px; }
+  .sr .spec-item { padding-top: 9px; font-size: 12.5px; }
+  .sr .spec-item small { font-size: 11px; }
+  .sr .result-link { padding-top: 12px; font-size: 12.5px; }
+  .sr .result-link-icon { width: 32px; height: 32px; }
 }
-
-.yq-search .search-description {
-    max-width: 590px;
-    margin: 18px 0 30px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.8;
-}
-
-/* Search form */
-
-.yq-search .search-form {
-    display: flex;
-    width: min(760px, 100%);
-    min-height: 62px;
-    border: 1px solid #dce2d9;
-    background: #fff;
-    transition: border-color .25s ease, box-shadow .25s ease;
-}
-
-.yq-search .search-form:focus-within {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(22, 115, 94, .08);
-}
-
-.yq-search .search-input {
-    flex: 1;
-    width: 0;
-    min-width: 0;
-    padding: 0 21px;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: var(--ink);
-    font: inherit;
-    font-size: 14px;
-}
-
-.yq-search .search-input::placeholder {
-    color: #929b93;
-}
-
-.yq-search .search-button {
-    flex-shrink: 0;
-    min-width: 125px;
-    margin: 5px;
-    padding: 0 20px;
-    border: 0;
-    background: var(--navy);
-    color: white;
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: background .25s ease;
-}
-
-.yq-search .search-button:hover {
-    background: var(--green);
-}
-
-/* Results section */
-
-.yq-search .results-section {
-    min-height: 450px;
-    padding: 55px 0 100px;
-    background: #fff;
-}
-
-.yq-search .results-heading {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 32px;
-    padding-bottom: 23px;
-    border-bottom: 1px solid var(--line);
-}
-
-.yq-search .results-heading h2 {
-    margin: 0;
-    color: var(--navy);
-    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
-    font-size: clamp(25px, 3vw, 34px);
-    letter-spacing: -.045em;
-}
-
-.yq-search .results-count {
-    color: var(--muted);
-    font-size: 11px;
-    white-space: nowrap;
-}
-
-.yq-search .results-count strong {
-    color: var(--navy);
-}
-
-/* Product results */
-
-.yq-search .results-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 48px 34px;
-}
-
-.yq-search .result-card {
-    min-width: 0;
-    padding-bottom: 23px;
-    border-bottom: 1px solid var(--line);
-}
-
-.yq-search .result-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 285px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    background: #fff;
-    text-decoration: none;
-}
-
-.yq-search .result-image img {
-    width: 100%;
-    height: 100%;
-    padding: 7px;
-    object-fit: contain;
-    mix-blend-mode: multiply;
-    transition: transform .6s ease;
-}
-
-.yq-search .result-card:hover .result-image img {
-    transform: scale(1.045);
-}
-
-.yq-search .image-unavailable {
-    color: var(--muted);
-    font-size: 12px;
-}
-
-.yq-search .result-category {
-    margin-bottom: 9px;
-    color: var(--green);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .11em;
-    text-transform: uppercase;
-}
-
-.yq-search .result-name {
-    margin: 0 0 13px;
-    color: var(--ink);
-    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
-    font-size: 22px;
-    font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -.035em;
-    overflow-wrap: anywhere;
-}
-
-.yq-search .result-name a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.yq-search .result-name a:hover {
-    color: var(--green);
-}
-
-.yq-search .result-specs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 20px;
-}
-
-.yq-search .spec-item {
-    padding: 7px 9px;
-    border: 1px solid var(--line);
-    color: #65716a;
-    font-size: 10px;
-}
-
-.yq-search .result-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    width: 100%;
-    padding-top: 17px;
-    border-top: 1px solid var(--line);
-    color: var(--navy);
-    font-size: 11px;
-    font-weight: 800;
-    text-decoration: none;
-}
-
-.yq-search .result-link span:last-child {
-    font-size: 17px;
-    transition: transform .25s ease;
-}
-
-.yq-search .result-link:hover {
-    color: var(--green);
-}
-
-.yq-search .result-link:hover span:last-child {
-    transform: translateX(4px);
-}
-
-/* Empty states */
-
-.yq-search .empty-state {
-    padding: 75px 25px;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    text-align: center;
-}
-
-.yq-search .empty-state h3 {
-    margin: 0 0 12px;
-    color: var(--navy);
-    font-family: var(--font-display, 'Hanken Grotesk', sans-serif);
-    font-size: 25px;
-}
-
-.yq-search .empty-state p {
-    max-width: 490px;
-    margin: 0 auto 20px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.8;
-}
-
-.yq-search .empty-state a {
-    color: var(--green);
-    font-size: 11px;
-    font-weight: 800;
-    text-decoration: none;
-}
-
-/* Pagination */
-
-.yq-search .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 60px;
-}
-
-.yq-search .pagination a,
-.yq-search .pagination span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid var(--line);
-    color: var(--navy);
-    font-size: 11px;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.yq-search .pagination a:hover,
-.yq-search .pagination .current {
-    border-color: var(--navy);
-    background: var(--navy);
-    color: white;
-}
-
-/* Responsive */
-
-@media (max-width: 850px) {
-    .yq-search .results-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 40px 24px;
-    }
-
-    .yq-search .result-image {
-        height: 260px;
-    }
-}
-
-@media (max-width: 600px) {
-    .yq-search .search-container {
-        width: calc(100% - 38px);
-    }
-
-    .yq-search .search-header {
-        padding: 60px 0 42px;
-    }
-
-    .yq-search h1 {
-        font-size: 43px;
-    }
-
-    .yq-search .search-description {
-        font-size: 12px;
-    }
-
-    .yq-search .search-form {
-        min-height: 56px;
-    }
-
-    .yq-search .search-input {
-        padding: 0 12px;
-        font-size: 12px;
-    }
-
-    .yq-search .search-button {
-        min-width: 85px;
-        padding: 0 12px;
-        font-size: 10px;
-    }
-
-    .yq-search .results-section {
-        padding: 40px 0 70px;
-    }
-
-    .yq-search .results-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .yq-search .results-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 38px;
-    }
-
-    .yq-search .result-image {
-        height: 290px;
-    }
-
-    .yq-search .result-name {
-        font-size: 23px;
-    }
-}
-
-.yq-search a:focus-visible,
-.yq-search button:focus-visible {
-    outline: 3px solid #a5ca35;
-    outline-offset: 4px;
+@media (max-width: 360px) {
+  .sr-grid { grid-template-columns: 1fr; }
 }
 </style>
 {% endblock %}
 
 
 {% block content %}
-<main class="yq-search">
+<div class="sr" id="srRoot">
 
-    <section class="search-header">
-        <div class="search-container">
+  <!-- ===== Hero with the search field ===== -->
+  <section class="sr-hero" aria-labelledby="srTitle">
+    <div class="sr-wrap">
+      <p class="sr-kicker">Yunqida Energy Kenya</p>
+      <h1 class="sr-title" id="srTitle">Find the right energy product for your site.</h1>
+      <p class="sr-lede">Search by name, model, capacity, power rating or voltage. Results update as you type.</p>
 
-            <div class="eyebrow">Yunqida Energy Kenya</div>
+      <form class="sr-search" id="srSearchForm" method="get" action="{% url 'search_results' %}" role="search">
+        <svg class="sr-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="sr-query" id="srQuery" type="search" name="q" value="{{ query }}" placeholder="Try 5kWh, 48V or lithium battery" aria-label="Search energy products" autocomplete="off" enterkeyhint="search">
+        <button class="sr-erase" id="srErase" type="button" aria-label="Clear search text">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <button class="sr-submit" type="submit">
+          <span>Search</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <span class="sr-busy" aria-hidden="true"></span>
+      </form>
 
-            <h1>Find the right energy product.</h1>
+      <div class="sr-popular">
+        <span>Popular:</span>
+        <button type="button" data-q="lithium battery">Lithium battery</button>
+        <button type="button" data-q="hybrid inverter">Hybrid inverter</button>
+        <button type="button" data-q="5kWh">5kWh</button>
+        <button type="button" data-q="48V">48V</button>
+        <button type="button" data-q="solar">Solar</button>
+      </div>
+    </div>
+  </section>
 
-            <p class="search-description">
-                Search our product range by name, model, capacity,
-                power rating, voltage or technology.
-            </p>
+  <!-- ===== Filters + results ===== -->
+  <div class="sr-body">
+    <div class="sr-wrap">
 
-            <form class="search-form"
-                  method="get"
-                  action="{% url 'search_results' %}">
+      <form class="sr-panel" id="srFilters" method="get" action="{% url 'search_results' %}" aria-label="Refine your search">
+        <input type="hidden" name="q" value="{{ query }}">
+        <input type="hidden" name="category" id="srCategory" value="{{ active_category }}">
 
-                <input
-                    class="search-input"
-                    type="search"
-                    name="q"
-                    value="{{ query }}"
-                    placeholder="Try 5kWh, 48V, lithium battery..."
-                    aria-label="Search energy products"
-                    autocomplete="off"
-                    required>
-
-                <button class="search-button" type="submit">
-                    Search products
-                </button>
-
-            </form>
-
+        <div class="sr-panel-head">
+          <h2>Refine your search</h2>
+          <a class="sr-clear" id="srClear" href="{% url 'search_results' %}">Clear all</a>
         </div>
-    </section>
 
+        <ul class="sr-pills" id="srPills" aria-label="Product category">
+          <li><button class="sr-pill {% if not active_category %}is-active{% endif %}" type="button" data-category="" aria-pressed="{% if not active_category %}true{% else %}false{% endif %}">All categories</button></li>
+          {% for value, label in categories %}
+          <li><button class="sr-pill {% if active_category == value %}is-active{% endif %}" type="button" data-category="{{ value }}" aria-pressed="{% if active_category == value %}true{% else %}false{% endif %}">{{ label }}</button></li>
+          {% endfor %}
+        </ul>
 
-    <section class="results-section">
-        <div class="search-container">
+        <div class="sr-fields">
+          <div class="sr-field">
+            <label for="srCapacity">Capacity</label>
+            <input class="sr-field-input" id="srCapacity" type="text" name="capacity" value="{{ active_capacity }}" placeholder="e.g. 5.12 kWh" autocomplete="off">
+          </div>
+          <div class="sr-field">
+            <label for="srPower">Power rating</label>
+            <input class="sr-field-input" id="srPower" type="text" name="power" value="{{ active_power }}" placeholder="e.g. 5 kW" autocomplete="off">
+          </div>
+          <div class="sr-field">
+            <label for="srVoltage">Voltage</label>
+            <input class="sr-field-input" id="srVoltage" type="text" name="voltage" value="{{ active_voltage }}" placeholder="e.g. 48V or 51.2V" autocomplete="off">
+          </div>
+          <button class="sr-apply" type="submit">Apply filters</button>
+          <p class="sr-hint">Combine filters to narrow the catalogue. Results refresh as you change them.</p>
+        </div>
+      </form>
 
-            {% if query %}
+      <!-- Everything inside #searchResults is replaced by live search -->
+      <section class="sr-results" id="searchResults" aria-live="polite" aria-label="Search results">
 
-                <div class="results-heading">
-                    <div>
-                        <h2>Search results</h2>
-                    </div>
+        {% if query or active_category or active_capacity or active_power or active_voltage %}
 
-                    <div class="results-count">
-                        <strong>{{ result_count }}</strong>
-                        product{{ result_count|pluralize }} found
-                        for "{{ query }}"
-                    </div>
+          <div class="sr-bar">
+            <div>
+              <h2>{% if query %}Results for <em>&ldquo;{{ query }}&rdquo;</em>{% else %}Filtered products{% endif %}</h2>
+              <p class="sr-count"><strong>{{ result_count }}</strong> product{{ result_count|pluralize }} found</p>
+            </div>
+
+            <div class="sr-chips">
+              {% if query %}
+                <button class="sr-chip" type="button" data-clear="q"><span>Search: {{ query }}</span><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span class="visually-hidden">Remove</span></button>
+              {% endif %}
+              {% if active_category %}
+                {% for value, label in categories %}{% if value == active_category %}
+                <button class="sr-chip" type="button" data-clear="category"><span>{{ label }}</span><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span class="visually-hidden">Remove</span></button>
+                {% endif %}{% endfor %}
+              {% endif %}
+              {% if active_capacity %}
+                <button class="sr-chip" type="button" data-clear="capacity"><span>Capacity: {{ active_capacity }}</span><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span class="visually-hidden">Remove</span></button>
+              {% endif %}
+              {% if active_power %}
+                <button class="sr-chip" type="button" data-clear="power"><span>Power: {{ active_power }}</span><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span class="visually-hidden">Remove</span></button>
+              {% endif %}
+              {% if active_voltage %}
+                <button class="sr-chip" type="button" data-clear="voltage"><span>Voltage: {{ active_voltage }}</span><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></i><span class="visually-hidden">Remove</span></button>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if products %}
+
+            <div class="sr-grid">
+              {% for p in products %}
+              <article class="result-card" style="--i: {{ forloop.counter0 }}">
+
+                <a class="result-image" href="{{ p.get_absolute_url }}" aria-label="View {{ p.name }}" tabindex="-1">
+                  {% if p.image %}
+                    <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy" decoding="async">
+                  {% elif p.fallback_image %}
+                    <img src="{% if p.fallback_image|slice:':1' == '/' or p.fallback_image|slice:':4' == 'http' %}{{ p.fallback_image }}{% else %}{% static p.fallback_image %}{% endif %}" alt="{{ p.name }}" loading="lazy" decoding="async">
+                  {% else %}
+                    <span class="image-unavailable">Image unavailable</span>
+                  {% endif %}
+                </a>
+
+                <div class="result-category">{{ p.get_category_display }}</div>
+
+                <h3 class="result-name"><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+
+                {% if p.capacity or p.power or p.manufacturer_model %}
+                <div class="result-specs">
+                  {% if p.capacity %}<span class="spec-item"><small>Capacity</small>{{ p.capacity }}</span>{% endif %}
+                  {% if p.power %}<span class="spec-item"><small>Power</small>{{ p.power }}</span>{% endif %}
+                  {% if p.manufacturer_model %}<span class="spec-item"><small>Model</small>{{ p.manufacturer_model }}</span>{% endif %}
                 </div>
-
-                {% if products %}
-
-                    <div class="results-grid">
-
-                        {% for p in products %}
-                            <article class="result-card">
-
-                                <a class="result-image"
-                                   href="{{ p.get_absolute_url }}"
-                                   aria-label="View {{ p.name }}">
-
-                                    {% if p.image %}
-                                        <img src="{{ p.image.url }}"
-                                             alt="{{ p.name }}"
-                                             loading="lazy"
-                                             decoding="async">
-
-                                    {% elif p.fallback_image %}
-                                        <img
-                                            src="{% if p.fallback_image|slice:':1' == '/' or p.fallback_image|slice:':4' == 'http' %}{{ p.fallback_image }}{% else %}{% static p.fallback_image %}{% endif %}"
-                                            alt="{{ p.name }}"
-                                            loading="lazy"
-                                            decoding="async">
-
-                                    {% else %}
-                                        <span class="image-unavailable">
-                                            Image unavailable
-                                        </span>
-                                    {% endif %}
-
-                                </a>
-
-                                <div class="result-category">
-                                    {{ p.get_category_display }}
-                                </div>
-
-                                <h3 class="result-name">
-                                    <a href="{{ p.get_absolute_url }}">
-                                        {{ p.name }}
-                                    </a>
-                                </h3>
-
-                                <div class="result-specs">
-                                    {% if p.capacity %}
-                                        <span class="spec-item">
-                                            {{ p.capacity }}
-                                        </span>
-                                    {% endif %}
-
-                                    {% if p.power %}
-                                        <span class="spec-item">
-                                            {{ p.power }}
-                                        </span>
-                                    {% endif %}
-
-                                    {% if p.manufacturer_model %}
-                                        <span class="spec-item">
-                                            {{ p.manufacturer_model }}
-                                        </span>
-                                    {% endif %}
-                                </div>
-
-                                <a class="result-link"
-                                   href="{{ p.get_absolute_url }}">
-                                    <span>View product details</span>
-                                    <span aria-hidden="true">→</span>
-                                </a>
-
-                            </article>
-                        {% endfor %}
-
-                    </div>
-
-
-                    {% if page_obj.has_other_pages %}
-                        <nav class="pagination" aria-label="Search result pages">
-
-                            {% if page_obj.has_previous %}
-                                <a href="?q={{ query|urlencode }}&page={{ page_obj.previous_page_number }}">
-                                    Previous
-                                </a>
-                            {% endif %}
-
-                            <span class="current">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                            </span>
-
-                            {% if page_obj.has_next %}
-                                <a href="?q={{ query|urlencode }}&page={{ page_obj.next_page_number }}">
-                                    Next
-                                </a>
-                            {% endif %}
-
-                        </nav>
-                    {% endif %}
-
-                {% else %}
-
-                    <div class="empty-state">
-                        <h3>No matching products found</h3>
-
-                        <p>
-                            We couldn't find a product matching
-                            "{{ query }}". Try another product name,
-                            model number, capacity, voltage or keyword.
-                        </p>
-
-                        <a href="{% url 'products' %}">
-                            Browse the full product catalogue →
-                        </a>
-                    </div>
-
                 {% endif %}
 
-            {% else %}
+                <a class="result-link" href="{{ p.get_absolute_url }}">
+                  <span>View product details</span>
+                  <span class="result-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                </a>
 
-                <div class="empty-state">
-                    <h3>What are you looking for?</h3>
+              </article>
+              {% endfor %}
+            </div>
 
-                    <p>
-                        Enter a product name, model number, capacity,
-                        power rating or voltage to explore our catalogue.
-                    </p>
-
-                    <a href="{% url 'products' %}">
-                        Browse all products →
-                    </a>
-                </div>
-
+            {% if page_obj.has_other_pages %}
+            <nav class="sr-pagination" aria-label="Search result pages">
+              {% if page_obj.has_previous %}
+                <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+              {% endif %}
+              <span class="is-current" aria-current="page">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+              {% if page_obj.has_next %}
+                <a href="?{% if pagination_query %}{{ pagination_query }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+              {% endif %}
+            </nav>
             {% endif %}
 
-        </div>
-    </section>
+          {% else %}
 
-</main>
+            <div class="sr-empty">
+              <div class="sr-empty-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35M8.5 11h5"/></svg></div>
+              <h3>No products match that search</h3>
+              <p>Check the spelling, remove a filter, or search with just a capacity or voltage such as 5kWh or 48V.</p>
+              <div class="sr-empty-actions">
+                <button class="is-primary" type="button" data-reset>Clear search and filters</button>
+                <a href="{% url 'products' %}">Browse all products</a>
+                <a href="{% url 'contact' %}">Ask our team</a>
+              </div>
+            </div>
+
+          {% endif %}
+
+        {% else %}
+
+          <div class="sr-bar">
+            <div>
+              <h2>Start with what you need</h2>
+              <p class="sr-count">Pick a starting point, or type in the search field above.</p>
+            </div>
+          </div>
+
+          <div class="sr-paths">
+            <button class="sr-path" type="button" data-q="lithium battery">
+              <h3>Store power</h3>
+              <p>LiFePO4 lithium batteries for homes, businesses and backup systems.</p>
+              <span class="sr-path-go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>See batteries</span>
+            </button>
+            <button class="sr-path" type="button" data-q="inverter">
+              <h3>Convert power</h3>
+              <p>Hybrid inverters that handle solar, battery and grid in one unit.</p>
+              <span class="sr-path-go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>See inverters</span>
+            </button>
+            <button class="sr-path" type="button" data-q="solar">
+              <h3>Generate power</h3>
+              <p>Solar panels and system components for new or growing installations.</p>
+              <span class="sr-path-go"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>See solar</span>
+            </button>
+          </div>
+
+        {% endif %}
+
+      </section>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var root = document.getElementById('srRoot');
+  var searchForm = document.getElementById('srSearchForm');
+  var filterForm = document.getElementById('srFilters');
+  var queryInput = document.getElementById('srQuery');
+  var erase = document.getElementById('srErase');
+  var categoryInput = document.getElementById('srCategory');
+  var pills = document.getElementById('srPills');
+  var clearAll = document.getElementById('srClear');
+  var resultsBox = document.getElementById('searchResults');
+  if (!root || !searchForm || !filterForm || !queryInput || !resultsBox) return;
+
+  var hiddenQuery = filterForm.querySelector('input[name="q"]');
+  var SPEC_FIELDS = ['capacity', 'power', 'voltage'];
+  var timer = null, controller = null, token = 0;
+
+  function field(name) { return filterForm.querySelector('[name="' + name + '"]'); }
+
+  function params() {
+    var p = new URLSearchParams();
+    var q = queryInput.value.trim();
+    if (q) p.set('q', q);
+    if (categoryInput.value) p.set('category', categoryInput.value);
+    SPEC_FIELDS.forEach(function (name) {
+      var f = field(name);
+      if (f && f.value.trim()) p.set(name, f.value.trim());
+    });
+    return p;
+  }
+
+  function syncUi() {
+    hiddenQuery.value = queryInput.value;
+    erase.classList.toggle('is-on', queryInput.value.length > 0);
+    var current = categoryInput.value;
+    pills.querySelectorAll('.sr-pill').forEach(function (btn) {
+      var on = btn.getAttribute('data-category') === current;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function load(url, replaceHistory) {
+    if (controller) controller.abort();
+    controller = ('AbortController' in window) ? new AbortController() : null;
+    var mine = ++token;
+    root.classList.add('is-busy');
+
+    if (replaceHistory !== false) window.history.replaceState({}, '', url);
+
+    return fetch(url, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      credentials: 'same-origin',
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (r) { if (!r.ok) throw new Error('Search request failed'); return r.text(); })
+      .then(function (html) {
+        if (mine !== token) return;
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var fresh = doc.getElementById('searchResults');
+        if (fresh) resultsBox.innerHTML = fresh.innerHTML;
+      })
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        /* If live loading fails, fall back to a normal page load */
+        window.location.href = url;
+      })
+      .then(function () { if (mine === token) root.classList.remove('is-busy'); });
+  }
+
+  function run() {
+    window.clearTimeout(timer);
+    syncUi();
+    var qs = params().toString();
+    load(window.location.pathname + (qs ? '?' + qs : ''));
+  }
+
+  function schedule() {
+    syncUi();
+    window.clearTimeout(timer);
+    timer = window.setTimeout(run, 320);
+  }
+
+  function setQuery(value) {
+    queryInput.value = value;
+    run();
+  }
+
+  function resetAll() {
+    queryInput.value = '';
+    categoryInput.value = '';
+    SPEC_FIELDS.forEach(function (name) { var f = field(name); if (f) f.value = ''; });
+    run();
+  }
+
+  /* Typing, filters, pills */
+  queryInput.addEventListener('input', schedule);
+  SPEC_FIELDS.forEach(function (name) {
+    var f = field(name);
+    if (f) f.addEventListener('input', schedule);
+  });
+  pills.addEventListener('click', function (e) {
+    var btn = e.target.closest('.sr-pill');
+    if (!btn) return;
+    categoryInput.value = btn.getAttribute('data-category') || '';
+    run();
+  });
+
+  /* Forms never reload the page */
+  searchForm.addEventListener('submit', function (e) { e.preventDefault(); run(); });
+  filterForm.addEventListener('submit', function (e) { e.preventDefault(); run(); });
+
+  erase.addEventListener('click', function () { queryInput.value = ''; run(); queryInput.focus(); });
+  clearAll.addEventListener('click', function (e) { e.preventDefault(); resetAll(); });
+
+  /* Popular searches, idle tiles, empty-state reset, removable chips, pagination */
+  document.addEventListener('click', function (e) {
+    var quick = e.target.closest('[data-q]');
+    if (quick && root.contains(quick)) { e.preventDefault(); setQuery(quick.getAttribute('data-q')); return; }
+
+    if (e.target.closest('[data-reset]')) { e.preventDefault(); resetAll(); return; }
+
+    var chip = e.target.closest('.sr-chip[data-clear]');
+    if (chip) {
+      var name = chip.getAttribute('data-clear');
+      if (name === 'q') queryInput.value = '';
+      else if (name === 'category') categoryInput.value = '';
+      else { var f = field(name); if (f) f.value = ''; }
+      run();
+      return;
+    }
+
+    var page = e.target.closest('.sr-pagination a[href]');
+    if (page) {
+      e.preventDefault();
+      var url = window.location.pathname + page.getAttribute('href');
+      load(url).then(function () {
+        var top = resultsBox.getBoundingClientRect().top + window.pageYOffset - 110;
+        if (window.yunqidaLenis) window.yunqidaLenis.scrollTo(Math.max(top, 0), { duration: 1 });
+        else window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+      });
+    }
+  });
+
+  /* Browser back and forward */
+  window.addEventListener('popstate', function () {
+    var p = new URLSearchParams(window.location.search);
+    queryInput.value = p.get('q') || '';
+    categoryInput.value = p.get('category') || '';
+    SPEC_FIELDS.forEach(function (name) { var f = field(name); if (f) f.value = p.get(name) || ''; });
+    syncUi();
+    load(window.location.pathname + window.location.search, false);
+  });
+
+  syncUi();
+})();
+</script>
 {% endblock %}

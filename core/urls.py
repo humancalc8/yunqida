@@ -18,6 +18,7 @@ urlpatterns = [
         ai_views.engineer_chat,
         name='engineer_chat'
     ),
+    path("faq/", views.faq, name="faq"),
     path('search/', views.search_results, name='search_results'),
     #path('search/', views.search_results, name='search_results'),
     path('news/', views.blog_list, name='blog_list'),

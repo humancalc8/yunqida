@@ -4,6 +4,7 @@
 {% url 'news' as news_url %}
 {% url 'faq' as faq_url %}
 {% url 'privacy' as privacy_url %}
+{% url 'search_results' as search_url %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +100,7 @@
       "publisher": {"@id": "{{ request.scheme }}://{{ request.get_host }}/#organization"},
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "{{ request.scheme }}://{{ request.get_host }}{% url 'products' %}?q={search_term_string}",
+        "target": "{{ request.scheme }}://{{ request.get_host }}{{ search_url }}?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }
@@ -110,11 +111,12 @@
 
 <style>
 /* =====================================================================
-   YUNQIDA BASE · v3
+   YUNQIDA BASE · v4
    Palette: Ink #0d1430 · Signal #ffe000 · Paper #fff · Mist #f2f3f5
-   Sections: tokens · reset · top bar · header · drawer · messages ·
-             product partial · footer · loader · cookie consent ·
-             engineer chat · floating actions · responsive helpers
+   Sections: tokens · reset · top bar · header · search trigger ·
+             search palette · drawer · messages · product partial ·
+             footer · loader · cookie consent · engineer chat ·
+             floating actions · responsive helpers
 ===================================================================== */
 
 /* ---------- Tokens ---------- */
@@ -130,7 +132,7 @@
   --c-line: #dfe2e8;
   --c-text-main: #121733;
   --c-emerald: #0a806b;
-  --c-ring: #2a3a8f;                /* thin blue ring around the engineer icon */
+  --c-ring: #2a3a8f;
 
   --font-display: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-heading: var(--font-display);
@@ -138,7 +140,7 @@
 
   --ease: cubic-bezier(.16, 1, .3, 1);
   --header-h: 92px;
-  --lift: 0px;                      /* raised when the cookie bar covers the bottom edge on small screens */
+  --lift: 0px;
   --cookie-h: 0px;
 
   --shadow-subtle: 0 8px 30px rgba(13, 20, 48, .07);
@@ -149,6 +151,7 @@
   --z-float: 140;
   --z-backdrop: 150;
   --z-drawer: 160;
+  --z-search: 170;
   --z-toast: 180;
   --z-loader: 1000;
 }
@@ -170,14 +173,14 @@ body {
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
-body.nav-open { overflow: hidden; }
+body.nav-open, body.search-open { overflow: hidden; }
 img, video { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button, input, textarea { font: inherit; }
 button { color: inherit; }
 ::selection { background: var(--c-sun); color: var(--c-forest-2); }
 :focus-visible { outline: 3px solid var(--c-sun); outline-offset: 3px; }
-.header-search :focus-visible, .search-input:focus-visible { outline: none; }
+.search-input:focus-visible, .sx-input:focus-visible { outline: none; }
 
 .container { width: min(1320px, calc(100% - 64px)); margin-inline: auto; }
 @media (max-width: 640px)  { .container { width: calc(100% - 36px); } }
@@ -221,7 +224,6 @@ button { color: inherit; }
 .brand-badge { padding: 2px 0 2px 14px; border-left: 1px solid var(--c-line); font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--c-muted); line-height: 1.2; }
 @media (max-width: 1300px) { .brand-badge { display: none; } }
 
-/* Primary navigation: hover draws a thin line, the current page keeps a signal-yellow line. */
 .nav-desktop-links { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 1.5vw, 30px); flex: 1; min-width: 0; }
 .nav-link { position: relative; padding: 12px 2px; color: #3b4258; font-size: 14px; font-weight: 600; letter-spacing: .01em; white-space: nowrap; transition: color .3s, opacity .3s; }
 .nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 2px; background: var(--c-forest); transform: scaleX(0); transform-origin: right center; transition: transform .45s var(--ease); }
@@ -232,16 +234,9 @@ button { color: inherit; }
 @media (hover: hover) { .nav-desktop-links:hover .nav-link:not(:hover):not(.is-active) { opacity: .55; } }
 
 .header-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-.header-search { width: 190px; flex-shrink: 0; }
-.search-form { position: relative; display: flex; align-items: center; width: 100%; }
-.search-input { width: 100%; height: 46px; padding: 0 15px 0 42px; background: var(--c-mist); border: 1px solid var(--c-line); border-radius: 10px; outline: none; color: var(--c-text-main); font-size: 14px; transition: background .2s, border-color .2s, box-shadow .2s; -webkit-appearance: none; appearance: none; }
-.search-input::placeholder { color: #7b8294; }
-.search-input:focus { background: #fff; border-color: var(--c-forest); box-shadow: 0 0 0 4px rgba(255, 224, 0, .4); }
-.search-btn-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); display: flex; color: #6b7284; pointer-events: none; }
 
 .icon-btn { display: none; place-items: center; width: 46px; height: 46px; border: 1px solid var(--c-line); border-radius: 12px; background: #fff; color: var(--c-forest); cursor: pointer; transition: background .2s, border-color .2s, color .2s; }
 .icon-btn:hover { background: var(--c-mist); }
-.icon-btn[aria-expanded="true"] { background: var(--c-forest); border-color: var(--c-forest); color: #fff; }
 .nav-toggle { background: var(--c-forest); border-color: var(--c-forest); color: #fff; }
 .nav-toggle:hover { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); }
 
@@ -250,11 +245,27 @@ button { color: inherit; }
 .btn-contact:hover { background: #1c2652; border-color: #1c2652; transform: translateY(-2px); box-shadow: 0 12px 26px -10px rgba(13, 20, 48, .55); }
 .btn-contact:hover span { transform: rotate(45deg); background: #fff; }
 
-/* Search: inline field on wide screens, toggle button otherwise */
-@media (max-width: 1399px) {
-  .header-search { display: none; }
-  .search-toggle { display: grid; }
+/* ---------- Search trigger (opens the search palette) ---------- */
+.search-trigger {
+  display: inline-flex; align-items: center; gap: 12px;
+  height: 48px; min-width: 232px; padding: 0 9px 0 7px;
+  border: 1px solid var(--c-line); border-radius: 14px;
+  background: var(--c-mist); color: #6b7284;
+  font-size: 14px; font-weight: 500; text-align: left; cursor: pointer;
+  transition: background .25s, border-color .25s, box-shadow .25s;
 }
+.search-trigger:hover, .search-trigger:focus-visible { background: #fff; border-color: var(--c-forest); box-shadow: 0 0 0 4px rgba(255, 224, 0, .4); outline: none; }
+.search-trigger-icon { display: grid; place-items: center; flex-shrink: 0; width: 34px; height: 34px; border-radius: 10px; background: var(--c-forest); color: var(--c-sun); transition: transform .45s var(--ease); }
+.search-trigger:hover .search-trigger-icon { transform: rotate(-10deg) scale(1.07); }
+.search-trigger-label { flex: 1; white-space: nowrap; }
+.search-trigger-kbd { padding: 4px 8px; border: 1px solid var(--c-line); border-radius: 7px; background: #fff; color: var(--c-muted); font-size: 11px; font-weight: 700; letter-spacing: .03em; }
+@media (max-width: 1399px) {
+  .search-trigger { min-width: 0; width: 46px; height: 46px; padding: 0; justify-content: center; border-color: transparent; background: transparent; }
+  .search-trigger-label, .search-trigger-kbd { display: none; }
+  .search-trigger-icon { width: 46px; height: 46px; border-radius: 12px; }
+  .search-trigger:hover, .search-trigger:focus-visible { box-shadow: none; background: transparent; }
+}
+
 /* Desktop navigation collapses into the drawer */
 @media (max-width: 1180px) {
   :root { --header-h: 80px; }
@@ -267,11 +278,87 @@ button { color: inherit; }
   .brand img { height: 46px; max-width: 190px; }
 }
 
-.search-tray { position: absolute; top: 100%; left: 0; right: 0; z-index: calc(var(--z-header) - 1); padding: 14px 0; background: #fff; border-bottom: 1px solid var(--c-line); box-shadow: var(--shadow-subtle); transform: translateY(-8px); opacity: 0; visibility: hidden; transition: transform .3s var(--ease), opacity .25s, visibility 0s linear .3s; }
-.search-tray.is-open { transform: none; opacity: 1; visibility: visible; transition: transform .3s var(--ease), opacity .25s; }
-.search-tray .search-form { max-width: 640px; margin-left: auto; }
-@media (max-width: 640px) { .search-tray .search-form { max-width: none; } }
-@media (min-width: 1400px) { .search-tray { display: none; } }
+/* ---------- Search palette ---------- */
+.sx { position: fixed; inset: 0; z-index: var(--z-search); visibility: hidden; pointer-events: none; transition: visibility 0s linear .4s; }
+.sx.is-open { visibility: visible; pointer-events: auto; transition: none; }
+.sx-backdrop { position: absolute; inset: 0; background: rgba(8, 13, 32, .74); backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2); opacity: 0; transition: opacity .3s; }
+.sx.is-open .sx-backdrop { opacity: 1; }
+
+.sx-panel {
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  width: min(800px, calc(100% - 32px));
+  max-height: calc(100dvh - min(11vh, 110px) - 24px);
+  margin: min(11vh, 110px) auto 0;
+  background: var(--c-forest-2); color: #fff;
+  border: 1px solid rgba(255, 255, 255, .12); border-radius: 22px;
+  box-shadow: 0 40px 110px rgba(0, 0, 0, .55);
+  opacity: 0; transform: translateY(-18px) scale(.985);
+  transition: transform .45s var(--ease), opacity .25s;
+}
+.sx.is-open .sx-panel { opacity: 1; transform: none; }
+/* Signal tab, echoing the footer */
+.sx-panel::before { content: ""; position: absolute; top: 0; left: 30px; z-index: 2; width: 112px; height: 6px; background: var(--c-sun); clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+
+.sx-form { position: relative; flex-shrink: 0; display: flex; align-items: center; gap: 16px; padding: 30px 22px 22px 28px; border-bottom: 1px solid rgba(255, 255, 255, .12); }
+.sx-form > .ico-stroke { width: 26px; height: 26px; color: var(--c-sun); stroke-width: 2; }
+.sx-input { flex: 1; min-width: 0; padding: 4px 0; border: 0; outline: none; background: none; color: #fff; caret-color: var(--c-sun); font-family: var(--font-display); font-size: clamp(20px, 3.2vw, 30px); font-weight: 600; letter-spacing: -.025em; -webkit-appearance: none; appearance: none; }
+.sx-input::placeholder { color: rgba(255, 255, 255, .38); }
+.sx-input::-webkit-search-cancel-button, .sx-input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
+.sx-esc { flex-shrink: 0; padding: 7px 11px; border: 1px solid rgba(255, 255, 255, .26); border-radius: 9px; background: none; color: rgba(255, 255, 255, .78); font-size: 12px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.sx-esc:hover { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); }
+.sx-bar { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; overflow: hidden; opacity: 0; transition: opacity .2s; }
+.sx-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 40%; background: linear-gradient(90deg, transparent, var(--c-sun), transparent); transform: translateX(-100%); }
+.sx-panel.is-loading .sx-bar { opacity: 1; }
+.sx-panel.is-loading .sx-bar::after { animation: sxSweep 1s linear infinite; }
+@keyframes sxSweep { to { transform: translateX(250%); } }
+
+.sx-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 20px 28px 10px; }
+.sx-label { margin: 0 0 12px; color: var(--c-sun); font-size: 13px; font-weight: 700; letter-spacing: .01em; }
+.sx-section + .sx-section { margin-top: 26px; }
+.sx-chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.sx-chips a { padding: 9px 16px; border: 1px solid rgba(255, 255, 255, .24); border-radius: 999px; color: rgba(255, 255, 255, .92); font-size: 14px; font-weight: 600; transition: background .2s, color .2s, border-color .2s, transform .25s var(--ease); }
+.sx-chips a:hover, .sx-chips a:focus-visible { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); transform: translateY(-2px); }
+
+.sx-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.sx-tile { display: flex; flex-direction: column; gap: 4px; padding: 16px; border: 1px solid rgba(255, 255, 255, .14); border-radius: 14px; background: rgba(255, 255, 255, .04); transition: border-color .25s, background .25s, transform .3s var(--ease); }
+.sx-tile strong { font-size: 15px; font-weight: 700; }
+.sx-tile span { color: rgba(255, 255, 255, .62); font-size: 12.5px; line-height: 1.5; }
+.sx-tile:hover, .sx-tile:focus-visible { border-color: var(--c-sun); background: rgba(255, 224, 0, .08); transform: translateY(-3px); }
+
+.sx-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.sx-item a { display: grid; grid-template-columns: 64px minmax(0, 1fr) 34px; align-items: center; gap: 16px; padding: 10px 12px; border: 1px solid transparent; border-radius: 14px; transition: background .2s, border-color .2s; }
+.sx-item.is-active a, .sx-item a:hover { background: rgba(255, 255, 255, .07); border-color: rgba(255, 224, 0, .6); }
+.sx-thumb { display: grid; place-items: center; width: 64px; height: 64px; padding: 6px; border-radius: 12px; background: #fff; overflow: hidden; }
+.sx-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.sx-thumb em { color: var(--c-muted); font-size: 10px; font-style: normal; text-align: center; }
+.sx-text { min-width: 0; }
+.sx-cat { display: block; color: var(--c-sun); font-size: 11.5px; font-weight: 700; }
+.sx-name { display: block; margin-top: 1px; font-size: 16px; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sx-specs { display: block; margin-top: 2px; color: rgba(255, 255, 255, .62); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sx-go { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: rgba(255, 255, 255, .08); color: rgba(255, 255, 255, .8); transition: background .25s, color .25s, transform .4s var(--ease); }
+.sx-item.is-active .sx-go, .sx-item a:hover .sx-go { background: var(--c-sun); color: var(--c-forest-2); transform: rotate(-45deg); }
+.sx-empty { margin: 4px 0 10px; color: rgba(255, 255, 255, .72); font-size: 14.5px; line-height: 1.7; }
+.sx-empty strong { color: #fff; }
+.sx-all { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 0 18px; padding: 14px 18px; border-radius: 12px; background: var(--c-sun); color: var(--c-forest-2); font-size: 14px; font-weight: 800; transition: background .25s, transform .25s var(--ease); }
+.sx-all:hover, .sx-all:focus-visible { background: #fff; transform: translateY(-2px); }
+.sx-all[hidden], .sx-results[hidden], .sx-idle[hidden] { display: none; }
+
+.sx-foot { flex-shrink: 0; display: flex; align-items: center; gap: 22px; padding: 13px 28px; border-top: 1px solid rgba(255, 255, 255, .12); color: rgba(255, 255, 255, .58); font-size: 12px; }
+.sx-foot span { display: inline-flex; align-items: center; gap: 6px; }
+.sx-foot kbd { min-width: 22px; padding: 2px 6px; border: 1px solid rgba(255, 255, 255, .26); border-radius: 6px; background: rgba(255, 255, 255, .06); color: rgba(255, 255, 255, .86); font-family: inherit; font-size: 11px; font-weight: 700; text-align: center; }
+
+@media (max-width: 700px) {
+  .sx-tiles { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .sx-panel { width: 100%; max-height: calc(100dvh - 12px); margin: 0; border-radius: 0 0 22px 22px; border-top: 0; }
+  .sx-form { gap: 12px; padding: 26px 14px 16px 18px; }
+  .sx-form > .ico-stroke { width: 22px; height: 22px; }
+  .sx-body { padding: 18px 18px 8px; }
+  .sx-item a { grid-template-columns: 54px minmax(0, 1fr) 30px; gap: 12px; }
+  .sx-thumb { width: 54px; height: 54px; }
+  .sx-foot { display: none; }
+}
 
 /* ---------- Mobile drawer ---------- */
 .nav-backdrop { position: fixed; inset: 0; z-index: var(--z-backdrop); background: rgba(8, 13, 32, .65); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
@@ -284,10 +371,9 @@ button { color: inherit; }
 .drawer-close { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .4); border-radius: 50%; background: transparent; color: #fff; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
 .drawer-close:hover { background: var(--c-sun); border-color: var(--c-sun); color: var(--c-forest-2); }
 .drawer-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px 22px 10px; }
-.drawer-search-wrap .search-input { background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .22); color: #fff; }
-.drawer-search-wrap .search-input::placeholder { color: rgba(255, 255, 255, .65); }
-.drawer-search-wrap .search-input:focus { background: rgba(255, 255, 255, .14); border-color: var(--c-sun); box-shadow: none; }
-.drawer-search-wrap .search-btn-icon { color: rgba(255, 255, 255, .7); }
+.drawer-search-btn { display: flex; align-items: center; gap: 12px; width: 100%; height: 48px; padding: 0 15px; border: 1px solid rgba(255, 255, 255, .22); border-radius: 12px; background: rgba(255, 255, 255, .1); color: rgba(255, 255, 255, .72); font-size: 14px; text-align: left; cursor: pointer; transition: border-color .2s, background .2s; }
+.drawer-search-btn:hover { border-color: var(--c-sun); background: rgba(255, 255, 255, .14); }
+.drawer-search-btn .ico-stroke { color: var(--c-sun); }
 .drawer-label { margin: 22px 0 6px; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--c-sun); }
 .drawer-nav-list { display: flex; flex-direction: column; }
 .drawer-nav-item { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid rgba(255, 255, 255, .14); }
@@ -351,11 +437,7 @@ button { color: inherit; }
 @media (min-width: 1100px) { .yd-manufacture__grid { grid-template-columns: repeat(var(--yd-cols-desktop), minmax(0, 1fr)); } }
 @media (max-width: 420px)  { .yd-manufacture { --yd-gap: 10px; --yd-pad: 11px; } .yd-manufacture__description { font-size: 11px; } }
 
-/* ---------- Footer ----------
-   Structure: statement + direct contact, then the link grid, then legal.
-   Desktop  : brand + four link columns.
-   Tablet   : brand row, four columns beneath.
-   Mobile   : 2 x 2 ruled grid of links, brand and socials after it. */
+/* ---------- Footer ---------- */
 .site-footer {
   --f-line: rgba(255, 255, 255, .14);
   --f-dim: rgba(255, 255, 255, .62);
@@ -364,7 +446,6 @@ button { color: inherit; }
   background: var(--c-forest-2);
   color: #fff;
 }
-/* Signal tab, the same slanted shape used on the home page */
 .site-footer::before {
   content: ""; position: absolute; top: 0; left: max(18px, 6vw);
   width: clamp(120px, 20vw, 300px); height: clamp(10px, 1.2vw, 16px);
@@ -373,7 +454,6 @@ button { color: inherit; }
 }
 .site-footer :focus-visible { outline-color: var(--c-sun); }
 
-/* Statement + direct contact */
 .footer-cta-band {
   display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap;
   gap: 36px 72px;
@@ -395,7 +475,6 @@ button { color: inherit; }
 .footer-cta { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px; background: var(--c-sun); color: var(--c-forest-2); border-radius: 10px; font-size: 14px; font-weight: 800; transition: background .25s, transform .25s var(--ease); }
 .footer-cta:hover { background: #fff; transform: translateY(-2px); }
 
-/* Link grid */
 .footer-main {
   display: grid;
   grid-template-columns: 1.55fr repeat(4, minmax(0, 1fr));
@@ -428,13 +507,11 @@ button { color: inherit; }
 .footer-address { margin: 18px 0 0; color: var(--f-soft); font-size: 14.5px; font-style: normal; line-height: 1.7; }
 .footer-address a { display: inline; }
 
-/* Legal */
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px 28px; padding: 20px 0 calc(28px + env(safe-area-inset-bottom, 0px)); color: var(--f-dim); font-size: 13px; }
 .footer-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
 .footer-legal a, .footer-legal button { padding: 0; border: 0; background: none; color: inherit; font-size: inherit; cursor: pointer; transition: color .2s; }
 .footer-legal a:hover, .footer-legal button:hover { color: var(--c-sun); }
 
-/* Tablet: brand row, four columns beneath */
 @media (max-width: 1100px) {
   .footer-main {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -442,8 +519,6 @@ button { color: inherit; }
   }
   .footer-about { max-width: 520px; }
 }
-
-/* Mobile: 2 x 2 ruled grid of links, then brand and socials */
 @media (max-width: 820px) {
   .footer-cta-band { align-items: flex-start; flex-direction: column; gap: 32px; }
   .footer-call { width: 100%; }
@@ -466,7 +541,7 @@ button { color: inherit; }
   .footer-main { column-gap: 16px; }
 }
 
-/* ---------- Intro loader (first visit of a session only) ---------- */
+/* ---------- Intro loader ---------- */
 .loader { position: fixed; inset: 0; z-index: var(--z-loader); display: flex; align-items: center; justify-content: center; background: var(--c-forest); border-radius: 0 0 50% 50% / 0 0 7vh 7vh; transform: translateY(-100%); visibility: hidden; pointer-events: none; transition: transform .9s cubic-bezier(.76, 0, .24, 1), visibility 0s linear .9s; }
 html.show-loader .loader { transform: none; visibility: visible; pointer-events: auto; transition: none; }
 .loader-mark { display: grid; place-items: center; width: 84px; height: 84px; border-radius: 50%; background: var(--c-sun); }
@@ -476,8 +551,6 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 
 /* =====================================================================
    COOKIE CONSENT
-   Desktop: compact card, bottom centre (clear of chat + WhatsApp).
-   Mobile : full-width sheet; floating buttons are lifted above it.
 ===================================================================== */
 .cookie {
   position: fixed;
@@ -531,7 +604,7 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 @media (max-width: 420px) { .cookie-btn { flex: 1 1 100%; } }
 
 /* =====================================================================
-   ENGINEER CHAT: icon-only launcher + panel
+   ENGINEER CHAT
 ===================================================================== */
 .yd-assistant { position: fixed; left: max(18px, env(safe-area-inset-left, 0px)); bottom: calc(max(18px, env(safe-area-inset-bottom, 0px)) + var(--lift)); z-index: var(--z-float); transition: bottom .4s var(--ease); }
 
@@ -578,7 +651,6 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 .yd-chat-suggestions button { padding: 10px 12px; text-align: left; border: 1px solid var(--c-line); border-radius: 9px; background: #fff; color: var(--c-forest); font-size: 13px; font-weight: 700; cursor: pointer; transition: border-color .2s, background .2s; }
 .yd-chat-suggestions button:hover { border-color: var(--c-forest); background: var(--c-mist); }
 
-/* Markdown inside assistant replies */
 .yd-chat-bubble h1, .yd-chat-bubble h2, .yd-chat-bubble h3, .yd-chat-bubble h4 { margin: 15px 0 8px; color: var(--c-forest); font-size: 14px; font-weight: 800; line-height: 1.4; }
 .yd-chat-bubble > :first-child { margin-top: 0; }
 .yd-chat-bubble > :last-child { margin-bottom: 0; }
@@ -606,7 +678,7 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 
 .yd-chat-disclaimer { flex-shrink: 0; padding: 8px 14px; border-top: 1px solid var(--c-line); color: var(--c-muted); font-size: 11px; line-height: 1.5; text-align: center; }
 .yd-chat-form { flex-shrink: 0; display: flex; align-items: flex-end; gap: 9px; padding: 11px 13px; border-top: 1px solid var(--c-line); background: #fff; }
-.yd-chat-form textarea { flex: 1; min-width: 0; max-height: 100px; resize: none; padding: 11px 12px; border: 1px solid var(--c-line); border-radius: 10px; outline: none; color: var(--c-text-main); background: #fafafa; font-size: 16px; line-height: 1.4; }  /* 16px stops iOS zooming on focus */
+.yd-chat-form textarea { flex: 1; min-width: 0; max-height: 100px; resize: none; padding: 11px 12px; border: 1px solid var(--c-line); border-radius: 10px; outline: none; color: var(--c-text-main); background: #fafafa; font-size: 16px; line-height: 1.4; }
 .yd-chat-form textarea:focus { border-color: var(--c-forest); background: #fff; }
 .yd-chat-form button { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border: 0; border-radius: 11px; background: var(--c-sun); color: var(--c-forest-2); cursor: pointer; transition: background .2s, opacity .2s; }
 .yd-chat-form button:hover { background: var(--c-sun-deep); }
@@ -615,7 +687,6 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 .yd-chat-footer { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 14px; background: #fafafa; color: var(--c-muted); font-size: 11px; }
 .yd-chat-footer button { border: 0; background: none; color: var(--c-forest); font-size: 12px; font-weight: 700; cursor: pointer; }
 
-/* Small screens: the chat becomes a bottom sheet and the launcher steps aside while it is open */
 @media (max-width: 600px) {
   .yd-assistant { left: max(10px, env(safe-area-inset-left, 0px)); bottom: calc(max(12px, env(safe-area-inset-bottom, 0px)) + var(--lift)); }
   .yd-launcher { width: 66px; height: 66px; }
@@ -633,7 +704,6 @@ html.show-loader .loader-mark { animation: ld-pulse 1.4s ease-in-out infinite; }
 .yd-wa:hover { background: #1ebe5a; transform: scale(1.06); }
 .yd-wa svg { width: 30px; height: 30px; fill: currentColor; }
 
-/* Keeps the home page's back-to-top button clear of the WhatsApp button */
 body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bottom: calc(92px + var(--lift)) !important; }
 @media (max-width: 600px) {
   .yd-wa { right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(max(16px, env(safe-area-inset-bottom, 0px)) + var(--lift)); width: 54px; height: 54px; }
@@ -641,7 +711,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
   body .yd-top { right: max(14px, env(safe-area-inset-right, 0px)) !important; bottom: calc(84px + var(--lift)) !important; }
 }
 
-@media print { .top-bar, .site-header, .yd-assistant, .yd-wa, .cookie, .loader { display: none !important; } }
+@media print { .top-bar, .site-header, .yd-assistant, .yd-wa, .cookie, .loader, .sx { display: none !important; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -730,7 +800,6 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
       <span class="brand-badge">Kenya</span>
     </a>
 
-    <!-- Home first, then ordered by buying intent: what we sell, who it is for, how we deliver, proof, then company info. -->
     <nav class="nav-desktop-links" aria-label="Primary navigation">
       {% with current=request.resolver_match.url_name %}
       <a class="nav-link {% if current == 'home' %}is-active{% endif %}" href="{% url 'home' %}">Home</a>
@@ -745,27 +814,65 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     </nav>
 
     <div class="header-actions">
-      <div class="header-search">
-        <form class="search-form" action="{% url 'products' %}" method="get" role="search">
-          <span class="search-btn-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg></span>
-          <input class="search-input" type="search" name="q" placeholder="Search products" aria-label="Search products" autocomplete="off">
-        </form>
-      </div>
-      <button class="icon-btn search-toggle" id="searchToggle" type="button" aria-label="Search products" aria-expanded="false" aria-controls="searchTray"><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg></button>
+      <button class="search-trigger" id="searchTrigger" type="button" data-open-search aria-haspopup="dialog" aria-controls="searchOverlay" aria-label="Search products">
+        <span class="search-trigger-icon"><svg class="ico-stroke" style="width:18px;height:18px;stroke-width:2" aria-hidden="true"><use href="#i-search"></use></svg></span>
+        <span class="search-trigger-label">Search products</span>
+        <kbd class="search-trigger-kbd" id="searchKbd">Ctrl K</kbd>
+      </button>
       <a class="btn-contact" href="{% url 'contact' %}">Request a quote <span aria-hidden="true">↗</span></a>
       <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-controls="mobileDrawer" aria-expanded="false" aria-label="Open navigation menu"><svg class="ico-stroke" style="width:21px;height:21px" aria-hidden="true"><use href="#i-menu"></use></svg></button>
     </div>
   </div>
+</header>
 
-  <div class="search-tray" id="searchTray">
-    <div class="container">
-      <form class="search-form" action="{% url 'products' %}" method="get" role="search">
-        <span class="search-btn-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg></span>
-        <input class="search-input" id="trayInput" type="search" name="q" placeholder="Search inverters, lithium batteries, solar systems" aria-label="Search products" autocomplete="off">
-      </form>
+<!-- Search palette: type for instant matches, press Enter for the full results page -->
+<div class="sx" id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search products" aria-hidden="true" inert>
+  <div class="sx-backdrop" data-sx-close></div>
+  <div class="sx-panel" id="sxPanel">
+    <form class="sx-form" id="sxForm" action="{{ search_url }}" method="get" role="search">
+      <svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg>
+      <input class="sx-input" id="sxInput" type="search" name="q" placeholder="Search inverters, 5kWh, 48V…" aria-label="Search products" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" role="combobox" aria-expanded="false" aria-controls="sxList" aria-autocomplete="list">
+      <button class="sx-esc" type="button" data-sx-close aria-label="Close search">Esc</button>
+      <span class="sx-bar" aria-hidden="true"></span>
+    </form>
+
+    <div class="sx-body" data-lenis-prevent>
+      <div class="sx-idle" id="sxIdle">
+        <div class="sx-section">
+          <p class="sx-label">Popular searches</p>
+          <div class="sx-chips">
+            <a href="{{ search_url }}?q=lithium+battery">Lithium battery</a>
+            <a href="{{ search_url }}?q=hybrid+inverter">Hybrid inverter</a>
+            <a href="{{ search_url }}?q=5kWh">5kWh</a>
+            <a href="{{ search_url }}?q=48V">48V</a>
+            <a href="{{ search_url }}?q=solar">Solar panel</a>
+          </div>
+        </div>
+        <div class="sx-section">
+          <p class="sx-label">Start from what you need</p>
+          <div class="sx-tiles">
+            <a class="sx-tile" href="{{ search_url }}?q=lithium+battery"><strong>Store power</strong><span>LiFePO4 batteries for homes and businesses</span></a>
+            <a class="sx-tile" href="{{ search_url }}?q=inverter"><strong>Convert power</strong><span>Hybrid inverters for backup and solar</span></a>
+            <a class="sx-tile" href="{{ search_url }}?q=solar"><strong>Generate power</strong><span>Solar panels and complete systems</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="sx-results" id="sxResults" hidden>
+        <p class="sx-label" id="sxMeta" aria-live="polite"></p>
+        <ul class="sx-list" id="sxList" role="listbox" aria-label="Matching products"></ul>
+        <p class="sx-empty" id="sxEmpty" hidden></p>
+        <a class="sx-all" id="sxAll" href="{{ search_url }}"><span>See all results</span><svg class="ico-stroke" aria-hidden="true"><use href="#i-arrow-right"></use></svg></a>
+      </div>
+    </div>
+
+    <div class="sx-foot" aria-hidden="true">
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move</span>
+      <span><kbd>Enter</kbd> to open</span>
+      <span><kbd>Esc</kbd> to close</span>
     </div>
   </div>
-</header>
+</div>
 
 <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 <aside class="mobile-nav-drawer" id="mobileDrawer" aria-label="Mobile navigation" aria-hidden="true" inert>
@@ -775,12 +882,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
   </div>
 
   <div class="drawer-scroll" data-lenis-prevent>
-    <div class="drawer-search-wrap">
-      <form class="search-form" action="{% url 'products' %}" method="get" role="search">
-        <span class="search-btn-icon"><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg></span>
-        <input class="search-input" type="search" name="q" placeholder="Search products" aria-label="Search products">
-      </form>
-    </div>
+    <button class="drawer-search-btn" type="button" data-open-search><svg class="ico-stroke" aria-hidden="true"><use href="#i-search"></use></svg>Search products</button>
 
     <div class="drawer-label">Menu</div>
     <nav class="drawer-nav-list" aria-label="Mobile menu links">
@@ -829,7 +931,6 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 <footer class="site-footer" id="siteFooter">
   <div class="container">
 
-
     <div class="footer-main">
       <div class="footer-brand">
         <a class="footer-logo" href="{% url 'home' %}" aria-label="Yunqida Solar Energy Ltd Kenya home"><img src="{% static 'img/logo.png' %}" alt="Yunqida Solar Energy Ltd Kenya" height="44"></a>
@@ -845,9 +946,9 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
       <nav class="footer-col footer-col--products" aria-labelledby="fh-products">
         <h3 id="fh-products">Products</h3>
         <ul class="footer-links">
-          <li><a href="{% url 'products' %}?q=lithium+battery">Lithium batteries</a></li>
-          <li><a href="{% url 'products' %}?q=inverter">Hybrid inverters</a></li>
-          <li><a href="{% url 'products' %}?q=solar">Solar panels</a></li>
+          <li><a href="{{ search_url }}?q=lithium+battery">Lithium batteries</a></li>
+          <li><a href="{{ search_url }}?q=inverter">Hybrid inverters</a></li>
+          <li><a href="{{ search_url }}?q=solar">Solar panels</a></li>
           <li><a href="{% url 'products' %}">All products</a></li>
         </ul>
       </nav>
@@ -979,7 +1080,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 <script>
-/* Site shell: header, drawer, search tray, smooth scroll, loader */
+/* Site shell: header, drawer, smooth scroll, loader */
 (function () {
   'use strict';
 
@@ -989,21 +1090,11 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
   var closeBtn = document.getElementById('navClose');
   var backdrop = document.getElementById('navBackdrop');
   var drawer = document.getElementById('mobileDrawer');
-  var searchBtn = document.getElementById('searchToggle');
-  var searchTray = document.getElementById('searchTray');
-  var trayInput = document.getElementById('trayInput');
   var previousFocus = null;
 
   function updateHeader() { if (header) header.classList.toggle('is-scrolled', window.scrollY > 16); }
   window.addEventListener('scroll', updateHeader, { passive: true });
   updateHeader();
-
-  function setSearch(open) {
-    if (!searchTray || !searchBtn) return;
-    searchTray.classList.toggle('is-open', open);
-    searchBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    if (open && trayInput) window.setTimeout(function () { trayInput.focus(); }, 120);
-  }
 
   function setDrawer(open) {
     if (!toggle || !drawer || !backdrop) return;
@@ -1015,7 +1106,7 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     if (open) {
       previousFocus = document.activeElement;
-      setSearch(false);
+      if (window.ydSearch) window.ydSearch.close(true);
       if (window.yunqidaLenis) window.yunqidaLenis.stop();
       window.setTimeout(function () { if (closeBtn) closeBtn.focus(); }, 50);
     } else {
@@ -1023,25 +1114,13 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
       if (previousFocus && previousFocus.focus) previousFocus.focus();
     }
   }
+  window.ydCloseDrawer = function () { if (document.body.classList.contains('nav-open')) setDrawer(false); };
 
   if (toggle) toggle.addEventListener('click', function () { setDrawer(true); });
   if (closeBtn) closeBtn.addEventListener('click', function () { setDrawer(false); });
   if (backdrop) backdrop.addEventListener('click', function () { setDrawer(false); });
   document.querySelectorAll('.mobile-nav-drawer a').forEach(function (link) {
     link.addEventListener('click', function () { setDrawer(false); });
-  });
-
-  if (searchBtn) {
-    searchBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      setSearch(!searchTray.classList.contains('is-open'));
-    });
-  }
-  document.addEventListener('pointerdown', function (e) {
-    if (searchTray && searchTray.classList.contains('is-open') &&
-        !searchTray.contains(e.target) && !(searchBtn && searchBtn.contains(e.target))) {
-      setSearch(false);
-    }
   });
 
   /* Leaving the mobile breakpoint with the drawer open would trap scrolling */
@@ -1051,22 +1130,13 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
   else if (desktopQuery.addListener) desktopQuery.addListener(onBreakpoint);
 
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') {
-      if (document.body.classList.contains('nav-open')) setDrawer(false);
-      setSearch(false);
-    }
+    if (event.key === 'Escape' && document.body.classList.contains('nav-open')) setDrawer(false);
     if (document.body.classList.contains('nav-open') && event.key === 'Tab' && drawer) {
       var focusable = drawer.querySelectorAll('a[href],button:not([disabled]),input:not([disabled])');
       if (!focusable.length) return;
       var first = focusable[0], last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    }
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-      event.preventDefault();
-      var desktopSearch = document.querySelector('.header-search .search-input');
-      if (desktopSearch && desktopSearch.offsetParent !== null) desktopSearch.focus();
-      else setSearch(true);
     }
   });
 
@@ -1111,6 +1181,294 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     window.setTimeout(hideLoader, 3500);
   }
   window.addEventListener('pageshow', function (event) { if (event.persisted) root.classList.remove('show-loader'); });
+})();
+</script>
+
+<script>
+/* Search palette.
+   Open with the header button, Ctrl/Cmd + K, or "/".
+   Typing shows instant matches (read from the search results page);
+   Enter opens the full results page: {% url 'search_results' %}?q=...
+   Arrow keys move through instant matches, Enter opens the highlighted one. */
+(function () {
+  'use strict';
+
+  var root = document.getElementById('searchOverlay');
+  if (!root) return;
+
+  var panel = document.getElementById('sxPanel');
+  var form = document.getElementById('sxForm');
+  var input = document.getElementById('sxInput');
+  var idle = document.getElementById('sxIdle');
+  var results = document.getElementById('sxResults');
+  var list = document.getElementById('sxList');
+  var meta = document.getElementById('sxMeta');
+  var empty = document.getElementById('sxEmpty');
+  var allLink = document.getElementById('sxAll');
+  var kbd = document.getElementById('searchKbd');
+  var SEARCH_URL = "{{ search_url }}";
+  var MAX_ITEMS = 5;
+
+  var timer = null, controller = null, token = 0;
+  var rows = [], current = -1, lastFocus = null;
+
+  var isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+  if (kbd) kbd.textContent = isMac ? '⌘ K' : 'Ctrl K';
+
+  function isOpen() { return root.classList.contains('is-open'); }
+
+  function open(prefill) {
+    if (isOpen()) { input.focus(); return; }
+    if (window.ydCloseDrawer) window.ydCloseDrawer();
+    lastFocus = document.activeElement;
+    root.removeAttribute('inert');
+    root.setAttribute('aria-hidden', 'false');
+    root.classList.add('is-open');
+    document.body.classList.add('search-open');
+    if (window.yunqidaLenis) window.yunqidaLenis.stop();
+    if (typeof prefill === 'string') input.value = prefill;
+    window.setTimeout(function () { input.focus(); input.select(); }, 60);
+    if (input.value.trim()) schedule(0);
+  }
+
+  function close(silent) {
+    if (!isOpen()) return;
+    root.classList.remove('is-open');
+    root.setAttribute('aria-hidden', 'true');
+    root.setAttribute('inert', '');
+    document.body.classList.remove('search-open');
+    if (controller) controller.abort();
+    window.clearTimeout(timer);
+    panel.classList.remove('is-loading');
+    if (window.yunqidaLenis && !document.body.classList.contains('nav-open')) window.yunqidaLenis.start();
+    if (!silent && lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  window.ydSearch = { open: open, close: close };
+
+  function setActive(index) {
+    rows.forEach(function (row, i) { row.classList.toggle('is-active', i === index); });
+    current = index;
+    if (index > -1) {
+      input.setAttribute('aria-activedescendant', rows[index].id);
+      rows[index].scrollIntoView({ block: 'nearest' });
+    } else {
+      input.removeAttribute('aria-activedescendant');
+    }
+  }
+
+  function showIdle() {
+    idle.hidden = false;
+    results.hidden = true;
+    input.setAttribute('aria-expanded', 'false');
+    rows = []; current = -1;
+  }
+
+  function fullResultsUrl(q) { return SEARCH_URL + '?q=' + encodeURIComponent(q); }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
+  function render(q, items, total) {
+    list.innerHTML = '';
+    rows = [];
+    current = -1;
+    input.removeAttribute('aria-activedescendant');
+    idle.hidden = true;
+    results.hidden = false;
+    allLink.href = fullResultsUrl(q);
+
+    if (!items.length) {
+      list.hidden = true;
+      empty.hidden = false;
+      empty.innerHTML = '';
+      empty.appendChild(document.createTextNode('No instant matches for '));
+      empty.appendChild(el('strong', '', '\u201C' + q + '\u201D'));
+      empty.appendChild(document.createTextNode('. Press Enter to search the full catalogue, or try a model, capacity or voltage.'));
+      meta.textContent = 'No matches yet';
+      allLink.hidden = false;
+      input.setAttribute('aria-expanded', 'false');
+      return;
+    }
+
+    list.hidden = false;
+    empty.hidden = true;
+    meta.textContent = total + (total === 1 ? ' product matches' : ' products match') + ' \u201C' + q + '\u201D';
+    allLink.hidden = false;
+    allLink.firstElementChild.textContent = total > items.length ? 'See all ' + total + ' results' : 'Open results page';
+    input.setAttribute('aria-expanded', 'true');
+
+    items.forEach(function (item, i) {
+      var li = el('li', 'sx-item');
+      li.id = 'sxOpt' + i;
+      li.setAttribute('role', 'option');
+
+      var a = el('a');
+      a.href = item.href;
+
+      var thumb = el('span', 'sx-thumb');
+      if (item.img) {
+        var img = document.createElement('img');
+        img.src = item.img;
+        img.alt = '';
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+      } else {
+        thumb.appendChild(el('em', '', 'No image'));
+      }
+
+      var text = el('span', 'sx-text');
+      if (item.category) text.appendChild(el('span', 'sx-cat', item.category));
+      text.appendChild(el('span', 'sx-name', item.name));
+      if (item.specs) text.appendChild(el('span', 'sx-specs', item.specs));
+
+      var go = el('span', 'sx-go');
+      go.innerHTML = '<svg class="ico-stroke" aria-hidden="true"><use href="#i-arrow-right"></use></svg>';
+
+      a.appendChild(thumb); a.appendChild(text); a.appendChild(go);
+      li.appendChild(a);
+      li.addEventListener('mousemove', function () { if (current !== i) setActive(i); });
+      list.appendChild(li);
+      rows.push(li);
+    });
+  }
+
+  function parse(html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var cards = doc.querySelectorAll('.result-card');
+    var countEl = doc.querySelector('.sr-count strong');
+    var items = [];
+    cards.forEach(function (card) {
+      if (items.length >= MAX_ITEMS) return;
+      var link = card.querySelector('.result-name a');
+      if (!link) return;
+      var img = card.querySelector('.result-image img');
+      var cat = card.querySelector('.result-category');
+      var specs = [];
+      card.querySelectorAll('.spec-item').forEach(function (s) {
+        var t = s.textContent.replace(/\s+/g, ' ').trim();
+        if (t) specs.push(t);
+      });
+      items.push({
+        href: link.getAttribute('href'),
+        name: link.textContent.replace(/\s+/g, ' ').trim(),
+        img: img ? img.getAttribute('src') : '',
+        category: cat ? cat.textContent.replace(/\s+/g, ' ').trim() : '',
+        specs: specs.join(' \u00B7 ')
+      });
+    });
+    var total = countEl ? parseInt(countEl.textContent.replace(/\D/g, ''), 10) : items.length;
+    if (!total || total < items.length) total = items.length;
+    return { items: items, total: total };
+  }
+
+  function search() {
+    var q = input.value.trim();
+    if (!q) { showIdle(); panel.classList.remove('is-loading'); return; }
+
+    if (controller) controller.abort();
+    controller = ('AbortController' in window) ? new AbortController() : null;
+    var mine = ++token;
+    panel.classList.add('is-loading');
+
+    fetch(fullResultsUrl(q), {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      credentials: 'same-origin',
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (r) { if (!r.ok) throw new Error('bad'); return r.text(); })
+      .then(function (html) {
+        if (mine !== token) return;
+        var data = parse(html);
+        render(q, data.items, data.total);
+      })
+      .catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        if (mine !== token) return;
+        /* Instant matches are a bonus: fall back to a plain link to the results page */
+        render(q, [], 0);
+        meta.textContent = 'Search';
+      })
+      .then(function () { if (mine === token) panel.classList.remove('is-loading'); });
+  }
+
+  function schedule(delay) {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(search, delay == null ? 220 : delay);
+  }
+
+  input.addEventListener('input', function () { schedule(); });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown' && rows.length) {
+      e.preventDefault();
+      setActive(current + 1 >= rows.length ? 0 : current + 1);
+    } else if (e.key === 'ArrowUp' && rows.length) {
+      e.preventDefault();
+      setActive(current <= 0 ? rows.length - 1 : current - 1);
+    } else if (e.key === 'Enter' && current > -1 && rows[current]) {
+      e.preventDefault();
+      window.location.href = rows[current].querySelector('a').href;
+    }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    window.location.href = q ? fullResultsUrl(q) : SEARCH_URL;
+  });
+
+  root.addEventListener('click', function (e) {
+    if (e.target.closest('[data-sx-close]')) close();
+    else if (e.target.closest('a[href]')) close(true);
+  });
+
+  document.addEventListener('click', function (e) {
+    var trigger = e.target.closest && e.target.closest('[data-open-search]');
+    if (!trigger) return;
+    e.preventDefault();
+    /* From the mobile drawer: let it slide away first */
+    if (trigger.closest('.mobile-nav-drawer')) {
+      if (window.ydCloseDrawer) window.ydCloseDrawer();
+      window.setTimeout(function () { open(); }, 120);
+    } else {
+      open();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var key = (e.key || '').toLowerCase();
+    if ((e.metaKey || e.ctrlKey) && key === 'k') {
+      e.preventDefault();
+      isOpen() ? close() : open();
+      return;
+    }
+    if (key === '/' && !isOpen() && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      var t = e.target, tag = t && t.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+      e.preventDefault();
+      open();
+      return;
+    }
+    if (!isOpen()) return;
+    if (key === 'escape') { e.preventDefault(); close(); }
+    if (key === 'tab') {
+      var f = Array.prototype.filter.call(
+        root.querySelectorAll('a[href],button:not([disabled]),input:not([disabled])'),
+        function (n) { return n.offsetParent !== null; }
+      );
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  window.addEventListener('pageshow', function (e) { if (e.persisted) close(true); });
 })();
 </script>
 
@@ -1212,7 +1570,6 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
   if (existing) {
     window.dispatchEvent(new CustomEvent('yd:consent', { detail: existing }));
   } else {
-    /* Wait for the intro loader so the two never compete for attention */
     window.setTimeout(show, document.documentElement.classList.contains('show-loader') ? 1700 : 600);
   }
 })();
@@ -1252,7 +1609,6 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     if ('inert' in panel) panel.inert = !open;
     if (open) {
       scrollToBottom();
-      /* On phones, focusing straight away pops the keyboard over the welcome message */
       if (window.matchMedia('(min-width: 601px)').matches) window.setTimeout(function () { input.focus(); }, 200);
     }
   }
@@ -1407,15 +1763,15 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     closeBtn.addEventListener('click', function () { setAssistant(false); toggleBtn.focus(); });
   }
 
-  /* Close on an outside tap, but never while the cookie bar or drawer is being used */
+  /* Close on an outside tap, but never while the cookie bar, drawer or search palette is being used */
   document.addEventListener('pointerdown', function (e) {
     if (!isOpen() || assistant.contains(e.target)) return;
-    if (e.target.closest && e.target.closest('.cookie, .mobile-nav-drawer')) return;
+    if (e.target.closest && e.target.closest('.cookie, .mobile-nav-drawer, .sx')) return;
     setAssistant(false);
   });
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && isOpen()) { setAssistant(false); toggleBtn.focus(); }
+    if (e.key === 'Escape' && isOpen() && !document.body.classList.contains('search-open')) { setAssistant(false); toggleBtn.focus(); }
   });
 
   form.addEventListener('submit', function (e) {
@@ -1427,7 +1783,6 @@ body .yd-top { right: max(20px, env(safe-area-inset-right, 0px)) !important; bot
     sendMessage(message);
   });
 
-  /* Enter sends, Shift+Enter adds a line */
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
       e.preventDefault();

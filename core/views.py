@@ -46,22 +46,60 @@ def solutions(request):
     return render(request, 'core/solutions.html')
 
 
-def products(request):
-    category = request.GET.get('category', '')
-    items = Product.objects.all()
 
+def products(request):
+    category = request.GET.get('category', '').strip()
+    capacity = request.GET.get('capacity', '').strip()
+    power = request.GET.get('power', '').strip()
+    voltage = request.GET.get('voltage', '').strip()
+
+    items = Product.objects.all().annotate(
+        specifications_text=Cast(
+            'technical_specifications',
+            output_field=TextField()
+        )
+    )
+
+    # Category filter
     if category in dict(Product.CATEGORY_CHOICES):
         items = items.filter(category=category)
     else:
         category = ''
 
+    # Capacity filter
+    if capacity:
+        items = items.filter(capacity__icontains=capacity)
+
+    # Power filter
+    if power:
+        items = items.filter(power__icontains=power)
+
+    # Voltage filter (stored in technical specifications)
+    if voltage:
+        items = items.filter(
+            specifications_text__icontains=voltage
+        )
+
+    # Pagination: maximum 17 products per page
+    paginator = Paginator(items, 17)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    # Preserve active filters when navigating pages
+    query_params = request.GET.copy()
+    query_params.pop('page', None)
+    pagination_query = query_params.urlencode()
+
     return render(request, 'core/products.html', {
-        'products': items,
+        'products': page_obj.object_list,
+        'page_obj': page_obj,
         'categories': Product.CATEGORY_CHOICES,
         'active_category': category,
+        'active_capacity': capacity,
+        'active_power': power,
+        'active_voltage': voltage,
+        'pagination_query': pagination_query,
+        'result_count': paginator.count,
     })
-
-
 
 def product_detail(request, slug):
     product = get_object_or_404(
@@ -329,60 +367,291 @@ def product_search(request):
 
 def search_results(request):
     query = request.GET.get('q', '').strip()
+    category = request.GET.get('category', '').strip()
+    capacity = request.GET.get('capacity', '').strip()
+    power = request.GET.get('power', '').strip()
+    voltage = request.GET.get('voltage', '').strip()
 
-    products = Product.objects.none()
+    # Start with products and make JSON specifications searchable.
+    searchable_products = Product.objects.annotate(
+        specifications_text=Cast(
+            'technical_specifications',
+            output_field=TextField()
+        )
+    )
 
-    if query:
-        searchable_products = Product.objects.annotate(
-            specifications_text=Cast(
-                'technical_specifications',
-                output_field=TextField()
+    # Only show results when the visitor has entered a search
+    # term or selected at least one filter.
+    has_filters = any([
+        query,
+        category,
+        capacity,
+        power,
+        voltage,
+    ])
+
+    if has_filters:
+        products = searchable_products
+
+        # Main keyword search.
+        if query:
+            filters = (
+                Q(name__icontains=query)
+                | Q(manufacturer_model__icontains=query)
+                | Q(category__icontains=query)
+                | Q(tagline__icontains=query)
+                | Q(description__icontains=query)
+                | Q(capacity__icontains=query)
+                | Q(power__icontains=query)
+                | Q(warranty__icontains=query)
+                | Q(specifications_text__icontains=query)
             )
-        )
 
-        filters = (
-            Q(name__icontains=query)
-            | Q(manufacturer_model__icontains=query)
-            | Q(category__icontains=query)
-            | Q(tagline__icontains=query)
-            | Q(description__icontains=query)
-            | Q(capacity__icontains=query)
-            | Q(power__icontains=query)
-            | Q(warranty__icontains=query)
-            | Q(specifications_text__icontains=query)
-        )
+            # Match human-readable category names.
+            for value, label in Product.CATEGORY_CHOICES:
+                if query.lower() in label.lower():
+                    filters |= Q(category=value)
 
-        # Also search the human-readable category names.
-        for value, label in Product.CATEGORY_CHOICES:
-            if query.lower() in label.lower():
-                filters |= Q(category=value)
+            # Common category search terms.
+            category_aliases = {
+                'lithium': 'battery',
+                'batteries': 'battery',
+                'battery': 'battery',
+                'solar': 'solar',
+                'residential': 'residential',
+                'home': 'residential',
+                'commercial': 'commercial',
+                'industrial': 'commercial',
+            }
 
-        # Common category synonyms.
-        category_aliases = {
-            'lithium': 'battery',
-            'batteries': 'battery',
-            'battery': 'battery',
-            'solar': 'solar',
-            'residential': 'residential',
-            'home': 'residential',
-            'commercial': 'commercial',
-            'industrial': 'commercial',
-        }
+            alias = category_aliases.get(query.lower())
 
-        alias = category_aliases.get(query.lower())
-        if alias:
-            filters |= Q(category=alias)
+            if alias:
+                filters |= Q(category=alias)
 
-        products = searchable_products.filter(
-            filters
-        ).distinct().order_by('order', 'name')
+            products = products.filter(filters)
 
-    paginator = Paginator(products, 12)
+        # Category filter.
+        if category in dict(Product.CATEGORY_CHOICES):
+            products = products.filter(category=category)
+        else:
+            category = ''
+
+        # Capacity filter.
+        if capacity:
+            products = products.filter(
+                capacity__icontains=capacity
+            )
+
+        # Power filter.
+        if power:
+            products = products.filter(
+                power__icontains=power
+            )
+
+        # Voltage filter: voltage is stored in the technical
+        # specifications JSON field, not a separate model field.
+        if voltage:
+            products = products.filter(
+                specifications_text__icontains=voltage
+            )
+
+        products = products.distinct().order_by('order', 'name')
+
+    else:
+        products = Product.objects.none()
+
+    # Display a maximum of 17 products per page.
+    paginator = Paginator(products, 17)
     page_obj = paginator.get_page(request.GET.get('page'))
+
+    # Preserve all active search terms and filters during pagination.
+    query_params = request.GET.copy()
+    query_params.pop('page', None)
+    pagination_query = query_params.urlencode()
 
     return render(request, 'core/search_results.html', {
         'query': query,
         'page_obj': page_obj,
         'products': page_obj.object_list,
         'result_count': paginator.count,
+        'categories': Product.CATEGORY_CHOICES,
+        'active_category': category,
+        'active_capacity': capacity,
+        'active_power': power,
+        'active_voltage': voltage,
+        'pagination_query': pagination_query,
     })
+# ---------------------------------------------------------------
+# views.py  (add to your core app)
+# ---------------------------------------------------------------
+import json
+
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+from django.utils.text import slugify
+
+FAQ_DATA = [
+    {
+        "slug": "general",
+        "title": "About Yunqida",
+        "intro": "Who we are and how we work.",
+        "items": [
+            ("Who is Yunqida Energy Technology Kenya?",
+             "Yunqida Energy Technology Kenya makes solar energy products, LiFePO4 lithium batteries and hybrid inverters available to Kenyan homes, businesses and institutions. We are associated with Guangdong Yunqida New Energy Technology Co., Ltd."),
+            ("Who do you serve?",
+             "We serve households, shops, offices, schools, clinics, farms, factories and project partners such as installers and distributors."),
+            ("Do you only sell products?",
+             "No. We also help you understand your energy needs, size a system, compare options and choose suitable equipment before you buy."),
+            ("How do I contact Yunqida Energy Kenya?",
+             "Use the contact page or call 0114542427. Tell us about your site and what you want to power so we can respond with relevant options."),
+        ],
+    },
+    {
+        "slug": "solar",
+        "title": "Solar systems",
+        "intro": "Panels, generation and how a system fits together.",
+        "items": [
+            ("What does a solar power system include?",
+             "A typical system includes solar panels, an inverter, mounting equipment and cabling. Many systems also add lithium battery storage so you can use solar energy at night and during outages."),
+            ("Will solar keep my power on during a blackout?",
+             "It depends on the design. A basic grid tied system usually switches off when the grid fails. A hybrid system with battery storage can keep selected loads running."),
+            ("How many solar panels do I need?",
+             "That depends on your daily energy use, the roof or ground space available and your goals. We size the system from your appliances and consumption."),
+            ("Can solar run my whole home or business?",
+             "It can, if the system is sized for your total load and storage needs. Many customers start with essential loads and expand later."),
+            ("How long do solar panels last?",
+             "Quality panels are designed to work for many years, and manufacturers usually give performance warranties. Check the warranty terms of the specific product in your quotation."),
+        ],
+    },
+    {
+        "slug": "lithium-batteries",
+        "title": "Lithium batteries",
+        "intro": "LiFePO4 storage explained in plain language.",
+        "items": [
+            ("What is a LiFePO4 lithium battery?",
+             "LiFePO4 means lithium iron phosphate. It is a rechargeable battery chemistry widely used for solar storage and power backups, available in many voltages and capacities."),
+            ("Why choose lithium batteries over lead acid batteries?",
+             "Lithium batteries are generally lighter, allow deeper usable discharge and are built for frequent cycling. Compare usable capacity, cycle life and warranty on the datasheet."),
+            ("How do I choose the right battery capacity?",
+             "Add up the power of the appliances you want to run, multiply by the hours you need, and compare that with the usable capacity of the battery. We can do this calculation with you."),
+            ("Can I add more batteries later?",
+             "Often yes, if the battery and inverter support expansion. Plan for this from the start so the equipment you buy today stays compatible."),
+            ("What is the difference between wall mounted and rack mounted batteries?",
+             "Wall mounted units suit homes and small sites. Rack mounted units suit larger systems and are installed in cabinets or racks for easier scaling."),
+            ("Do lithium batteries need maintenance?",
+             "They need little routine maintenance. Keep them in the recommended temperature range, ventilated as advised and connected to a compatible inverter or battery management system."),
+        ],
+    },
+    {
+        "slug": "inverters",
+        "title": "Hybrid inverters",
+        "intro": "The brain that connects solar, batteries and the grid.",
+        "items": [
+            ("What is a hybrid inverter?",
+             "A hybrid inverter manages solar panels, battery storage and the grid in one unit, depending on the model. It decides where your power comes from at any moment."),
+            ("How is a hybrid inverter different from a standard inverter?",
+             "A standard inverter usually handles one source and has limited energy management. A hybrid inverter coordinates several sources and can charge and discharge batteries."),
+            ("Do I need a single phase or three phase inverter?",
+             "It depends on your electrical supply and loads. Homes usually use single phase, while larger commercial and industrial sites often need three phase."),
+            ("Will any battery work with any inverter?",
+             "No. Voltage, communication protocol and capacity must match. Always confirm battery and inverter compatibility before you buy."),
+            ("What inverter size do I need?",
+             "Size it to the total power of the loads that run at the same time, with room for startup surges from motors and compressors."),
+        ],
+    },
+    {
+        "slug": "power-backups",
+        "title": "Power backups",
+        "intro": "Keeping the lights, fridge and work running.",
+        "items": [
+            ("How long will a power backup last?",
+             "A rough guide is usable battery energy divided by the power you draw. A larger battery or fewer loads means longer backup time."),
+            ("Which appliances can a power backup run?",
+             "Lights, phones, internet routers, televisions, fridges and many other devices, as long as the inverter and battery are sized for them. Heavy loads such as water heaters need more capacity."),
+            ("Does the system switch on automatically when the grid goes off?",
+             "Many hybrid systems transfer to battery power automatically, but the speed and behaviour depend on the model. Confirm this in the product specification."),
+            ("Can a power backup work with a generator?",
+             "Some hybrid inverters accept a generator as an extra source. Check that the specific model supports it."),
+            ("Can I back up only essential loads?",
+             "Yes. A common approach is to connect lights, internet, fridge and selected sockets to the backup, and leave heavy loads on the grid."),
+        ],
+    },
+    {
+        "slug": "business",
+        "title": "Business and industry",
+        "intro": "Energy for shops, schools, clinics, farms and factories.",
+        "items": [
+            ("Do you provide commercial energy storage?",
+             "Yes. We provide storage products and guidance for shops, offices, hotels, schools, clinics and other businesses."),
+            ("Can systems scale for industrial use?",
+             "Rack and cabinet battery configurations let capacity grow as your needs grow. Share your load profile and we can discuss suitable options."),
+            ("Can solar and lithium storage reduce my electricity costs?",
+             "They can reduce how much you buy from the grid and keep operations running during outages. Savings depend on your tariff, usage and system size."),
+            ("Do you work with installers and project developers?",
+             "Yes. We supply products and discuss specifications and quantities with installers, distributors and project partners."),
+        ],
+    },
+    {
+        "slug": "oem",
+        "title": "OEM and ODM",
+        "intro": "Your brand, our manufacturing experience.",
+        "items": [
+            ("What are OEM and ODM services?",
+             "OEM means we manufacture a product to your specification. ODM means we also help develop the design. Both let you sell energy storage products under your own brand."),
+            ("What can be customised?",
+             "Specifications, branding, capacity and design requirements can be discussed. Contact us with your target market and volumes."),
+            ("How do I start an OEM or ODM enquiry?",
+             "Call 0114542427 or use the contact page with your product idea, expected quantities and timeline."),
+        ],
+    },
+    {
+        "slug": "orders",
+        "title": "Quotes, orders and support",
+        "intro": "From first enquiry to ongoing support.",
+        "items": [
+            ("How do I get a quotation?",
+             "Send us your location, the appliances or loads you want to power, how long you need backup and any products you are considering. We will respond with relevant options and pricing."),
+            ("What information should I prepare before asking for a quote?",
+             "Have your monthly electricity usage or appliance list, your supply type (single or three phase), available installation space and your budget range."),
+            ("Do you offer guidance on installation?",
+             "We provide product guidance and can discuss installation requirements. Use a qualified installer for electrical work and confirm details when you enquire."),
+            ("What warranty do products carry?",
+             "Warranty terms depend on the product. They are stated in your quotation, so ask about them before you decide."),
+            ("Can I visit or speak to someone before buying?",
+             "Yes. Call 0114542427 or send an enquiry and our team will respond."),
+        ],
+    },
+]
+
+
+def faq(request):
+    categories, schema_items, total = [], [], 0
+
+    for cat in FAQ_DATA:
+        items = []
+        for q, a in cat["items"]:
+            items.append({"q": q, "a": a, "slug": "q-" + slugify(q)[:60]})
+            schema_items.append({
+                "@type": "Question",
+                "name": q,
+                "acceptedAnswer": {"@type": "Answer", "text": a},
+            })
+        total += len(items)
+        categories.append({**cat, "items": items})
+
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": schema_items,
+    }
+    # "<" is escaped so the JSON can never close the script tag
+    schema_json = json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")
+
+    return render(request, "core/faq.html", {
+        "categories": categories,
+        "total": total,
+        "faq_schema": mark_safe(schema_json),
+    })
+
+

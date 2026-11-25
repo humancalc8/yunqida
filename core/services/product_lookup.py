@@ -808,17 +808,18 @@ def lookup_yunqida_model(model_number):
     """
     Search the official YUNQIDA sitemap for an exact model number.
 
-    Usage:
-        result = lookup_yunqida_model("YQD-256150-LFOESS")
+    Records page failures instead of silently ignoring them, so the
+    import worker can save useful diagnostic information against
+    the relevant ProductImportDraft.
     """
 
     model_number = clean_text(model_number)
-
     normalized = normalize_model(model_number)
 
     if len(normalized) < 5:
         raise CatalogueLookupError(
-            "Enter a complete product model number."
+            "Enter a complete product model number. "
+            "The supplied model number is too short."
         )
 
     session = requests.Session()
@@ -829,11 +830,8 @@ def lookup_yunqida_model(model_number):
     })
 
     try:
-
-        # robots.txt verification intentionally removed.
         # Manufacturer authorization has been obtained.
-        crawl_delay = REQUEST_DELAY
-
+        # robots.txt verification is intentionally not performed.
         sitemap = _fetch_page(
             session,
             SITEMAP_URL,
@@ -843,24 +841,33 @@ def lookup_yunqida_model(model_number):
 
         if not product_links:
             raise CatalogueLookupError(
-                "No product detail links were found in the "
-                "official YUNQIDA sitemap."
+                "The official YUNQIDA sitemap was retrieved, "
+                "but no product detail links were found. "
+                "The sitemap structure may have changed."
             )
+
+        checked_pages = 0
+        failed_pages = []
+        matching_model_found = False
 
         for index, product_url in enumerate(product_links):
 
             if index:
-                time.sleep(crawl_delay)
+                time.sleep(REQUEST_DELAY)
 
             try:
-
                 page = _fetch_page(
                     session,
                     product_url,
                 )
 
-            except CatalogueLookupError:
-                # Skip unavailable product pages.
+                checked_pages += 1
+
+            except CatalogueLookupError as exc:
+                failed_pages.append({
+                    "url": product_url,
+                    "error": str(exc),
+                })
                 continue
 
             if not _page_model_matches(
@@ -869,16 +876,95 @@ def lookup_yunqida_model(model_number):
             ):
                 continue
 
-            return _build_product_data(
-                page,
-                model_number,
-                product_url,
+            matching_model_found = True
+
+            try:
+                result = _build_product_data(
+                    page,
+                    model_number,
+                    product_url,
+                )
+
+                if not isinstance(result, dict):
+                    raise CatalogueLookupError(
+                        "The product extraction process returned "
+                        "an invalid result."
+                    )
+
+                if not result.get("name"):
+                    raise CatalogueLookupError(
+                        "The exact model page was found, but the "
+                        "product name could not be extracted."
+                    )
+
+                if not result.get("match_verified"):
+                    raise CatalogueLookupError(
+                        "The extracted product failed exact model "
+                        "verification."
+                    )
+
+                result["lookup_diagnostics"] = {
+                    "pages_checked": checked_pages,
+                    "pages_failed": len(failed_pages),
+                    "model_matched": True,
+                    "page_errors": failed_pages[:10],
+                }
+
+                if failed_pages:
+                    result.setdefault("warnings", []).append(
+                        f"{len(failed_pages)} other manufacturer "
+                        "page(s) could not be inspected. "
+                        "The requested model was nevertheless "
+                        "verified successfully."
+                    )
+
+                return result
+
+            except CatalogueLookupError:
+                raise
+
+            except Exception as exc:
+                raise CatalogueLookupError(
+                    "The exact manufacturer product page was found, "
+                    "but its information could not be extracted. "
+                    f"Extraction error: {type(exc).__name__}: {exc}"
+                ) from exc
+
+        # No matching model was found. Explain how much of the
+        # catalogue was actually inspected.
+        if checked_pages == 0 and failed_pages:
+            error_details = "; ".join(
+                f"{item['url']}: {item['error']}"
+                for item in failed_pages[:3]
+            )
+
+            raise CatalogueLookupError(
+                "The manufacturer product pages could not be inspected. "
+                f"{len(failed_pages)} page request(s) failed. "
+                f"First errors: {error_details}"
+            )
+
+        if failed_pages:
+            error_details = "; ".join(
+                f"{item['url']}: {item['error']}"
+                for item in failed_pages[:3]
+            )
+
+            raise ProductNotFound(
+                f"No exact manufacturer catalogue match was found "
+                f"for model: {model_number}. "
+                f"Successfully inspected {checked_pages} product page(s). "
+                f"{len(failed_pages)} page request(s) failed and were "
+                f"skipped. First errors: {error_details}"
             )
 
         raise ProductNotFound(
             f"No exact manufacturer catalogue match was found "
-            f"for model: {model_number}"
+            f"for model: {model_number}. "
+            f"All {checked_pages} accessible product page(s) "
+            "were inspected, but none contained an exact model match."
         )
 
     finally:
         session.close()
+

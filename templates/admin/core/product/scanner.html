@@ -5,29 +5,18 @@
 
 {% block extrastyle %}
 {{ block.super }}
-
 <style>
 .scanner-page {
     max-width: 1050px;
     margin: 25px auto;
 }
-
-.scanner-heading {
-    margin-bottom: 25px;
-}
-
-.scanner-heading h1 {
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.scanner-heading p,
-.scanner-note {
+.scanner-heading { margin-bottom: 25px; }
+.scanner-heading h1 { font-size: 26px; font-weight: 600; }
+.scanner-heading p, .scanner-note {
     color: var(--body-quiet-color);
     font-size: 13px;
     line-height: 1.6;
 }
-
 .scanner-panel {
     background: var(--body-bg);
     border: 1px solid var(--border-color);
@@ -35,35 +24,24 @@
     padding: 24px;
     margin-bottom: 20px;
 }
-
-.scanner-panel h2 {
-    font-size: 17px;
-    margin-top: 0;
-}
-
+.scanner-panel h2 { font-size: 17px; margin-top: 0; }
 .scanner-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
-
 #qr-reader {
     width: 100%;
     max-width: 520px;
     margin-top: 15px;
 }
-
-#qr-reader video {
-    border-radius: 7px;
-}
-
+#qr-reader video { border-radius: 7px; }
 .scanner-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 15px;
 }
-
 .scanner-button {
     border: 0;
     border-radius: 6px;
@@ -74,18 +52,15 @@
     background: var(--primary);
     color: white;
 }
-
 .scanner-button.secondary {
     background: var(--darkened-bg);
     color: var(--body-fg);
     border: 1px solid var(--border-color);
 }
-
 .scanner-button:disabled {
     opacity: .65;
     cursor: wait;
 }
-
 .scanner-input {
     width: 100%;
     box-sizing: border-box;
@@ -96,7 +71,6 @@
     background: var(--body-bg);
     color: var(--body-fg);
 }
-
 .scanner-status {
     padding: 13px;
     border-radius: 6px;
@@ -105,7 +79,6 @@
     font-size: 13px;
     overflow-wrap: anywhere;
 }
-
 .scanner-result {
     display: none;
     margin-top: 20px;
@@ -114,7 +87,6 @@
     padding: 20px;
     background: var(--body-bg);
 }
-
 .scanner-result img {
     max-width: 260px;
     max-height: 260px;
@@ -122,24 +94,16 @@
     display: block;
     margin-top: 15px;
 }
-
 #draft-admin-link a {
     color: var(--link-fg);
     font-weight: 600;
 }
-
 @media (max-width: 700px) {
-    .scanner-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .scanner-panel {
-        padding: 16px;
-    }
+    .scanner-grid { grid-template-columns: 1fr; }
+    .scanner-panel { padding: 16px; }
 }
 </style>
 {% endblock %}
-
 
 {% block content %}
 
@@ -148,89 +112,54 @@
     data-submit-url="{{ submit_url }}"
     data-status-url-template="{{ status_url_template }}"
 >
-
     <div id="scanner-csrf" hidden>
         {% csrf_token %}
     </div>
 
     <div class="scanner-heading">
         <h1>YUNQIDA Product Scanner</h1>
-
         <p>
             Scan a product QR code or enter a model number
             to retrieve manufacturer information.
         </p>
     </div>
 
-
     <div class="scanner-grid">
-
         <section class="scanner-panel">
-
             <h2>01. Scan using camera</h2>
-
             <p>Use your phone camera or computer webcam.</p>
 
             <div id="qr-reader"></div>
 
             <div class="scanner-actions">
-
-                <button
-                    type="button"
-                    class="scanner-button"
-                    id="start-camera"
-                >
+                <button type="button" class="scanner-button" id="start-camera">
                     Start camera
                 </button>
 
-                <button
-                    type="button"
-                    class="scanner-button secondary"
-                    id="stop-camera"
-                    disabled
-                >
+                <button type="button" class="scanner-button secondary"
+                        id="stop-camera" disabled>
                     Stop camera
                 </button>
-
             </div>
-
         </section>
-
 
         <section class="scanner-panel">
-
             <h2>02. Upload QR photograph</h2>
-
             <p>Select a photograph containing a product QR code.</p>
 
-            <input
-                type="file"
-                id="qr-image"
-                class="scanner-input"
-                accept="image/*"
-            >
+            <input type="file" id="qr-image" class="scanner-input"
+                   accept="image/*">
 
             <div class="scanner-actions">
-
-                <button
-                    type="button"
-                    class="scanner-button"
-                    id="scan-image"
-                >
+                <button type="button" class="scanner-button" id="scan-image">
                     Read QR photograph
                 </button>
-
             </div>
-
         </section>
-
     </div>
 
-
     <section class="scanner-panel">
-
         <h2>03. Enter product model number</h2>
-
         <p>
             Enter the manufacturer's model number to fetch product details.
         </p>
@@ -241,57 +170,36 @@
             class="scanner-input"
             maxlength="4096"
             placeholder="Example: YQD-256200-LFO"
+            autocomplete="off"
         >
 
         <div class="scanner-actions">
-
-            <button
-                type="button"
-                class="scanner-button"
-                id="submit-manual"
-            >
+            <button type="button" class="scanner-button" id="submit-manual">
                 Fetch product details
             </button>
-
         </div>
-
     </section>
 
-
-    <div
-        id="scanner-status"
-        class="scanner-status"
-        role="status"
-        aria-live="polite"
-    >
+    <div id="scanner-status" class="scanner-status"
+         role="status" aria-live="polite">
         Scanner ready.
     </div>
 
-
     <section id="scanner-result" class="scanner-result">
-
         <h2>Product lookup result</h2>
-
         <p id="decoded-value"></p>
-
         <div id="product-details"></div>
-
         <p id="draft-admin-link"></p>
-
     </section>
-
 </div>
 
-
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
 
 <script>
 (function () {
     "use strict";
 
     const page = document.querySelector(".scanner-page");
-
     if (!page) return;
 
     const submitUrl = page.dataset.submitUrl;
@@ -326,33 +234,22 @@
     const POLL_INTERVAL = 3000;
     const MAX_POLL_ATTEMPTS = 180;
 
-
     function setStatus(message) {
         statusBox.textContent = message;
     }
 
-
     function setBusy(busy) {
         submitting = busy;
 
-        manualButton.disabled = busy || lookupInProgress;
-        imageButton.disabled = busy || lookupInProgress;
-        startButton.disabled = busy || lookupInProgress || cameraRunning;
+        const disabled = busy || lookupInProgress;
 
-        if (lookupInProgress) {
-            manualButton.disabled = true;
-            imageButton.disabled = true;
-            startButton.disabled = true;
-        }
+        manualButton.disabled = disabled;
+        imageButton.disabled = disabled;
+        startButton.disabled = disabled || cameraRunning;
     }
 
-
     function addDetail(label, value) {
-        if (
-            value === null ||
-            value === undefined ||
-            value === ""
-        ) {
+        if (value === null || value === undefined || value === "") {
             return;
         }
 
@@ -360,7 +257,6 @@
         const strong = document.createElement("strong");
 
         strong.textContent = label + ": ";
-
         paragraph.appendChild(strong);
         paragraph.appendChild(
             document.createTextNode(String(value))
@@ -369,68 +265,52 @@
         productDetails.appendChild(paragraph);
     }
 
-
     function addDraftLink(data) {
-
         if (!data.draft_url) return;
 
         const link = document.createElement("a");
-
         link.href = data.draft_url;
         link.textContent = "Open pending product import #" + data.draft_id;
 
         if (draftLink.childNodes.length) {
-            draftLink.appendChild(
-                document.createTextNode(" | ")
-            );
+            draftLink.appendChild(document.createTextNode(" | "));
         }
 
         draftLink.appendChild(link);
     }
 
-
     function addSourceLink(sourceUrl) {
-
         if (!sourceUrl) return;
 
         try {
-
             const source = new URL(sourceUrl);
 
             if (source.protocol !== "https:") return;
 
             const link = document.createElement("a");
-
             link.href = source.href;
             link.target = "_blank";
             link.rel = "noopener noreferrer";
             link.textContent = "View manufacturer source";
 
             if (draftLink.childNodes.length) {
-                draftLink.appendChild(
-                    document.createTextNode(" | ")
-                );
+                draftLink.appendChild(document.createTextNode(" | "));
             }
 
             draftLink.appendChild(link);
-
         } catch (error) {
             console.warn("Invalid manufacturer source URL.");
         }
     }
 
-
     function showProduct(data, originalValue) {
-
         resultBox.style.display = "block";
-
         decodedValue.textContent = originalValue;
 
         productDetails.replaceChildren();
         draftLink.replaceChildren();
 
         if (data.lookup_completed) {
-
             addDetail("Manufacturer", data.manufacturer);
             addDetail("Product", data.product_name);
             addDetail("Model number", data.model_number);
@@ -441,29 +321,21 @@
             addDetail("Description", data.description);
 
             if (data.image_url) {
-
                 try {
-
                     const imageUrl = new URL(data.image_url);
 
                     if (imageUrl.protocol === "https:") {
-
                         const image = document.createElement("img");
-
                         image.src = imageUrl.href;
                         image.alt = data.product_name || "Product image";
                         image.loading = "lazy";
-
                         productDetails.appendChild(image);
                     }
-
                 } catch (error) {
                     console.warn("Invalid product image URL.");
                 }
             }
-
         } else {
-
             addDetail("Message", data.message || "Lookup not completed.");
         }
 
@@ -471,35 +343,27 @@
         addDraftLink(data);
     }
 
-
     function sleep(milliseconds) {
         return new Promise(function (resolve) {
             window.setTimeout(resolve, milliseconds);
         });
     }
 
-
     async function stopCamera() {
-
         if (!cameraRunning || !qrScanner) return;
 
         try {
             await qrScanner.stop();
-
         } catch (error) {
             console.error("Camera stop error:", error);
         }
 
         cameraRunning = false;
-
         stopButton.disabled = true;
-
         startButton.disabled = submitting || lookupInProgress;
     }
 
-
     function getStatusUrl(draftId) {
-
         if (!statusUrlTemplate) {
             throw new Error("Lookup status URL is missing.");
         }
@@ -510,17 +374,10 @@
         );
     }
 
-
-    async function pollLookup(draftId, originalValue, statusUrl) {
-
+    async function pollLookup(draftId, originalValue, statusUrl, draftUrl) {
         pollingCancelled = false;
 
-        for (
-            let attempt = 0;
-            attempt < MAX_POLL_ATTEMPTS;
-            attempt++
-        ) {
-
+        for (let attempt = 0; attempt < MAX_POLL_ATTEMPTS; attempt++) {
             if (pollingCancelled) return;
 
             if (attempt > 0) {
@@ -532,7 +389,6 @@
             let response;
 
             try {
-
                 response = await fetch(statusUrl, {
                     method: "GET",
                     credentials: "same-origin",
@@ -541,13 +397,10 @@
                         "X-Requested-With": "XMLHttpRequest"
                     }
                 });
-
             } catch (error) {
-
                 setStatus(
-                    "Connection interrupted. Retrying product lookup status..."
+                    "Connection interrupted. Retrying lookup status..."
                 );
-
                 continue;
             }
 
@@ -556,27 +409,22 @@
             });
 
             if (!response.ok || !data.ok) {
-
                 throw new Error(
                     data.error || "Could not retrieve lookup status."
                 );
             }
 
             if (data.lookup_status === "completed") {
-
                 showProduct(data, originalValue);
 
                 setStatus(
                     data.message || "Product information retrieved successfully."
                 );
-
                 return;
             }
 
             if (data.lookup_status === "failed") {
-
                 resultBox.style.display = "block";
-
                 decodedValue.textContent = originalValue;
 
                 productDetails.replaceChildren();
@@ -589,10 +437,7 @@
 
                 addDraftLink(data);
 
-                setStatus(
-                    data.message || "Manufacturer lookup failed."
-                );
-
+                setStatus(data.message || "Manufacturer lookup failed.");
                 return;
             }
 
@@ -606,61 +451,46 @@
             }
 
             setStatus(
-                data.message ||
-                "Manufacturer lookup is still running..."
+                data.message || "Manufacturer lookup is still running..."
             );
         }
 
         setStatus(
             "The lookup is taking longer than expected. " +
-            "The background worker may still be processing it. " +
-            "Check the pending draft in the admin."
+            "The background worker may still be processing it."
         );
 
-        const fallback = document.createElement("a");
-
-        fallback.href = getDraftUrl(draftId);
-        fallback.textContent = "Open pending product import #" + draftId;
-
-        draftLink.replaceChildren(fallback);
         resultBox.style.display = "block";
         decodedValue.textContent = originalValue;
+        productDetails.replaceChildren();
+        draftLink.replaceChildren();
+
+        if (draftUrl) {
+            const link = document.createElement("a");
+            link.href = draftUrl;
+            link.textContent = "Open pending product import #" + draftId;
+            draftLink.appendChild(link);
+        }
     }
-
-
-    function getDraftUrl(draftId) {
-
-        const prefix = submitUrl.replace(
-            /scanner\/submit\/?$/,
-            ""
-        );
-
-        return prefix + "productimportdraft/" +
-            encodeURIComponent(String(draftId)) + "/change/";
-    }
-
 
     async function submitIdentifier(value) {
-
         value = String(value || "").trim();
 
         if (!value) {
             setStatus("Please enter a product model number.");
+            manualInput.focus();
             return;
         }
 
         if (submitting || lookupInProgress) return;
 
         setBusy(true);
-
         pollingCancelled = false;
-
         resultBox.style.display = "none";
 
         setStatus("Submitting product model number...");
 
         try {
-
             await stopCamera();
 
             if (!csrfToken) {
@@ -677,9 +507,7 @@
                     "X-CSRFToken": csrfToken,
                     "X-Requested-With": "XMLHttpRequest"
                 },
-                body: JSON.stringify({
-                    value: value
-                })
+                body: JSON.stringify({ value: value })
             });
 
             const data = await response.json().catch(function () {
@@ -687,7 +515,6 @@
             });
 
             if (!response.ok || !data.ok) {
-
                 throw new Error(
                     data.error ||
                     "Lookup submission failed. HTTP " + response.status
@@ -695,9 +522,7 @@
             }
 
             if (data.lookup_status === "queued" && data.draft_id) {
-
                 lookupInProgress = true;
-
                 setBusy(false);
 
                 setStatus(
@@ -710,13 +535,13 @@
                 await pollLookup(
                     data.draft_id,
                     value,
-                    statusUrl
+                    statusUrl,
+                    data.draft_url
                 );
 
                 return;
             }
 
-            // URL submissions are saved without starting a lookup.
             showProduct(data, value);
 
             setStatus(
@@ -724,86 +549,58 @@
             );
 
         } catch (error) {
-
             console.error("Product lookup submission error:", error);
-
             setStatus("Lookup failed: " + error.message);
 
         } finally {
-
             lookupInProgress = false;
-
             setBusy(false);
         }
     }
 
-
     async function startCamera() {
-
-        if (
-            cameraRunning ||
-            submitting ||
-            lookupInProgress
-        ) {
-            return;
-        }
+        if (cameraRunning || submitting || lookupInProgress) return;
 
         if (typeof Html5Qrcode === "undefined") {
-
             setStatus(
                 "QR library failed to load. Check your internet connection."
             );
-
             return;
         }
 
         startButton.disabled = true;
-
         setStatus("Requesting camera permission...");
 
         try {
-
             if (!qrScanner) {
                 qrScanner = new Html5Qrcode("qr-reader");
             }
 
             await qrScanner.start(
-                {facingMode: "environment"},
+                { facingMode: "environment" },
                 {
                     fps: 10,
-                    qrbox: {
-                        width: 250,
-                        height: 250
-                    }
+                    qrbox: { width: 250, height: 250 }
                 },
                 async function (decodedText) {
-
                     if (!submitting && !lookupInProgress) {
-
                         await stopCamera();
-
                         await submitIdentifier(decodedText);
                     }
-
                 },
                 function () {}
             );
 
             cameraRunning = true;
-
             stopButton.disabled = false;
             startButton.disabled = true;
 
-            setStatus(
-                "Camera active. Scan a product QR code."
-            );
+            setStatus("Camera active. Scan a product QR code.");
 
         } catch (error) {
-
             console.error("Camera error:", error);
 
             cameraRunning = false;
-
             startButton.disabled = false;
             stopButton.disabled = true;
 
@@ -811,9 +608,7 @@
         }
     }
 
-
     async function scanImage() {
-
         const file = imageInput.files[0];
 
         if (!file) {
@@ -829,95 +624,58 @@
         if (submitting || lookupInProgress) return;
 
         if (typeof Html5Qrcode === "undefined") {
-
             setStatus(
                 "QR library failed to load. Check your internet connection."
             );
-
             return;
         }
 
         imageButton.disabled = true;
-
         setStatus("Reading QR photograph...");
 
         try {
-
             await stopCamera();
 
             if (!qrScanner) {
                 qrScanner = new Html5Qrcode("qr-reader");
             }
 
-            const decodedText = await qrScanner.scanFile(
-                file,
-                false
-            );
-
+            const decodedText = await qrScanner.scanFile(file, false);
             await submitIdentifier(decodedText);
 
         } catch (error) {
-
             console.error("Image scan error:", error);
-
             setStatus(
                 "Could not read a QR code from this photograph."
             );
 
         } finally {
-
             imageButton.disabled = submitting || lookupInProgress;
         }
     }
 
+    startButton.addEventListener("click", startCamera);
+    stopButton.addEventListener("click", stopCamera);
+    imageButton.addEventListener("click", scanImage);
 
-    startButton.addEventListener(
-        "click",
-        startCamera
-    );
+    manualButton.addEventListener("click", function () {
+        submitIdentifier(manualInput.value);
+    });
 
-    stopButton.addEventListener(
-        "click",
-        stopCamera
-    );
-
-    imageButton.addEventListener(
-        "click",
-        scanImage
-    );
-
-    manualButton.addEventListener(
-        "click",
-        function () {
+    manualInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
             submitIdentifier(manualInput.value);
         }
-    );
+    });
 
-    manualInput.addEventListener(
-        "keydown",
-        function (event) {
+    window.addEventListener("beforeunload", function () {
+        pollingCancelled = true;
 
-            if (event.key === "Enter") {
-
-                event.preventDefault();
-
-                submitIdentifier(manualInput.value);
-            }
+        if (cameraRunning && qrScanner) {
+            qrScanner.stop().catch(function () {});
         }
-    );
-
-
-    window.addEventListener(
-        "beforeunload",
-        function () {
-
-            pollingCancelled = true;
-
-            if (cameraRunning && qrScanner) {
-                qrScanner.stop().catch(function () {});
-            }
-        }
-    );
+    });
 
 })();
 </script>

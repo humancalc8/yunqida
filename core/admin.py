@@ -1,7 +1,7 @@
 
 import json
 from urllib.parse import urlsplit
-
+from django.utils.html import format_html
 from django.contrib import admin, messages
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
@@ -451,10 +451,6 @@ class ProductAdmin(admin.ModelAdmin):
         return JsonResponse(response_data)
 
 
-# =====================================================
-# PRODUCT IMPORT DRAFTS
-# =====================================================
-
 @admin.register(ProductImportDraft)
 class ProductImportDraftAdmin(admin.ModelAdmin):
 
@@ -463,6 +459,8 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         'short_identifier',
         'status',
         'lookup_status',
+        'error_reason',
+        'fix_link',
         'created_at',
         'updated_at',
     )
@@ -495,6 +493,7 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
     actions = [
         'fetch_product_details',
         'import_selected_products',
+        'fix_selected_drafts',
     ]
 
     fieldsets = (
@@ -530,15 +529,505 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
 
     ordering = ('-created_at',)
 
+    # -------------------------------------------------
+    # CUSTOM URLS
+    # -------------------------------------------------
+
+    def get_urls(self):
+        urls = super().get_urls()
+
+        custom_urls = [
+            path(
+                '<int:draft_id>/fix/',
+                self.admin_site.admin_view(self.fix_draft),
+                name='core_productimportdraft_fix',
+            ),
+        ]
+
+        return custom_urls + urls
+
+    # -------------------------------------------------
+    # LIST DISPLAY
+    # -------------------------------------------------
+
     @admin.display(description='Scanned identifier')
     def short_identifier(self, obj):
         return obj.raw_code[:65]
 
+    @admin.display(description='Reason / Error')
+    def error_reason(self, obj):
+        if obj.status == 'imported':
+            return 'Imported successfully'
+
+        if obj.lookup_status == 'failed' and obj.lookup_error:
+            return obj.lookup_error[:180]
+
+        if obj.notes:
+            return obj.notes[:180]
+
+        if obj.lookup_status == 'processing':
+            return 'Manufacturer lookup is currently processing.'
+
+        if obj.lookup_status == 'queued':
+            return 'Waiting for the manufacturer lookup worker.'
+
+        if obj.lookup_status == 'completed':
+            return 'Details fetched. Ready for import.'
+
+        return 'No error information recorded.'
+
+    @admin.display(description='Action')
+    def fix_link(self, obj):
+        if obj.status == 'imported':
+            return 'Imported'
+
+        url = reverse(
+            f'{self.admin_site.name}:core_productimportdraft_fix',
+            args=[obj.pk],
+        )
+
+        return format_html(
+            '<a class="button" href="{}">Fix</a>',
+            url,
+        )
+
+    # -------------------------------------------------
+    # PERMISSIONS
+    # -------------------------------------------------
+
     def has_add_permission(self, request):
         return False
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.exclude(status='imported')
+
+    # -------------------------------------------------
+    # SAVE FAILURE REASONS
+    # -------------------------------------------------
+
+    def save_import_error(self, draft, message):
+        draft.notes = f'IMPORT FAILED: {message}'[:5000]
+
+        draft.save(update_fields=[
+            'notes',
+            'updated_at',
+        ])
+
+    # -------------------------------------------------
+    # QUEUE A MANUFACTURER LOOKUP
+    # -------------------------------------------------
+
+    def queue_lookup(self, draft):
+        model_number = draft.raw_code.strip()
+
+        if model_number.lower().startswith(
+            ('http://', 'https://')
+        ):
+            raise ValueError(
+                'This draft contains a URL instead of a product model '
+                'number. Enter the actual manufacturer model number '
+                'in the scanned identifier before retrying.'
+            )
+
+        if not model_number:
+            raise ValueError(
+                'The product model number is empty.'
+            )
+
+        draft.lookup_status = 'queued'
+        draft.lookup_started_at = None
+        draft.lookup_finished_at = None
+        draft.lookup_error = ''
+        draft.extracted_data = {}
+
+        draft.notes = (
+            'Manufacturer lookup queued for retry. '
+            'Waiting for the background worker.'
+        )
+
+        draft.save(update_fields=[
+            'lookup_status',
+            'lookup_started_at',
+            'lookup_finished_at',
+            'lookup_error',
+            'extracted_data',
+            'notes',
+            'updated_at',
+        ])
+
+    # -------------------------------------------------
+    # IMPORT ONE DRAFT
+    # -------------------------------------------------
+
+    def import_one_draft(self, draft):
+        if draft.status == 'imported':
+            return 'skipped', 'This draft has already been imported.'
+
+        if draft.lookup_status != 'completed':
+            return (
+                'failed',
+                'Manufacturer lookup has not completed. '
+                'Retry the manufacturer lookup first.',
+            )
+
+        data = draft.extracted_data
+
+        if not isinstance(data, dict):
+            message = (
+                'The extracted manufacturer information is invalid. '
+                'Run the manufacturer lookup again.'
+            )
+            self.save_import_error(draft, message)
+            return 'failed', message
+
+        if not data.get('match_verified'):
+            message = (
+                'The manufacturer result has not passed exact model '
+                'verification. Run the lookup again.'
+            )
+            self.save_import_error(draft, message)
+            return 'failed', message
+
+        name = str(data.get('name') or '').strip()
+        description = str(data.get('description') or '').strip()
+        tagline = str(data.get('tagline') or '').strip()
+        category = str(data.get('category') or '').strip()
+        model_number = str(data.get('model_number') or '').strip()
+
+        if not name:
+            message = (
+                'The extracted product name is missing. '
+                'Correct the extracted product information and click Fix.'
+            )
+            self.save_import_error(draft, message)
+            return 'failed', message
+
+        if not description:
+            message = (
+                'The product description is missing. '
+                'Correct the extracted product information and click Fix.'
+            )
+            self.save_import_error(draft, message)
+            return 'failed', message
+
+        valid_categories = dict(Product.CATEGORY_CHOICES)
+
+        if category not in valid_categories:
+            message = (
+                f'Invalid product category: "{category}". '
+                f'Allowed categories are: {", ".join(valid_categories.keys())}. '
+                'Correct the category in extracted product information.'
+            )
+            self.save_import_error(draft, message)
+            return 'failed', message
+
+        # -------------------------------------------------
+        # DUPLICATE DETECTION
+        # -------------------------------------------------
+
+        existing_product = None
+
+        if model_number:
+            existing_product = Product.objects.filter(
+                manufacturer_model__iexact=model_number
+            ).first()
+
+        if existing_product is None:
+            existing_product = Product.objects.filter(
+                name__iexact=name
+            ).first()
+
+        if existing_product:
+            draft.product = existing_product
+            draft.status = 'imported'
+
+            draft.notes = (
+                f'DUPLICATE DETECTED. This product already exists in the '
+                f'catalogue as Product #{existing_product.pk} '
+                f'({existing_product.name}). '
+                f'The draft has been linked to the existing product '
+                f'instead of creating a duplicate.'
+            )
+
+            draft.save(update_fields=[
+                'product',
+                'status',
+                'notes',
+                'updated_at',
+            ])
+
+            return (
+                'skipped',
+                f'Already exists as Product #{existing_product.pk}. '
+                'Draft linked to the existing product.',
+            )
+
+        # -------------------------------------------------
+        # GENERATE UNIQUE SLUG
+        # -------------------------------------------------
+
+        base_slug = slugify(name)[:45] or 'product'
+        slug = base_slug
+        counter = 1
+
+        while Product.objects.filter(slug=slug).exists():
+            counter += 1
+            slug = f'{base_slug}-{counter}'
+
+        # -------------------------------------------------
+        # PREPARE IMAGE URLS
+        # -------------------------------------------------
+
+        image_urls = data.get('image_urls') or []
+
+        if not isinstance(image_urls, list):
+            image_urls = []
+
+        image_urls = list(image_urls)
+
+        primary_url = data.get('image_url')
+
+        if (
+            isinstance(primary_url, str)
+            and primary_url.strip()
+            and primary_url.strip() not in image_urls
+        ):
+            image_urls.insert(0, primary_url.strip())
+
+        # -------------------------------------------------
+        # DOWNLOAD IMAGES
+        # -------------------------------------------------
+
+        try:
+            downloaded_images, image_errors = (
+                download_product_images(image_urls)
+            )
+
+        except Exception as exc:
+            downloaded_images = []
+            image_errors = [
+                f'Image downloader error: {str(exc)[:300]}'
+            ]
+
+        # -------------------------------------------------
+        # CREATE PRODUCT
+        # -------------------------------------------------
+
+        try:
+            with transaction.atomic():
+
+                product = Product.objects.create(
+                    name=name[:120],
+                    slug=slug,
+                    category=category,
+                    tagline=(tagline or name)[:200],
+                    description=description,
+                    capacity=str(
+                        data.get('capacity') or ''
+                    )[:60],
+                    power=str(
+                        data.get('power') or ''
+                    )[:60],
+                    warranty=str(
+                        data.get('warranty') or ''
+                    )[:60],
+                    technical_specifications=(
+                        data.get('technical_specifications')
+                        if isinstance(
+                            data.get('technical_specifications'),
+                            list,
+                        )
+                        else []
+                    ),
+                    manufacturer_model=model_number[:120],
+                    manufacturer_url=str(
+                        data.get('source_url') or draft.source_url
+                    )[:200],
+                )
+
+                # Main product image.
+                if downloaded_images:
+                    main_image = downloaded_images[0]
+
+                    product.image.save(
+                        main_image['filename'],
+                        ContentFile(main_image['content']),
+                        save=True,
+                    )
+
+                # Additional gallery images.
+                for index, image_data in enumerate(
+                    downloaded_images[1:],
+                    start=1,
+                ):
+                    gallery_image = ProductImage(
+                        product=product,
+                        alt_text=(
+                            f'{product.name} product image {index + 1}'
+                        ),
+                        source_url=image_data['source_url'],
+                        order=index,
+                    )
+
+                    gallery_image.image.save(
+                        image_data['filename'],
+                        ContentFile(image_data['content']),
+                        save=True,
+                    )
+
+                # Mark the draft as imported.
+                draft.product = product
+                draft.status = 'imported'
+
+                notes = (
+                    f'Imported successfully as Product #{product.pk}. '
+                    f'{len(downloaded_images)} manufacturer image(s) '
+                    'downloaded and saved. '
+                )
+
+                if downloaded_images:
+                    notes += (
+                        'The first downloaded image is the main product '
+                        'image. Remaining images are in the gallery. '
+                    )
+                else:
+                    notes += (
+                        'No manufacturer images could be downloaded. '
+                        'You can upload images manually. '
+                    )
+
+                if image_errors:
+                    notes += (
+                        f'{len(image_errors)} image download(s) failed. '
+                        + ' '.join(image_errors[:3])
+                    )
+
+                notes += (
+                    f' Source: {draft.source_url or "Not provided"}.'
+                )
+
+                draft.notes = notes[:5000]
+
+                draft.save(update_fields=[
+                    'product',
+                    'status',
+                    'notes',
+                    'updated_at',
+                ])
+
+            return (
+                'imported',
+                f'Successfully imported as Product #{product.pk}.',
+            )
+
+        except Exception as exc:
+            message = (
+                f'{type(exc).__name__}: {str(exc)}'
+            )[:4000]
+
+            self.save_import_error(draft, message)
+
+            return 'failed', message
+
+    # -------------------------------------------------
+    # INDIVIDUAL FIX BUTTON
+    # -------------------------------------------------
+
+    def fix_draft(self, request, draft_id):
+        draft = get_object_or_404(
+            ProductImportDraft,
+            pk=draft_id,
+        )
+
+        if not self.has_change_permission(request, draft):
+            raise PermissionDenied
+
+        if draft.status == 'imported':
+            self.message_user(
+                request,
+                'This draft has already been imported.',
+                messages.INFO,
+            )
+
+            return redirect(
+                reverse(
+                    f'{self.admin_site.name}:core_productimportdraft_changelist'
+                )
+            )
+
+        # If lookup is complete, retry the import.
+        if draft.lookup_status == 'completed':
+            result, message = self.import_one_draft(draft)
+
+            if result == 'imported':
+                self.message_user(
+                    request,
+                    message,
+                    messages.SUCCESS,
+                )
+
+            elif result == 'skipped':
+                self.message_user(
+                    request,
+                    message,
+                    messages.WARNING,
+                )
+
+            else:
+                self.message_user(
+                    request,
+                    message,
+                    messages.ERROR,
+                )
+
+        # Do not queue another lookup while one is already running.
+        elif draft.lookup_status in ('queued', 'processing'):
+            self.message_user(
+                request,
+                (
+                    'This manufacturer lookup is already '
+                    f'{draft.lookup_status}. Wait for it to finish.'
+                ),
+                messages.WARNING,
+            )
+
+        # Otherwise retry the manufacturer lookup.
+        else:
+            try:
+                self.queue_lookup(draft)
+
+                self.message_user(
+                    request,
+                    (
+                        'Manufacturer lookup queued again. '
+                        'The background worker must be running.'
+                    ),
+                    messages.SUCCESS,
+                )
+
+            except ValueError as exc:
+                draft.lookup_status = 'failed'
+                draft.lookup_error = str(exc)
+
+                draft.save(update_fields=[
+                    'lookup_status',
+                    'lookup_error',
+                    'updated_at',
+                ])
+
+                self.message_user(
+                    request,
+                    str(exc),
+                    messages.ERROR,
+                )
+
+        return redirect(
+            reverse(
+                f'{self.admin_site.name}:core_productimportdraft_change',
+                args=[draft.pk],
+            )
+        )
 
     # -------------------------------------------------
     # QUEUE PRODUCT LOOKUPS
@@ -548,80 +1037,63 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
     def fetch_product_details(self, request, queryset):
         queued = 0
         skipped = 0
+        errors = 0
 
-        selected = list(queryset[:5])
+        for draft in queryset[:5]:
 
-        for draft in selected:
             if draft.status != 'pending':
                 skipped += 1
                 continue
 
-            model_number = draft.raw_code.strip()
+            try:
+                self.queue_lookup(draft)
+                queued += 1
 
-            if model_number.lower().startswith(
-                ('http://', 'https://')
-            ):
-                draft.notes = (
-                    'Lookup not performed: this draft contains a URL. '
-                    'Enter the product model number to perform the lookup.'
-                )
+            except ValueError as exc:
+                draft.lookup_status = 'failed'
+                draft.lookup_error = str(exc)
 
-                draft.save(
-                    update_fields=['notes', 'updated_at']
-                )
+                draft.save(update_fields=[
+                    'lookup_status',
+                    'lookup_error',
+                    'updated_at',
+                ])
 
-                skipped += 1
-                continue
-
-            draft.lookup_status = 'queued'
-            draft.lookup_started_at = None
-            draft.lookup_finished_at = None
-            draft.lookup_error = ''
-            draft.extracted_data = {}
-
-            draft.notes = (
-                'Manufacturer lookup queued from the admin action. '
-                'Waiting for the background worker.'
-            )
-
-            draft.save(update_fields=[
-                'lookup_status',
-                'lookup_started_at',
-                'lookup_finished_at',
-                'lookup_error',
-                'extracted_data',
-                'notes',
-                'updated_at',
-            ])
-
-            queued += 1
+                errors += 1
 
         if queued:
             self.message_user(
                 request,
-                f'{queued} manufacturer lookup(s) queued successfully. '
-                'The background worker must be running to process them.',
+                (
+                    f'{queued} manufacturer lookup(s) queued. '
+                    'The background worker must be running.'
+                ),
                 messages.SUCCESS,
             )
 
         if skipped:
             self.message_user(
                 request,
-                f'{skipped} draft(s) skipped because they were not pending '
-                'or contained a URL.',
+                f'{skipped} draft(s) skipped because they are not pending.',
                 messages.WARNING,
             )
 
-        if len(queryset) > 5:
+        if errors:
             self.message_user(
                 request,
-                'Only the first five selected drafts were queued. '
-                'Run the action again for the remaining drafts.',
+                f'{errors} draft(s) could not be queued. Check their error reasons.',
+                messages.ERROR,
+            )
+
+        if queryset.count() > 5:
+            self.message_user(
+                request,
+                'Only the first five selected drafts were queued.',
                 messages.WARNING,
             )
 
     # -------------------------------------------------
-    # IMPORT REVIEWED PRODUCTS
+    # IMPORT SELECTED PRODUCTS
     # -------------------------------------------------
 
     @admin.action(description='2. Import reviewed products into catalogue')
@@ -630,236 +1102,122 @@ class ProductImportDraftAdmin(admin.ModelAdmin):
         skipped = 0
         failed = 0
 
-        valid_categories = dict(Product.CATEGORY_CHOICES)
-
         for draft in queryset:
-            if draft.status != 'pending':
-                skipped += 1
-                continue
+            result, message = self.import_one_draft(draft)
 
-            if draft.lookup_status != 'completed':
-                skipped += 1
-                continue
-
-            data = draft.extracted_data or {}
-
-            if not isinstance(data, dict):
-                failed += 1
-                continue
-
-            if not data.get('match_verified'):
-                failed += 1
-                continue
-
-            name = str(data.get('name') or '').strip()
-            description = str(data.get('description') or '').strip()
-            tagline = str(data.get('tagline') or '').strip()
-            category = str(data.get('category') or '').strip()
-            model_number = str(data.get('model_number') or '').strip()
-
-            if not name or not description:
-                failed += 1
-                continue
-
-            if category not in valid_categories:
-                failed += 1
-                continue
-
-            # Prevent duplicate products.
-            if (
-                Product.objects.filter(name__iexact=name).exists()
-                or (
-                    model_number
-                    and Product.objects.filter(
-                        manufacturer_model__iexact=model_number
-                    ).exists()
-                )
-            ):
-                skipped += 1
-                continue
-
-            # Generate a unique slug.
-            base_slug = slugify(name)[:45] or 'product'
-            slug = base_slug
-            counter = 1
-
-            while Product.objects.filter(slug=slug).exists():
-                counter += 1
-                slug = f'{base_slug}-{counter}'
-
-            # Prepare manufacturer image URLs.
-            image_urls = data.get('image_urls') or []
-
-            if not isinstance(image_urls, list):
-                image_urls = []
-            else:
-                image_urls = list(image_urls)
-
-            primary_url = data.get('image_url')
-
-            if (
-                isinstance(primary_url, str)
-                and primary_url.strip()
-                and primary_url.strip() not in image_urls
-            ):
-                image_urls.insert(0, primary_url.strip())
-
-            # Download product images.
-            try:
-                downloaded_images, image_errors = (
-                    download_product_images(image_urls)
-                )
-            except Exception as exc:
-                downloaded_images = []
-                image_errors = [
-                    f'Image downloader error: {str(exc)[:300]}'
-                ]
-
-            # Create product and save its images.
-            try:
-                with transaction.atomic():
-                    product = Product.objects.create(
-                        name=name[:120],
-                        slug=slug,
-                        category=category,
-                        tagline=(tagline or name)[:200],
-                        description=description,
-                        capacity=str(
-                            data.get('capacity') or ''
-                        )[:60],
-                        power=str(
-                            data.get('power') or ''
-                        )[:60],
-                        warranty=str(
-                            data.get('warranty') or ''
-                        )[:60],
-                        technical_specifications=(
-                            data.get('technical_specifications')
-                            if isinstance(
-                                data.get('technical_specifications'),
-                                list,
-                            )
-                            else []
-                        ),
-                        manufacturer_model=model_number[:120],
-                        manufacturer_url=str(
-                            data.get('source_url') or draft.source_url
-                        )[:200],
-                    )
-
-                    # First downloaded image becomes the main image.
-                    if downloaded_images:
-                        main_image = downloaded_images[0]
-
-                        product.image.save(
-                            main_image['filename'],
-                            ContentFile(main_image['content']),
-                            save=True,
-                        )
-
-                    # Remaining images become gallery images.
-                    for index, image_data in enumerate(
-                        downloaded_images[1:],
-                        start=1,
-                    ):
-                        gallery_image = BlogImage if False else ProductImage(
-                            product=product,
-                            alt_text=(
-                                f'{product.name} product image {index + 1}'
-                            ),
-                            source_url=image_data['source_url'],
-                            order=index,
-                        )
-
-                        gallery_image.image.save(
-                            image_data['filename'],
-                            ContentFile(image_data['content']),
-                            save=True,
-                        )
-
-                    # Update import draft.
-                    draft.product = product
-                    draft.status = 'imported'
-
-                    notes = (
-                        f'Imported successfully as Product #{product.pk}. '
-                        f'{len(downloaded_images)} manufacturer image(s) '
-                        'downloaded and saved. '
-                    )
-
-                    if downloaded_images:
-                        notes += (
-                            'The first successfully downloaded image '
-                            'is the main product image. '
-                            'The remaining images are in the gallery. '
-                        )
-                    else:
-                        notes += (
-                            'No manufacturer images could be downloaded. '
-                            'You can upload images manually. '
-                        )
-
-                    if image_errors:
-                        notes += (
-                            f'{len(image_errors)} image download(s) failed. '
-                            + ' '.join(image_errors[:3])
-                        )
-
-                    notes += (
-                        f' Source: {draft.source_url or "Not provided"}.'
-                    )
-
-                    draft.notes = notes[:5000]
-
-                    draft.save(update_fields=[
-                        'product',
-                        'status',
-                        'notes',
-                        'updated_at',
-                    ])
-
+            if result == 'imported':
                 imported += 1
-
-            except Exception as exc:
+            elif result == 'skipped':
+                skipped += 1
+            else:
                 failed += 1
 
-                draft.notes = (
-                    f'Import failed: {str(exc)[:500]}'
-                )
-
-                draft.save(
-                    update_fields=['notes', 'updated_at']
-                )
-
-        # Admin results.
         if imported:
             self.message_user(
                 request,
-                f'{imported} product(s) imported successfully, '
-                'including their available manufacturer images.',
+                f'{imported} product(s) imported successfully.',
                 messages.SUCCESS,
             )
 
         if skipped:
             self.message_user(
                 request,
-                f'{skipped} product(s) skipped because they are not ready, '
-                'were already processed, or a matching product exists.',
+                (
+                    f'{skipped} draft(s) were already processed or '
+                    'matched existing catalogue products.'
+                ),
                 messages.WARNING,
             )
 
         if failed:
             self.message_user(
                 request,
-                f'{failed} product(s) could not be imported. '
-                'Check their draft notes.',
+                (
+                    f'{failed} product(s) could not be imported. '
+                    'Open each draft to see its recorded reason and use Fix '
+                    'after correcting the information.'
+                ),
                 messages.ERROR,
             )
 
+    # -------------------------------------------------
+    # FIX SELECTED DRAFTS
+    # -------------------------------------------------
 
-# =====================================================
-# COMPLETED PROJECTS
-# =====================================================
+    @admin.action(description='3. Fix selected failed or incomplete drafts')
+    def fix_selected_drafts(self, request, queryset):
+        queued = 0
+        imported = 0
+        skipped = 0
+        failed = 0
+
+        for draft in queryset:
+
+            if draft.status == 'imported':
+                skipped += 1
+                continue
+
+            if draft.lookup_status == 'completed':
+                result, message = self.import_one_draft(draft)
+
+                if result == 'imported':
+                    imported += 1
+                elif result == 'skipped':
+                    skipped += 1
+                else:
+                    failed += 1
+
+            elif draft.lookup_status in ('queued', 'processing'):
+                skipped += 1
+
+            else:
+                try:
+                    self.queue_lookup(draft)
+                    queued += 1
+
+                except ValueError as exc:
+                    draft.lookup_status = 'failed'
+                    draft.lookup_error = str(exc)
+
+                    draft.save(update_fields=[
+                        'lookup_status',
+                        'lookup_error',
+                        'updated_at',
+                    ])
+
+                    failed += 1
+
+        if queued:
+            self.message_user(
+                request,
+                f'{queued} manufacturer lookup(s) queued for retry.',
+                messages.SUCCESS,
+            )
+
+        if imported:
+            self.message_user(
+                request,
+                f'{imported} product(s) imported successfully.',
+                messages.SUCCESS,
+            )
+
+        if skipped:
+            self.message_user(
+                request,
+                f'{skipped} draft(s) skipped because they are already processing or matched existing products.',
+                messages.WARNING,
+            )
+
+        if failed:
+            self.message_user(
+                request,
+                (
+                    f'{failed} draft(s) still need attention. '
+                    'Check the individual error reasons.'
+                ),
+                messages.ERROR,
+            )
+
 
 @admin.register(BuildProject)
 class BuildProjectAdmin(admin.ModelAdmin):

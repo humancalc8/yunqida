@@ -1,0 +1,235 @@
+{% load static %}
+
+<section class="yd-rotating-banner" aria-label="Yunqida Energy image banner">
+    <div class="yd-banner-track">
+        <!-- src is set by JS so the right image is chosen for the screen size -->
+        <img
+            class="yd-banner-image yd-banner-current"
+            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+            alt="Yunqida Energy"
+        >
+        <img
+            class="yd-banner-image yd-banner-next"
+            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+            alt=""
+            aria-hidden="true"
+        >
+    </div>
+</section>
+
+<style>
+    .yd-rotating-banner {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 6;
+        overflow: hidden;
+        background: #fff;
+        isolation: isolate;
+        transition: height 850ms cubic-bezier(.22,.61,.36,1);
+    }
+
+    .yd-rotating-banner.yd-banner-ready {
+        aspect-ratio: auto;
+    }
+
+    .yd-banner-track {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .yd-banner-image {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        will-change: transform;
+    }
+
+    .yd-banner-current {
+        transform: translateX(0);
+        z-index: 1;
+    }
+
+    .yd-banner-next {
+        transform: translateX(100%);
+        z-index: 2;
+    }
+
+    .yd-banner-next.yd-banner-enter {
+        animation: ydBannerEnter 850ms cubic-bezier(.22,.61,.36,1) forwards;
+    }
+
+    .yd-banner-current.yd-banner-leave {
+        animation: ydBannerLeave 850ms cubic-bezier(.22,.61,.36,1) forwards;
+    }
+
+    @keyframes ydBannerEnter {
+        from { transform: translateX(100%); }
+        to   { transform: translateX(0); }
+    }
+
+    @keyframes ydBannerLeave {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-100%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .yd-rotating-banner {
+            transition-duration: 1ms;
+        }
+
+        .yd-banner-next.yd-banner-enter,
+        .yd-banner-current.yd-banner-leave {
+            animation-duration: 1ms;
+        }
+    }
+</style>
+
+<script>
+(function () {
+    const banner = document.querySelector(".yd-rotating-banner");
+
+    if (!banner || banner.dataset.initialized === "true") return;
+    banner.dataset.initialized = "true";
+
+    // mobileOnly: true  ->  shown on phones only (600px and below)
+    const allImages = [
+        { src: "{% static 'img/background.png' %}",  mobileOnly: true  },
+        { src: "{% static 'img/background2.png' %}" },
+        { src: "{% static 'img/background3.png' %}", mobileOnly: true  },
+        { src: "{% static 'img/background4.png' %}" },
+        { src: "{% static 'img/background5.png' %}" },
+        { src: "{% static 'img/background6.png' %}" },
+        { src: "{% static 'img/background7.png' %}" },
+        { src: "{% static 'img/background8.png' %}" },
+        { src: "{% static 'img/background9.png' %}" }
+    ];
+
+    const mobileQuery = window.matchMedia("(max-width: 600px)");
+
+    function buildList() {
+        return allImages
+            .filter(function (item) { return mobileQuery.matches || !item.mobileOnly; })
+            .map(function (item) { return item.src; });
+    }
+
+    let images = buildList();
+    let index = 0;
+    let current = banner.querySelector(".yd-banner-current");
+    let next = banner.querySelector(".yd-banner-next");
+    let busy = false;
+    let currentRatio = null; // height / width of the image on screen
+
+    function preload(url) {
+        return new Promise(function (resolve) {
+            const image = new Image();
+            image.onload = function () { resolve(image); };
+            image.onerror = function () { resolve(null); };
+            image.src = url;
+        });
+    }
+
+    // Full width, height follows the image's own proportions
+    function fitBanner(ratio, animate) {
+        if (!ratio) return;
+        currentRatio = ratio;
+
+        const height = (banner.clientWidth * ratio) + "px";
+
+        if (!animate) {
+            const original = banner.style.transition;
+            banner.style.transition = "none";
+            banner.style.height = height;
+            void banner.offsetHeight;
+            banner.style.transition = original;
+        } else {
+            banner.style.height = height;
+        }
+
+        banner.classList.add("yd-banner-ready");
+    }
+
+    // Show a specific image immediately (no slide), used on load and breakpoint change
+    async function showImage(i) {
+        const loaded = await preload(images[i]);
+        if (!loaded) return;
+        index = i;
+        current.src = images[i];
+        fitBanner(loaded.naturalHeight / loaded.naturalWidth, false);
+    }
+
+    showImage(0);
+
+    // If the screen crosses the mobile breakpoint (e.g. phone rotated),
+    // rebuild the list so mobile-only images appear/disappear correctly
+    function onBreakpointChange() {
+        const shownSrc = images[index];
+        images = buildList();
+        const found = images.indexOf(shownSrc);
+
+        if (found === -1) {
+            showImage(0);   // current image is no longer allowed
+        } else {
+            index = found;  // keep showing it, just fix the position
+        }
+    }
+
+    if (mobileQuery.addEventListener) {
+        mobileQuery.addEventListener("change", onBreakpointChange);
+    } else {
+        mobileQuery.addListener(onBreakpointChange);
+    }
+
+    let resizeTimer;
+    window.addEventListener("resize", function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+            fitBanner(currentRatio, false);
+        }, 100);
+    });
+
+    async function rotate() {
+        if (busy || document.hidden || images.length < 2) return;
+        busy = true;
+
+        const nextIndex = (index + 1) % images.length;
+        const loadedImage = await preload(images[nextIndex]);
+
+        if (!loadedImage) {
+            busy = false;
+            return;
+        }
+
+        next.src = images[nextIndex];
+        next.classList.remove("yd-banner-enter");
+        current.classList.remove("yd-banner-leave");
+
+        void next.offsetWidth;
+
+        fitBanner(loadedImage.naturalHeight / loadedImage.naturalWidth, true);
+
+        next.classList.add("yd-banner-enter");
+        current.classList.add("yd-banner-leave");
+
+        window.setTimeout(function () {
+            current.classList.remove("yd-banner-current", "yd-banner-leave");
+            current.classList.add("yd-banner-next");
+
+            next.classList.remove("yd-banner-next", "yd-banner-enter");
+            next.classList.add("yd-banner-current");
+
+            const oldCurrent = current;
+            current = next;
+            next = oldCurrent;
+            index = nextIndex;
+            busy = false;
+        }, 880);
+    }
+
+    window.setInterval(rotate, 5000);
+})();
+</script>
